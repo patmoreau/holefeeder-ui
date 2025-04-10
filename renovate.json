@@ -1,6 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>patmoreau/renovate-config"
+  "extends": ["local>patmoreau/renovate-config", "config:base"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["intl"],
+      "allowedVersions": "<=0.19.0"
+    }
   ]
 }

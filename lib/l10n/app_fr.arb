@@ -1,6 +1,6 @@
 {
   "@@locale": "fr",
-  "holefeederTitle": "Bonjour le monde !",
+  "holefeederTitle": "Holefeeder",
   "welcomeMessage": "Bienvenue dans notre application",
   "helloUser": "Bonjour {userName}"
 }

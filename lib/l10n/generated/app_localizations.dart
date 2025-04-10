@@ -98,7 +98,7 @@ abstract class AppLocalizations {
   /// A simple hello world message
   ///
   /// In en, this message translates to:
-  /// **'Hello World!'**
+  /// **'Holefeeder'**
   String get holefeederTitle;
 
   /// No description provided for @welcomeMessage.

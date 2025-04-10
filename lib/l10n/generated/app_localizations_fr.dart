@@ -9,7 +9,7 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get holefeederTitle => 'Bonjour le monde !';
+  String get holefeederTitle => 'Holefeeder';
 
   @override
   String get welcomeMessage => 'Bienvenue dans notre application';

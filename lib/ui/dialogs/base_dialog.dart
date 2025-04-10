@@ -15,7 +15,9 @@ Future<T?> showBaseDialog<T>({
   return Navigator.of(context, rootNavigator: useRootNavigator ?? true)
       .push<T>(
         PageRouteBuilder<T>(
-          pageBuilder: (context, animation, secondaryAnimation) => _DialogWrapper<T>(fixed: fixed, child: child),
+          pageBuilder:
+              (context, animation, secondaryAnimation) =>
+                  _DialogWrapper<T>(fixed: fixed, child: child),
           settings: RouteSettings(name: routeName),
           opaque: false,
           barrierDismissible: true,
@@ -44,7 +46,7 @@ class _DialogWrapper<T> extends StatelessWidget {
             color:
                 UniversalPlatform.isApple
                     ? Colors.black.withAlpha(89) // 0.35 * 255 ≈ 89
-                    : Color(0xff665b616e),
+                    : Colors.blueGrey.shade900,
           ),
         ),
         child,

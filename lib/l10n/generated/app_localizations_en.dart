@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get holefeederTitle => 'Hello World!';
+  String get holefeederTitle => 'Holefeeder';
 
   @override
   String get welcomeMessage => 'Welcome to our app';

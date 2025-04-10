@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/ui/screens/purchase_screen.dart';
 import 'package:holefeeder/ui/shared/widgets.dart';
 import 'package:universal_platform/universal_platform.dart';
 

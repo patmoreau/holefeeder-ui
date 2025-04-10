@@ -9,7 +9,8 @@ part 'rest_client.g.dart';
 
 @RestApi()
 abstract class RestClient {
-  factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+  factory RestClient(Dio dio, {String baseUrl, ParseErrorLogger? errorLogger}) =
+      _RestClient;
 
   @GET('api/v2/accounts')
   Future<HttpResponse<List<Account>>> getAccounts(

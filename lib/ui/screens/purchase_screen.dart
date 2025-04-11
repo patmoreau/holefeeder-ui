@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/ui/screens/purchase_form.dart';
 import 'package:universal_platform/universal_platform.dart';
-import '../../core/view_models/screens/purchase_view_model.dart';
-import '../services/notification_service.dart';
-import '../shared/view_model_provider.dart';
+import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
+import 'package:holefeeder/ui/services/notification_service.dart';
+import 'package:holefeeder/ui/shared/view_model_provider.dart';
 
-class PurchaseScreen extends StatefulWidget { // Changed to StatefulWidget
+class PurchaseScreen extends StatefulWidget {
   const PurchaseScreen({super.key});
 
   @override
@@ -20,9 +22,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<PurchaseViewModel>(
-      model: PurchaseViewModel(context: context),
+      model: PurchaseViewModel(dataProvider: context.read<DataProvider>()),
       builder: (model) {
-        return UniversalPlatform.isApple ? _buildCupertinoScaffold(model) : _buildMaterialScaffold(model);
+        return UniversalPlatform.isApple
+            ? _buildCupertinoScaffold(model)
+            : _buildMaterialScaffold(model);
       },
     );
   }
@@ -47,13 +51,19 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         ),
       ),
       child: SafeArea(
-        child: Padding(padding: const EdgeInsets.all(16.0), child: Center(child: PurchaseForm(model: model, formKey: _formKey))),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(child: PurchaseForm(model: model, formKey: _formKey)),
+        ),
       ),
     );
   }
 
   Widget _buildMaterialScaffold(PurchaseViewModel model) {
-    return Scaffold(appBar: AppBar(title: const Text('Purchase')), body: PurchaseForm(model: model, formKey: _formKey));
+    return Scaffold(
+      appBar: AppBar(title: const Text('Purchase')),
+      body: PurchaseForm(model: model, formKey: _formKey),
+    );
   }
 
   void _cancel(PurchaseViewModel model) {

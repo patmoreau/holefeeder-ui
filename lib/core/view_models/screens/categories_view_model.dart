@@ -1,24 +1,53 @@
 import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/core/providers/categories_provider.dart';
+import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/base_view_model.dart';
-import 'package:provider/provider.dart';
 
-class CategoriesViewModel extends BaseViewModel {
-  late CategoriesProvider _categoriesProvider;
+class CategoriesFormState extends BaseFormState {
+  final List<Category> categories;
 
-  late Future<List<Category>> _categoriesFuture;
+  const CategoriesFormState({
+    this.categories = const [],
+    super.state = ViewFormState.initial,
+    super.errorMessage,
+  });
 
-  Future<List<Category>> get categoriesFuture => _categoriesFuture;
+  @override
+  CategoriesFormState copyWith({
+    List<Category>? categories,
+    ViewFormState? state,
+    String? errorMessage,
+  }) {
+    return CategoriesFormState(
+      categories: categories ?? this.categories,
+      state: state ?? this.state,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+}
 
-  CategoriesViewModel({required super.context}) {
-    _categoriesProvider = Provider.of<CategoriesProvider>(context);
+class CategoriesViewModel extends BaseViewModel<CategoriesFormState> {
+  final DataProvider _dataProvider;
 
-    _categoriesFuture = _categoriesProvider.getCategories();
+  List<Category> get categories => formState.categories;
+
+  CategoriesViewModel({required DataProvider dataProvider})
+    : _dataProvider = dataProvider,
+      super(const CategoriesFormState()) {
+    loadCategories();
+  }
+
+  Future<void> loadCategories() async {
+    await handleAsync(() async {
+      final categories = await _dataProvider.getCategories();
+      updateState(
+        (state) =>
+            state.copyWith(categories: categories, state: ViewFormState.ready),
+      );
+    });
   }
 
   Future<void> refreshCategories() async {
-    _categoriesFuture = _categoriesProvider.getCategories();
-    notifyListeners();
-    await _categoriesFuture;
+    await loadCategories();
   }
 }

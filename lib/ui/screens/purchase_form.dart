@@ -11,7 +11,7 @@ import 'package:holefeeder/ui/shared/platform_tag_selector.dart';
 import 'package:holefeeder/ui/shared/platform_text_field.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-import '../../core/enums/date_interval_type_enum.dart';
+import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 
 class PurchaseForm extends StatefulWidget {
   final PurchaseViewModel model;

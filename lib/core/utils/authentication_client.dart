@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:holefeeder/core/constants/strings.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../enums/authentication_status_enum.dart';
+import 'package:holefeeder/core/enums/authentication_status_enum.dart';
 
 abstract class AuthenticationClient {
   static const parameters = {'screen_hint': 'signup'};

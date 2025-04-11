@@ -1,16 +1,11 @@
 import 'package:decimal/decimal.dart';
+import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/models/make_purchase.dart';
-import 'package:holefeeder/core/providers/accounts_provider.dart';
-import 'package:holefeeder/core/providers/categories_provider.dart';
-import 'package:holefeeder/core/providers/tags_provider.dart';
-import 'package:holefeeder/core/providers/transactions_provider.dart';
+import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:provider/provider.dart';
-
-import '../../enums/date_interval_type_enum.dart';
-import '../base_view_model.dart';
+import 'package:holefeeder/core/view_models/base_view_model.dart';
 
 class PurchaseFormState extends BaseFormState {
   final Decimal amount;
@@ -24,6 +19,9 @@ class PurchaseFormState extends BaseFormState {
   final DateIntervalType intervalType;
   final int frequency;
   final int recurrence;
+  final List<Account> accounts;
+  final List<Category> categories;
+  final List<String> availableTags;
 
   PurchaseFormState({
     Decimal? amount,
@@ -37,12 +35,16 @@ class PurchaseFormState extends BaseFormState {
     this.intervalType = DateIntervalType.monthly,
     this.frequency = 1,
     this.recurrence = 0,
+    this.accounts = const [],
+    this.categories = const [],
+    this.availableTags = const [],
     super.state = ViewFormState.initial,
     super.errorMessage,
-  }) : date = date ?? DateTime.now(),
-       amount = amount ?? Decimal.zero,
+  }) : amount = amount ?? Decimal.zero,
+       date = date ?? DateTime.now(),
        effectiveDate = effectiveDate ?? DateTime.now();
 
+  @override
   PurchaseFormState copyWith({
     Decimal? amount,
     DateTime? date,
@@ -55,6 +57,9 @@ class PurchaseFormState extends BaseFormState {
     DateIntervalType? intervalType,
     int? frequency,
     int? recurrence,
+    List<Account>? accounts,
+    List<Category>? categories,
+    List<String>? availableTags,
     ViewFormState? state,
     String? errorMessage,
   }) {
@@ -70,122 +75,113 @@ class PurchaseFormState extends BaseFormState {
       intervalType: intervalType ?? this.intervalType,
       frequency: frequency ?? this.frequency,
       recurrence: recurrence ?? this.recurrence,
+      accounts: accounts ?? this.accounts,
+      categories: categories ?? this.categories,
+      availableTags: availableTags ?? this.availableTags,
       state: state ?? this.state,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
 
-class PurchaseViewModel extends BaseViewModel {
-  final AccountsProvider _accountsProvider;
-  final CategoriesProvider _categoriesProvider;
-  final TagsProvider _tagsProvider;
-  final TransactionsProvider _transactionsProvider;
+class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
+  final DataProvider _dataProvider;
 
-  PurchaseFormState _formState = PurchaseFormState();
+  List<Account> get accounts => formState.accounts;
+  List<Category> get categories => formState.categories;
+  List<String> get tags => formState.availableTags;
 
-  PurchaseFormState get formState => _formState;
-
-  List<Account> _accounts = [];
-
-  List<Account> get accounts => _accounts;
-  List<Category> _categories = [];
-
-  List<Category> get categories => _categories;
-  List<String> _tags = [];
-
-  List<String> get tags => _tags;
-
-  PurchaseViewModel({
-    required super.context,
-    AccountsProvider? accountsProvider,
-    CategoriesProvider? categoriesProvider,
-    TagsProvider? tagsProvider,
-    TransactionsProvider? transactionsProvider,
-  }) : _accountsProvider = accountsProvider ?? Provider.of<AccountsProvider>(context, listen: false),
-       _categoriesProvider = categoriesProvider ?? Provider.of<CategoriesProvider>(context, listen: false),
-       _tagsProvider = tagsProvider ?? Provider.of<TagsProvider>(context, listen: false),
-       _transactionsProvider = transactionsProvider ?? Provider.of<TransactionsProvider>(context, listen: false) {
+  PurchaseViewModel({required DataProvider dataProvider})
+    : _dataProvider = dataProvider,
+      super(PurchaseFormState()) {
     loadInitialData();
   }
 
   Future<void> loadInitialData() async {
-    _updateState((s) => s.copyWith(state: ViewFormState.loading));
+    await handleAsync(() async {
+      final accounts = await _dataProvider.getAccounts();
+      final categories = await _dataProvider.getCategories();
+      final availableTags =
+          (await _dataProvider.getTags()).map((t) => t.tag).toList();
 
-    try {
-      _accounts = await _accountsProvider.getAccounts();
-      _categories = await _categoriesProvider.getCategories();
-      _tags = (await _tagsProvider.getTags()).map((t) => t.tag).toList();
-
-      _updateState(
+      updateState(
         (s) => s.copyWith(
+          accounts: accounts,
+          categories: categories,
+          availableTags: availableTags,
+          selectedAccount: accounts.firstOrNull,
+          selectedCategory: categories.firstOrNull,
           state: ViewFormState.ready,
-          selectedAccount: _accounts.firstOrNull,
-          selectedCategory: _categories.firstOrNull,
         ),
       );
-    } catch (e) {
-      _updateState((s) => s.copyWith(state: ViewFormState.error, errorMessage: "Failed to load data: $e"));
-    }
+    });
   }
 
-  void updateAmount(Decimal value) => _updateState((s) => s.copyWith(amount: value));
+  void updateAmount(Decimal value) =>
+      updateState((s) => s.copyWith(amount: value));
 
-  void updateDate(DateTime value) => _updateState((s) => s.copyWith(date: value));
+  void updateDate(DateTime value) =>
+      updateState((s) => s.copyWith(date: value));
 
-  void updateNote(String value) => _updateState((s) => s.copyWith(note: value));
+  void updateNote(String value) => updateState((s) => s.copyWith(note: value));
 
-  void setSelectedAccount(Account? account) => _updateState((s) => s.copyWith(selectedAccount: account));
+  void setSelectedAccount(Account? account) =>
+      updateState((s) => s.copyWith(selectedAccount: account));
 
-  void setSelectedCategory(Category? category) => _updateState((s) => s.copyWith(selectedCategory: category));
+  void setSelectedCategory(Category? category) =>
+      updateState((s) => s.copyWith(selectedCategory: category));
 
-  void updateTags(List<String> tags) => _updateState((s) => s.copyWith(tags: tags));
+  void updateTags(List<String> tags) =>
+      updateState((s) => s.copyWith(tags: tags));
 
-  void updateIsCashflow(bool value) => _updateState((s) => s.copyWith(isCashflow: value));
+  void updateIsCashflow(bool value) =>
+      updateState((s) => s.copyWith(isCashflow: value));
 
-  void updateEffectiveDate(DateTime value) => _updateState((s) => s.copyWith(effectiveDate: value));
+  void updateEffectiveDate(DateTime value) =>
+      updateState((s) => s.copyWith(effectiveDate: value));
 
   void updateIntervalType(DateIntervalType? value) {
     if (value != null) {
-      _updateState((s) => s.copyWith(intervalType: value));
+      updateState((s) => s.copyWith(intervalType: value));
     }
   }
 
-  void updateFrequency(int value) => _updateState((s) => s.copyWith(frequency: value));
+  void updateFrequency(int value) =>
+      updateState((s) => s.copyWith(frequency: value));
 
-  void updateRecurrence(int value) => _updateState((s) => s.copyWith(recurrence: value));
+  void updateRecurrence(int value) =>
+      updateState((s) => s.copyWith(recurrence: value));
 
   bool validate() {
-    if (_formState.amount <= Decimal.zero) return false;
-    if (_formState.selectedAccount == null) return false;
-    if (_formState.selectedCategory == null) return false;
+    final state = formState;
+    if (state.amount <= Decimal.zero) return false;
+    if (state.selectedAccount == null) return false;
+    if (state.selectedCategory == null) return false;
     return true;
   }
 
   Future<void> makePurchase() async {
-    await _transactionsProvider.makePurchase(
-      MakePurchase(
-        amount: _formState.amount,
-        description: _formState.note,
-        accountId: _formState.selectedAccount!.id,
-        categoryId: _formState.selectedCategory!.id,
-        tags: _formState.tags.toList(),
-        date: _formState.date,
-        cashflow:
-            _formState.isCashflow
-                ? CashflowRequest(
-                  effectiveDate: _formState.effectiveDate,
-                  intervalType: _formState.intervalType,
-                  frequency: _formState.frequency,
-                  recurrence: _formState.recurrence,
-                )
-                : null,
-      ),
-    );
-  }
-
-  void _updateState(PurchaseFormState Function(PurchaseFormState) update) {
-    _formState = update(_formState);
-    notifyListeners();
+    await handleAsync(() async {
+      final state = formState;
+      await _dataProvider.makePurchase(
+        MakePurchase(
+          amount: state.amount,
+          description: state.note,
+          accountId: state.selectedAccount!.id,
+          categoryId: state.selectedCategory!.id,
+          tags: state.tags.toList(),
+          date: state.date,
+          cashflow:
+              state.isCashflow
+                  ? CashflowRequest(
+                    effectiveDate: state.effectiveDate,
+                    intervalType: state.intervalType,
+                    frequency: state.frequency,
+                    recurrence: state.recurrence,
+                  )
+                  : null,
+        ),
+      );
+    });
   }
 }

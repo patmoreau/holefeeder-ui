@@ -6,7 +6,7 @@ import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/ui/shared/error_banner.dart';
 import 'package:holefeeder/ui/shared/platform_button_widget.dart';
 
-import '../../core/view_models/screens/login_view_model.dart';
+import 'package:holefeeder/core/view_models/screens/login_view_model.dart';
 
 class LoginForm extends StatefulWidget {
   final LoginViewModel model;

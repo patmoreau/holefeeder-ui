@@ -1,7 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:intl/intl.dart';
 
-import '../enums/date_interval_type_enum.dart';
+import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 
 class MakePurchase {
   final DateTime date;
@@ -30,9 +30,12 @@ class MakePurchase {
       accountId: json['accountId'] as String,
       categoryId: json['categoryId'] as String,
       tags: List<String>.from(json['tags'] as List),
-      cashflow: json['cashflow'] != null
-          ? CashflowRequest.fromJson(json['cashflow'] as Map<String, dynamic>)
-          : null,
+      cashflow:
+          json['cashflow'] != null
+              ? CashflowRequest.fromJson(
+                json['cashflow'] as Map<String, dynamic>,
+              )
+              : null,
     );
   }
 
@@ -65,7 +68,9 @@ class CashflowRequest {
   factory CashflowRequest.fromJson(Map<String, dynamic> json) {
     return CashflowRequest(
       effectiveDate: DateTime.parse(json['effectiveDate'] as String),
-      intervalType:  DateIntervalTypeExtension.fromString(json['intervalType'] as String),
+      intervalType: DateIntervalTypeExtension.fromString(
+        json['intervalType'] as String,
+      ),
       frequency: int.parse(json['frequency'] as String),
       recurrence: int.parse(json['recurrence'] as String),
     );

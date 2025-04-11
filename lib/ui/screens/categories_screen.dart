@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/ui/shared/view_model_provider.dart';
 import 'package:holefeeder/ui/shared/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-import '../../core/models/category.dart';
-import '../../core/view_models/screens/categories_view_model.dart';
+import 'package:holefeeder/core/models/category.dart';
+import 'package:holefeeder/core/view_models/screens/categories_view_model.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -33,63 +35,58 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     );
   }
 
-  Widget _buildScreen(
-    BuildContext context,
-  ) => ViewModelProvider<CategoriesViewModel>(
-    model: CategoriesViewModel(context: context),
-    builder: (CategoriesViewModel model) {
-      return FutureBuilder<List<Category>>(
-        future: model.categoriesFuture,
-        builder: (_, AsyncSnapshot<List<Category>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              if (snapshot.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Center(
-                    child: Column(
-                      children: <Widget>[
-                        const Text('Oops we had trouble loading your wishlist'),
-                        const SizedBox(height: 32),
-                        HolefeederWidgets.button(
-                          onPressed: () async {
-                            await model.refreshCategories();
-                          },
-                          child: const Text('Retry'),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-              final List<Category> items = snapshot.data ?? <Category>[];
-              if (items.isEmpty) {
-                return const Center(
-                  child: Text('Your wishlist is empty. Why not add some items'),
-                );
-              }
-              return ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (_, int index) => _buildRow(items[index]),
-              );
-            default:
-              return Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      Text('Loading your wishlist'),
-                      SizedBox(height: 32),
-                      HolefeederWidgets.activityIndicator(),
-                    ],
-                  ),
+  Widget _buildScreen(BuildContext context) =>
+      ViewModelProvider<CategoriesViewModel>(
+        model: CategoriesViewModel(dataProvider: context.read<DataProvider>()),
+        builder: (CategoriesViewModel model) {
+          if (model.isLoading) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    Text('Loading your wishlist'),
+                    SizedBox(height: 32),
+                    HolefeederWidgets.activityIndicator(),
+                  ],
                 ),
-              );
+              ),
+            );
           }
+
+          if (model.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    const Text('Oops we had trouble loading your wishlist'),
+                    const SizedBox(height: 32),
+                    HolefeederWidgets.button(
+                      onPressed: () async {
+                        await model.refreshCategories();
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          final items = model.categories;
+          if (items.isEmpty) {
+            return const Center(
+              child: Text('Your wishlist is empty. Why not add some items'),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (_, int index) => _buildRow(items[index]),
+          );
         },
       );
-    },
-  );
 
   Widget _buildRow(Category item) {
     return UniversalPlatform.isApple

@@ -24,14 +24,11 @@ class PurchaseForm extends StatefulWidget {
 }
 
 class _PurchaseFormState extends State<PurchaseForm> {
-  // final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Form(
       key: widget.formKey,
       child: ListView(
-        padding: const EdgeInsets.all(16.0),
         children: [
           if (widget.model.formState.state == ViewFormState.loading)
             const Center(child: CircularProgressIndicator())
@@ -40,17 +37,52 @@ class _PurchaseFormState extends State<PurchaseForm> {
               message: widget.model.formState.errorMessage ?? 'Unknown error',
             )
           else
-            CupertinoFormSection(
-              margin: const EdgeInsets.all(16.0),
-              clipBehavior: Clip.none,
-              children: [..._buildFormFields()],
-            ),
+            UniversalPlatform.isApple
+                ? _buildCupertinoForm()
+                : _buildMaterialForm(),
         ],
       ),
     );
   }
 
-  List<Widget> _buildFormFields() => [
+  Widget _buildCupertinoForm() {
+    return Column(
+      children: [
+        CupertinoFormSection.insetGrouped(
+          header: const Text('Basic Information'),
+          children: _buildBasicFields(),
+        ),
+        if (widget.model.formState.isCashflow)
+          CupertinoFormSection.insetGrouped(
+            header: const Text('Cashflow Details'),
+            children: _buildCashflowFields(),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildMaterialForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildFormSection(children: _buildBasicFields()),
+        if (widget.model.formState.isCashflow)
+          _buildFormSection(children: _buildCashflowFields()),
+      ],
+    );
+  }
+
+  Widget _buildFormSection({required List<Widget> children}) {
+    return Card(
+      margin: const EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
+    );
+  }
+
+  List<Widget> _buildBasicFields() => [
     AmountField(
       initialValue: widget.model.formState.amount,
       onChanged: widget.model.updateAmount,
@@ -79,7 +111,6 @@ class _PurchaseFormState extends State<PurchaseForm> {
       selectedTags: widget.model.formState.tags,
       onTagsChanged: widget.model.updateTags,
     ),
-    // Add cashflow switch
     UniversalPlatform.isApple
         ? CupertinoFormRow(
           prefix: const Text('Cashflow'),
@@ -93,86 +124,78 @@ class _PurchaseFormState extends State<PurchaseForm> {
           value: widget.model.formState.isCashflow,
           onChanged: widget.model.updateIsCashflow,
         ),
-    // Show additional fields when isCashflow is true
-    if (widget.model.formState.isCashflow) ...[
-      DatePickerField(
-        // labelText: 'Effective Date',
-        selectedDate: widget.model.formState.effectiveDate,
-        onDateChanged: widget.model.updateEffectiveDate,
-      ),
-      UniversalPlatform.isApple
-          ? CupertinoFormRow(
-            prefix: const Text('Interval Type'),
-            child: CupertinoSlidingSegmentedControl<DateIntervalType>(
-              groupValue: widget.model.formState.intervalType,
-              onValueChanged: widget.model.updateIntervalType,
-              children: const {
-                DateIntervalType.daily: Text('Daily'),
-                DateIntervalType.weekly: Text('Weekly'),
-                DateIntervalType.monthly: Text('Monthly'),
-                DateIntervalType.yearly: Text('Yearly'),
-                DateIntervalType.oneTime: Text('One Time'),
-              },
-            ),
-          )
-          : Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 4.0, bottom: 8.0),
-                  child: Text('Interval Type'),
+  ];
+
+  List<Widget> _buildCashflowFields() => [
+    DatePickerField(
+      selectedDate: widget.model.formState.effectiveDate,
+      onDateChanged: widget.model.updateEffectiveDate,
+    ),
+    UniversalPlatform.isApple
+        ? CupertinoFormRow(
+          prefix: const Text('Interval Type'),
+          child: CupertinoSlidingSegmentedControl<DateIntervalType>(
+            groupValue: widget.model.formState.intervalType,
+            onValueChanged: widget.model.updateIntervalType,
+            children: const {
+              DateIntervalType.daily: Text('Daily'),
+              DateIntervalType.weekly: Text('Weekly'),
+              DateIntervalType.monthly: Text('Monthly'),
+              DateIntervalType.yearly: Text('Yearly'),
+              DateIntervalType.oneTime: Text('One Time'),
+            },
+          ),
+        )
+        : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Interval Type'),
+            SegmentedButton<DateIntervalType>(
+              segments: const [
+                ButtonSegment(
+                  value: DateIntervalType.daily,
+                  label: Text('Daily'),
                 ),
-                SegmentedButton<DateIntervalType>(
-                  segments: const [
-                    ButtonSegment(
-                      value: DateIntervalType.daily,
-                      label: Text('Daily'),
-                    ),
-                    ButtonSegment(
-                      value: DateIntervalType.weekly,
-                      label: Text('Weekly'),
-                    ),
-                    ButtonSegment(
-                      value: DateIntervalType.monthly,
-                      label: Text('Monthly'),
-                    ),
-                    ButtonSegment(
-                      value: DateIntervalType.yearly,
-                      label: Text('Yearly'),
-                    ),
-                    ButtonSegment(
-                      value: DateIntervalType.oneTime,
-                      label: Text('One Time'),
-                    ),
-                  ],
-                  selected: {widget.model.formState.intervalType},
-                  onSelectionChanged: (Set<DateIntervalType> selected) {
-                    if (selected.isNotEmpty) {
-                      widget.model.updateIntervalType(selected.first);
-                    }
-                  },
-                  multiSelectionEnabled: false,
-                  showSelectedIcon: false,
+                ButtonSegment(
+                  value: DateIntervalType.weekly,
+                  label: Text('Weekly'),
+                ),
+                ButtonSegment(
+                  value: DateIntervalType.monthly,
+                  label: Text('Monthly'),
+                ),
+                ButtonSegment(
+                  value: DateIntervalType.yearly,
+                  label: Text('Yearly'),
+                ),
+                ButtonSegment(
+                  value: DateIntervalType.oneTime,
+                  label: Text('One Time'),
                 ),
               ],
+              selected: {widget.model.formState.intervalType},
+              onSelectionChanged: (Set<DateIntervalType> selected) {
+                if (selected.isNotEmpty) {
+                  widget.model.updateIntervalType(selected.first);
+                }
+              },
+              multiSelectionEnabled: false,
             ),
-          ),
-      PlatformTextField(
-        labelText: 'Frequency',
-        initialValue: widget.model.formState.frequency.toString(),
-        // keyboardType: TextInputType.number,
-        onChanged:
-            (value) => widget.model.updateFrequency(int.tryParse(value) ?? 1),
-      ),
-      PlatformTextField(
-        labelText: 'Recurrence',
-        initialValue: widget.model.formState.recurrence.toString(),
-        // keyboardType: TextInputType.number,
-        onChanged:
-            (value) => widget.model.updateRecurrence(int.tryParse(value) ?? 0),
-      ),
-    ],
+          ],
+        ),
+    PlatformTextField(
+      labelText: 'Frequency',
+      initialValue: widget.model.formState.frequency.toString(),
+      keyboardType: TextInputType.number,
+      onChanged:
+          (value) => widget.model.updateFrequency(int.tryParse(value) ?? 1),
+    ),
+    PlatformTextField(
+      labelText: 'Recurrence',
+      initialValue: widget.model.formState.recurrence.toString(),
+      keyboardType: TextInputType.number,
+      onChanged:
+          (value) => widget.model.updateRecurrence(int.tryParse(value) ?? 0),
+    ),
   ];
 }

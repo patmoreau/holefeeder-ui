@@ -12,78 +12,55 @@ class ErrorBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UniversalPlatform.isApple
-        ? _buildCupertinoError(context)
+        ? _buildCupertinoError()
         : _buildMaterialError(context);
   }
 
-  Widget _buildCupertinoError(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: CupertinoColors.systemRed.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: CupertinoColors.systemRed, width: 1.0),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+  Widget _buildCupertinoError() {
+    return CupertinoFormSection(
+      backgroundColor: CupertinoColors.systemRed.withOpacity(0.1),
+      header: Row(
         children: [
-          Row(
-            children: [
-              const Icon(
-                CupertinoIcons.exclamationmark_triangle_fill,
-                color: CupertinoColors.systemRed,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  message,
-                  style: const TextStyle(color: CupertinoColors.systemRed),
-                ),
-              ),
-            ],
+          const Icon(
+            CupertinoIcons.exclamationmark_triangle_fill,
+            color: CupertinoColors.systemRed,
           ),
-          if (onRetry != null) ...[
-            const SizedBox(height: 8),
+          const SizedBox(width: 8),
+          Expanded(child: Text(message)),
+          if (onRetry != null)
             CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: onRetry,
               child: const Text('Retry'),
             ),
-          ],
         ],
       ),
+      children: const [],
     );
   }
 
   Widget _buildMaterialError(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.errorContainer,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
+    return Card(
+      color: Theme.of(context).colorScheme.errorContainer,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Icon(
-                Icons.error_outline,
-                color: Theme.of(context).colorScheme.error,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  message,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
-                ),
-              ),
-            ],
+          ListTile(
+            leading: Icon(
+              Icons.error_outline,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            title: Text(
+              message,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
-          if (onRetry != null) ...[
-            const SizedBox(height: 8),
-            TextButton(onPressed: onRetry, child: const Text('Retry')),
-          ],
+          if (onRetry != null)
+            ButtonBar(
+              children: [
+                TextButton(onPressed: onRetry, child: const Text('Retry')),
+              ],
+            ),
         ],
       ),
     );

@@ -6,14 +6,12 @@ class PlatformButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final String label;
-  final Color? backgroundColor;
 
   const PlatformButton({
     super.key,
     required this.onPressed,
     this.isLoading = false,
     this.label = 'Submit',
-    this.backgroundColor,
   });
 
   @override
@@ -39,18 +37,14 @@ class PlatformButton extends StatelessWidget {
   Widget _buildMaterialButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: ElevatedButton(
+      child: FilledButton(
         onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-        ),
         child:
             isLoading
                 ? const SizedBox(
                   height: 20,
                   width: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  child: CircularProgressIndicator(),
                 )
                 : Text(label),
       ),

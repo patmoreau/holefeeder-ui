@@ -50,19 +50,19 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           child: const Text('Save'),
         ),
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(child: PurchaseForm(model: model, formKey: _formKey)),
-        ),
-      ),
+      child: SafeArea(child: PurchaseForm(model: model, formKey: _formKey)),
     );
   }
 
   Widget _buildMaterialScaffold(PurchaseViewModel model) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Purchase')),
-      body: PurchaseForm(model: model, formKey: _formKey),
+      appBar: AppBar(
+        title: const Text('Purchase'),
+        actions: [
+          TextButton(onPressed: () => _save(model), child: const Text('Save')),
+        ],
+      ),
+      body: SafeArea(child: PurchaseForm(model: model, formKey: _formKey)),
     );
   }
 

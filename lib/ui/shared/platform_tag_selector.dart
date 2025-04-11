@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:holefeeder/ui/shared/cupertino_chip.dart';
 
 class PlatformTagSelector extends StatefulWidget {
   final List<String> allTags;
@@ -87,11 +88,7 @@ class _PlatformTagSelectorState extends State<PlatformTagSelector> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSelectedTags(
-          backgroundColor: CupertinoColors.systemGrey5,
-          textColor: CupertinoColors.black,
-          removeIcon: CupertinoIcons.clear_circled_solid,
-        ),
+        _buildSelectedTags(),
         const SizedBox(height: 8),
         _buildTextField(true),
         if (_filteredTags.isNotEmpty) _buildTagsList(useCupertino: true),
@@ -103,12 +100,7 @@ class _PlatformTagSelectorState extends State<PlatformTagSelector> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSelectedTags(
-          backgroundColor:
-              Theme.of(context).colorScheme.surfaceContainerHighest,
-          textColor: Theme.of(context).colorScheme.onSurfaceVariant,
-          removeIcon: Icons.cancel,
-        ),
+        _buildSelectedTags(),
         const SizedBox(height: 8),
         _buildTextField(false),
         if (_filteredTags.isNotEmpty) _buildTagsList(useCupertino: false),
@@ -116,43 +108,19 @@ class _PlatformTagSelectorState extends State<PlatformTagSelector> {
     );
   }
 
-  Widget _buildSelectedTags({
-    required Color backgroundColor,
-    required Color textColor,
-    required IconData removeIcon,
-  }) {
+  Widget _buildSelectedTags() {
     return Wrap(
       spacing: 8.0,
       runSpacing: 4.0,
       children:
           widget.selectedTags.map((tag) {
-            return Container(
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => _removeTag(tag),
-                  borderRadius: BorderRadius.circular(16),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(tag, style: TextStyle(color: textColor)),
-                        const SizedBox(width: 4),
-                        Icon(removeIcon, size: 16, color: textColor),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
+            return UniversalPlatform.isApple
+                ? CupertinoChip(label: tag, onDeleted: () => _removeTag(tag))
+                : Chip(
+                  label: Text(tag),
+                  onDeleted: () => _removeTag(tag),
+                  deleteIcon: const Icon(Icons.cancel, size: 16),
+                );
           }).toList(),
     );
   }

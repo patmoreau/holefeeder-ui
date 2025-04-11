@@ -47,7 +47,7 @@ class DatePickerField extends StatelessWidget {
     return CupertinoDatePicker(
       mode: CupertinoDatePickerMode.date,
       initialDateTime: selectedDate,
-      onDateTimeChanged: (date) => onDateChanged(date),
+      onDateTimeChanged: onDateChanged,
     );
   }
 
@@ -57,17 +57,6 @@ class DatePickerField extends StatelessWidget {
       initialDate: selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: Theme.of(context).primaryColor,
-              surface: Theme.of(context).colorScheme.surface,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
 
     if (picked != null && picked != selectedDate) {

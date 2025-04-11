@@ -6,7 +6,11 @@ class ViewModelProvider<T extends BaseViewModel> extends StatelessWidget {
   final T model;
   final Widget Function(T model) builder;
 
-  const ViewModelProvider({super.key, required this.builder, required this.model});
+  const ViewModelProvider({
+    super.key,
+    required this.builder,
+    required this.model,
+  });
 
   @override
   Widget build(BuildContext context) {

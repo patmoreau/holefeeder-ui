@@ -14,7 +14,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       redirect: (context, state) async {
-        final authenticationClient = Provider.of<AuthenticationClient>(context, listen: false);
+        final authenticationClient = Provider.of<AuthenticationClient>(
+          context,
+          listen: false,
+        );
 
         final status = await authenticationClient.statusStream.first;
         if (status != AuthenticationStatus.authenticated) {
@@ -35,9 +38,18 @@ final GoRouter router = GoRouter(
       builder: (context, state) => HomeScreen(initialIndex: 0),
     ),
     GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
-    GoRoute(path: '/dashboard', builder: (context, state) => HomeScreen(initialIndex: 0)),
-    GoRoute(path: '/cashflow', builder: (context, state) => HomeScreen(initialIndex: 1)),
-    GoRoute(path: '/profile', builder: (context, state) => HomeScreen(initialIndex: 2)),
+    GoRoute(
+      path: '/dashboard',
+      builder: (context, state) => HomeScreen(initialIndex: 0),
+    ),
+    GoRoute(
+      path: '/cashflow',
+      builder: (context, state) => HomeScreen(initialIndex: 1),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => HomeScreen(initialIndex: 2),
+    ),
     GoRoute(
       path: '/purchase',
       pageBuilder: (context, state) {

@@ -56,7 +56,7 @@ class ErrorBanner extends StatelessWidget {
             ),
           ),
           if (onRetry != null)
-            ButtonBar(
+            OverflowBar(
               children: [
                 TextButton(onPressed: onRetry, child: const Text('Retry')),
               ],

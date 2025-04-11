@@ -1,10 +1,4 @@
-enum DateIntervalType {
-  daily,
-  weekly,
-  monthly,
-  yearly,
-  oneTime,
-}
+enum DateIntervalType { daily, weekly, monthly, yearly, oneTime }
 
 extension DateIntervalTypeExtension on DateIntervalType {
   static DateIntervalType fromString(String type) {

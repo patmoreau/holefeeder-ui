@@ -7,6 +7,7 @@ import 'package:holefeeder/l10n/l10n.dart';
 import 'package:holefeeder/router.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:holefeeder/core/services/localization_service.dart';
 
 import 'main.dart';
 
@@ -72,22 +73,36 @@ class _HolefeederAppState extends State<HolefeederApp> {
     supportedLocales: const <Locale>[Locale('en', ''), Locale('fr', '')],
     locale: const Locale('en', ''),
     builder: (context, child) {
-      return Localizations.override(
-        context: context,
-        delegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        child: child ?? const SizedBox(),
+      LocalizationService.initialize(context);
+      return Theme(
+        data: ThemeData(
+          extensions: <ThemeExtension<dynamic>>[
+            defaultFormTheme,
+            defaultErrorBannerTheme,
+          ],
+        ),
+        child: Localizations.override(
+          context: context,
+          delegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          child: child ?? const SizedBox(),
+        ),
       );
     },
   );
 
   Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
     onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
-    theme: holefeederMaterialTheme,
+    theme: holefeederMaterialTheme.copyWith(
+      extensions: <ThemeExtension<dynamic>>[
+        defaultFormTheme,
+        defaultErrorBannerTheme,
+      ],
+    ),
     routerConfig: router,
     localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
       AppLocalizations.delegate,
@@ -98,6 +113,7 @@ class _HolefeederAppState extends State<HolefeederApp> {
     supportedLocales: const <Locale>[Locale('en', ''), Locale('fr', '')],
     locale: const Locale('en', ''),
     builder: (context, child) {
+      LocalizationService.initialize(context);
       return Localizations.override(
         context: context,
         delegates: const [

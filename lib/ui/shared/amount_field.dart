@@ -55,33 +55,48 @@ class _AmountFieldState extends State<AmountField> {
   @override
   Widget build(BuildContext context) {
     return UniversalPlatform.isApple
-        ? CupertinoFormRow(
-          prefix: const Text('Amount'),
-          child: CupertinoTextFormFieldRow(
+        ? _buildCupertinoField()
+        : SizedBox(
+          width: double.infinity,
+          child: TextFormField(
             controller: _controller,
             focusNode: _focusNode,
-            textAlign: TextAlign.right,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [_decimalTextInputFormatter()],
-            onChanged: (value) => _onDecimalChanged(value, widget.onChanged),
-            validator: _decimalValidator(),
+            decoration: const InputDecoration(
+              labelText: 'Amount',
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 16,
+              ),
+            ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+            ],
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                widget.onChanged(Decimal.parse(value));
+              }
+            },
           ),
-        )
-        : TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Amount',
-            filled: true,
-            alignLabelWithHint: true,
-          ),
-          controller: _controller,
-          focusNode: _focusNode,
-          textAlign: TextAlign.right,
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          inputFormatters: [_decimalTextInputFormatter()],
-          onChanged: (value) => _onDecimalChanged(value, widget.onChanged),
-          validator: _decimalValidator(),
         );
   }
+
+  Widget _buildCupertinoField() => CupertinoTextFormFieldRow(
+    placeholder: 'Amount',
+    controller: _controller,
+    focusNode: _focusNode,
+    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+    textAlign: TextAlign.right,
+    inputFormatters: [
+      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+    ],
+    onChanged: (value) {
+      if (value.isNotEmpty) {
+        widget.onChanged(Decimal.parse(value));
+      }
+    },
+  );
 }
 
 TextInputFormatter _decimalTextInputFormatter() =>

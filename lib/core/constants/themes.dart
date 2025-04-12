@@ -1,5 +1,96 @@
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// Form theme extension to store form-specific styling
+class FormThemeExtension extends ThemeExtension<FormThemeExtension> {
+  final EdgeInsets rowPadding;
+  final double sectionSpacing;
+
+  const FormThemeExtension({
+    required this.rowPadding,
+    required this.sectionSpacing,
+  });
+
+  @override
+  ThemeExtension<FormThemeExtension> copyWith({
+    EdgeInsets? rowPadding,
+    double? sectionSpacing,
+  }) {
+    return FormThemeExtension(
+      rowPadding: rowPadding ?? this.rowPadding,
+      sectionSpacing: sectionSpacing ?? this.sectionSpacing,
+    );
+  }
+
+  @override
+  ThemeExtension<FormThemeExtension> lerp(
+    ThemeExtension<FormThemeExtension>? other,
+    double t,
+  ) {
+    if (other is! FormThemeExtension) return this;
+    return FormThemeExtension(
+      rowPadding: EdgeInsets.lerp(rowPadding, other.rowPadding, t)!,
+      sectionSpacing: t * other.sectionSpacing + (1.0 - t) * sectionSpacing,
+    );
+  }
+}
+
+class ErrorBannerTheme extends ThemeExtension<ErrorBannerTheme> {
+  final Color backgroundColor;
+  final Color iconColor;
+  final Color textColor;
+  final double opacity;
+
+  const ErrorBannerTheme({
+    this.backgroundColor = CupertinoColors.systemRed,
+    this.iconColor = CupertinoColors.systemRed,
+    this.textColor = CupertinoColors.label,
+    this.opacity = 0.1,
+  });
+
+  @override
+  ErrorBannerTheme copyWith({
+    Color? backgroundColor,
+    Color? iconColor,
+    Color? textColor,
+    double? opacity,
+  }) {
+    return ErrorBannerTheme(
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      iconColor: iconColor ?? this.iconColor,
+      textColor: textColor ?? this.textColor,
+      opacity: opacity ?? this.opacity,
+    );
+  }
+
+  @override
+  ThemeExtension<ErrorBannerTheme> lerp(
+    ThemeExtension<ErrorBannerTheme>? other,
+    double t,
+  ) {
+    if (other is! ErrorBannerTheme) return this;
+    return ErrorBannerTheme(
+      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
+      iconColor: Color.lerp(iconColor, other.iconColor, t)!,
+      textColor: Color.lerp(textColor, other.textColor, t)!,
+      opacity: lerpDouble(opacity, other.opacity, t)!,
+    );
+  }
+}
+
+// Default theme extensions
+const defaultFormTheme = FormThemeExtension(
+  rowPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  sectionSpacing: 24.0,
+);
+
+const defaultErrorBannerTheme = ErrorBannerTheme(
+  backgroundColor: Colors.red,
+  iconColor: Colors.red,
+  textColor: Colors.black87,
+  opacity: 0.1,
+);
 
 CupertinoThemeData holefeederCupertinoTheme = const CupertinoThemeData(
   applyThemeToAll: true,

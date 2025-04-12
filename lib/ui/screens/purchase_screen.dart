@@ -35,7 +35,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: CupertinoButton(
-          padding: EdgeInsets.zero,
           onPressed: () {
             _cancel(model);
           },
@@ -43,7 +42,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         ),
         middle: const Text('Purchase'),
         trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
           onPressed: () {
             _save(model);
           },

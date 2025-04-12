@@ -1,6 +1,7 @@
+import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:holefeeder/ui/shared/widgets.dart';
+import 'package:holefeeder/core/constants/themes.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_platform/universal_platform.dart';
 
@@ -22,32 +23,50 @@ class DatePickerField extends StatelessWidget {
   }
 
   Widget _buildCupertinoDatePicker(BuildContext context) {
+    final formTheme = Theme.of(context).extension<FormThemeExtension>();
     return CupertinoFormRow(
       prefix: const Text('Date'),
-      child: CupertinoButton(
-        onPressed:
-            () => HolefeederWidgets.showCupertinoDialog(
-              context,
-              _showCupertinoDatePicker(context),
-            ),
-        child: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
+      padding: formTheme?.rowPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          CupertinoCalendarPickerButton(
+            minimumDateTime: selectedDate.subtract(const Duration(days: 365)),
+            maximumDateTime: selectedDate.add(const Duration(days: 365)),
+            initialDateTime: selectedDate,
+            mode: CupertinoCalendarMode.date,
+            onDateTimeChanged: onDateChanged,
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildMaterialDatePicker(BuildContext context) {
-    return ListTile(
-      title: const Text('Date'),
-      subtitle: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
-      onTap: () => _showMaterialDatePicker(context),
-    );
-  }
-
-  Widget _showCupertinoDatePicker(BuildContext context) {
-    return CupertinoDatePicker(
-      mode: CupertinoDatePickerMode.date,
-      initialDateTime: selectedDate,
-      onDateTimeChanged: onDateChanged,
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          alignment: Alignment.centerLeft,
+        ),
+        onPressed: () => _showMaterialDatePicker(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Date',
+              style: TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              DateFormat('yyyy-MM-dd').format(selectedDate),
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

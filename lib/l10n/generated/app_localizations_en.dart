@@ -9,10 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get holefeederTitle => 'Holefeeder';
+  String get appTitle => 'Holefeeder';
 
   @override
-  String get welcomeMessage => 'Welcome to our app';
+  String get errorGeneric => 'An error occurred';
 
   @override
   String helloUser(String userName) {
@@ -20,5 +20,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get appTitle => 'Holefeeder';
+  String get holefeederTitle => 'Holefeeder';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get welcomeMessage => 'Welcome to our app';
 }

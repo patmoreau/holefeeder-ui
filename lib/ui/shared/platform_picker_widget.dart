@@ -29,35 +29,51 @@ class PlatformPicker<T> extends StatelessWidget {
 
   Widget _buildCupertinoDropdown(BuildContext context) {
     return CupertinoFormRow(
-      prefix: Text(label),
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        onPressed: () => _showCupertinoPicker(context),
-        child: Text(
-          value != null
-              ? displayStringFor(value as T)
-              : (placeholder ?? 'Select...'),
-          style: const TextStyle(fontSize: 16),
+      prefix: SizedBox(
+        width: 100, // Fixed width for labels
+        child: Text(label),
+      ),
+      child: Expanded(
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () => _showCupertinoPicker(context),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              value != null
+                  ? displayStringFor(value as T)
+                  : (placeholder ?? 'Select...'),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildMaterialDropdown(BuildContext context) {
-    return DropdownButtonFormField<T>(
-      value: value,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
+    return SizedBox(
+      width: double.infinity,
+      child: DropdownButtonFormField<T>(
+        value: value,
+        isExpanded: true,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+        ),
+        items:
+            items.map((T item) {
+              return DropdownMenuItem<T>(
+                value: item,
+                child: Text(displayStringFor(item)),
+              );
+            }).toList(),
+        onChanged: onChanged,
       ),
-      items:
-          items.map((T item) {
-            return DropdownMenuItem<T>(
-              value: item,
-              child: Text(displayStringFor(item)),
-            );
-          }).toList(),
-      onChanged: onChanged,
     );
   }
 

@@ -95,17 +95,17 @@ abstract class AppLocalizations {
     Locale('fr')
   ];
 
-  /// A simple hello world message
+  /// The application name
   ///
   /// In en, this message translates to:
   /// **'Holefeeder'**
-  String get holefeederTitle;
+  String get appTitle;
 
-  /// No description provided for @welcomeMessage.
+  /// A generic error message
   ///
   /// In en, this message translates to:
-  /// **'Welcome to our app'**
-  String get welcomeMessage;
+  /// **'An error occurred'**
+  String get errorGeneric;
 
   /// A welcome message with the user's name.
   ///
@@ -113,11 +113,29 @@ abstract class AppLocalizations {
   /// **'Hello {userName}'**
   String helloUser(String userName);
 
-  /// The application name
+  /// A simple hello world message
   ///
   /// In en, this message translates to:
   /// **'Holefeeder'**
-  String get appTitle;
+  String get holefeederTitle;
+
+  /// The home screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// A button to retry an action
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// A welcome message for the app
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to our app'**
+  String get welcomeMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

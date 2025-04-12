@@ -34,50 +34,59 @@ class _PurchaseFormState extends State<PurchaseForm> {
             const Center(child: CircularProgressIndicator())
           else if (widget.model.formState.state == ViewFormState.error)
             ErrorBanner(
-              message: widget.model.formState.errorMessage ?? 'Unknown error',
+              message: widget.model.formState.errorMessage,
+              autoDismiss: const Duration(seconds: 3),
             )
           else
-            UniversalPlatform.isApple
+            ...(UniversalPlatform.isApple
                 ? _buildCupertinoForm()
-                : _buildMaterialForm(),
+                : _buildMaterialForm()),
         ],
       ),
     );
   }
 
-  Widget _buildCupertinoForm() {
-    return Column(
-      children: [
+  List<Widget> _buildCupertinoForm() {
+    return [
+      CupertinoFormSection.insetGrouped(
+        header: const Text('Basic Information'),
+        children: _buildBasicFields(),
+      ),
+      const SizedBox(height: 20), // Standard iOS spacing between sections
+      if (widget.model.formState.isCashflow)
         CupertinoFormSection.insetGrouped(
-          header: const Text('Basic Information'),
-          children: _buildBasicFields(),
+          header: const Text('Cashflow Details'),
+          children: _buildCashflowFields(),
         ),
-        if (widget.model.formState.isCashflow)
-          CupertinoFormSection.insetGrouped(
-            header: const Text('Cashflow Details'),
-            children: _buildCashflowFields(),
-          ),
-      ],
-    );
+    ];
   }
 
-  Widget _buildMaterialForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildFormSection(children: _buildBasicFields()),
-        if (widget.model.formState.isCashflow)
-          _buildFormSection(children: _buildCashflowFields()),
-      ],
-    );
+  List<Widget> _buildMaterialForm() {
+    return [
+      _buildFormSection(children: _buildBasicFields()),
+      const SizedBox(height: 16), // Standard Material spacing
+      if (widget.model.formState.isCashflow)
+        _buildFormSection(children: _buildCashflowFields()),
+    ];
   }
 
   Widget _buildFormSection({required List<Widget> children}) {
     return Card(
-      margin: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < children.length; i++) ...[
+              children[i],
+              if (i < children.length - 1)
+                const SizedBox(
+                  height: 16,
+                ), // Standard spacing between form fields
+            ],
+          ],
+        ),
       ),
     );
   }

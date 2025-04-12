@@ -4,6 +4,7 @@ import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/ui/screens/home_screen.dart';
 import 'package:holefeeder/ui/screens/login_screen.dart';
 import 'package:holefeeder/ui/screens/purchase_screen.dart';
+import 'package:holefeeder/ui/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/enums/authentication_status_enum.dart';
@@ -54,6 +55,15 @@ final GoRouter router = GoRouter(
       path: '/purchase',
       pageBuilder: (context, state) {
         return CupertinoPage(fullscreenDialog: true, child: PurchaseScreen());
+      },
+    ),
+    GoRoute(
+      path: '/settings',
+      pageBuilder: (context, state) {
+        return CupertinoPage(
+          fullscreenDialog: true,
+          child: CupertinoFormExample(),
+        );
       },
     ),
   ],

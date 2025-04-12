@@ -1,6 +1,10 @@
 {
   "@@locale": "fr",
+  "appTitle": "Holefeeder",
+  "errorGeneric": "Une erreur s'est produite",
+  "helloUser": "Bonjour {userName}",
   "holefeederTitle": "Holefeeder",
-  "welcomeMessage": "Bienvenue dans notre application",
-  "helloUser": "Bonjour {userName}"
+  "home": "Accueil",
+  "retry": "Retry",
+  "welcomeMessage": "Bienvenue dans notre application"
 }

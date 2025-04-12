@@ -1,10 +1,13 @@
 {
   "@@locale": "en",
-  "holefeederTitle": "Holefeeder",
-  "@holefeederTitle": {
-    "description": "A simple hello world message"
+  "appTitle": "Holefeeder",
+  "@appTitle": {
+    "description": "The application name"
   },
-  "welcomeMessage": "Welcome to our app",
+  "errorGeneric": "An error occurred",
+  "@errorGeneric": {
+    "description": "A generic error message"
+  },
   "helloUser": "Hello {userName}",
   "@helloUser": {
     "description": "A welcome message with the user's name.",
@@ -15,8 +18,20 @@
       }
     }
   },
-  "appTitle": "Holefeeder",
-  "@appTitle": {
-    "description": "The application name"
+  "holefeederTitle": "Holefeeder",
+  "@holefeederTitle": {
+    "description": "A simple hello world message"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "The home screen title"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "A button to retry an action"
+  },
+  "welcomeMessage": "Welcome to our app",
+  "@welcomeMessage": {
+    "description": "A welcome message for the app"
   }
 }

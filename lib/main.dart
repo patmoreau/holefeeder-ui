@@ -48,7 +48,7 @@ Future<void> main() async {
                   DataProvider(Provider.of<RestClient>(context, listen: false)),
         ),
       ],
-      child: HolefeederApp(),
+      child: const HolefeederApp(),
     ),
   );
 

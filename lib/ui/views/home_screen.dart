@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/l10n/l10n.dart';
-import 'package:holefeeder/ui/screens/dashboard_screen.dart';
-import 'package:holefeeder/ui/screens/profile_screen.dart';
+import 'package:holefeeder/ui/views/dashboard_screen.dart';
+import 'package:holefeeder/ui/views/profile_screen.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'categories_screen.dart';

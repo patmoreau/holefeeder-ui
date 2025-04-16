@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/ui/shared/platform_picker_widget.dart';
+import 'package:holefeeder/ui/widgets/platform_picker_widget.dart';
 
 class CategoryPicker extends StatelessWidget {
   final List<Category> categories;

@@ -4,6 +4,7 @@ import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/models/make_purchase.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/base_view_model.dart';
 
@@ -91,11 +92,11 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
   List<Category> get categories => formState.categories;
   List<String> get tags => formState.availableTags;
 
-  PurchaseViewModel({required DataProvider dataProvider})
-    : _dataProvider = dataProvider,
-      super(PurchaseFormState()) {
-    loadInitialData();
-  }
+  PurchaseViewModel({
+    required DataProvider dataProvider,
+    NotificationService? notificationService,
+  }) : _dataProvider = dataProvider,
+       super(PurchaseFormState(), notificationService);
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {
@@ -153,14 +154,26 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
       updateState((s) => s.copyWith(recurrence: value));
 
   bool validate() {
-    final state = formState;
-    if (state.amount <= Decimal.zero) return false;
-    if (state.selectedAccount == null) return false;
-    if (state.selectedCategory == null) return false;
+    if (formState.amount <= Decimal.zero) {
+      setFormError('Amount must be greater than zero');
+      return false;
+    }
+    if (formState.selectedAccount == null) {
+      setFormError('Please select an account');
+      return false;
+    }
+    if (formState.selectedCategory == null) {
+      setFormError('Please select a category');
+      return false;
+    }
     return true;
   }
 
   Future<void> makePurchase() async {
+    if (!validate()) {
+      return;
+    }
+
     await handleAsync(() async {
       final state = formState;
       await _dataProvider.makePurchase(
@@ -182,6 +195,8 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
                   : null,
         ),
       );
+
+      await showNotification('Purchase completed successfully');
     });
   }
 }

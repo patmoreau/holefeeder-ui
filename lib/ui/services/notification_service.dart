@@ -1,32 +1,58 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:universal_platform/universal_platform.dart';
+import '../../core/services/notification_service.dart';
 
-class NotificationService {
-  static Future<void> show({
-    required BuildContext context,
-    required String message,
-    bool isError = false,
-  }) async {
+class NotificationServiceImpl implements NotificationService {
+  final BuildContext context;
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  NotificationServiceImpl(this.context, {required this.navigatorKey});
+
+  @override
+  Future<void> showNotification(String message, {bool isError = false}) async {
     if (UniversalPlatform.isApple) {
+      await _showAppleNotification(message, isError);
+    } else {
+      await _showMaterialNotification(message);
+    }
+  }
+
+  @override
+  Future<void> showSuccess(String message) => showNotification(message);
+
+  @override
+  Future<void> showError(String message) =>
+      showNotification(message, isError: true);
+
+  Future<void> _showAppleNotification(String message, bool isError) async {
+    if (navigatorKey.currentContext != null) {
       await showCupertinoDialog(
-        context: context,
+        context: navigatorKey.currentContext!,
         builder:
-            (context) => CupertinoAlertDialog(
+            (dialogContext) => CupertinoAlertDialog(
               title: Text(isError ? 'Error' : 'Success'),
               content: Text(message),
               actions: [
                 CupertinoDialogAction(
                   child: const Text('OK'),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    final router = GoRouter.of(dialogContext);
+                    if (router.canPop()) {
+                      router.pop();
+                    }
+                  },
                 ),
               ],
             ),
       );
-    } else {
-      await ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message))).closed;
     }
+  }
+
+  Future<void> _showMaterialNotification(String message) async {
+    await ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message))).closed;
   }
 }

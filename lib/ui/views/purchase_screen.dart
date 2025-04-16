@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/ui/screens/purchase_form.dart';
+import 'package:holefeeder/core/providers/notification_provider.dart';
+import 'package:holefeeder/ui/views/purchase_form.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
-import 'package:holefeeder/ui/services/notification_service.dart';
-import 'package:holefeeder/ui/shared/view_model_provider.dart';
+import 'package:holefeeder/ui/widgets/view_model_provider.dart';
 
 class PurchaseScreen extends StatefulWidget {
   const PurchaseScreen({super.key});
@@ -22,7 +22,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<PurchaseViewModel>(
-      model: PurchaseViewModel(dataProvider: context.read<DataProvider>()),
+      model: PurchaseViewModel(
+        dataProvider: context.read<DataProvider>(),
+        notificationService: NotificationServiceProvider.of(context),
+      ),
       builder: (model) {
         return UniversalPlatform.isApple
             ? _buildCupertinoScaffold(model)
@@ -74,28 +77,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       return;
     }
 
-    try {
-      _formKey.currentState!.save(); // Save the form (if needed)
+    _formKey.currentState!.save(); // Save the form (if needed)
+    await model.makePurchase();
 
-      await model.makePurchase();
-      if (!mounted) return;
-
-      await NotificationService.show(
-        context: context,
-        message: 'Purchase successful',
-      );
-
-      if (!mounted) return;
-      if (context.canPop()) {
-        context.pop();
-      }
-    } catch (error) {
-      if (!mounted) return;
-      await NotificationService.show(
-        context: context,
-        message: 'Error: $error',
-        isError: true,
-      );
+    if (!mounted) return;
+    if (context.canPop()) {
+      context.pop();
     }
   }
 }

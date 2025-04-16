@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holefeeder/core/providers/notification_provider.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/core/view_models/screens/profile_view_model.dart';
-import 'package:holefeeder/ui/screens/profile_form.dart';
-import 'package:holefeeder/ui/shared/view_model_provider.dart';
+import 'package:holefeeder/ui/views/profile_form.dart';
+import 'package:holefeeder/ui/widgets/view_model_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
@@ -15,6 +16,7 @@ class ProfileScreen extends StatelessWidget {
     return ViewModelProvider<ProfileViewModel>(
       model: ProfileViewModel(
         authenticationProvider: context.read<AuthenticationClient>(),
+        notificationService: NotificationServiceProvider.of(context),
       ),
       builder:
           (model) =>

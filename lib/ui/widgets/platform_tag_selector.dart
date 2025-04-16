@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:holefeeder/ui/shared/cupertino_chip.dart';
+import 'package:holefeeder/ui/widgets/cupertino_chip.dart';
 
 class PlatformTagSelector extends StatefulWidget {
   final List<String> allTags;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:holefeeder/core/enums/authentication_status_enum.dart';
+import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/base_view_model.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
@@ -14,9 +15,11 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
   String get loginTitle => 'Login';
   Stream<String> get navigationStream => _navigationController.stream;
 
-  LoginViewModel({required AuthenticationClient authenticationProvider})
-    : _authenticationProvider = authenticationProvider,
-      super(const SimpleFormState()) {
+  LoginViewModel({
+    required AuthenticationClient authenticationProvider,
+    NotificationService? notificationService,
+  }) : _authenticationProvider = authenticationProvider,
+       super(const SimpleFormState(), notificationService) {
     loadInitialData();
   }
 
@@ -30,13 +33,10 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
         } else if (status == AuthenticationStatus.authenticated) {
           updateState((s) => s.copyWith(state: ViewFormState.ready));
         } else if (status == AuthenticationStatus.error) {
-          updateState(
-            (s) => s.copyWith(
-              state: ViewFormState.error,
-              errorMessage:
-                  "Failed to login: ${_authenticationProvider.errorMessage}",
-            ),
-          );
+          final errorMsg =
+              "Failed to login: ${_authenticationProvider.errorMessage}";
+          setFormError(errorMsg);
+          showNotification(errorMsg, isError: true);
         }
       });
     });
@@ -54,6 +54,7 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
       await _authenticationProvider.login();
       updateState((s) => s.copyWith(state: ViewFormState.ready));
       _navigationController.add('/');
+      await showNotification('Login successful');
     });
   }
 }

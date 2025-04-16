@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/ui/shared/form_state_handler.dart';
-import 'package:holefeeder/ui/shared/platform_button_widget.dart';
+import 'package:holefeeder/ui/widgets/form_state_handler.dart';
+import 'package:holefeeder/ui/widgets/platform_button_widget.dart';
 
 import 'package:holefeeder/core/view_models/screens/login_view_model.dart';
 

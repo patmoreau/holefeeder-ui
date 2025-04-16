@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class PlatformPicker<T> extends StatelessWidget {
@@ -98,13 +99,13 @@ class PlatformPicker<T> extends StatelessWidget {
                 children: [
                   CupertinoButton(
                     child: const Text('Cancel'),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => context.pop(),
                   ),
                   CupertinoButton(
                     child: const Text('Done'),
                     onPressed: () {
                       onChanged(items[selectedIndex]);
-                      Navigator.pop(context);
+                      context.pop();
                     },
                   ),
                 ],

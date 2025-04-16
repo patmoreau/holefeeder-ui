@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
-import 'package:holefeeder/ui/screens/home_screen.dart';
-import 'package:holefeeder/ui/screens/login_screen.dart';
-import 'package:holefeeder/ui/screens/purchase_screen.dart';
-import 'package:holefeeder/ui/screens/settings_screen.dart';
+import 'package:holefeeder/ui/views/home_screen.dart';
+import 'package:holefeeder/ui/views/login_screen.dart';
+import 'package:holefeeder/ui/views/purchase_screen.dart';
+import 'package:holefeeder/ui/views/settings_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/enums/authentication_status_enum.dart';

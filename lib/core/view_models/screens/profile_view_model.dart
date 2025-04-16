@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:holefeeder/core/enums/authentication_status_enum.dart';
+import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/base_view_model.dart';
@@ -39,9 +39,11 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
 
   late final StreamSubscription<AuthenticationStatus> _statusSubscription;
 
-  ProfileViewModel({required AuthenticationClient authenticationProvider})
-    : _authenticationProvider = authenticationProvider,
-      super(ProfileFormState()) {
+  ProfileViewModel({
+    required AuthenticationClient authenticationProvider,
+    NotificationService? notificationService,
+  }) : _authenticationProvider = authenticationProvider,
+       super(ProfileFormState(), notificationService) {
     _initializeState();
   }
 
@@ -90,12 +92,10 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
           }
           break;
         case AuthenticationStatus.error:
-          updateState(
-            (s) => s.copyWith(
-              state: ViewFormState.error,
-              errorMessage: _authenticationProvider.errorMessage,
-            ),
-          );
+          final errorMsg =
+              _authenticationProvider.errorMessage ?? 'Unknown error';
+          setFormError(errorMsg);
+          showNotification(errorMsg, isError: true);
           break;
         case AuthenticationStatus.loading:
           if (formState.state != ViewFormState.loading) {
@@ -120,6 +120,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
     await handleAsync(() async {
       await _authenticationProvider.logout();
       _navigationController.add('/login');
+      await showNotification('Successfully logged out');
     });
   }
 

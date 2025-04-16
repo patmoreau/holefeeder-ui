@@ -77,7 +77,12 @@ class ErrorDialog extends StatelessWidget {
               : actions.isEmpty
               ? [
                 CupertinoDialogAction(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    final router = GoRouter.of(context);
+                    if (router.canPop()) {
+                      router.pop();
+                    }
+                  },
                   child: const Text('OK'),
                 ),
               ]
@@ -111,7 +116,12 @@ class ErrorDialog extends StatelessWidget {
               : actions.isEmpty
               ? [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    final router = GoRouter.of(context);
+                    if (router.canPop()) {
+                      router.pop();
+                    }
+                  },
                   child: const Text('OK'),
                 ),
               ]

@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/screens/profile_view_model.dart';
-import 'package:holefeeder/ui/shared/error_banner.dart';
+import 'package:holefeeder/ui/shared/form_state_handler.dart';
 import 'package:holefeeder/ui/shared/widgets.dart';
 
 class ProfileForm extends StatefulWidget {
@@ -37,20 +36,16 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.model.formState.state == ViewFormState.loading) {
-      return Center(child: CircularProgressIndicator());
-    } else if (widget.model.formState.state == ViewFormState.error) {
-      return Center(
-        child: ErrorBanner(message: widget.model.formState.errorMessage),
-      );
-    } else {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [..._buildScreen()],
-        ),
-      );
-    }
+    return FormStateHandler(
+      formState: widget.model.formState,
+      builder:
+          () => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [..._buildScreen()],
+            ),
+          ),
+    );
   }
 
   List<Widget> _buildScreen() => [

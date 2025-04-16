@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/ui/shared/form_state_handler.dart';
 import 'package:holefeeder/ui/shared/view_model_provider.dart';
 import 'package:holefeeder/ui/shared/widgets.dart';
 import 'package:provider/provider.dart';
@@ -39,51 +40,28 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ViewModelProvider<CategoriesViewModel>(
         model: CategoriesViewModel(dataProvider: context.read<DataProvider>()),
         builder: (CategoriesViewModel model) {
-          if (model.isLoading) {
-            return Padding(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    Text('Loading your wishlist'),
-                    SizedBox(height: 32),
-                    HolefeederWidgets.activityIndicator(),
-                  ],
-                ),
-              ),
-            );
-          }
+          return FormStateHandler(
+            formState: model.formState,
+            loadingWidget: Column(
+              children: <Widget>[
+                Text('Loading your wishlist'),
+                SizedBox(height: 32),
+                HolefeederWidgets.activityIndicator(),
+              ],
+            ),
+            builder: () {
+              final items = model.categories;
+              if (items.isEmpty) {
+                return const Center(
+                  child: Text('Your wishlist is empty. Why not add some items'),
+                );
+              }
 
-          if (model.hasError) {
-            return Padding(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    const Text('Oops we had trouble loading your wishlist'),
-                    const SizedBox(height: 32),
-                    HolefeederWidgets.button(
-                      onPressed: () async {
-                        await model.refreshCategories();
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          final items = model.categories;
-          if (items.isEmpty) {
-            return const Center(
-              child: Text('Your wishlist is empty. Why not add some items'),
-            );
-          }
-
-          return ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (_, int index) => _buildRow(items[index]),
+              return ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (_, int index) => _buildRow(items[index]),
+              );
+            },
           );
         },
       );

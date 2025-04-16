@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
 import 'package:holefeeder/ui/shared/account_picker.dart';
 import 'package:holefeeder/ui/shared/amount_field.dart';
 import 'package:holefeeder/ui/shared/category_picker.dart';
 import 'package:holefeeder/ui/shared/date_picker_field.dart';
-import 'package:holefeeder/ui/shared/error_banner.dart';
+import 'package:holefeeder/ui/shared/form_state_handler.dart';
 import 'package:holefeeder/ui/shared/platform_tag_selector.dart';
 import 'package:holefeeder/ui/shared/platform_text_field.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -26,23 +25,18 @@ class PurchaseForm extends StatefulWidget {
 class _PurchaseFormState extends State<PurchaseForm> {
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: widget.formKey,
-      child: ListView(
-        children: [
-          if (widget.model.formState.state == ViewFormState.loading)
-            const Center(child: CircularProgressIndicator())
-          else if (widget.model.formState.state == ViewFormState.error)
-            ErrorBanner(
-              message: widget.model.formState.errorMessage,
-              autoDismiss: const Duration(seconds: 3),
-            )
-          else
-            ...(UniversalPlatform.isApple
-                ? _buildCupertinoForm()
-                : _buildMaterialForm()),
-        ],
-      ),
+    return FormStateHandler(
+      formState: widget.model.formState,
+      builder:
+          () => Form(
+            key: widget.formKey,
+            child: ListView(
+              children:
+                  UniversalPlatform.isApple
+                      ? _buildCupertinoForm()
+                      : _buildMaterialForm(),
+            ),
+          ),
     );
   }
 

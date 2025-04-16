@@ -78,7 +78,7 @@ class _HolefeederAppState extends State<HolefeederApp> {
         data: ThemeData(
           extensions: <ThemeExtension<dynamic>>[
             defaultFormTheme,
-            defaultErrorBannerTheme,
+            defaultErrorDialogTheme,
           ],
         ),
         child: Localizations.override(
@@ -100,7 +100,13 @@ class _HolefeederAppState extends State<HolefeederApp> {
     theme: holefeederMaterialTheme.copyWith(
       extensions: <ThemeExtension<dynamic>>[
         defaultFormTheme,
-        defaultErrorBannerTheme,
+        defaultErrorDialogTheme,
+      ],
+    ),
+    darkTheme: holefeederMaterialTheme.copyWith(
+      extensions: <ThemeExtension<dynamic>>[
+        defaultFormTheme,
+        defaultErrorDialogTheme,
       ],
     ),
     routerConfig: router,

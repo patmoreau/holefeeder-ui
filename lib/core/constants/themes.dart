@@ -36,13 +36,13 @@ class FormThemeExtension extends ThemeExtension<FormThemeExtension> {
   }
 }
 
-class ErrorBannerTheme extends ThemeExtension<ErrorBannerTheme> {
+class ErrorDialogTheme extends ThemeExtension<ErrorDialogTheme> {
   final Color backgroundColor;
   final Color iconColor;
   final Color textColor;
   final double opacity;
 
-  const ErrorBannerTheme({
+  const ErrorDialogTheme({
     this.backgroundColor = CupertinoColors.systemRed,
     this.iconColor = CupertinoColors.systemRed,
     this.textColor = CupertinoColors.label,
@@ -50,13 +50,13 @@ class ErrorBannerTheme extends ThemeExtension<ErrorBannerTheme> {
   });
 
   @override
-  ErrorBannerTheme copyWith({
+  ErrorDialogTheme copyWith({
     Color? backgroundColor,
     Color? iconColor,
     Color? textColor,
     double? opacity,
   }) {
-    return ErrorBannerTheme(
+    return ErrorDialogTheme(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       iconColor: iconColor ?? this.iconColor,
       textColor: textColor ?? this.textColor,
@@ -65,12 +65,12 @@ class ErrorBannerTheme extends ThemeExtension<ErrorBannerTheme> {
   }
 
   @override
-  ThemeExtension<ErrorBannerTheme> lerp(
-    ThemeExtension<ErrorBannerTheme>? other,
+  ThemeExtension<ErrorDialogTheme> lerp(
+    ThemeExtension<ErrorDialogTheme>? other,
     double t,
   ) {
-    if (other is! ErrorBannerTheme) return this;
-    return ErrorBannerTheme(
+    if (other is! ErrorDialogTheme) return this;
+    return ErrorDialogTheme(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
       iconColor: Color.lerp(iconColor, other.iconColor, t)!,
       textColor: Color.lerp(textColor, other.textColor, t)!,
@@ -85,7 +85,7 @@ const defaultFormTheme = FormThemeExtension(
   sectionSpacing: 24.0,
 );
 
-const defaultErrorBannerTheme = ErrorBannerTheme(
+const defaultErrorDialogTheme = ErrorDialogTheme(
   backgroundColor: Colors.red,
   iconColor: Colors.red,
   textColor: Colors.black87,

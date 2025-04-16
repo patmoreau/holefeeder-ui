@@ -33,20 +33,24 @@ class PlatformPicker<T> extends StatelessWidget {
         width: 100, // Fixed width for labels
         child: Text(label),
       ),
-      child: Expanded(
-        child: CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () => _showCupertinoPicker(context),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              value != null
-                  ? displayStringFor(value as T)
-                  : (placeholder ?? 'Select...'),
-              style: const TextStyle(fontSize: 16),
+      child: Row(
+        children: [
+          Expanded(
+            child: CupertinoButton(
+              padding: EdgeInsets.zero,
+              onPressed: () => _showCupertinoPicker(context),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  value != null
+                      ? displayStringFor(value as T)
+                      : (placeholder ?? 'Select...'),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

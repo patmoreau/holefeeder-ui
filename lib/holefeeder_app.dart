@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:holefeeder/core/constants/themes.dart';
-import 'package:holefeeder/core/providers/notification_provider.dart';
+import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/core/services/localization_service.dart';
 import 'package:holefeeder/l10n/l10n.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -15,8 +15,7 @@ import 'router.dart';
 class HolefeederApp extends StatefulWidget {
   const HolefeederApp({super.key});
 
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   State<HolefeederApp> createState() => _HolefeederAppState();
@@ -26,13 +25,7 @@ class _HolefeederAppState extends State<HolefeederApp> {
   final quickActions = const QuickActions();
 
   void _setupQuickActions() {
-    quickActions.setShortcutItems([
-      const ShortcutItem(
-        type: 'action_purchase',
-        localizedTitle: 'New Purchase',
-        icon: 'add_chart',
-      ),
-    ]);
+    quickActions.setShortcutItems([const ShortcutItem(type: 'action_purchase', localizedTitle: 'New Purchase', icon: 'add_chart')]);
   }
 
   @override
@@ -55,15 +48,7 @@ class _HolefeederAppState extends State<HolefeederApp> {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    return NotificationServiceScope(
-      child: Builder(
-        builder:
-            (context) =>
-                UniversalPlatform.isApple
-                    ? _buildCupertinoApp(context)
-                    : _buildMaterialApp(context),
-      ),
-    );
+    return NotificationServiceScope(child: Builder(builder: (context) => UniversalPlatform.isApple ? _buildCupertinoApp(context) : _buildMaterialApp(context)));
   }
 
   Widget _buildCupertinoApp(BuildContext context) => CupertinoApp.router(
@@ -82,12 +67,7 @@ class _HolefeederAppState extends State<HolefeederApp> {
       LocalizationService.initialize(context);
       return NotificationServiceProvider(
         child: Theme(
-          data: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[
-              defaultFormTheme,
-              defaultErrorDialogTheme,
-            ],
-          ),
+          data: ThemeData(extensions: <ThemeExtension<dynamic>>[defaultFormTheme, defaultErrorDialogTheme]),
           child: Localizations.override(
             context: context,
             delegates: const [
@@ -105,12 +85,7 @@ class _HolefeederAppState extends State<HolefeederApp> {
 
   Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
     onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
-    theme: holefeederMaterialTheme.copyWith(
-      extensions: <ThemeExtension<dynamic>>[
-        defaultFormTheme,
-        defaultErrorDialogTheme,
-      ],
-    ),
+    theme: holefeederMaterialTheme.copyWith(extensions: <ThemeExtension<dynamic>>[defaultFormTheme, defaultErrorDialogTheme]),
     routerConfig: router,
     localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
       AppLocalizations.delegate,

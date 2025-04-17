@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/providers/notification_provider.dart';
+import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/ui/views/purchase_form.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
@@ -22,15 +22,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<PurchaseViewModel>(
-      create:
-          (ctx) => PurchaseViewModel(
-            dataProvider: ctx.read<DataProvider>(),
-            notificationService: NotificationServiceProvider.of(ctx),
-          ),
+      create: (ctx) => PurchaseViewModel(dataProvider: ctx.read<DataProvider>(), notificationService: NotificationServiceProvider.of(ctx)),
       builder: (model) {
-        return UniversalPlatform.isApple
-            ? _buildCupertinoScaffold(model)
-            : _buildMaterialScaffold(model);
+        return UniversalPlatform.isApple ? _buildCupertinoScaffold(model) : _buildMaterialScaffold(model);
       },
     );
   }
@@ -58,12 +52,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   Widget _buildMaterialScaffold(PurchaseViewModel model) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Purchase'),
-        actions: [
-          TextButton(onPressed: () => _save(model), child: const Text('Save')),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Purchase'), actions: [TextButton(onPressed: () => _save(model), child: const Text('Save'))]),
       body: SafeArea(child: PurchaseForm(model: model, formKey: _formKey)),
     );
   }

@@ -34,22 +34,18 @@ class _LoginScreenState extends State<LoginScreen> {
       create: (ctx) {
         final authenticationProvider = ctx.read<AuthenticationClient>();
         final notificationService = ctx.read<NotificationService>();
-        return LoginViewModel(
-          authenticationProvider: authenticationProvider,
-          notificationService: notificationService,
-        );
+        return LoginViewModel(authenticationProvider: authenticationProvider, notificationService: notificationService);
       },
       builder: (model) {
         // Set up the navigation listener only once when the model is first provided
         _navigationSubscription ??= model.navigationStream.listen((route) {
           if (mounted) {
+            // ignore: use_build_context_synchronously
             context.go(route);
           }
         });
 
-        return UniversalPlatform.isApple
-            ? _buildCupertinoScaffold(model)
-            : _buildMaterialScaffold(model);
+        return UniversalPlatform.isApple ? _buildCupertinoScaffold(model) : _buildMaterialScaffold(model);
       },
     );
   }
@@ -60,17 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
       child: FormStateHandler(
         formState: model.formState,
         builder:
-            () => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PlatformButton(
-                    onPressed: model.login,
-                    label: model.loginTitle,
-                  ),
-                ],
-              ),
-            ),
+            () =>
+                Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [PlatformButton(onPressed: model.login, label: model.loginTitle)])),
       ),
     );
   }
@@ -81,17 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: FormStateHandler(
         formState: model.formState,
         builder:
-            () => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PlatformButton(
-                    onPressed: model.login,
-                    label: model.loginTitle,
-                  ),
-                ],
-              ),
-            ),
+            () =>
+                Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [PlatformButton(onPressed: model.login, label: model.loginTitle)])),
       ),
     );
   }

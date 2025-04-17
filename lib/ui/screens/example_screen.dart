@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../core/providers/notification_provider.dart';
+import '../services/notification_provider.dart';
 import '../../core/view_models/example_view_model.dart';
 
 class ExampleScreen extends StatelessWidget {
@@ -23,19 +23,9 @@ class ExampleScreen extends StatelessWidget {
                     if (model.isLoading)
                       const CircularProgressIndicator()
                     else ...[
-                      ElevatedButton(
-                        onPressed: model.performAction,
-                        child: const Text('Perform Action'),
-                      ),
-                      ElevatedButton(
-                        onPressed: model.performRiskyAction,
-                        child: const Text('Perform Risky Action'),
-                      ),
-                      if (model.hasError)
-                        Text(
-                          model.error ?? 'An error occurred',
-                          style: TextStyle(color: Colors.red),
-                        ),
+                      ElevatedButton(onPressed: model.performAction, child: const Text('Perform Action')),
+                      ElevatedButton(onPressed: model.performRiskyAction, child: const Text('Perform Risky Action')),
+                      if (model.hasError) Text(model.error ?? 'An error occurred', style: TextStyle(color: Colors.red)),
                     ],
                   ],
                 ),

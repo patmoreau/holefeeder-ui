@@ -18,21 +18,14 @@ class ErrorDialog extends StatelessWidget {
   final List<ErrorAction> actions;
   final Duration autoDismiss;
 
-  const ErrorDialog({
-    super.key,
-    this.message = '',
-    this.actions = const [],
-    this.autoDismiss = Duration.zero,
-  });
+  const ErrorDialog({super.key, this.message = '', this.actions = const [], this.autoDismiss = Duration.zero});
 
   @override
   Widget build(BuildContext context) {
     _triggerHapticFeedback();
     _setupAutoDismiss(context);
 
-    return UniversalPlatform.isApple
-        ? _buildCupertinoDialog(context)
-        : _buildMaterialDialog(context);
+    return UniversalPlatform.isApple ? _buildCupertinoDialog(context) : _buildMaterialDialog(context);
   }
 
   void _triggerHapticFeedback() {
@@ -42,32 +35,26 @@ class ErrorDialog extends StatelessWidget {
   void _setupAutoDismiss(BuildContext context) {
     if (autoDismiss > Duration.zero && actions.isEmpty) {
       Future.delayed(autoDismiss, () {
-        var router = GoRouter.of(context);
-        if (router.canPop()) {
-          router.pop();
+        if (context.mounted) {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/');
+          }
         }
       });
     }
   }
 
   Widget _buildCupertinoDialog(BuildContext context) {
-    final theme =
-        Theme.of(context).extension<ErrorDialogTheme>() ??
-        const ErrorDialogTheme();
+    final theme = Theme.of(context).extension<ErrorDialogTheme>() ?? const ErrorDialogTheme();
 
     return CupertinoAlertDialog(
       title: Row(
         children: [
-          Icon(
-            CupertinoIcons.exclamationmark_triangle_fill,
-            color: theme.iconColor,
-            size: 20,
-            semanticLabel: 'Error icon',
-          ),
+          Icon(CupertinoIcons.exclamationmark_triangle_fill, color: theme.iconColor, size: 20, semanticLabel: 'Error icon'),
           const SizedBox(width: 8),
-          Flexible(
-            child: Text('Error', style: TextStyle(color: theme.textColor)),
-          ),
+          Flexible(child: Text('Error', style: TextStyle(color: theme.textColor))),
         ],
       ),
       content: Text(message, style: TextStyle(color: theme.textColor)),
@@ -86,28 +73,15 @@ class ErrorDialog extends StatelessWidget {
                   child: const Text('OK'),
                 ),
               ]
-              : actions
-                  .map(
-                    (action) => CupertinoDialogAction(
-                      onPressed: action.onPressed,
-                      child: Text(action.label),
-                    ),
-                  )
-                  .toList(),
+              : actions.map((action) => CupertinoDialogAction(onPressed: action.onPressed, child: Text(action.label))).toList(),
     );
   }
 
   Widget _buildMaterialDialog(BuildContext context) {
-    final theme =
-        Theme.of(context).extension<ErrorDialogTheme>() ??
-        const ErrorDialogTheme();
+    final theme = Theme.of(context).extension<ErrorDialogTheme>() ?? const ErrorDialogTheme();
 
     return AlertDialog(
-      icon: Icon(
-        Icons.error_outline,
-        color: theme.iconColor,
-        semanticLabel: 'Error icon',
-      ),
+      icon: Icon(Icons.error_outline, color: theme.iconColor, semanticLabel: 'Error icon'),
       title: const Text('Error'),
       content: Text(message),
       actions:
@@ -125,14 +99,7 @@ class ErrorDialog extends StatelessWidget {
                   child: const Text('OK'),
                 ),
               ]
-              : actions
-                  .map(
-                    (action) => TextButton(
-                      onPressed: action.onPressed,
-                      child: Text(action.label),
-                    ),
-                  )
-                  .toList(),
+              : actions.map((action) => TextButton(onPressed: action.onPressed, child: Text(action.label))).toList(),
     );
   }
 }

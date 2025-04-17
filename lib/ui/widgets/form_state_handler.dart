@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/ui/dialogs/error_dialog.dart';
+import 'package:holefeeder/core/providers/notification_provider.dart';
 
 class FormStateHandler extends StatelessWidget {
   final BaseFormState formState;
   final Widget Function() builder;
   final Widget? loadingWidget;
-  final Duration errorAutoDismiss;
 
   const FormStateHandler({
     super.key,
     required this.formState,
     required this.builder,
     this.loadingWidget,
-    this.errorAutoDismiss = const Duration(seconds: 3),
   });
 
   @override
@@ -22,16 +20,9 @@ class FormStateHandler extends StatelessWidget {
       return Center(child: loadingWidget ?? const CircularProgressIndicator());
     }
 
-    if (formState.state == ViewFormState.error) {
+    if (formState.state == ViewFormState.error && formState.errorMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        showDialog(
-          context: context,
-          builder:
-              (context) => ErrorDialog(
-                message: formState.errorMessage ?? '',
-                autoDismiss: errorAutoDismiss,
-              ),
-        );
+        NotificationServiceProvider.of(context).showError(formState.errorMessage!);
       });
     }
 

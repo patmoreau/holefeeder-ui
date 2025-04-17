@@ -47,7 +47,7 @@ Future<void> main() async {
         Provider<DataProvider>(
           create:
               (BuildContext context) =>
-                  DataProvider(Provider.of<RestClient>(context, listen: false)),
+                  DataProviderImpl(Provider.of<RestClient>(context, listen: false)),
         ),
         Provider<NotificationService>(
           create: (BuildContext context) => NotificationServiceImpl(context),

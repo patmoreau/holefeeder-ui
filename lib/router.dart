@@ -8,9 +8,11 @@ import 'package:holefeeder/ui/views/settings_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/enums/authentication_status_enum.dart';
+import 'holefeeder_app.dart';
 import 'main.dart';
 
 final GoRouter router = GoRouter(
+  navigatorKey: HolefeederApp.navigatorKey,
   routes: [
     GoRoute(
       path: '/',

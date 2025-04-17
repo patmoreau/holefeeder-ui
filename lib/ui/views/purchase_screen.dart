@@ -22,10 +22,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<PurchaseViewModel>(
-      model: PurchaseViewModel(
-        dataProvider: context.read<DataProvider>(),
-        notificationService: NotificationServiceProvider.of(context),
-      ),
+      create:
+          (ctx) => PurchaseViewModel(
+            dataProvider: ctx.read<DataProvider>(),
+            notificationService: NotificationServiceProvider.of(ctx),
+          ),
       builder: (model) {
         return UniversalPlatform.isApple
             ? _buildCupertinoScaffold(model)

@@ -14,10 +14,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<ProfileViewModel>(
-      model: ProfileViewModel(
-        authenticationProvider: context.read<AuthenticationClient>(),
-        notificationService: NotificationServiceProvider.of(context),
-      ),
+      create:
+          (ctx) => ProfileViewModel(
+            authenticationProvider: ctx.read<AuthenticationClient>(),
+            notificationService: NotificationServiceProvider.of(context),
+          ),
       builder:
           (model) =>
               UniversalPlatform.isApple

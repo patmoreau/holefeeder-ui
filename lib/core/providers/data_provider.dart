@@ -4,12 +4,27 @@ import 'package:holefeeder/core/models/make_purchase.dart';
 import 'package:holefeeder/core/models/tag.dart';
 import 'package:holefeeder/core/utils/rest_client.dart';
 
-class DataProvider {
+abstract class DataProvider {
+  Future<List<Account>> getAccounts();
+
+  Future<Account> getAccount(String id);
+
+  Future<List<Category>> getCategories();
+
+  Future<Category> getCategory(String id);
+
+  Future<List<Tag>> getTags();
+
+  Future<String?> makePurchase(MakePurchase item);
+}
+
+class DataProviderImpl implements DataProvider {
   final RestClient _restClient;
 
-  const DataProvider(this._restClient);
+  const DataProviderImpl(this._restClient);
 
   // Accounts
+  @override
   Future<List<Account>> getAccounts() async {
     try {
       final result = await _restClient.getAccounts(
@@ -25,6 +40,7 @@ class DataProvider {
     }
   }
 
+  @override
   Future<Account> getAccount(String id) async {
     try {
       final result = await _restClient.getAccount(id);
@@ -41,6 +57,7 @@ class DataProvider {
   }
 
   // Categories
+  @override
   Future<List<Category>> getCategories() async {
     try {
       final result = await _restClient.getCategories();
@@ -53,6 +70,7 @@ class DataProvider {
     }
   }
 
+  @override
   Future<Category> getCategory(String id) async {
     try {
       final result = await _restClient.getCategory(id);
@@ -69,6 +87,7 @@ class DataProvider {
   }
 
   // Tags
+  @override
   Future<List<Tag>> getTags() async {
     try {
       final result = await _restClient.getTags();
@@ -82,6 +101,7 @@ class DataProvider {
   }
 
   // Transactions
+  @override
   Future<String?> makePurchase(MakePurchase item) async {
     try {
       final result = await _restClient.makePurchase(item);

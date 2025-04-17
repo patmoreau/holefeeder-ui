@@ -15,9 +15,9 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ViewModelProvider<DashboardViewModel>(
-    model: DashboardViewModel(
-      dataProvider: context.read<DataProvider>(),
-      notificationService: NotificationServiceProvider.of(context),
+    create: (ctx) => DashboardViewModel(
+      dataProvider: ctx.read<DataProvider>(),
+      notificationService: NotificationServiceProvider.of(ctx),
     ),
     builder:
         (model) =>

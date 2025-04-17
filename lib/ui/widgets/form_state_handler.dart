@@ -22,7 +22,7 @@ class FormStateHandler extends StatelessWidget {
 
     if (formState.state == ViewFormState.error && formState.errorMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        NotificationServiceProvider.of(context).showError(formState.errorMessage!);
+        NotificationServiceProvider.of(context).showNotification(formState.errorMessage!, isError: true);
       });
     }
 

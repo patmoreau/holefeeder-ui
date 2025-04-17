@@ -15,9 +15,9 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<CategoriesViewModel>(
-      model: CategoriesViewModel(
-        dataProvider: context.read<DataProvider>(),
-        notificationService: NotificationServiceProvider.of(context),
+      create: (ctx) => CategoriesViewModel(
+        dataProvider: ctx.read<DataProvider>(),
+        notificationService: NotificationServiceProvider.of(ctx),
       ),
       builder:
           (model) => Scaffold(

@@ -81,7 +81,6 @@ class _HolefeederAppState extends State<HolefeederApp> {
     builder: (context, child) {
       LocalizationService.initialize(context);
       return NotificationServiceProvider(
-        navigatorKey: HolefeederApp.navigatorKey,
         child: Theme(
           data: ThemeData(
             extensions: <ThemeExtension<dynamic>>[
@@ -124,7 +123,6 @@ class _HolefeederAppState extends State<HolefeederApp> {
     builder: (context, child) {
       LocalizationService.initialize(context);
       return NotificationServiceProvider(
-        navigatorKey: HolefeederApp.navigatorKey,
         child: Localizations.override(
           context: context,
           delegates: const [

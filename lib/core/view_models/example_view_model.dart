@@ -3,10 +3,7 @@ import 'base_form_state.dart';
 import 'base_view_model.dart';
 
 class ExampleFormState extends BaseFormState {
-  ExampleFormState({
-    ViewFormState state = ViewFormState.initial,
-    String? errorMessage,
-  }) : super(state: state, errorMessage: errorMessage);
+  ExampleFormState({super.state, super.errorMessage});
 
   @override
   ExampleFormState copyWith({ViewFormState? state, String? errorMessage}) {

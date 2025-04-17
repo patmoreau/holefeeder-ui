@@ -83,23 +83,21 @@ class DashboardScreen extends StatelessWidget {
               ),
             )
           else
-            ...model.accounts
-                .map(
-                  (account) => ListTile(
-                    title: Text(account.name),
-                    subtitle: Text(account.balance.toString()),
-                    trailing: Icon(
+            ...model.accounts.map(
+              (account) => ListTile(
+                title: Text(account.name),
+                subtitle: Text(account.balance.toString()),
+                trailing: Icon(
+                  account.balance.compareTo(Decimal.zero) >= 0
+                      ? Icons.arrow_upward
+                      : Icons.arrow_downward,
+                  color:
                       account.balance.compareTo(Decimal.zero) >= 0
-                          ? Icons.arrow_upward
-                          : Icons.arrow_downward,
-                      color:
-                          account.balance.compareTo(Decimal.zero) >= 0
-                              ? Colors.green
-                              : Colors.red,
-                    ),
-                  ),
-                )
-                .toList(),
+                          ? Colors.green
+                          : Colors.red,
+                ),
+              ),
+            ),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.all(16.0),

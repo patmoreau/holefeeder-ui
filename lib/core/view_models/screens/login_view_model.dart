@@ -32,6 +32,8 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
           updateState((s) => s.copyWith(state: ViewFormState.initial));
         } else if (status == AuthenticationStatus.authenticated) {
           updateState((s) => s.copyWith(state: ViewFormState.ready));
+          showNotification('Login successful');
+          _navigationController.add('/');
         } else if (status == AuthenticationStatus.error) {
           final errorMsg =
               "Failed to login: ${_authenticationProvider.errorMessage}";
@@ -52,9 +54,6 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
   Future<void> login() async {
     await handleAsync(() async {
       await _authenticationProvider.login();
-      updateState((s) => s.copyWith(state: ViewFormState.ready));
-      _navigationController.add('/');
-      await showNotification('Login successful');
     });
   }
 }

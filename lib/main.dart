@@ -5,9 +5,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:holefeeder/core/constants/strings.dart';
 import 'package:holefeeder/core/enums/authentication_status_enum.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/core/utils/rest_client.dart';
 import 'package:holefeeder/router.dart';
+import 'package:holefeeder/ui/services/notification_service.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -46,6 +48,9 @@ Future<void> main() async {
           create:
               (BuildContext context) =>
                   DataProvider(Provider.of<RestClient>(context, listen: false)),
+        ),
+        Provider<NotificationService>(
+          create: (BuildContext context) => NotificationServiceImpl(context),
         ),
       ],
       child: const HolefeederApp(),

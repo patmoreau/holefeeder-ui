@@ -12,13 +12,7 @@ class NotificationServiceScope extends StatelessWidget {
 }
 
 class NotificationServiceProvider extends InheritedWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
-
-  const NotificationServiceProvider({
-    super.key,
-    required this.navigatorKey,
-    required super.child,
-  });
+  const NotificationServiceProvider({super.key, required super.child});
 
   static NotificationService of(BuildContext context) {
     final provider =
@@ -27,10 +21,7 @@ class NotificationServiceProvider extends InheritedWidget {
     if (provider == null) {
       throw Exception('NotificationServiceProvider not found in context');
     }
-    return NotificationServiceImpl(
-      context,
-      navigatorKey: provider.navigatorKey,
-    );
+    return NotificationServiceImpl(context);
   }
 
   @override

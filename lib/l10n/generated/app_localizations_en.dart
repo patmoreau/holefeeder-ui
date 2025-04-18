@@ -12,6 +12,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Holefeeder';
 
   @override
+  String get categories => 'Categories';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
   String get errorGeneric => 'An error occurred';
 
   @override
@@ -26,14 +32,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
+  String get profile => 'Profile';
+
+  @override
   String get retry => 'Retry';
 
   @override
   String get welcomeMessage => 'Welcome to our app';
-
-  @override
-  String get categories => 'Categories';
-
-  @override
-  String get profile => 'Profile';
 }

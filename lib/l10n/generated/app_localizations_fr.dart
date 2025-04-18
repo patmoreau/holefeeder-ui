@@ -12,6 +12,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get appTitle => 'Holefeeder';
 
   @override
+  String get categories => 'Catégories';
+
+  @override
+  String get dashboard => 'Tableau de bord';
+
+  @override
   String get errorGeneric => 'Une erreur s\'est produite';
 
   @override
@@ -26,14 +32,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get home => 'Accueil';
 
   @override
+  String get profile => 'Profil';
+
+  @override
   String get retry => 'Retry';
 
   @override
   String get welcomeMessage => 'Bienvenue dans notre application';
-
-  @override
-  String get categories => 'Catégories';
-
-  @override
-  String get profile => 'Profil';
 }

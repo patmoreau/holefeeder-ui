@@ -4,6 +4,14 @@
   "@appTitle": {
     "description": "The application name"
   },
+  "categories": "Categories",
+  "@categories": {
+    "description": "The categories screen title"
+  },
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "The dashboard screen title"
+  },
   "errorGeneric": "An error occurred",
   "@errorGeneric": {
     "description": "A generic error message"
@@ -26,6 +34,10 @@
   "@home": {
     "description": "The home screen title"
   },
+  "profile": "Profile",
+  "@profile": {
+    "description": "The profile screen title"
+  },
   "retry": "Retry",
   "@retry": {
     "description": "A button to retry an action"
@@ -33,13 +45,5 @@
   "welcomeMessage": "Welcome to our app",
   "@welcomeMessage": {
     "description": "A welcome message for the app"
-  },
-  "categories": "Categories",
-  "@categories": {
-    "description": "The categories screen title"
-  },
-  "profile": "Profile",
-  "@profile": {
-    "description": "The profile screen title"
   }
 }

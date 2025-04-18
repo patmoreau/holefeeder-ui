@@ -1,12 +1,13 @@
 {
   "@@locale": "fr",
   "appTitle": "Holefeeder",
+  "categories": "Catégories",
+  "dashboard": "Tableau de bord",
   "errorGeneric": "Une erreur s'est produite",
   "helloUser": "Bonjour {userName}",
   "holefeederTitle": "Holefeeder",
   "home": "Accueil",
+  "profile": "Profil",
   "retry": "Retry",
-  "welcomeMessage": "Bienvenue dans notre application",
-  "categories": "Catégories",
-  "profile": "Profil"
+  "welcomeMessage": "Bienvenue dans notre application"
 }

@@ -101,6 +101,18 @@ abstract class AppLocalizations {
   /// **'Holefeeder'**
   String get appTitle;
 
+  /// The categories screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
+  /// The dashboard screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboard;
+
   /// A generic error message
   ///
   /// In en, this message translates to:
@@ -125,6 +137,12 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
+  /// The profile screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
   /// A button to retry an action
   ///
   /// In en, this message translates to:
@@ -136,18 +154,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to our app'**
   String get welcomeMessage;
-
-  /// The categories screen title
-  ///
-  /// In en, this message translates to:
-  /// **'Categories'**
-  String get categories;
-
-  /// The profile screen title
-  ///
-  /// In en, this message translates to:
-  /// **'Profile'**
-  String get profile;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

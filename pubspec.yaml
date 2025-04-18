@@ -87,6 +87,8 @@ flutter:
     - assets/env/
     - assets/safe_256.png
     - assets/safe.svg
+    - assets/images/
+    - assets/images/default_profile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

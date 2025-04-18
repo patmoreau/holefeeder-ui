@@ -28,17 +28,19 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
       _statusSubscription = _authenticationProvider.statusStream.listen((
         status,
       ) {
-        if (status == AuthenticationStatus.unauthenticated) {
-          updateState((s) => s.copyWith(state: ViewFormState.initial));
-        } else if (status == AuthenticationStatus.authenticated) {
-          updateState((s) => s.copyWith(state: ViewFormState.ready));
-          showNotification('Login successful');
-          _navigationController.add('/');
-        } else if (status == AuthenticationStatus.error) {
-          final errorMsg =
-              "Failed to login: ${_authenticationProvider.errorMessage}";
-          setFormError(errorMsg);
-          showNotification(errorMsg, isError: true);
+        switch (status) {
+          case AuthenticationStatus.unauthenticated:
+            _handleUnauthenticated();
+            break;
+          case AuthenticationStatus.authenticated:
+            _handleAuthenticated();
+            break;
+          case AuthenticationStatus.error:
+            _handleError();
+            break;
+          case AuthenticationStatus.loading:
+            _handleLoading();
+            break;
         }
       });
     });
@@ -55,5 +57,24 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
     await handleAsync(() async {
       await _authenticationProvider.login();
     });
+  }
+
+  void _handleUnauthenticated() {
+    updateState((s) => s.copyWith(state: ViewFormState.initial));
+  }
+
+  void _handleAuthenticated() {
+    updateState((s) => s.copyWith(state: ViewFormState.ready));
+    _navigationController.add('/');
+  }
+
+  void _handleError() {
+    final errorMsg = "Failed to login: ${_authenticationProvider.errorMessage}";
+    setFormError(errorMsg);
+    showNotification(errorMsg, isError: true);
+  }
+
+  void _handleLoading() {
+    updateState((s) => s.copyWith(state: ViewFormState.loading));
   }
 }

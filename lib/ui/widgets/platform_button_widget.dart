@@ -7,29 +7,19 @@ class PlatformButton extends StatelessWidget {
   final bool isLoading;
   final String label;
 
-  const PlatformButton({
-    super.key,
-    required this.onPressed,
-    this.isLoading = false,
-    this.label = 'Submit',
-  });
+  const PlatformButton({super.key, required this.onPressed, this.isLoading = false, this.label = 'Submit'});
 
   @override
   Widget build(BuildContext context) {
-    return UniversalPlatform.isApple
-        ? _buildCupertinoButton(context)
-        : _buildMaterialButton(context);
+    return UniversalPlatform.isApple ? _buildCupertinoButton(context) : _buildMaterialButton(context);
   }
 
   Widget _buildCupertinoButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: CupertinoButton.filled(
+      child: CupertinoButton(
         onPressed: isLoading ? null : onPressed,
-        child:
-            isLoading
-                ? const CupertinoActivityIndicator(color: CupertinoColors.white)
-                : Text(label),
+        child: isLoading ? const CupertinoActivityIndicator(color: CupertinoColors.white) : Text(label),
       ),
     );
   }
@@ -39,14 +29,7 @@ class PlatformButton extends StatelessWidget {
       width: double.infinity,
       child: FilledButton(
         onPressed: isLoading ? null : onPressed,
-        child:
-            isLoading
-                ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(),
-                )
-                : Text(label),
+        child: isLoading ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator()) : Text(label),
       ),
     );
   }

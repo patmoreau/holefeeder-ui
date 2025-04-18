@@ -52,7 +52,6 @@ class CategoriesViewModel extends BaseViewModel<CategoriesFormState> {
 
   Future<void> createCategory(Category category) async {
     await handleAsync(() async {
-      print('Creating category: $category');
       // await _dataProvider.createCategory(category);
       await loadCategories();
       await showNotification('Category created successfully');
@@ -61,7 +60,6 @@ class CategoriesViewModel extends BaseViewModel<CategoriesFormState> {
 
   Future<void> updateCategory(Category category) async {
     await handleAsync(() async {
-      print('Updating category: $category');
       // await _dataProvider.updateCategory(category);
       await loadCategories();
       await showNotification('Category updated successfully');
@@ -70,7 +68,6 @@ class CategoriesViewModel extends BaseViewModel<CategoriesFormState> {
 
   Future<void> deleteCategory(Category category) async {
     await handleAsync(() async {
-      print('Deleting category: $category');
       // await _dataProvider.deleteCategory(category.id);
       await loadCategories();
       await showNotification('Category deleted successfully');

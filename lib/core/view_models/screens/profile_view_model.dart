@@ -49,7 +49,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
 
   String get screenTitle => 'Profile';
   String get logoutTitle => 'Logout';
-  String get fallbackPictureUrl => 'images/default_profile.png';
+  String get fallbackPictureUrl => 'assets/images/default_profile.png';
 
   void _initializeState() {
     // Set initial state based on current authentication status
@@ -69,41 +69,16 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
     _statusSubscription = _authenticationProvider.statusStream.listen((status) {
       switch (status) {
         case AuthenticationStatus.unauthenticated:
-          if (!formState.isEmpty) {
-            updateState(
-              (s) => s.copyWith(
-                state: ViewFormState.initial,
-                name: '',
-                pictureUrl: '',
-              ),
-            );
-          }
+          _handleUnauthenticated();
           break;
         case AuthenticationStatus.authenticated:
-          final user = _authenticationProvider.credentials.user;
-          if (formState.isEmpty || formState.name != user.name) {
-            updateState(
-              (s) => s.copyWith(
-                state: ViewFormState.ready,
-                name: user.name ?? '',
-                pictureUrl: (user.pictureUrl.toString() as String?) ?? '',
-              ),
-            );
-          }
+          _handleAuthenticated();
           break;
         case AuthenticationStatus.error:
-          final errorMsg =
-              _authenticationProvider.errorMessage ?? 'Unknown error';
-          setFormError(errorMsg);
-          showNotification(errorMsg, isError: true);
+          _handleError();
           break;
         case AuthenticationStatus.loading:
-          if (formState.state != ViewFormState.loading) {
-            updateState(
-              (s) =>
-                  s.copyWith(state: ViewFormState.loading, errorMessage: null),
-            );
-          }
+          _handleLoading();
           break;
       }
     });
@@ -119,12 +94,47 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
   Future<void> logout() async {
     await handleAsync(() async {
       await _authenticationProvider.logout();
-      _navigationController.add('/login');
-      await showNotification('Successfully logged out');
     });
   }
 
   void fallbackToDefaultPicture() {
     updateState((s) => s.copyWith(pictureUrl: ''));
+  }
+
+  void _handleUnauthenticated() {
+    if (!formState.isEmpty) {
+      updateState(
+        (s) =>
+            s.copyWith(state: ViewFormState.initial, name: '', pictureUrl: ''),
+      );
+      _navigationController.add('/login');
+    }
+  }
+
+  void _handleAuthenticated() {
+    final user = _authenticationProvider.credentials.user;
+    if (formState.isEmpty || formState.name != user.name) {
+      updateState(
+        (s) => s.copyWith(
+          state: ViewFormState.ready,
+          name: user.name ?? '',
+          pictureUrl: (user.pictureUrl.toString() as String?) ?? '',
+        ),
+      );
+    }
+  }
+
+  void _handleError() {
+    final errorMsg = _authenticationProvider.errorMessage ?? 'Unknown error';
+    setFormError(errorMsg);
+    showNotification(errorMsg, isError: true);
+  }
+
+  void _handleLoading() {
+    if (formState.state != ViewFormState.loading) {
+      updateState(
+        (s) => s.copyWith(state: ViewFormState.loading, errorMessage: null),
+      );
+    }
   }
 }

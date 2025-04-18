@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/core/view_models/screens/login_view_model.dart';
+import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/ui/widgets/form_state_handler.dart';
 import 'package:holefeeder/ui/widgets/platform_button_widget.dart';
 import 'package:holefeeder/ui/widgets/view_model_provider.dart';
@@ -30,12 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider(
-      create: (ctx) {
-        final authenticationProvider = ctx.read<AuthenticationClient>();
-        final notificationService = ctx.read<NotificationService>();
-        return LoginViewModel(authenticationProvider: authenticationProvider, notificationService: notificationService);
-      },
+    return ViewModelProvider<LoginViewModel>(
+      create:
+          (ctx) => LoginViewModel(
+            authenticationProvider: ctx.read<AuthenticationClient>(),
+            notificationService: NotificationServiceProvider.of(context),
+          ),
       builder: (model) {
         // Set up the navigation listener only once when the model is first provided
         _navigationSubscription ??= model.navigationStream.listen((route) {
@@ -45,7 +45,9 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         });
 
-        return UniversalPlatform.isApple ? _buildCupertinoScaffold(model) : _buildMaterialScaffold(model);
+        return UniversalPlatform.isApple
+            ? _buildCupertinoScaffold(model)
+            : _buildMaterialScaffold(model);
       },
     );
   }
@@ -53,11 +55,22 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildCupertinoScaffold(LoginViewModel model) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(middle: Text(model.screenTitle)),
-      child: FormStateHandler(
-        formState: model.formState,
-        builder:
-            () =>
-                Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [PlatformButton(onPressed: model.login, label: model.loginTitle)])),
+      child: SafeArea(
+        child: FormStateHandler(
+          formState: model.formState,
+          builder:
+              () => Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    PlatformButton(
+                      onPressed: model.login,
+                      label: model.loginTitle,
+                    ),
+                  ],
+                ),
+              ),
+        ),
       ),
     );
   }
@@ -68,8 +81,17 @@ class _LoginScreenState extends State<LoginScreen> {
       body: FormStateHandler(
         formState: model.formState,
         builder:
-            () =>
-                Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [PlatformButton(onPressed: model.login, label: model.loginTitle)])),
+            () => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PlatformButton(
+                    onPressed: model.login,
+                    label: model.loginTitle,
+                  ),
+                ],
+              ),
+            ),
       ),
     );
   }

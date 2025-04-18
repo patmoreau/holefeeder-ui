@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/view_models/screens/profile_view_model.dart';
+import 'package:holefeeder/ui/widgets/platform_avatar_widget.dart';
+import 'package:holefeeder/ui/widgets/platform_button_widget.dart';
 
 class ProfileForm extends StatelessWidget {
   final ProfileViewModel model;
@@ -8,10 +10,6 @@ class ProfileForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (model.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -26,13 +24,27 @@ class ProfileForm extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-          CircleAvatar(
+          PlatformAvatar(
             radius: 50,
             backgroundImage:
                 model.formState.pictureUrl.isNotEmpty
                     ? NetworkImage(model.formState.pictureUrl)
                     : AssetImage(model.fallbackPictureUrl) as ImageProvider,
-            onBackgroundImageError: (_, __) => model.fallbackToDefaultPicture(),
+            // Remove onBackgroundImageError and use Image.network with errorBuilder instead
+            child:
+                model.formState.pictureUrl.isNotEmpty
+                    ? Image.network(
+                      model.formState.pictureUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Schedule the fallback for the next frame
+                        Future.microtask(
+                          () => model.fallbackToDefaultPicture(),
+                        );
+                        return Container(); // Return empty container while switching to fallback
+                      },
+                    )
+                    : null,
           ),
           const SizedBox(height: 16),
           Text(
@@ -41,10 +53,7 @@ class ProfileForm extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const Spacer(),
-          ElevatedButton(
-            onPressed: model.logout,
-            child: Text(model.logoutTitle),
-          ),
+          PlatformButton(onPressed: model.logout, label: model.logoutTitle),
         ],
       ),
     );

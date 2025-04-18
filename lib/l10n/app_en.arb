@@ -33,5 +33,13 @@
   "welcomeMessage": "Welcome to our app",
   "@welcomeMessage": {
     "description": "A welcome message for the app"
+  },
+  "categories": "Categories",
+  "@categories": {
+    "description": "The categories screen title"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "The profile screen title"
   }
 }

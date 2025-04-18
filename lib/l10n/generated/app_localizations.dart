@@ -136,6 +136,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to our app'**
   String get welcomeMessage;
+
+  /// The categories screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
+  /// The profile screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

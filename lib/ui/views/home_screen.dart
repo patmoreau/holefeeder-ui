@@ -19,15 +19,46 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late int currentPageIndex;
-
   late List<Widget> pages;
 
   @override
   void initState() {
     super.initState();
     currentPageIndex = widget.initialIndex;
-    pages = [DashboardScreen(), CategoriesScreen(), ProfileScreen()];
+    pages = const [DashboardScreen(), CategoriesScreen(), ProfileScreen()];
   }
+
+  List<NavigationDestination> _buildNavigationDestinations(
+    BuildContext context,
+  ) => [
+    NavigationDestination(
+      icon: const Icon(Icons.home),
+      label: AppLocalizations.of(context).home,
+    ),
+    NavigationDestination(
+      icon: const Icon(Icons.category_outlined),
+      label: AppLocalizations.of(context).categories,
+    ),
+    NavigationDestination(
+      icon: const Icon(Icons.person),
+      label: AppLocalizations.of(context).profile,
+    ),
+  ];
+
+  List<BottomNavigationBarItem> _buildCupertinoItems(BuildContext context) => [
+    BottomNavigationBarItem(
+      icon: const Icon(CupertinoIcons.home),
+      label: AppLocalizations.of(context).home,
+    ),
+    BottomNavigationBarItem(
+      icon: const Icon(CupertinoIcons.paperplane_fill),
+      label: AppLocalizations.of(context).categories,
+    ),
+    BottomNavigationBarItem(
+      icon: const Icon(CupertinoIcons.person),
+      label: AppLocalizations.of(context).profile,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildForCupertino(BuildContext context) => CupertinoTabScaffold(
     tabBar: CupertinoTabBar(
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.home),
-          label: 'Dashboard',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.paperplane_fill),
-          label: 'Categories',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.person),
-          label: 'Profile',
-        ),
-      ],
+      items: _buildCupertinoItems(context),
       onTap: (index) {
         setState(() {
           currentPageIndex = index;
@@ -76,14 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const Icon(Icons.add),
     ),
     bottomNavigationBar: NavigationBar(
-      destinations: const [
-        NavigationDestination(icon: Icon(Icons.home), label: 'Dashboard'),
-        NavigationDestination(
-          icon: Icon(Icons.category_outlined),
-          label: 'Categories',
-        ),
-        NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
-      ],
+      destinations: _buildNavigationDestinations(context),
       onDestinationSelected: (index) {
         setState(() {
           currentPageIndex = index;

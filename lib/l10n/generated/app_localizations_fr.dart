@@ -30,4 +30,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get welcomeMessage => 'Bienvenue dans notre application';
+
+  @override
+  String get categories => 'Catégories';
+
+  @override
+  String get profile => 'Profil';
 }

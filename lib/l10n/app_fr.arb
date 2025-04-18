@@ -6,5 +6,7 @@
   "holefeederTitle": "Holefeeder",
   "home": "Accueil",
   "retry": "Retry",
-  "welcomeMessage": "Bienvenue dans notre application"
+  "welcomeMessage": "Bienvenue dans notre application",
+  "categories": "Catégories",
+  "profile": "Profil"
 }

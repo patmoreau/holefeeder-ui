@@ -8,6 +8,10 @@
   "@back": {
     "description": "A button to go back to the previous screen"
   },
+  "buttonOk": "OK",
+  "@buttonOk": {
+    "description": "A button to confirm an action"
+  },
   "categories": "Categories",
   "@categories": {
     "description": "The categories screen title"
@@ -93,6 +97,14 @@
   "note": "Note",
   "@note": {
     "description": "A note or message"
+  },
+  "notificationServiceErrorTitle": "Error",
+  "@notificationServiceErrorTitle": {
+    "description": "The title of the error notification"
+  },
+  "notificationServiceSuccessTitle": "Success",
+  "@notificationServiceSuccessTitle": {
+    "description": "The title of the success notification"
   },
   "profile": "Profile",
   "@profile": {

@@ -107,6 +107,12 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get back;
 
+  /// A button to confirm an action
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get buttonOk;
+
   /// The categories screen title
   ///
   /// In en, this message translates to:
@@ -226,6 +232,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Note'**
   String get note;
+
+  /// The title of the error notification
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get notificationServiceErrorTitle;
+
+  /// The title of the success notification
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get notificationServiceSuccessTitle;
 
   /// The profile screen title
   ///

@@ -15,6 +15,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get back => 'Retour';
 
   @override
+  String get buttonOk => 'OK';
+
+  @override
   String get categories => 'Catégories';
 
   @override
@@ -75,6 +78,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get note => 'Note';
+
+  @override
+  String get notificationServiceErrorTitle => 'Erreur';
+
+  @override
+  String get notificationServiceSuccessTitle => 'Succès';
 
   @override
   String get profile => 'Profil';

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/holefeeder_app.dart';
 
 class NotificationServiceImpl implements NotificationService {
@@ -48,11 +48,15 @@ class NotificationServiceImpl implements NotificationService {
       context: ctx,
       builder:
           (dialogContext) => CupertinoAlertDialog(
-            title: Text(isError ? 'Error' : 'Success'),
+            title: Text(
+              isError
+                  ? LocalizationService.current.notificationServiceErrorTitle
+                  : LocalizationService.current.notificationServiceSuccessTitle,
+            ),
             content: Text(message),
             actions: [
               CupertinoDialogAction(
-                child: const Text('OK'),
+                child: Text(LocalizationService.current.buttonOk),
                 onPressed: () {
                   final router = GoRouter.of(dialogContext);
                   if (router.canPop()) {

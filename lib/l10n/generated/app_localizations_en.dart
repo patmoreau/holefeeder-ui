@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get back => 'Back';
 
   @override
+  String get buttonOk => 'OK';
+
+  @override
   String get categories => 'Categories';
 
   @override
@@ -75,6 +78,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get note => 'Note';
+
+  @override
+  String get notificationServiceErrorTitle => 'Error';
+
+  @override
+  String get notificationServiceSuccessTitle => 'Success';
 
   @override
   String get profile => 'Profile';

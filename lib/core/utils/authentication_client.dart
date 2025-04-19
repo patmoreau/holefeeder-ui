@@ -63,7 +63,7 @@ abstract class AuthenticationClient {
 }
 
 class MobileAuthenticationClient extends AuthenticationClient {
-  final Auth0 _auth0 = Auth0(auth0Domain, auth0ClientId);
+  final Auth0 _auth0 = Auth0(kAuth0Domain, kAuth0ClientId);
 
   @override
   Future<void> init() async {
@@ -86,8 +86,8 @@ class MobileAuthenticationClient extends AuthenticationClient {
     setStatus(AuthenticationStatus.loading);
     try {
       final credentials = await _auth0.webAuthentication().login(
-        audience: auth0Audience,
-        scopes: auth0Scopes,
+        audience: kAuth0Audience,
+        scopes: kAuth0Scopes,
       );
       setCredentials(credentials);
       setStatus(AuthenticationStatus.authenticated);
@@ -101,8 +101,8 @@ class MobileAuthenticationClient extends AuthenticationClient {
     setStatus(AuthenticationStatus.loading);
     try {
       final credentials = await _auth0.webAuthentication().login(
-        audience: auth0Audience,
-        scopes: auth0Scopes,
+        audience: kAuth0Audience,
+        scopes: kAuth0Scopes,
         parameters: AuthenticationClient.parameters,
       );
       setCredentials(credentials);
@@ -129,14 +129,14 @@ class WebAuthenticationClient extends AuthenticationClient {
 
   @override
   Future<void> init() async {
-    _auth0 = Auth0Web(auth0Domain, auth0ClientId);
+    _auth0 = Auth0Web(kAuth0Domain, kAuth0ClientId);
     setStatus(AuthenticationStatus.unauthenticated);
     try {
       await _auth0
           .onLoad(
-            audience: auth0Audience,
-            scopes: auth0Scopes,
-            cookieDomain: auth0RedirectUriWeb,
+            audience: kAuth0Audience,
+            scopes: kAuth0Scopes,
+            cookieDomain: kAuth0RedirectUriWeb,
             useRefreshTokens: true,
           )
           .then((final credentials) async {
@@ -157,9 +157,9 @@ class WebAuthenticationClient extends AuthenticationClient {
     setStatus(AuthenticationStatus.loading);
     try {
       await _auth0.loginWithRedirect(
-        audience: auth0Audience,
-        scopes: auth0Scopes,
-        redirectUrl: auth0RedirectUriWeb,
+        audience: kAuth0Audience,
+        scopes: kAuth0Scopes,
+        redirectUrl: kAuth0RedirectUriWeb,
       );
     } catch (e) {
       setError('Login error: $e');
@@ -171,9 +171,9 @@ class WebAuthenticationClient extends AuthenticationClient {
     setStatus(AuthenticationStatus.loading);
     try {
       await _auth0.loginWithRedirect(
-        audience: auth0Audience,
-        scopes: auth0Scopes,
-        redirectUrl: auth0RedirectUriWeb,
+        audience: kAuth0Audience,
+        scopes: kAuth0Scopes,
+        redirectUrl: kAuth0RedirectUriWeb,
         parameters: AuthenticationClient.parameters,
       );
     } catch (e) {
@@ -185,7 +185,7 @@ class WebAuthenticationClient extends AuthenticationClient {
   Future<void> logout() async {
     setStatus(AuthenticationStatus.loading);
     try {
-      await _auth0.logout(returnToUrl: auth0RedirectUriWeb);
+      await _auth0.logout(returnToUrl: kAuth0RedirectUriWeb);
       clear();
     } catch (e) {
       setError('Logout error: $e');

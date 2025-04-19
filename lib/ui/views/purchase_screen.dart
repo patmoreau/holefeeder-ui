@@ -6,6 +6,7 @@ import 'package:holefeeder/core/extensions/build_context_extensions.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/ui/views/purchase_form.dart';
+import 'package:holefeeder/ui/widgets/form_state_handler.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           SliverSafeArea(
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                PurchaseForm(model: model, formKey: _formKey),
+                FormStateHandler(
+                  formState: model.formState,
+                  builder: () => PurchaseForm(model: model, formKey: _formKey),
+                ),
               ]),
             ),
           ),
@@ -77,7 +81,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         ),
       ],
     ),
-    body: SafeArea(child: PurchaseForm(model: model, formKey: _formKey)),
+    body: SafeArea(
+      child: FormStateHandler(
+        formState: model.formState,
+        builder: () => PurchaseForm(model: model, formKey: _formKey),
+      ),
+    ),
   );
 
   void _cancel(PurchaseViewModel model) => context.pop();

@@ -41,13 +41,14 @@ Future<void> main() async {
         ),
         Provider<RestClient>(
           create: (BuildContext context) {
-            return RestClient(_createDio(context), baseUrl: serverUrl);
+            return RestClient(_createDio(context), baseUrl: kServerUrl);
           },
         ),
         Provider<DataProvider>(
           create:
-              (BuildContext context) =>
-                  DataProviderImpl(Provider.of<RestClient>(context, listen: false)),
+              (BuildContext context) => DataProviderImpl(
+                Provider.of<RestClient>(context, listen: false),
+              ),
         ),
         Provider<NotificationService>(
           create: (BuildContext context) => NotificationServiceImpl(context),

@@ -1,12 +1,12 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final String serverUrl = dotenv.env['API_SERVER_URL'] ?? '';
-final String auth0Domain = dotenv.env['AUTH0_DOMAIN'] ?? '';
-final String auth0ClientId = dotenv.env['AUTH0_CLIENT_ID'] ?? '';
-final String auth0Audience = dotenv.env['AUTH0_AUDIENCE'] ?? '';
-final String auth0RedirectUriWeb = dotenv.env['REDIRECT_URI'] ?? '';
+final String kServerUrl = dotenv.env['API_SERVER_URL'] ?? '';
+final String kAuth0Domain = dotenv.env['AUTH0_DOMAIN'] ?? '';
+final String kAuth0ClientId = dotenv.env['AUTH0_CLIENT_ID'] ?? '';
+final String kAuth0Audience = dotenv.env['AUTH0_AUDIENCE'] ?? '';
+final String kAuth0RedirectUriWeb = dotenv.env['REDIRECT_URI'] ?? '';
 
-const auth0Scopes = {
+const kAuth0Scopes = {
   'openid',
   'profile',
   'email',
@@ -15,7 +15,7 @@ const auth0Scopes = {
   'write:user',
 };
 
-const auth0Logo =
+const kAuth0Logo =
     'https://cdn.auth0.com/blog/hub/code-samples/hello-world/auth0-logo.svg';
 
 const kBackTextIcon = '‹';

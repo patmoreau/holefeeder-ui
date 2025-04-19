@@ -1,13 +1,23 @@
 {
   "@@locale": "fr",
   "appTitle": "Holefeeder",
+  "back": "Retour",
   "categories": "Catégories",
   "dashboard": "Tableau de bord",
   "errorGeneric": "Une erreur s'est produite",
+  "fieldAccount": "Compte",
+  "fieldAccountPlaceHolder": "Sélectionnez votre compte",
+  "fieldCashflow": "Flux de trésorerie",
+  "fieldCategory": "Catégorie",
+  "fieldCategoryPlaceHolder": "Sélectionnez votre catégorie",
   "helloUser": "Bonjour {userName}",
   "holefeederTitle": "Holefeeder",
   "home": "Accueil",
+  "note": "Note",
   "profile": "Profil",
+  "purchase": "Acheter",
+  "purchaseTitle": "Faire un achat",
   "retry": "Retry",
+  "save": "Enregistrer",
   "welcomeMessage": "Bienvenue dans notre application"
 }

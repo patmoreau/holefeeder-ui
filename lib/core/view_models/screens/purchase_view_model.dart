@@ -96,7 +96,9 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
     required DataProvider dataProvider,
     NotificationService? notificationService,
   }) : _dataProvider = dataProvider,
-       super(PurchaseFormState(), notificationService);
+       super(PurchaseFormState(), notificationService) {
+    loadInitialData();
+  }
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {

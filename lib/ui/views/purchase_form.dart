@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
 import 'package:holefeeder/ui/widgets/account_picker.dart';
 import 'package:holefeeder/ui/widgets/amount_field.dart';
@@ -22,6 +23,8 @@ class PurchaseForm extends StatelessWidget {
     return Form(
       key: formKey,
       child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
         padding: const EdgeInsets.all(16.0),
         children: [
           if (model.hasError)
@@ -105,7 +108,7 @@ class PurchaseForm extends StatelessWidget {
       onChanged: model.setSelectedCategory,
     ),
     PlatformTextField(
-      labelText: 'Note',
+      labelText: LocalizationService.current.note,
       initialValue: model.formState.note,
       onChanged: model.updateNote,
     ),

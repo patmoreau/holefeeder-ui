@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class PlatformPicker<T> extends StatelessWidget {
@@ -30,28 +31,35 @@ class PlatformPicker<T> extends StatelessWidget {
 
   Widget _buildCupertinoDropdown(BuildContext context) {
     return CupertinoFormRow(
-      prefix: SizedBox(
-        width: 100, // Fixed width for labels
-        child: Text(label),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => _showCupertinoPicker(context),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
+      prefix: Text(label),
+      child: PullDownButton(
+        itemBuilder: (context) {
+          return items.map((T item) {
+            return PullDownMenuItem(
+              title: displayStringFor(item),
+              onTap: () {
+                onChanged(item);
+              },
+            );
+          }).toList();
+        },
+        buttonBuilder: (context, showMenu) {
+          return CupertinoButton(
+            onPressed: showMenu,
+            padding: EdgeInsets.zero,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
                   value != null
                       ? displayStringFor(value as T)
                       : (placeholder ?? 'Select...'),
-                  style: const TextStyle(fontSize: 16),
                 ),
-              ),
+                const Icon(CupertinoIcons.chevron_down),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -79,56 +87,6 @@ class PlatformPicker<T> extends StatelessWidget {
             }).toList(),
         onChanged: onChanged,
       ),
-    );
-  }
-
-  void _showCupertinoPicker(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) {
-        int selectedIndex = value != null ? items.indexOf(value as T) : 0;
-
-        return Container(
-          height: 216,
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CupertinoButton(
-                    child: const Text('Cancel'),
-                    onPressed: () => context.pop(),
-                  ),
-                  CupertinoButton(
-                    child: const Text('Done'),
-                    onPressed: () {
-                      onChanged(items[selectedIndex]);
-                      context.pop();
-                    },
-                  ),
-                ],
-              ),
-              Expanded(
-                child: CupertinoPicker(
-                  itemExtent: 32.0,
-                  scrollController: FixedExtentScrollController(
-                    initialItem: selectedIndex,
-                  ),
-                  onSelectedItemChanged: (int index) {
-                    selectedIndex = index;
-                  },
-                  children:
-                      items.map((item) {
-                        return Text(displayStringFor(item));
-                      }).toList(),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

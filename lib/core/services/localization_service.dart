@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:holefeeder/l10n/l10n.dart';
+import 'package:holefeeder/l10n/generated/app_localizations.dart';
 
 class LocalizationService {
   static AppLocalizations? _localizations;

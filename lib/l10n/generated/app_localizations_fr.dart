@@ -12,6 +12,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get appTitle => 'Holefeeder';
 
   @override
+  String get back => 'Retour';
+
+  @override
   String get categories => 'Catégories';
 
   @override
@@ -19,6 +22,21 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorGeneric => 'Une erreur s\'est produite';
+
+  @override
+  String get fieldAccount => 'Compte';
+
+  @override
+  String get fieldAccountPlaceHolder => 'Sélectionnez votre compte';
+
+  @override
+  String get fieldCashflow => 'Flux de trésorerie';
+
+  @override
+  String get fieldCategory => 'Catégorie';
+
+  @override
+  String get fieldCategoryPlaceHolder => 'Sélectionnez votre catégorie';
 
   @override
   String helloUser(String userName) {
@@ -32,10 +50,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get home => 'Accueil';
 
   @override
+  String get note => 'Note';
+
+  @override
   String get profile => 'Profil';
 
   @override
+  String get purchase => 'Acheter';
+
+  @override
+  String get purchaseTitle => 'Faire un achat';
+
+  @override
   String get retry => 'Retry';
+
+  @override
+  String get save => 'Enregistrer';
 
   @override
   String get welcomeMessage => 'Bienvenue dans notre application';

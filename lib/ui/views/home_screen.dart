@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/l10n/l10n.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/ui/views/dashboard_screen.dart';
 import 'package:holefeeder/ui/views/profile_screen.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -33,30 +33,30 @@ class _HomeScreenState extends State<HomeScreen> {
   ) => [
     NavigationDestination(
       icon: const Icon(Icons.home),
-      label: AppLocalizations.of(context).home,
+      label: LocalizationService.current.home,
     ),
     NavigationDestination(
       icon: const Icon(Icons.category_outlined),
-      label: AppLocalizations.of(context).categories,
+      label: LocalizationService.current.categories,
     ),
     NavigationDestination(
       icon: const Icon(Icons.person),
-      label: AppLocalizations.of(context).profile,
+      label: LocalizationService.current.profile,
     ),
   ];
 
   List<BottomNavigationBarItem> _buildCupertinoItems(BuildContext context) => [
     BottomNavigationBarItem(
       icon: const Icon(CupertinoIcons.home),
-      label: AppLocalizations.of(context).home,
+      label: LocalizationService.current.home,
     ),
     BottomNavigationBarItem(
       icon: const Icon(CupertinoIcons.paperplane_fill),
-      label: AppLocalizations.of(context).categories,
+      label: LocalizationService.current.categories,
     ),
     BottomNavigationBarItem(
       icon: const Icon(CupertinoIcons.person),
-      label: AppLocalizations.of(context).profile,
+      label: LocalizationService.current.profile,
     ),
   ];
 
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildForMaterial(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text(AppLocalizations.of(context).holefeederTitle),
+      title: Text(LocalizationService.current.holefeederTitle),
       foregroundColor: Colors.white,
     ),
     body: IndexedStack(index: currentPageIndex, children: pages),

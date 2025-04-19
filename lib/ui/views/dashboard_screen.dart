@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/l10n/generated/app_localizations.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/core/view_models/screens/dashboard_view_model.dart';
 import 'package:holefeeder/ui/widgets/account_list_tile.dart';
@@ -32,7 +32,7 @@ class DashboardScreen extends StatelessWidget {
   Widget _buildForCupertino(BuildContext context, DashboardViewModel model) =>
       CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: Text(AppLocalizations.of(context).dashboard),
+          middle: Text(LocalizationService.current.dashboard),
           trailing: IconButton(
             onPressed: () {
               context.push('/purchase');

@@ -101,6 +101,12 @@ abstract class AppLocalizations {
   /// **'Holefeeder'**
   String get appTitle;
 
+  /// A button to go back to the previous screen
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
   /// The categories screen title
   ///
   /// In en, this message translates to:
@@ -118,6 +124,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred'**
   String get errorGeneric;
+
+  /// The account field label
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get fieldAccount;
+
+  /// Placeholder text for the account field
+  ///
+  /// In en, this message translates to:
+  /// **'Select your account'**
+  String get fieldAccountPlaceHolder;
+
+  /// The cashflow field label
+  ///
+  /// In en, this message translates to:
+  /// **'Cashflow'**
+  String get fieldCashflow;
+
+  /// The category field label
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get fieldCategory;
+
+  /// Placeholder text for the category field
+  ///
+  /// In en, this message translates to:
+  /// **'Select your category'**
+  String get fieldCategoryPlaceHolder;
 
   /// A welcome message with the user's name.
   ///
@@ -137,17 +173,41 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
+  /// A note or message
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get note;
+
   /// The profile screen title
   ///
   /// In en, this message translates to:
   /// **'Profile'**
   String get profile;
 
+  /// A button to purchase an item
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get purchase;
+
+  /// The title of the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Make purchase'**
+  String get purchaseTitle;
+
   /// A button to retry an action
   ///
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// A button to save changes
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
 
   /// A welcome message for the app
   ///

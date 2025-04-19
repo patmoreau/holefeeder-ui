@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';

@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:holefeeder/core/constants/strings.dart';
 import 'package:holefeeder/core/enums/authentication_status_enum.dart';
-import 'package:holefeeder/core/providers/accounts_provider.dart';
-import 'package:holefeeder/core/providers/categories_provider.dart';
-import 'package:holefeeder/core/providers/tags_provider.dart';
-import 'package:holefeeder/core/providers/transactions_provider.dart';
+import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/core/utils/rest_client.dart';
 import 'package:holefeeder/router.dart';
+import 'package:holefeeder/ui/services/notification_service.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -24,7 +23,7 @@ bool launchedFromQuickAction = false;
 
 Future<void> main() async {
   await dotenv.load(
-    fileName: kReleaseMode ? ".env.production" : ".env.development",
+    fileName: 'assets/env/.env.${kReleaseMode ? "production" : "development"}',
   );
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -45,32 +44,16 @@ Future<void> main() async {
             return RestClient(_createDio(context), baseUrl: serverUrl);
           },
         ),
-        Provider<AccountsProvider>(
+        Provider<DataProvider>(
           create:
-              (BuildContext context) => AccountsProvider(
-                restClient: Provider.of<RestClient>(context, listen: false),
-              ),
+              (BuildContext context) =>
+                  DataProviderImpl(Provider.of<RestClient>(context, listen: false)),
         ),
-        Provider<CategoriesProvider>(
-          create:
-              (BuildContext context) => CategoriesProvider(
-                restClient: Provider.of<RestClient>(context, listen: false),
-              ),
-        ),
-        Provider<TagsProvider>(
-          create:
-              (BuildContext context) => TagsProvider(
-                restClient: Provider.of<RestClient>(context, listen: false),
-              ),
-        ),
-        Provider<TransactionsProvider>(
-          create:
-              (BuildContext context) => TransactionsProvider(
-                restClient: Provider.of<RestClient>(context, listen: false),
-              ),
+        Provider<NotificationService>(
+          create: (BuildContext context) => NotificationServiceImpl(context),
         ),
       ],
-      child: HolefeederApp(),
+      child: const HolefeederApp(),
     ),
   );
 

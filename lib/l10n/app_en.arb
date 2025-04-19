@@ -1,10 +1,61 @@
 {
   "@@locale": "en",
-  "holefeederTitle": "Holefeeder",
-  "@holefeederTitle": {
-    "description": "A simple hello world message"
+  "appTitle": "Holefeeder",
+  "@appTitle": {
+    "description": "The application name"
   },
-  "welcomeMessage": "Welcome to our app",
+  "back": "Back",
+  "@back": {
+    "description": "A button to go back to the previous screen"
+  },
+  "categories": "Categories",
+  "@categories": {
+    "description": "The categories screen title"
+  },
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "The dashboard screen title"
+  },
+  "errorGeneric": "An error occurred",
+  "@errorGeneric": {
+    "description": "A generic error message"
+  },
+  "fieldAccount": "Account",
+  "@fieldAccount": {
+    "description": "The account field label"
+  },
+  "fieldAccountPlaceHolder": "Select your account",
+  "@fieldAccountPlaceHolder": {
+    "description": "Placeholder text for the account field"
+  },
+  "fieldAmount": "Amount",
+  "@fieldAmount": {
+    "description": "The amount field label"
+  },
+  "fieldCashflow": "Cashflow",
+  "@fieldCashflow": {
+    "description": "The cashflow field label"
+  },
+  "fieldCategory": "Category",
+  "@fieldCategory": {
+    "description": "The category field label"
+  },
+  "fieldCategoryPlaceHolder": "Select your category",
+  "@fieldCategoryPlaceHolder": {
+    "description": "Placeholder text for the category field"
+  },
+  "fieldFrequency": "Frequency",
+  "@fieldFrequency": {
+    "description": "The frequency field label"
+  },
+  "fieldIntervalType": "Interval type",
+  "@fieldIntervalType": {
+    "description": "The interval type field label"
+  },
+  "fieldRecurrence": "Recurrence",
+  "@fieldRecurrence": {
+    "description": "The recurrence field label"
+  },
   "helloUser": "Hello {userName}",
   "@helloUser": {
     "description": "A welcome message with the user's name.",
@@ -15,8 +66,56 @@
       }
     }
   },
-  "appTitle": "Holefeeder",
-  "@appTitle": {
-    "description": "The application name"
+  "holefeederTitle": "Holefeeder",
+  "@holefeederTitle": {
+    "description": "A simple hello world message"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "The home screen title"
+  },
+  "intervalTypeWeekly": "Weekly",
+  "@intervalTypeWeekly": {
+    "description": "Weekly interval type"
+  },
+  "intervalTypeMonthly": "Monthly",
+  "@intervalTypeMonthly": {
+    "description": "Monthly interval type"
+  },
+  "intervalTypeYearly": "Yearly",
+  "@intervalTypeYearly": {
+    "description": "Yearly interval type"
+  },
+  "intervalTypeOneTime": "One time",
+  "@intervalTypeOneTime": {
+    "description": "One time interval type"
+  },
+  "note": "Note",
+  "@note": {
+    "description": "A note or message"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "The profile screen title"
+  },
+  "purchase": "Purchase",
+  "@purchase": {
+    "description": "A button to purchase an item"
+  },
+  "purchaseTitle": "Make purchase",
+  "@purchaseTitle": {
+    "description": "The title of the purchase screen"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "A button to retry an action"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "A button to save changes"
+  },
+  "welcomeMessage": "Welcome to our app",
+  "@welcomeMessage": {
+    "description": "A welcome message for the app"
   }
 }

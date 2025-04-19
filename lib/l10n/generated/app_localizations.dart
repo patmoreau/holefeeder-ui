@@ -95,17 +95,89 @@ abstract class AppLocalizations {
     Locale('fr')
   ];
 
-  /// A simple hello world message
+  /// The application name
   ///
   /// In en, this message translates to:
   /// **'Holefeeder'**
-  String get holefeederTitle;
+  String get appTitle;
 
-  /// No description provided for @welcomeMessage.
+  /// A button to go back to the previous screen
   ///
   /// In en, this message translates to:
-  /// **'Welcome to our app'**
-  String get welcomeMessage;
+  /// **'Back'**
+  String get back;
+
+  /// The categories screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
+  /// The dashboard screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboard;
+
+  /// A generic error message
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get errorGeneric;
+
+  /// The account field label
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get fieldAccount;
+
+  /// Placeholder text for the account field
+  ///
+  /// In en, this message translates to:
+  /// **'Select your account'**
+  String get fieldAccountPlaceHolder;
+
+  /// The amount field label
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get fieldAmount;
+
+  /// The cashflow field label
+  ///
+  /// In en, this message translates to:
+  /// **'Cashflow'**
+  String get fieldCashflow;
+
+  /// The category field label
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get fieldCategory;
+
+  /// Placeholder text for the category field
+  ///
+  /// In en, this message translates to:
+  /// **'Select your category'**
+  String get fieldCategoryPlaceHolder;
+
+  /// The frequency field label
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get fieldFrequency;
+
+  /// The interval type field label
+  ///
+  /// In en, this message translates to:
+  /// **'Interval type'**
+  String get fieldIntervalType;
+
+  /// The recurrence field label
+  ///
+  /// In en, this message translates to:
+  /// **'Recurrence'**
+  String get fieldRecurrence;
 
   /// A welcome message with the user's name.
   ///
@@ -113,11 +185,83 @@ abstract class AppLocalizations {
   /// **'Hello {userName}'**
   String helloUser(String userName);
 
-  /// The application name
+  /// A simple hello world message
   ///
   /// In en, this message translates to:
   /// **'Holefeeder'**
-  String get appTitle;
+  String get holefeederTitle;
+
+  /// The home screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// Weekly interval type
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get intervalTypeWeekly;
+
+  /// Monthly interval type
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get intervalTypeMonthly;
+
+  /// Yearly interval type
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get intervalTypeYearly;
+
+  /// One time interval type
+  ///
+  /// In en, this message translates to:
+  /// **'One time'**
+  String get intervalTypeOneTime;
+
+  /// A note or message
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get note;
+
+  /// The profile screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// A button to purchase an item
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get purchase;
+
+  /// The title of the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Make purchase'**
+  String get purchaseTitle;
+
+  /// A button to retry an action
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// A button to save changes
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// A welcome message for the app
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to our app'**
+  String get welcomeMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

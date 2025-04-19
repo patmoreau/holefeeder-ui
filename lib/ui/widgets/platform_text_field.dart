@@ -8,6 +8,8 @@ class PlatformTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final ValueChanged<String> onChanged;
+  final TextInputType? keyboardType;
+  final TextAlign textAlign;
 
   const PlatformTextField({
     super.key,
@@ -16,25 +18,32 @@ class PlatformTextField extends StatelessWidget {
     this.labelText,
     this.controller,
     this.validator,
+    this.keyboardType,
+    this.textAlign = TextAlign.start,
   });
 
   @override
   Widget build(BuildContext context) {
     return UniversalPlatform.isApple
-        ? CupertinoTextFormFieldRow(
+        ? CupertinoFormRow(
           prefix: labelText != null ? Text(labelText!) : null,
-          placeholder: labelText,
-          initialValue: initialValue,
-          controller: controller,
-          onChanged: onChanged,
-          validator: validator,
+          child: CupertinoTextFormFieldRow(
+            initialValue: initialValue,
+            controller: controller,
+            onChanged: onChanged,
+            validator: validator,
+            keyboardType: keyboardType,
+            textAlign: textAlign,
+          ),
         )
         : TextFormField(
-          decoration: InputDecoration(labelText: labelText),
+          decoration: InputDecoration(labelText: labelText, filled: true),
           initialValue: initialValue,
           controller: controller,
           validator: validator,
           onChanged: onChanged,
+          keyboardType: keyboardType,
+          textAlign: textAlign,
         );
   }
 }

@@ -17,3 +17,5 @@ const auth0Scopes = {
 
 const auth0Logo =
     'https://cdn.auth0.com/blog/hub/code-samples/hello-world/auth0-logo.svg';
+
+const kBackTextIcon = '‹';

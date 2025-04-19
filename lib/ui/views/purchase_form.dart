@@ -119,14 +119,14 @@ class PurchaseForm extends StatelessWidget {
     ),
     UniversalPlatform.isApple
         ? CupertinoFormRow(
-          prefix: const Text('Cashflow'),
+          prefix: Text(LocalizationService.current.fieldCashflow),
           child: CupertinoSwitch(
             value: model.formState.isCashflow,
             onChanged: model.updateIsCashflow,
           ),
         )
         : SwitchListTile(
-          title: const Text('Cashflow'),
+          title: Text(LocalizationService.current.fieldCashflow),
           value: model.formState.isCashflow,
           onChanged: model.updateIsCashflow,
         ),
@@ -139,44 +139,47 @@ class PurchaseForm extends StatelessWidget {
     ),
     UniversalPlatform.isApple
         ? CupertinoFormRow(
-          prefix: const Text('Interval Type'),
+          prefix: Text(LocalizationService.current.fieldIntervalType),
           child: CupertinoSlidingSegmentedControl<DateIntervalType>(
             groupValue: model.formState.intervalType,
             onValueChanged: model.updateIntervalType,
-            children: const {
-              DateIntervalType.daily: Text('Daily'),
-              DateIntervalType.weekly: Text('Weekly'),
-              DateIntervalType.monthly: Text('Monthly'),
-              DateIntervalType.yearly: Text('Yearly'),
-              DateIntervalType.oneTime: Text('One Time'),
+            children: {
+              DateIntervalType.weekly: Text(
+                LocalizationService.current.intervalTypeWeekly,
+              ),
+              DateIntervalType.monthly: Text(
+                LocalizationService.current.intervalTypeMonthly,
+              ),
+              DateIntervalType.yearly: Text(
+                LocalizationService.current.intervalTypeYearly,
+              ),
+              DateIntervalType.oneTime: Text(
+                LocalizationService.current.intervalTypeOneTime,
+              ),
             },
           ),
         )
         : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Interval Type'),
+            Text(LocalizationService.current.fieldIntervalType),
             SegmentedButton<DateIntervalType>(
-              segments: const [
-                ButtonSegment(
-                  value: DateIntervalType.daily,
-                  label: Text('Daily'),
-                ),
+              segments: [
                 ButtonSegment(
                   value: DateIntervalType.weekly,
-                  label: Text('Weekly'),
+                  label: Text(LocalizationService.current.intervalTypeWeekly),
                 ),
                 ButtonSegment(
                   value: DateIntervalType.monthly,
-                  label: Text('Monthly'),
+                  label: Text(LocalizationService.current.intervalTypeMonthly),
                 ),
                 ButtonSegment(
                   value: DateIntervalType.yearly,
-                  label: Text('Yearly'),
+                  label: Text(LocalizationService.current.intervalTypeYearly),
                 ),
                 ButtonSegment(
                   value: DateIntervalType.oneTime,
-                  label: Text('One Time'),
+                  label: Text(LocalizationService.current.intervalTypeOneTime),
                 ),
               ],
               selected: {model.formState.intervalType},
@@ -190,16 +193,18 @@ class PurchaseForm extends StatelessWidget {
           ],
         ),
     PlatformTextField(
-      labelText: 'Frequency',
+      labelText: LocalizationService.current.fieldFrequency,
       initialValue: model.formState.frequency.toString(),
       keyboardType: TextInputType.number,
       onChanged: (value) => model.updateFrequency(int.tryParse(value) ?? 1),
+      textAlign: TextAlign.right,
     ),
     PlatformTextField(
-      labelText: 'Recurrence',
+      labelText: LocalizationService.current.fieldRecurrence,
       initialValue: model.formState.recurrence.toString(),
       keyboardType: TextInputType.number,
       onChanged: (value) => model.updateRecurrence(int.tryParse(value) ?? 0),
+      textAlign: TextAlign.right,
     ),
   ];
 }

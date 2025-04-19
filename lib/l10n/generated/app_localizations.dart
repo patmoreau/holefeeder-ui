@@ -137,6 +137,12 @@ abstract class AppLocalizations {
   /// **'Select your account'**
   String get fieldAccountPlaceHolder;
 
+  /// The amount field label
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get fieldAmount;
+
   /// The cashflow field label
   ///
   /// In en, this message translates to:
@@ -155,6 +161,24 @@ abstract class AppLocalizations {
   /// **'Select your category'**
   String get fieldCategoryPlaceHolder;
 
+  /// The frequency field label
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get fieldFrequency;
+
+  /// The interval type field label
+  ///
+  /// In en, this message translates to:
+  /// **'Interval type'**
+  String get fieldIntervalType;
+
+  /// The recurrence field label
+  ///
+  /// In en, this message translates to:
+  /// **'Recurrence'**
+  String get fieldRecurrence;
+
   /// A welcome message with the user's name.
   ///
   /// In en, this message translates to:
@@ -172,6 +196,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Home'**
   String get home;
+
+  /// Weekly interval type
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get intervalTypeWeekly;
+
+  /// Monthly interval type
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get intervalTypeMonthly;
+
+  /// Yearly interval type
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get intervalTypeYearly;
+
+  /// One time interval type
+  ///
+  /// In en, this message translates to:
+  /// **'One time'**
+  String get intervalTypeOneTime;
 
   /// A note or message
   ///

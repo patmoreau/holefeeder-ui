@@ -2,6 +2,7 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class AmountField extends StatefulWidget {
@@ -56,34 +57,12 @@ class _AmountFieldState extends State<AmountField> {
   Widget build(BuildContext context) {
     return UniversalPlatform.isApple
         ? _buildCupertinoField()
-        : SizedBox(
-          width: double.infinity,
-          child: TextFormField(
-            controller: _controller,
-            focusNode: _focusNode,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(
-              labelText: 'Amount',
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
-            ),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
-            ],
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                widget.onChanged(Decimal.parse(value));
-              }
-            },
-          ),
-        );
+        : _buildMaterialField();
   }
 
   Widget _buildCupertinoField() => CupertinoTextFormFieldRow(
-    placeholder: 'Amount',
+    placeholder: LocalizationService.current.fieldAmount,
+    prefix: Text(LocalizationService.current.fieldAmount),
     controller: _controller,
     focusNode: _focusNode,
     keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -96,38 +75,41 @@ class _AmountFieldState extends State<AmountField> {
         widget.onChanged(Decimal.parse(value));
       }
     },
+    validator: _decimalValidator(),
   );
-}
 
-TextInputFormatter _decimalTextInputFormatter() =>
-    TextInputFormatter.withFunction((oldValue, newValue) {
-      final text = newValue.text;
-      if (text.isEmpty) return newValue;
-      final isValid = RegExp(r'^\d*\.?\d{0,2}$').hasMatch(text);
-      return isValid ? newValue : oldValue;
-    });
+  Widget _buildMaterialField() => SizedBox(
+    width: double.infinity,
+    child: TextFormField(
+      controller: _controller,
+      focusNode: _focusNode,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      decoration: InputDecoration(
+        labelText: LocalizationService.current.fieldAmount,
+        border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      ),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+      ],
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          widget.onChanged(Decimal.parse(value));
+        }
+      },
+      validator: _decimalValidator(),
+    ),
+  );
 
-void _onDecimalChanged(String value, ValueChanged<Decimal> onChanged) {
-  if (value.isEmpty) {
-    onChanged(Decimal.zero);
-  } else {
-    try {
-      final decimal = Decimal.parse(value);
-      onChanged(decimal);
-    } catch (_) {
-      // Invalid decimal format, ignore
+  String? Function(String?) _decimalValidator() => (String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an amount';
     }
-  }
+    try {
+      Decimal.parse(value);
+      return null;
+    } catch (_) {
+      return 'Please enter a valid amount';
+    }
+  };
 }
-
-String? Function(String?) _decimalValidator() => (String? value) {
-  if (value == null || value.isEmpty) {
-    return 'Please enter an amount';
-  }
-  try {
-    Decimal.parse(value);
-    return null;
-  } catch (_) {
-    return 'Please enter a valid amount';
-  }
-};

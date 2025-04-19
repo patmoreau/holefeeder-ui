@@ -30,6 +30,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldAccountPlaceHolder => 'Select your account';
 
   @override
+  String get fieldAmount => 'Amount';
+
+  @override
   String get fieldCashflow => 'Cashflow';
 
   @override
@@ -37,6 +40,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fieldCategoryPlaceHolder => 'Select your category';
+
+  @override
+  String get fieldFrequency => 'Frequency';
+
+  @override
+  String get fieldIntervalType => 'Interval type';
+
+  @override
+  String get fieldRecurrence => 'Recurrence';
 
   @override
   String helloUser(String userName) {
@@ -48,6 +60,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get home => 'Home';
+
+  @override
+  String get intervalTypeWeekly => 'Weekly';
+
+  @override
+  String get intervalTypeMonthly => 'Monthly';
+
+  @override
+  String get intervalTypeYearly => 'Yearly';
+
+  @override
+  String get intervalTypeOneTime => 'One time';
 
   @override
   String get note => 'Note';

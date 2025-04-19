@@ -9,6 +9,7 @@ class PlatformTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final ValueChanged<String> onChanged;
   final TextInputType? keyboardType;
+  final TextAlign textAlign;
 
   const PlatformTextField({
     super.key,
@@ -18,6 +19,7 @@ class PlatformTextField extends StatelessWidget {
     this.controller,
     this.validator,
     this.keyboardType,
+    this.textAlign = TextAlign.start,
   });
 
   @override
@@ -31,6 +33,7 @@ class PlatformTextField extends StatelessWidget {
             onChanged: onChanged,
             validator: validator,
             keyboardType: keyboardType,
+            textAlign: textAlign,
           ),
         )
         : TextFormField(
@@ -40,6 +43,7 @@ class PlatformTextField extends StatelessWidget {
           validator: validator,
           onChanged: onChanged,
           keyboardType: keyboardType,
+          textAlign: textAlign,
         );
   }
 }

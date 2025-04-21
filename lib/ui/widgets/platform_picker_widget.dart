@@ -36,6 +36,9 @@ class PlatformPicker<T> extends StatelessWidget {
           return items.map((T item) {
             return PullDownMenuItem(
               title: displayStringFor(item),
+              itemTheme: PullDownMenuItemTheme(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
               onTap: () {
                 onChanged(item);
               },

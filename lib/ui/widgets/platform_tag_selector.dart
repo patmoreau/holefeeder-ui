@@ -155,16 +155,19 @@ class _PlatformTagSelectorState extends State<PlatformTagSelector> {
       link: _layerLink,
       child:
           useCupertino
-              ? CupertinoTextField(
-                controller: _textController,
-                focusNode: _focusNode,
-                placeholder: 'Add Tag',
-                onChanged: _filterTags,
-                onSubmitted: _addTag,
-                suffix: CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  child: const Icon(CupertinoIcons.add_circled_solid),
-                  onPressed: () => _addTag(_textController.text),
+              ? CupertinoFormRow(
+                child: CupertinoTextField(
+                  decoration: BoxDecoration(),
+                  controller: _textController,
+                  focusNode: _focusNode,
+                  placeholder: 'Add Tag',
+                  onChanged: _filterTags,
+                  onSubmitted: _addTag,
+                  suffix: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    child: const Icon(CupertinoIcons.add_circled),
+                    onPressed: () => _addTag(_textController.text),
+                  ),
                 ),
               )
               : TextField(

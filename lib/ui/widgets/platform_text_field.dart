@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class PlatformTextField extends StatelessWidget {
@@ -10,6 +11,7 @@ class PlatformTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextInputType? keyboardType;
   final TextAlign textAlign;
+  final List<TextInputFormatter>? inputFormatters;
 
   const PlatformTextField({
     super.key,
@@ -20,21 +22,21 @@ class PlatformTextField extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.textAlign = TextAlign.start,
+    this.inputFormatters,
   });
 
   @override
   Widget build(BuildContext context) {
     return UniversalPlatform.isApple
-        ? CupertinoFormRow(
+        ? CupertinoTextFormFieldRow(
           prefix: labelText != null ? Text(labelText!) : null,
-          child: CupertinoTextFormFieldRow(
-            initialValue: initialValue,
-            controller: controller,
-            onChanged: onChanged,
-            validator: validator,
-            keyboardType: keyboardType,
-            textAlign: textAlign,
-          ),
+          initialValue: initialValue,
+          controller: controller,
+          onChanged: onChanged,
+          validator: validator,
+          keyboardType: keyboardType,
+          textAlign: textAlign,
+          inputFormatters: inputFormatters,
         )
         : TextFormField(
           decoration: InputDecoration(labelText: labelText, filled: true),
@@ -44,6 +46,7 @@ class PlatformTextField extends StatelessWidget {
           onChanged: onChanged,
           keyboardType: keyboardType,
           textAlign: textAlign,
+          inputFormatters: inputFormatters,
         );
   }
 }

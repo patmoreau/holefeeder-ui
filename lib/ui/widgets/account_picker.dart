@@ -16,14 +16,12 @@ class AccountPicker extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return PlatformPicker<Account>(
-      label: LocalizationService.current.fieldAccount,
-      value: selectedAccount,
-      items: accounts,
-      displayStringFor: (account) => account.name,
-      onChanged: onChanged,
-      placeholder: LocalizationService.current.fieldAccountPlaceHolder,
-    );
-  }
+  Widget build(BuildContext context) => PlatformPicker<Account>(
+    label: LocalizationService.current.fieldAccount,
+    value: selectedAccount,
+    items: accounts,
+    displayStringFor: (account) => account.name,
+    onChanged: onChanged,
+    placeholder: LocalizationService.current.fieldAccountPlaceHolder,
+  );
 }

@@ -107,6 +107,12 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get back;
 
+  /// A button to confirm an action
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get buttonOk;
+
   /// The categories screen title
   ///
   /// In en, this message translates to:
@@ -161,6 +167,12 @@ abstract class AppLocalizations {
   /// **'Select your category'**
   String get fieldCategoryPlaceHolder;
 
+  /// The date field label
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get fieldDate;
+
   /// The frequency field label
   ///
   /// In en, this message translates to:
@@ -178,6 +190,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recurrence'**
   String get fieldRecurrence;
+
+  /// The tags field label
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get fieldTags;
 
   /// A welcome message with the user's name.
   ///
@@ -227,6 +245,18 @@ abstract class AppLocalizations {
   /// **'Note'**
   String get note;
 
+  /// The title of the error notification
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get notificationServiceErrorTitle;
+
+  /// The title of the success notification
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get notificationServiceSuccessTitle;
+
   /// The profile screen title
   ///
   /// In en, this message translates to:
@@ -238,6 +268,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Purchase'**
   String get purchase;
+
+  /// The title of the basic details in the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Basic details'**
+  String get purchaseBasicDetails;
+
+  /// The title of the cashflow details in the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Cashflow details'**
+  String get purchaseCashflowDetails;
+
+  /// The title of the tags details in the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tags details'**
+  String get purchaseTagsDetails;
 
   /// The title of the purchase screen
   ///
@@ -256,6 +304,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// Validation message for decimal number input
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a positive decimal number'**
+  String get validationDecimalNumber;
+
+  /// Validation message for number greater than zero input
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a number greater than zero'**
+  String get validationNumberGreatherThanZero;
+
+  /// Validation message for positive number input
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a positive number'**
+  String get validationPositiveNumber;
 
   /// A welcome message for the app
   ///

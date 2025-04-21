@@ -15,6 +15,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get back => 'Retour';
 
   @override
+  String get buttonOk => 'OK';
+
+  @override
   String get categories => 'Catégories';
 
   @override
@@ -42,6 +45,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fieldCategoryPlaceHolder => 'Sélectionnez votre catégorie';
 
   @override
+  String get fieldDate => 'Date';
+
+  @override
   String get fieldFrequency => 'Fréquence';
 
   @override
@@ -49,6 +55,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fieldRecurrence => 'Récurrence';
+
+  @override
+  String get fieldTags => 'Étiquettes';
 
   @override
   String helloUser(String userName) {
@@ -77,10 +86,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get note => 'Note';
 
   @override
+  String get notificationServiceErrorTitle => 'Erreur';
+
+  @override
+  String get notificationServiceSuccessTitle => 'Succès';
+
+  @override
   String get profile => 'Profil';
 
   @override
   String get purchase => 'Acheter';
+
+  @override
+  String get purchaseBasicDetails => 'Détails de l\'achat';
+
+  @override
+  String get purchaseCashflowDetails => 'Détails du flux de trésorerie';
+
+  @override
+  String get purchaseTagsDetails => 'Étiquettes de l\'achat';
 
   @override
   String get purchaseTitle => 'Faire un achat';
@@ -90,6 +114,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get save => 'Enregistrer';
+
+  @override
+  String get validationDecimalNumber => 'Le nombre doit être décimal positif';
+
+  @override
+  String get validationNumberGreatherThanZero => 'Le nombre doit être supérieur à zéro';
+
+  @override
+  String get validationPositiveNumber => 'Le nombre doit être positif';
 
   @override
   String get welcomeMessage => 'Bienvenue dans notre application';

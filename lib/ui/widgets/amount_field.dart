@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:holefeeder/core/services/services.dart';
+import 'package:holefeeder/core/validators/validators.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class AmountField extends StatefulWidget {
@@ -75,7 +76,7 @@ class _AmountFieldState extends State<AmountField> {
         widget.onChanged(Decimal.parse(value));
       }
     },
-    validator: _decimalValidator(),
+    validator: decimalValidator(),
   );
 
   Widget _buildMaterialField() => SizedBox(
@@ -97,19 +98,7 @@ class _AmountFieldState extends State<AmountField> {
           widget.onChanged(Decimal.parse(value));
         }
       },
-      validator: _decimalValidator(),
+      validator: decimalValidator(),
     ),
   );
-
-  String? Function(String?) _decimalValidator() => (String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter an amount';
-    }
-    try {
-      Decimal.parse(value);
-      return null;
-    } catch (_) {
-      return 'Please enter a valid amount';
-    }
-  };
 }

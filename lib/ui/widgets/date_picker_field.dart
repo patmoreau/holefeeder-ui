@@ -1,7 +1,7 @@
 import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:holefeeder/core/constants/themes.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_platform/universal_platform.dart';
 
@@ -23,10 +23,8 @@ class DatePickerField extends StatelessWidget {
   }
 
   Widget _buildCupertinoDatePicker(BuildContext context) {
-    final formTheme = Theme.of(context).extension<FormThemeExtension>();
     return CupertinoFormRow(
-      prefix: const Text('Date'),
-      padding: formTheme?.rowPadding,
+      prefix: Text(LocalizationService.current.fieldDate),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -55,8 +53,8 @@ class DatePickerField extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Date',
+            Text(
+              LocalizationService.current.fieldDate,
               style: TextStyle(fontSize: 12, color: Colors.black54),
             ),
             const SizedBox(height: 4),

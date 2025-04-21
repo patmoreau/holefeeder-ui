@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/extensions/build_context_extensions.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:holefeeder/holefeeder_app.dart';
@@ -58,10 +58,7 @@ class NotificationServiceImpl implements NotificationService {
               CupertinoDialogAction(
                 child: Text(LocalizationService.current.buttonOk),
                 onPressed: () {
-                  final router = GoRouter.of(dialogContext);
-                  if (router.canPop()) {
-                    router.pop();
-                  }
+                  dialogContext.popOrGoHome();
                 },
               ),
             ],

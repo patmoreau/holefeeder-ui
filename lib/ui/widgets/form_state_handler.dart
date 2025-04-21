@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/ui/services/notification_provider.dart';
 
 class FormStateHandler extends StatelessWidget {
   final BaseFormState formState;

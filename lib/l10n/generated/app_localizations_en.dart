@@ -45,6 +45,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldCategoryPlaceHolder => 'Select your category';
 
   @override
+  String get fieldDate => 'Date';
+
+  @override
   String get fieldFrequency => 'Frequency';
 
   @override
@@ -52,6 +55,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fieldRecurrence => 'Recurrence';
+
+  @override
+  String get fieldTags => 'Tags';
 
   @override
   String helloUser(String userName) {
@@ -92,6 +98,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchase => 'Purchase';
 
   @override
+  String get purchaseBasicDetails => 'Basic details';
+
+  @override
+  String get purchaseCashflowDetails => 'Cashflow details';
+
+  @override
+  String get purchaseTagsDetails => 'Tags details';
+
+  @override
   String get purchaseTitle => 'Make purchase';
 
   @override
@@ -99,6 +114,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get validationDecimalNumber => 'Please enter a positive decimal number';
+
+  @override
+  String get validationNumberGreatherThanZero => 'Please enter a number greater than zero';
+
+  @override
+  String get validationPositiveNumber => 'Please enter a positive number';
 
   @override
   String get welcomeMessage => 'Welcome to our app';

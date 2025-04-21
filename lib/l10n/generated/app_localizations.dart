@@ -167,6 +167,12 @@ abstract class AppLocalizations {
   /// **'Select your category'**
   String get fieldCategoryPlaceHolder;
 
+  /// The date field label
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get fieldDate;
+
   /// The frequency field label
   ///
   /// In en, this message translates to:
@@ -184,6 +190,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recurrence'**
   String get fieldRecurrence;
+
+  /// The tags field label
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get fieldTags;
 
   /// A welcome message with the user's name.
   ///
@@ -257,6 +269,24 @@ abstract class AppLocalizations {
   /// **'Purchase'**
   String get purchase;
 
+  /// The title of the basic details in the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Basic details'**
+  String get purchaseBasicDetails;
+
+  /// The title of the cashflow details in the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Cashflow details'**
+  String get purchaseCashflowDetails;
+
+  /// The title of the tags details in the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tags details'**
+  String get purchaseTagsDetails;
+
   /// The title of the purchase screen
   ///
   /// In en, this message translates to:
@@ -274,6 +304,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// Validation message for decimal number input
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a positive decimal number'**
+  String get validationDecimalNumber;
+
+  /// Validation message for number greater than zero input
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a number greater than zero'**
+  String get validationNumberGreatherThanZero;
+
+  /// Validation message for positive number input
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a positive number'**
+  String get validationPositiveNumber;
 
   /// A welcome message for the app
   ///

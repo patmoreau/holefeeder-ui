@@ -26,5 +26,6 @@
     // strings. This setting will prevent that.
     "editor.wordBasedSuggestions": "off",
   },
-  "dart.lineLength": 80
+  "dart.lineLength": 80,
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

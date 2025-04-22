@@ -60,6 +60,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldTags => 'Tags';
 
   @override
+  String get fieldTagsPlaceHolder => 'Add hashtag';
+
+  @override
   String helloUser(String userName) {
     return 'Hello $userName';
   }

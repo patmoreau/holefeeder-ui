@@ -68,6 +68,10 @@
   "@fieldTags": {
     "description": "The tags field label"
   },
+  "fieldTagsPlaceHolder": "Add hashtag",
+  "@fieldTagsPlaceHolder": {
+    "description": "The tags field place holder"
+  },
   "helloUser": "Hello {userName}",
   "@helloUser": {
     "description": "A welcome message with the user's name.",

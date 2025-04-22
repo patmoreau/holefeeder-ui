@@ -8,8 +8,8 @@ import 'package:holefeeder/ui/widgets/account_picker.dart';
 import 'package:holefeeder/ui/widgets/amount_field.dart';
 import 'package:holefeeder/ui/widgets/category_picker.dart';
 import 'package:holefeeder/ui/widgets/date_picker_field.dart';
+import 'package:holefeeder/ui/widgets/hashtag_selector.dart';
 import 'package:holefeeder/ui/widgets/interval_type_picker_field.dart';
-import 'package:holefeeder/ui/widgets/platform_tag_selector.dart';
 import 'package:holefeeder/ui/widgets/platform_text_field.dart';
 import 'package:universal_platform/universal_platform.dart';
 
@@ -120,10 +120,12 @@ class PurchaseForm extends StatelessWidget {
   ];
 
   List<Widget> _buildTagsFields() => [
-    PlatformTagSelector(
-      allTags: model.tags,
-      selectedTags: model.formState.tags,
-      onTagsChanged: model.updateTags,
+    HashtagSelector(
+      availableHashtags: model.tags,
+      initialHashtags: model.formState.tags,
+      onHashtagsChanged: model.updateTags,
+      allowSpaces: true,
+      inputFieldHint: LocalizationService.current.fieldTagsPlaceHolder,
     ),
   ];
 

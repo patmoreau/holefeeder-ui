@@ -197,6 +197,12 @@ abstract class AppLocalizations {
   /// **'Tags'**
   String get fieldTags;
 
+  /// The tags field place holder
+  ///
+  /// In en, this message translates to:
+  /// **'Add hashtag'**
+  String get fieldTagsPlaceHolder;
+
   /// A welcome message with the user's name.
   ///
   /// In en, this message translates to:

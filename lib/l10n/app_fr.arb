@@ -17,6 +17,7 @@
   "fieldIntervalType": "Type d'intervalle",
   "fieldRecurrence": "Récurrence",
   "fieldTags": "Étiquettes",
+  "fieldTagsPlaceHolder": "Ajoutez vos étiquettes",
   "helloUser": "Bonjour {userName}",
   "holefeederTitle": "Holefeeder",
   "home": "Accueil",

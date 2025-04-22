@@ -60,6 +60,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fieldTags => 'Étiquettes';
 
   @override
+  String get fieldTagsPlaceHolder => 'Ajoutez vos étiquettes';
+
+  @override
   String helloUser(String userName) {
     return 'Bonjour $userName';
   }

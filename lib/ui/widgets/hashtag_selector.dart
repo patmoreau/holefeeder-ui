@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:universal_platform/universal_platform.dart';
 // Import for TextOverflow
 
@@ -27,7 +28,7 @@ class HashtagSelector extends StatefulWidget {
     this.availableHashtags,
     required this.onHashtagsChanged,
     this.hashtagPrefix = '#',
-    this.inputFieldHint = 'Add hashtag',
+    required this.inputFieldHint,
     this.selectedHashtagStyle,
     this.availableHashtagStyle,
     this.selectedHashtagColor,
@@ -49,11 +50,13 @@ class _HashtagSelectorState extends State<HashtagSelector> {
   late List<String> _selectedHashtags;
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _textFieldFocusNode = FocusNode();
+  String _filterText = '';
 
   @override
   void initState() {
     super.initState();
     _selectedHashtags = [...widget.initialHashtags];
+    _textEditingController.addListener(_onFilterTextChanged);
   }
 
   @override
@@ -61,6 +64,12 @@ class _HashtagSelectorState extends State<HashtagSelector> {
     _textEditingController.dispose();
     _textFieldFocusNode.dispose();
     super.dispose();
+  }
+
+  void _onFilterTextChanged() {
+    setState(() {
+      _filterText = _textEditingController.text.toLowerCase();
+    });
   }
 
   void _addHashtag(String hashtag) {
@@ -95,98 +104,112 @@ class _HashtagSelectorState extends State<HashtagSelector> {
     final isCupertino = UniversalPlatform.isApple;
     final allHashtags = [..._selectedHashtags];
     if (widget.availableHashtags != null) {
-      allHashtags.addAll(
-        widget.availableHashtags!.where(
-          (tag) => !_selectedHashtags.contains(tag),
-        ),
+      final filteredAvailable = widget.availableHashtags!.where(
+        (tag) =>
+            !_selectedHashtags.contains(tag) &&
+            (_filterText.isEmpty || tag.toLowerCase().contains(_filterText)),
       );
+      allHashtags.addAll(filteredAvailable);
     }
 
     if (allHashtags.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    return Wrap(
-      spacing: 8.0,
-      runSpacing: 4.0,
-      children:
-          allHashtags.map((tag) {
-            final isSelected = _selectedHashtags.contains(tag);
-            final baseStyle = TextStyle(
-              fontSize: 14.0,
-              color:
-                  isSelected
-                      ? (isCupertino
-                          ? CupertinoTheme.of(context).primaryColor
-                          : widget.selectedHashtagColor ??
-                              Theme.of(context).primaryColor)
-                      : (widget.availableHashtagColor ??
-                          (isCupertino
-                              ? CupertinoColors.label
-                              : Colors.grey[700])),
-            );
-
-            return GestureDetector(
-              onTap:
-                  isSelected
-                      ? () => _removeHashtag(tag)
-                      : () => _addHashtag(tag),
-              child: Container(
-                padding:
-                    widget.chipPadding ??
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                decoration: BoxDecoration(
+    Widget scrollView = SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 12.0),
+        child: Row(
+          children:
+              allHashtags.map((tag) {
+                final isSelected = _selectedHashtags.contains(tag);
+                final baseStyle = TextStyle(
+                  fontSize: 14.0,
                   color:
                       isSelected
                           ? (isCupertino
-                              ? CupertinoTheme.of(
-                                context,
-                              ).primaryColor.withOpacity(0.2)
-                              : widget.selectedHashtagColor?.withOpacity(0.2) ??
-                                  Theme.of(
-                                    context,
-                                  ).primaryColor.withOpacity(0.2))
-                          : (isCupertino
-                              ? CupertinoColors.systemGrey.withOpacity(0.1)
-                              : Colors.grey.withOpacity(0.1)),
-                  borderRadius: BorderRadius.circular(
-                    widget.borderRadius ?? 8.0,
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '${widget.hashtagPrefix}$tag',
-                      style:
-                          (isSelected
-                                  ? widget.selectedHashtagStyle
-                                  : widget.availableHashtagStyle)
-                              ?.merge(baseStyle) ??
-                          baseStyle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (isSelected) ...[
-                      const SizedBox(width: 4.0),
-                      widget.deleteIcon ??
-                          Icon(
-                            isCupertino
-                                ? CupertinoIcons.clear_circled_solid
-                                : Icons.cancel,
-                            size: 16.0,
-                            color:
-                                isCupertino
-                                    ? CupertinoColors.systemGrey
-                                    : widget.selectedHashtagColor ??
-                                        Colors.grey,
+                              ? CupertinoTheme.of(context).primaryColor
+                              : widget.selectedHashtagColor ??
+                                  Theme.of(context).primaryColor)
+                          : (widget.availableHashtagColor ??
+                              (isCupertino
+                                  ? CupertinoColors.label
+                                  : Colors.grey[700])),
+                );
+
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: GestureDetector(
+                    onTap:
+                        isSelected
+                            ? () => _removeHashtag(tag)
+                            : () => _addHashtag(tag),
+                    child: Container(
+                      padding:
+                          widget.chipPadding ??
+                          const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 4.0,
                           ),
-                    ],
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected
+                                ? (isCupertino
+                                    ? CupertinoTheme.of(context).primaryColor
+                                        .withAlpha((0.2 * 255).round())
+                                    : (widget.selectedHashtagColor ??
+                                            Theme.of(context).primaryColor)
+                                        .withAlpha((0.2 * 255).round()))
+                                : (isCupertino
+                                    ? CupertinoColors.systemGrey.withAlpha(
+                                      (0.1 * 255).round(),
+                                    )
+                                    : Colors.grey.withAlpha(
+                                      (0.1 * 255).round(),
+                                    )),
+                        borderRadius: BorderRadius.circular(
+                          widget.borderRadius ?? 8.0,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${widget.hashtagPrefix}$tag',
+                            style:
+                                (isSelected
+                                        ? widget.selectedHashtagStyle
+                                        : widget.availableHashtagStyle)
+                                    ?.merge(baseStyle) ??
+                                baseStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+        ),
+      ),
     );
+
+    if (isCupertino) {
+      scrollView = CupertinoScrollbar(
+        thickness: 4.0,
+        radius: const Radius.circular(4.0),
+        child: scrollView,
+      );
+    } else {
+      scrollView = Scrollbar(
+        thickness: 4.0,
+        radius: const Radius.circular(4.0),
+        child: scrollView,
+      );
+    }
+
+    return scrollView;
   }
 
   Widget _buildInputField() {
@@ -198,45 +221,53 @@ class _HashtagSelectorState extends State<HashtagSelector> {
           (isCupertino ? CupertinoColors.black : Colors.black),
     );
 
-    return isCupertino
-        ? CupertinoTextField(
-          controller: _textEditingController,
-          focusNode: _textFieldFocusNode,
-          placeholder: widget.inputFieldHint,
-          placeholderStyle: const TextStyle(
-            color: CupertinoColors.placeholderText,
-          ),
-          onSubmitted: _addHashtag,
-          style: widget.selectedHashtagStyle?.merge(baseStyle) ?? baseStyle,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: widget.inputFieldBackgroundColor ?? CupertinoColors.white,
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.0),
-            border: Border.all(color: CupertinoColors.lightBackgroundGray),
-          ),
-        )
-        : TextField(
-          controller: _textEditingController,
-          focusNode: _textFieldFocusNode,
-          decoration: InputDecoration(
-            hintText: widget.inputFieldHint,
-            hintStyle: TextStyle(color: Colors.grey[400]),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.0),
-              borderSide: BorderSide.none, // Remove the border
-            ),
-            filled: true,
-            fillColor:
-                widget.inputFieldBackgroundColor ??
-                Colors.white, // Set the fill color
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 12.0,
-            ), // Adjust padding as needed, original was 16
-          ),
-          onSubmitted: _addHashtag,
-          style: widget.selectedHashtagStyle?.merge(baseStyle) ?? baseStyle,
-        );
+    final textField =
+        isCupertino
+            ? CupertinoTextField(
+              controller: _textEditingController,
+              focusNode: _textFieldFocusNode,
+              placeholder: widget.inputFieldHint,
+              placeholderStyle: const TextStyle(
+                color: CupertinoColors.placeholderText,
+              ),
+              onSubmitted: (value) {
+                if (value.isNotEmpty) _addHashtag(value);
+              },
+              style: widget.selectedHashtagStyle?.merge(baseStyle) ?? baseStyle,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color:
+                    widget.inputFieldBackgroundColor ?? CupertinoColors.white,
+                borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.0),
+                border: Border.all(color: CupertinoColors.lightBackgroundGray),
+              ),
+            )
+            : TextField(
+              controller: _textEditingController,
+              focusNode: _textFieldFocusNode,
+              decoration: InputDecoration(
+                hintText: widget.inputFieldHint,
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    widget.borderRadius ?? 8.0,
+                  ),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: widget.inputFieldBackgroundColor ?? Colors.white,
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 12.0,
+                ),
+              ),
+              onSubmitted: (value) {
+                if (value.isNotEmpty) _addHashtag(value);
+              },
+              style: widget.selectedHashtagStyle?.merge(baseStyle) ?? baseStyle,
+            );
+
+    return textField;
   }
 
   @override

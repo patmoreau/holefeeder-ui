@@ -124,6 +124,8 @@ class PurchaseForm extends StatelessWidget {
       availableHashtags: model.tags,
       initialHashtags: model.formState.tags,
       onHashtagsChanged: model.updateTags,
+      allowSpaces: true,
+      inputFieldHint: LocalizationService.current.fieldTagsPlaceHolder,
     ),
   ];
 

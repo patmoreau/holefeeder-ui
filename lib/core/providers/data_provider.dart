@@ -141,9 +141,9 @@ class DataProviderImpl implements DataProvider {
               frequency: 1,
             );
       }
-      throw Exception('Could not get the store item');
+      throw Exception('Could not retrieve user settings');
     } catch (e) {
-      throw Exception('Could not get the store item');
+      throw Exception('Could not retrieve user settings');
     }
   }
 

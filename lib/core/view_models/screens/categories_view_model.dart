@@ -3,29 +3,7 @@ import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/base_view_model.dart';
-
-class CategoriesFormState extends BaseFormState {
-  final List<Category> categories;
-
-  const CategoriesFormState({
-    this.categories = const [],
-    super.state = ViewFormState.initial,
-    super.errorMessage,
-  });
-
-  @override
-  CategoriesFormState copyWith({
-    List<Category>? categories,
-    ViewFormState? state,
-    String? errorMessage,
-  }) {
-    return CategoriesFormState(
-      categories: categories ?? this.categories,
-      state: state ?? this.state,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
-}
+import 'package:holefeeder/core/view_models/screens/categories_form_state.dart';
 
 class CategoriesViewModel extends BaseViewModel<CategoriesFormState> {
   final DataProvider _dataProvider;

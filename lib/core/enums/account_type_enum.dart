@@ -1,3 +1,5 @@
+import 'package:decimal/decimal.dart';
+
 enum AccountType {
   checking,
   creditCard,
@@ -18,5 +20,16 @@ extension AccountTypeExtension on AccountType {
 
   String toStringValue() {
     return toString().split('.').last;
+  }
+
+  Decimal get multiplier {
+    switch (this) {
+      case AccountType.checking:
+      case AccountType.investment:
+      case AccountType.savings:
+        return Decimal.fromInt(1);
+      default:
+        return Decimal.fromInt(-1);
+    }
   }
 }

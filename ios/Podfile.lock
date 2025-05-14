@@ -46,12 +46,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Auth0: 2876d0c36857422eda9cb580a6cc896c7d14cb36
-  auth0_flutter: f07bdadbe380d8d257af41bd84096d3f69e2a460
+  auth0_flutter: eb1c74a8ddbd0a08533e47838a885b39c11b3951
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
+  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   JWTDecode: 7dae24cb9bf9b608eae61e5081029ec169bb5527
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  quick_actions_ios: 56f3cbaa71e94f212838d1f9fe354bd0734779bf
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  quick_actions_ios: 4b07fb49d8d8f3518d7565fbb7a91014067a7d82
   SimpleKeychain: 768cf43ae778b1c21816e94dddf01bb8ee96a075
 
 PODFILE CHECKSUM: 251cb053df7158f337c0712f2ab29f4e0fa474ce

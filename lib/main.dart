@@ -8,6 +8,7 @@ import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/core/utils/rest_client.dart';
+import 'package:holefeeder/core/view_models/user_settings_view_model.dart';
 import 'package:holefeeder/router.dart';
 import 'package:holefeeder/ui/services/notification_service.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ Future<void> main() async {
   // Check authentication status before proceeding
   final authStatus = await authenticationService.statusStream.first;
 
+  // Create MaterialApp with providers
   runApp(
     MultiProvider(
       providers: <SingleChildWidget>[
@@ -52,6 +54,16 @@ Future<void> main() async {
         ),
         Provider<NotificationService>(
           create: (BuildContext context) => NotificationServiceImpl(context),
+        ),
+        ChangeNotifierProvider<UserSettingsViewModel>(
+          create:
+              (BuildContext context) => UserSettingsViewModel(
+                dataProvider: Provider.of<DataProvider>(context, listen: false),
+                notificationService: Provider.of<NotificationService>(
+                  context,
+                  listen: false,
+                ),
+              ),
         ),
       ],
       child: const HolefeederApp(),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:universal_platform/universal_platform.dart';
 
+export './currency_text.dart';
+
 abstract final class HolefeederWidgets {
   static Widget activityIndicator() =>
       UniversalPlatform.isApple

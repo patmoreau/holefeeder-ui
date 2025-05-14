@@ -3,44 +3,25 @@ import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/core/services/notification_service.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
 import 'package:holefeeder/core/view_models/base_view_model.dart';
+import 'package:holefeeder/core/view_models/screens/dashboard_form_state.dart';
+import 'package:holefeeder/core/view_models/user_settings_view_model.dart';
 
-class DashboardFormState extends BaseFormState {
-  final List<Account> accounts;
-  final bool isRefreshing;
-
-  const DashboardFormState({
-    this.accounts = const [],
-    this.isRefreshing = false,
-    super.state = ViewFormState.initial,
-    super.errorMessage,
-  });
-
-  @override
-  DashboardFormState copyWith({
-    List<Account>? accounts,
-    bool? isRefreshing,
-    ViewFormState? state,
-    String? errorMessage,
-  }) {
-    return DashboardFormState(
-      accounts: accounts ?? this.accounts,
-      isRefreshing: isRefreshing ?? this.isRefreshing,
-      state: state ?? this.state,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
-}
+import 'account_view_model.dart';
 
 class DashboardViewModel extends BaseViewModel<DashboardFormState> {
+  final UserSettingsViewModel _userSettingsViewModel;
   final DataProvider _dataProvider;
 
-  List<Account> get accounts => formState.accounts;
+  List<AccountViewModel> get accounts => formState.accounts;
+
   bool get isRefreshing => formState.isRefreshing;
 
   DashboardViewModel({
     required DataProvider dataProvider,
+    required UserSettingsViewModel userSettingsViewModel,
     NotificationService? notificationService,
-  }) : _dataProvider = dataProvider,
+  }) : _userSettingsViewModel = userSettingsViewModel,
+        _dataProvider = dataProvider,
        super(const DashboardFormState(), notificationService) {
     loadDashboardData();
   }
@@ -49,7 +30,10 @@ class DashboardViewModel extends BaseViewModel<DashboardFormState> {
     await handleAsync(() async {
       final accounts = await _dataProvider.getAccounts();
       updateState(
-        (s) => s.copyWith(accounts: accounts, state: ViewFormState.ready),
+        (s) => s.copyWith(
+          accounts: accounts.map(toElement).toList(),
+          state: ViewFormState.ready,
+        ),
       );
     });
   }
@@ -63,5 +47,13 @@ class DashboardViewModel extends BaseViewModel<DashboardFormState> {
       await showNotification('Dashboard refreshed successfully');
       updateState((s) => s.copyWith(isRefreshing: false));
     });
+  }
+
+  AccountViewModel toElement(Account account) {
+    return AccountViewModel(
+      account: account,
+      userSettingsViewModel: _userSettingsViewModel,
+      dataProvider: _dataProvider,
+    );
   }
 }

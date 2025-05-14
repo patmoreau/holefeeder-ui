@@ -1,20 +1,39 @@
+import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/models/make_purchase.dart';
 import 'package:holefeeder/core/models/tag.dart';
+import 'package:holefeeder/core/models/user_settings.dart';
 import 'package:holefeeder/core/utils/rest_client.dart';
+import 'dart:convert';
+
+import '../models/upcoming.dart';
 
 abstract class DataProvider {
+  // Accounts
   Future<List<Account>> getAccounts();
 
   Future<Account> getAccount(String id);
 
+  // Cashflows
+  Future<List<Upcoming>> getUpcomingCashflows(
+    DateTime from,
+    DateTime to,
+    String? accountId,
+  );
+
+  // Categories
   Future<List<Category>> getCategories();
 
   Future<Category> getCategory(String id);
 
+  // User Settings
+  Future<UserSettings> getUserSettings();
+
+  // Tags
   Future<List<Tag>> getTags();
 
+  // Transactions
   Future<String?> makePurchase(MakePurchase item);
 }
 
@@ -56,6 +75,28 @@ class DataProviderImpl implements DataProvider {
     }
   }
 
+  // Cashflows
+  @override
+  Future<List<Upcoming>> getUpcomingCashflows(
+    DateTime from,
+    DateTime to,
+    String? accountId,
+  ) async {
+    try {
+      final result = await _restClient.getUpcomingCashflows(
+        from,
+        to,
+        accountId,
+      );
+      if (result.response.statusCode == 200) {
+        return result.data;
+      }
+      throw Exception('Could not get the upcoming cashflows');
+    } catch (e) {
+      throw Exception('Could not get the upcoming cashflows');
+    }
+  }
+
   // Categories
   @override
   Future<List<Category>> getCategories() async {
@@ -83,6 +124,26 @@ class DataProviderImpl implements DataProvider {
       throw Exception('Could not get the category');
     } catch (e) {
       throw Exception('Could not get the category');
+    }
+  }
+
+  // Store Items
+  @override
+  Future<UserSettings> getUserSettings() async {
+    try {
+      final result = await _restClient.getStoreItems(['code:eq:settings']);
+      if (result.response.statusCode == 200) {
+        return result.data.isNotEmpty
+            ? UserSettings.fromJson(jsonDecode(result.data[0].data))
+            : UserSettings(
+              effectiveDate: DateTime.now(),
+              intervalType: DateIntervalType.monthly,
+              frequency: 1,
+            );
+      }
+      throw Exception('Could not get the store item');
+    } catch (e) {
+      throw Exception('Could not get the store item');
     }
   }
 

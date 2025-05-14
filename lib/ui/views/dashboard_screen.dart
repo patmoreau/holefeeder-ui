@@ -8,9 +8,10 @@ import 'package:holefeeder/core/view_models/screens/dashboard_view_model.dart';
 import 'package:holefeeder/ui/widgets/account_list_tile.dart';
 import 'package:holefeeder/ui/widgets/form_state_handler.dart';
 import 'package:holefeeder/ui/widgets/view_model_provider.dart';
-import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+
+import '../../core/view_models/user_settings_view_model.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -20,6 +21,7 @@ class DashboardScreen extends StatelessWidget {
     create:
         (ctx) => DashboardViewModel(
           dataProvider: ctx.read<DataProvider>(),
+          userSettingsViewModel: ctx.read<UserSettingsViewModel>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
     builder:
@@ -70,13 +72,6 @@ class DashboardScreen extends StatelessWidget {
                     (account) => AccountListTile(account: account),
                   ),
                 const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: HolefeederWidgets.button(
-                    onPressed: () => context.go('/settings'),
-                    child: const Text('Go to Settings'),
-                  ),
-                ),
               ],
             ),
           ),

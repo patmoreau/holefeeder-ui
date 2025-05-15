@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
+import 'package:holefeeder/core/view_models/screens/account_view_model.dart';
+import 'package:holefeeder/ui/views/account_screen.dart';
 import 'package:holefeeder/ui/views/home_screen.dart';
 import 'package:holefeeder/ui/views/login_screen.dart';
 import 'package:holefeeder/ui/views/purchase_screen.dart';
@@ -60,12 +62,9 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/settings',
-      pageBuilder: (context, state) {
-        return CupertinoPage(
-          fullscreenDialog: true,
-          child: CupertinoFormExample(),
-        );
+      path: '/account',
+      builder: (context, state) {
+        return AccountScreen(account: state.extra as AccountViewModel);
       },
     ),
   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/view_models/screens/account_view_model.dart';
 import 'package:holefeeder/ui/widgets/currency_text.dart';
 import 'package:holefeeder/ui/widgets/view_model_provider.dart';
@@ -32,6 +33,7 @@ class AccountListTile extends StatelessWidget {
               horizontal: 24.0,
               vertical: 16.0,
             ),
+            onTap: () => context.push('/account', extra: model),
             leading: Container(
               width: 28,
               height: 28,
@@ -107,6 +109,7 @@ class AccountListTile extends StatelessWidget {
               horizontal: 24.0,
               vertical: 16.0,
             ),
+            onTap: () => context.push('/account', extra: model),
             leading: Container(
               width: 28,
               height: 28,

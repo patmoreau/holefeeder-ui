@@ -121,8 +121,6 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
                   : null,
         ),
       );
-
-      await showNotification('Purchase completed successfully');
     });
   }
 }

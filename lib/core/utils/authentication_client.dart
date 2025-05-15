@@ -60,6 +60,8 @@ abstract class AuthenticationClient {
   Future<void> signup();
 
   Future<void> logout();
+
+  Future<void> verifyAuthenticationStatus();
 }
 
 class MobileAuthenticationClient extends AuthenticationClient {
@@ -120,6 +122,19 @@ class MobileAuthenticationClient extends AuthenticationClient {
       clear();
     } catch (e) {
       setError('Logout error: $e');
+    }
+  }
+
+  @override
+  Future<void> verifyAuthenticationStatus() async {
+    try {
+      final hasValidCredentials =
+          await _auth0.credentialsManager.hasValidCredentials();
+      if (!hasValidCredentials) {
+        clear();
+      }
+    } catch (e) {
+      setError('Verification error: $e');
     }
   }
 }
@@ -189,6 +204,13 @@ class WebAuthenticationClient extends AuthenticationClient {
       clear();
     } catch (e) {
       setError('Logout error: $e');
+    }
+  }
+
+  @override
+  Future<void> verifyAuthenticationStatus() async {
+    if (_credentials == null) {
+      setStatus(AuthenticationStatus.unauthenticated);
     }
   }
 }

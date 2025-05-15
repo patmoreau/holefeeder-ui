@@ -21,7 +21,7 @@ class DashboardViewModel extends BaseViewModel<DashboardFormState> {
     required UserSettingsViewModel userSettingsViewModel,
     NotificationService? notificationService,
   }) : _userSettingsViewModel = userSettingsViewModel,
-        _dataProvider = dataProvider,
+       _dataProvider = dataProvider,
        super(const DashboardFormState(), notificationService) {
     loadDashboardData();
   }
@@ -44,7 +44,6 @@ class DashboardViewModel extends BaseViewModel<DashboardFormState> {
     await handleAsync(() async {
       updateState((s) => s.copyWith(isRefreshing: true));
       await loadDashboardData();
-      await showNotification('Dashboard refreshed successfully');
       updateState((s) => s.copyWith(isRefreshing: false));
     });
   }

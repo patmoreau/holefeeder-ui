@@ -48,7 +48,6 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
     await handleAsync(() async {
       updateState((s) => s.copyWith(isRefreshing: true));
       await loadData();
-      await showNotification('Dashboard refreshed successfully');
       updateState((s) => s.copyWith(isRefreshing: false));
     });
   }

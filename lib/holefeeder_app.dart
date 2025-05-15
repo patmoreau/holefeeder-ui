@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:holefeeder/core/constants/themes.dart';
+import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/core/services/localization_service.dart';
 import 'package:holefeeder/l10n/l10n.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:provider/provider.dart';
 
 import 'main.dart';
 import 'router.dart';
@@ -22,22 +24,16 @@ class HolefeederApp extends StatefulWidget {
   State<HolefeederApp> createState() => _HolefeederAppState();
 }
 
-class _HolefeederAppState extends State<HolefeederApp> {
+class _HolefeederAppState extends State<HolefeederApp>
+    with WidgetsBindingObserver {
   final quickActions = const QuickActions();
-
-  void _setupQuickActions() {
-    quickActions.setShortcutItems([
-      const ShortcutItem(
-        type: 'action_purchase',
-        localizedTitle: 'New Purchase',
-        icon: 'add_chart',
-      ),
-    ]);
-  }
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+
     if (UniversalPlatform.isMobile) {
       quickActions.initialize((String shortcutType) {
         if (shortcutType == 'action_purchase') {
@@ -49,6 +45,35 @@ class _HolefeederAppState extends State<HolefeederApp> {
       });
       _setupQuickActions();
     }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.resumed) {
+      final authenticationClient = Provider.of<AuthenticationClient>(
+        context,
+        listen: false,
+      );
+      authenticationClient.verifyAuthenticationStatus();
+    }
+  }
+
+  void _setupQuickActions() {
+    quickActions.setShortcutItems([
+      const ShortcutItem(
+        type: 'action_purchase',
+        localizedTitle: 'New Purchase',
+        icon: 'add_chart',
+      ),
+    ]);
   }
 
   @override

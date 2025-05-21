@@ -1,15 +1,33 @@
 import 'package:decimal/decimal.dart';
+import 'package:hive/hive.dart';
+import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/models/account_info.dart';
 import 'package:holefeeder/core/models/category_info.dart';
 import 'package:intl/intl.dart';
 
+part 'upcoming.g.dart';
+
+@HiveType(typeId: HiveConstants.upcomingTypeId)
 class Upcoming {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final DateTime date;
+
+  @HiveField(2)
   final Decimal amount;
+
+  @HiveField(3)
   final String description;
+
+  @HiveField(4)
   final List<String> tags;
+
+  @HiveField(5)
   final CategoryInfo category;
+
+  @HiveField(6)
   final AccountInfo account;
 
   const Upcoming({
@@ -21,6 +39,38 @@ class Upcoming {
     required this.category,
     required this.account,
   });
+
+  static final Upcoming empty = Upcoming(
+    id: '',
+    date: DateTime(1970, 1, 1),
+    amount: Decimal.zero,
+    description: '',
+    tags: [],
+    category: CategoryInfo.empty,
+    account: AccountInfo.empty,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Upcoming &&
+          id == other.id &&
+          date.isAtSameMomentAs(other.date) &&
+          amount == other.amount &&
+          description == other.description &&
+          tags == other.tags &&
+          category == other.category &&
+          account == other.account;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      date.hashCode ^
+      amount.hashCode ^
+      description.hashCode ^
+      tags.hashCode ^
+      category.hashCode ^
+      account.hashCode;
 
   factory Upcoming.fromJson(Map<String, dynamic> json) {
     return Upcoming(

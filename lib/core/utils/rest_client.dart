@@ -25,8 +25,8 @@ abstract class RestClient {
 
   @GET('api/v2/cashflows/get-upcoming')
   Future<HttpResponse<List<Upcoming>>> getUpcomingCashflows(
-    @Query('from') DateTime sort,
-    @Query('to') DateTime filter,
+    @Query('from') DateTime from,
+    @Query('to') DateTime to,
     @Query('accountId') String? accountId,
   );
 
@@ -40,6 +40,12 @@ abstract class RestClient {
   Future<HttpResponse<List<StoreItem>>> getStoreItems(
     @Query('filter') List<String> filter,
   );
+
+  @POST('api/v2/store-items')
+  Future<HttpResponse<String>> saveStoreItem(@Body() StoreItem item);
+
+  @DELETE('api/v2/store-items/{id}')
+  Future<HttpResponse<void>> deleteStoreItem(@Path('id') String id);
 
   @GET('api/v2/tags')
   Future<HttpResponse<List<Tag>>> getTags();

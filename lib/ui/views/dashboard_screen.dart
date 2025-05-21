@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/providers/providers.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/ui/services/notification_provider.dart';
-import 'package:holefeeder/core/view_models/screens/dashboard_view_model.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/widgets/account_list_tile.dart';
 import 'package:holefeeder/ui/widgets/form_state_handler.dart';
 import 'package:holefeeder/ui/widgets/view_model_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-
-import '../../core/view_models/user_settings_view_model.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -21,7 +20,8 @@ class DashboardScreen extends StatelessWidget {
     create:
         (ctx) => DashboardViewModel(
           dataProvider: ctx.read<DataProvider>(),
-          userSettingsViewModel: ctx.read<UserSettingsViewModel>(),
+          accountRepository: ctx.read<AccountRepository>(),
+          upcomingRepository: ctx.read<UpcomingRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
     builder:

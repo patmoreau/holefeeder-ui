@@ -44,10 +44,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         slivers: <Widget>[
           CupertinoSliverNavigationBar(
             padding: EdgeInsetsDirectional.zero,
-            leading: CupertinoButton(
-              padding: edgeInsets,
+            leading: CupertinoNavigationBarBackButton(
+              previousPageTitle: LocalizationService.current.back,
               onPressed: () => _cancel(model),
-              child: Text('$kBackTextIcon ${LocalizationService.current.back}'),
             ),
             trailing: CupertinoButton(
               padding: edgeInsets,

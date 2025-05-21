@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/constants/strings.dart';
-import 'package:holefeeder/core/services/localization_service.dart';
-import 'package:holefeeder/core/view_models/screens/account_view_model.dart';
+import 'package:holefeeder/core/services/services.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/widgets/form_state_handler.dart';
 import 'package:holefeeder/ui/widgets/view_model_provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -43,10 +42,9 @@ class _AccountScreenState extends State<AccountScreen> {
         slivers: <Widget>[
           CupertinoSliverNavigationBar(
             padding: EdgeInsetsDirectional.zero,
-            leading: CupertinoButton(
-              padding: edgeInsets,
+            leading: CupertinoNavigationBarBackButton(
+              previousPageTitle: LocalizationService.current.back,
               onPressed: () => _cancel(model),
-              child: Text('$kBackTextIcon ${LocalizationService.current.back}'),
             ),
             trailing: CupertinoButton(
               padding: edgeInsets,

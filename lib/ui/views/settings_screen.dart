@@ -3,6 +3,7 @@
 import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/services/localization_service.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:flutter/material.dart' show Theme;
 import 'package:holefeeder/core/constants/themes.dart';
@@ -28,12 +29,9 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
         slivers: <Widget>[
           CupertinoSliverNavigationBar(
             padding: EdgeInsetsDirectional.zero,
-            leading: CupertinoButton(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              onPressed: () {
-                GoRouter.of(context).go('/');
-              },
-              child: const Text('‹ Back'),
+            leading: CupertinoNavigationBarBackButton(
+              previousPageTitle: LocalizationService.current.back,
+              onPressed: () => GoRouter.of(context).go('/'),
             ),
             trailing: CupertinoButton(
               padding: EdgeInsets.symmetric(horizontal: 16),

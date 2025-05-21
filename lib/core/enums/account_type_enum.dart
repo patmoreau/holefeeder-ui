@@ -1,12 +1,30 @@
 import 'package:decimal/decimal.dart';
+import 'package:hive/hive.dart';
+import 'package:holefeeder/core/constants/hive_constants.dart';
 
+part 'account_type_enum.g.dart';
+
+@HiveType(typeId: HiveConstants.accountTypeEnumId)
 enum AccountType {
+  @HiveField(0)
   checking,
+
+  @HiveField(1)
   creditCard,
+
+  @HiveField(2)
   creditLine,
+
+  @HiveField(3)
   investment,
+
+  @HiveField(4)
   loan,
+
+  @HiveField(5)
   mortgage,
+
+  @HiveField(6)
   savings,
 }
 

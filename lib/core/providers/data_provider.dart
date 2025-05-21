@@ -2,6 +2,7 @@ import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/models/make_purchase.dart';
+import 'package:holefeeder/core/models/store_item.dart';
 import 'package:holefeeder/core/models/tag.dart';
 import 'package:holefeeder/core/models/user_settings.dart';
 import 'package:holefeeder/core/utils/rest_client.dart';
@@ -29,6 +30,10 @@ abstract class DataProvider {
 
   // User Settings
   Future<UserSettings> getUserSettings();
+
+  Future<void> saveUserSettings(UserSettings settings);
+
+  Future<void> deleteUserSettings();
 
   // Tags
   Future<List<Tag>> getTags();
@@ -144,6 +149,48 @@ class DataProviderImpl implements DataProvider {
       throw Exception('Could not retrieve user settings');
     } catch (e) {
       throw Exception('Could not retrieve user settings');
+    }
+  }
+
+  @override
+  Future<void> saveUserSettings(UserSettings settings) async {
+    try {
+      final storeItems = await _restClient.getStoreItems(['code:eq:settings']);
+      String storeItemId = "";
+
+      if (storeItems.data.isNotEmpty) {
+        storeItemId = storeItems.data[0].id;
+      }
+
+      final updatedStoreItem = StoreItem(
+        id: storeItemId,
+        code: 'settings',
+        data: jsonEncode(settings.toJson()),
+      );
+
+      final result = await _restClient.saveStoreItem(updatedStoreItem);
+      if (result.response.statusCode != 200 &&
+          result.response.statusCode != 201) {
+        throw Exception('Could not save user settings');
+      }
+    } catch (e) {
+      throw Exception('Could not save user settings: $e');
+    }
+  }
+
+  @override
+  Future<void> deleteUserSettings() async {
+    try {
+      final storeItems = await _restClient.getStoreItems(['code:eq:settings']);
+      if (storeItems.data.isNotEmpty) {
+        final result = await _restClient.deleteStoreItem(storeItems.data[0].id);
+        if (result.response.statusCode != 200 &&
+            result.response.statusCode != 204) {
+          throw Exception('Could not delete user settings');
+        }
+      }
+    } catch (e) {
+      throw Exception('Could not delete user settings: $e');
     }
   }
 

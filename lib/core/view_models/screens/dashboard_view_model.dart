@@ -1,16 +1,13 @@
-import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/core/view_models/base_view_model.dart';
-import 'package:holefeeder/core/view_models/screens/dashboard_form_state.dart';
-import 'package:holefeeder/core/view_models/user_settings_view_model.dart';
-
-import 'account_view_model.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/providers/providers.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/services/services.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
 
 class DashboardViewModel extends BaseViewModel<DashboardFormState> {
-  final UserSettingsViewModel _userSettingsViewModel;
-  final DataProvider _dataProvider;
+  final AccountRepository _accountRepository;
+  final UpcomingRepository _upcomingRepository;
+  final NotificationService _notificationService;
 
   List<AccountViewModel> get accounts => formState.accounts;
 
@@ -18,20 +15,23 @@ class DashboardViewModel extends BaseViewModel<DashboardFormState> {
 
   DashboardViewModel({
     required DataProvider dataProvider,
-    required UserSettingsViewModel userSettingsViewModel,
-    NotificationService? notificationService,
-  }) : _userSettingsViewModel = userSettingsViewModel,
-       _dataProvider = dataProvider,
+    required AccountRepository accountRepository,
+    required UpcomingRepository upcomingRepository,
+    required NotificationService notificationService,
+  }) : _accountRepository = accountRepository,
+       _upcomingRepository = upcomingRepository,
+       _notificationService = notificationService,
        super(const DashboardFormState(), notificationService) {
     loadDashboardData();
   }
 
   Future<void> loadDashboardData() async {
     await handleAsync(() async {
-      final accounts = await _dataProvider.getAccounts();
+      final accounts = await _accountRepository.getAll();
+
       updateState(
         (s) => s.copyWith(
-          accounts: accounts.map(toElement).toList(),
+          accounts: accounts.map(toViewModel).toList(),
           state: ViewFormState.ready,
         ),
       );
@@ -48,11 +48,11 @@ class DashboardViewModel extends BaseViewModel<DashboardFormState> {
     });
   }
 
-  AccountViewModel toElement(Account account) {
+  AccountViewModel toViewModel(Account account) {
     return AccountViewModel(
       account: account,
-      userSettingsViewModel: _userSettingsViewModel,
-      dataProvider: _dataProvider,
+      upcomingRepository: _upcomingRepository,
+      notificationService: _notificationService,
     );
   }
 }

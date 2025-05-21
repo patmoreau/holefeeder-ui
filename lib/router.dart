@@ -6,7 +6,6 @@ import 'package:holefeeder/ui/views/account_screen.dart';
 import 'package:holefeeder/ui/views/home_screen.dart';
 import 'package:holefeeder/ui/views/login_screen.dart';
 import 'package:holefeeder/ui/views/purchase_screen.dart';
-import 'package:holefeeder/ui/views/settings_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/enums/authentication_status_enum.dart';

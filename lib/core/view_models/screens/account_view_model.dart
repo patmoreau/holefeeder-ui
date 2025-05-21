@@ -1,17 +1,12 @@
 import 'package:decimal/decimal.dart';
-import 'package:holefeeder/core/enums/account_type_enum.dart';
-import 'package:holefeeder/core/enums/category_type_enum.dart';
-import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/core/view_models/base_view_model.dart';
-import 'package:holefeeder/core/view_models/screens/account_form_state.dart';
-import 'package:holefeeder/core/view_models/user_settings_view_model.dart';
+import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/services/services.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
 
 class AccountViewModel extends BaseViewModel<AccountFormState> {
-  final UserSettingsViewModel _userSettingsViewModel;
-  final DataProvider _dataProvider;
+  final UpcomingRepository _upcomingRepository;
 
   Account get account => formState.account;
   bool get isRefreshing => formState.isRefreshing;
@@ -20,20 +15,16 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
 
   AccountViewModel({
     required Account account,
-    required UserSettingsViewModel userSettingsViewModel,
-    required DataProvider dataProvider,
+    required UpcomingRepository upcomingRepository,
     NotificationService? notificationService,
-  }) : _userSettingsViewModel = userSettingsViewModel,
-       _dataProvider = dataProvider,
+  }) : _upcomingRepository = upcomingRepository,
        super(AccountFormState(account: account), notificationService) {
     loadData();
   }
 
   Future<void> loadData() async {
     await handleAsync(() async {
-      final upcoming = await _dataProvider.getUpcomingCashflows(
-        _userSettingsViewModel.currentPeriod.start,
-        _userSettingsViewModel.currentPeriod.end,
+      final upcoming = await _upcomingRepository.getForAccount(
         formState.account.id,
       );
       updateState(

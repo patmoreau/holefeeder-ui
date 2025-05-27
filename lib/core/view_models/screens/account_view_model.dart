@@ -8,6 +8,7 @@ import 'package:holefeeder/core/view_models/view_models.dart';
 class AccountViewModel extends BaseViewModel<AccountFormState> {
   final UpcomingRepository _upcomingRepository;
 
+  String get name => formState.account.name;
   Account get account => formState.account;
   bool get isRefreshing => formState.isRefreshing;
   int get upcomingCashflowsCount => formState.upcoming.length;

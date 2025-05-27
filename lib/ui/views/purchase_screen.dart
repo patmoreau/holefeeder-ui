@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/constants/strings.dart';
 import 'package:holefeeder/core/extensions/build_context_extensions.dart';
+import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/ui/services/notification_provider.dart';
+import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
+import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/views/purchase_form.dart';
 import 'package:holefeeder/ui/widgets/form_state_handler.dart';
-import 'package:universal_platform/universal_platform.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
 import 'package:holefeeder/ui/widgets/view_model_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class PurchaseScreen extends StatefulWidget {
   const PurchaseScreen({super.key});
@@ -73,6 +72,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   Widget _buildMaterialScaffold(PurchaseViewModel model) => Scaffold(
     appBar: AppBar(
       title: Text(LocalizationService.current.purchase),
+      leading: BackButton(onPressed: () => _cancel(model)),
       actions: [
         TextButton(
           onPressed: () => _save(model),

@@ -30,6 +30,6 @@
   "java.configuration.updateBuildConfiguration": "interactive",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "*.dart": "$(capture).g.dart"
+    "*.dart": "$(capture).*.dart",
   }
 }

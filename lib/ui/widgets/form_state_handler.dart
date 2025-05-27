@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
 
+import 'adaptive/adaptive.dart';
+
 class FormStateHandler extends StatelessWidget {
   final BaseFormState formState;
   final Widget Function() builder;
@@ -14,11 +16,8 @@ class FormStateHandler extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    if (formState.state == ViewFormState.loading) {
-      return Center(child: loadingWidget ?? const CircularProgressIndicator());
-    }
-
-    return builder();
-  }
+  Widget build(BuildContext context) =>
+      formState.state == ViewFormState.loading
+          ? Center(child: loadingWidget ?? AdaptiveActivityIndicator())
+          : builder();
 }

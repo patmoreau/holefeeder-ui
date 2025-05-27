@@ -86,6 +86,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get intervalTypeOneTime => 'Simple';
 
   @override
+  String get lastUpdated => 'Dernière mise à jour';
+
+  @override
   String get note => 'Note';
 
   @override
@@ -117,6 +120,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get save => 'Enregistrer';
+
+  @override
+  String get transactions => 'Transactions';
+
+  @override
+  String get transactionsEmpty => 'Aucune transaction trouvée';
+
+  @override
+  String get upcoming => 'À venir';
+
+  @override
+  String get upcomingEmpty => 'Aucun transaction à venir';
 
   @override
   String get validationDecimalNumber => 'Le nombre doit être décimal positif';

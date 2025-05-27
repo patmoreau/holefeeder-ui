@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:holefeeder/core/view_models/screens/profile_view_model.dart';
-import 'package:holefeeder/ui/widgets/platform_avatar_widget.dart';
-import 'package:holefeeder/ui/widgets/platform_button_widget.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
+import 'package:holefeeder/ui/widgets/widgets.dart';
 
 class ProfileForm extends StatelessWidget {
   final ProfileViewModel model;
@@ -24,7 +23,7 @@ class ProfileForm extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-          PlatformAvatar(
+          AdaptiveAvatar(
             radius: 50,
             backgroundImage:
                 model.formState.pictureUrl.isNotEmpty
@@ -53,7 +52,10 @@ class ProfileForm extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const Spacer(),
-          PlatformButton(onPressed: model.logout, label: model.logoutTitle),
+          AdaptiveButton(
+            onPressed: model.logout,
+            child: Text(model.logoutTitle),
+          ),
         ],
       ),
     );

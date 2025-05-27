@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class PlatformTextField extends StatelessWidget {
+class AdaptiveTextField extends StatelessWidget {
   final String? labelText;
   final String initialValue;
   final TextEditingController? controller;
@@ -13,7 +13,7 @@ class PlatformTextField extends StatelessWidget {
   final TextAlign textAlign;
   final List<TextInputFormatter>? inputFormatters;
 
-  const PlatformTextField({
+  const AdaptiveTextField({
     super.key,
     required this.initialValue,
     required this.onChanged,

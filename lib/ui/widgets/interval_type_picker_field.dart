@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/ui/widgets/platform_picker_widget.dart';
+import 'package:holefeeder/ui/widgets/adaptive/adaptive_picker.dart';
 
 class IntervalTypePickerField extends StatelessWidget {
   final DateIntervalType selectedIntervalType;
@@ -16,7 +16,7 @@ class IntervalTypePickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformPicker<DateIntervalType>(
+    return AdaptivePicker<DateIntervalType>(
       label: LocalizationService.current.fieldAccount,
       value: selectedIntervalType,
       items: DateIntervalType.values,

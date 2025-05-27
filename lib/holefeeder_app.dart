@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:holefeeder/core/constants/themes.dart';
-import 'package:holefeeder/core/utils/authentication_client.dart';
-import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/core/services/localization_service.dart';
+import 'package:holefeeder/core/utils/authentication_client.dart';
 import 'package:holefeeder/l10n/l10n.dart';
+import 'package:holefeeder/ui/services/notification_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:provider/provider.dart';
 
 import 'main.dart';
 import 'router.dart';
@@ -26,7 +26,15 @@ class HolefeederApp extends StatefulWidget {
 
 class _HolefeederAppState extends State<HolefeederApp>
     with WidgetsBindingObserver {
-  final quickActions = const QuickActions();
+  final _quickActions = const QuickActions();
+  final _localizationsDelegates = const <LocalizationsDelegate<dynamic>>[
+    AppLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ];
+  final _supportedLocales = const <Locale>[Locale('en'), Locale('fr')];
+  final _locale = const Locale('fr');
 
   @override
   void initState() {
@@ -35,7 +43,7 @@ class _HolefeederAppState extends State<HolefeederApp>
     WidgetsBinding.instance.addObserver(this);
 
     if (UniversalPlatform.isMobile) {
-      quickActions.initialize((String shortcutType) {
+      _quickActions.initialize((String shortcutType) {
         if (shortcutType == 'action_purchase') {
           launchedFromQuickAction = true;
           if (mounted) {
@@ -67,7 +75,7 @@ class _HolefeederAppState extends State<HolefeederApp>
   }
 
   void _setupQuickActions() {
-    quickActions.setShortcutItems([
+    _quickActions.setShortcutItems([
       const ShortcutItem(
         type: 'action_purchase',
         localizedTitle: 'New Purchase',
@@ -95,59 +103,22 @@ class _HolefeederAppState extends State<HolefeederApp>
     onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
     theme: holefeederCupertinoTheme,
     routerConfig: router,
-    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const <Locale>[Locale('en', ''), Locale('fr', '')],
-    locale: const Locale('en', ''),
-    builder: (context, child) {
-      LocalizationService.initialize(context);
-      return NotificationServiceProvider(
-        child: Theme(
-          data: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[
-              defaultFormTheme,
-              defaultErrorDialogTheme,
-            ],
-          ),
-          child: Localizations.override(
-            context: context,
-            delegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            child: child ?? const SizedBox(),
-          ),
-        ),
-      );
-    },
+    localizationsDelegates: _localizationsDelegates,
+    supportedLocales: _supportedLocales,
+    locale: _locale,
+    builder: _initializeApp,
   );
 
-  Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
-    onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
-    theme: holefeederMaterialTheme.copyWith(
-      extensions: <ThemeExtension<dynamic>>[
-        defaultFormTheme,
-        defaultErrorDialogTheme,
-      ],
-    ),
-    routerConfig: router,
-    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const <Locale>[Locale('en', ''), Locale('fr', '')],
-    locale: const Locale('en', ''),
-    builder: (context, child) {
-      LocalizationService.initialize(context);
-      return NotificationServiceProvider(
+  Widget _initializeApp(context, child) {
+    LocalizationService.initialize(context);
+    return NotificationServiceProvider(
+      child: Theme(
+        data: ThemeData(
+          extensions: <ThemeExtension<dynamic>>[
+            defaultFormTheme,
+            defaultErrorDialogTheme,
+          ],
+        ),
         child: Localizations.override(
           context: context,
           delegates: const [
@@ -158,7 +129,22 @@ class _HolefeederAppState extends State<HolefeederApp>
           ],
           child: child ?? const SizedBox(),
         ),
-      );
-    },
+      ),
+    );
+  }
+
+  Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
+    onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
+    theme: holefeederMaterialTheme.copyWith(
+      extensions: <ThemeExtension<dynamic>>[
+        defaultFormTheme,
+        defaultErrorDialogTheme,
+      ],
+    ),
+    routerConfig: router,
+    localizationsDelegates: _localizationsDelegates,
+    supportedLocales: _supportedLocales,
+    locale: _locale,
+    builder: _initializeApp,
   );
 }

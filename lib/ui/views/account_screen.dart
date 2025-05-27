@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
-import 'package:holefeeder/ui/widgets/form_state_handler.dart';
-import 'package:holefeeder/ui/widgets/view_model_provider.dart';
-import 'package:universal_platform/universal_platform.dart';
+import 'package:holefeeder/ui/views/account_form.dart';
+import 'package:holefeeder/ui/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key, required this.account});
+
   final AccountViewModel account;
 
   @override
@@ -28,63 +28,46 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) => ViewModelProvider<AccountViewModel>(
     value: () => _accountViewModel,
-    builder: (model) {
-      return UniversalPlatform.isApple
-          ? _buildCupertinoScaffold(model)
-          : _buildMaterialScaffold(model);
-    },
+    builder:
+        (model) => AdaptiveScaffold(
+          leading: AdaptiveNavigationBackButton(
+            onPressed: () => context.pop(),
+            previousPageTitle: LocalizationService.current.dashboard,
+          ),
+          actions: [],
+          bottomBar: Stack(
+            alignment: Alignment.center,
+            children: [
+              Center(
+                child: Text(
+                  '${LocalizationService.current.lastUpdated}: ${DateFormat.yMd(LocalizationService.device.toLanguageTag()).format(model.account.updated)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.systemGrey,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: AdaptiveIconButton(
+                  onPressed: () {
+                    context.push('/purchase');
+                  },
+                  icon: Icon(AdaptiveIcons.purchase, size: 28.0),
+                ),
+              ),
+            ],
+          ),
+          child: _buildScreen(context, model),
+        ),
   );
 
-  Widget _buildCupertinoScaffold(AccountViewModel model) {
-    const edgeInsets = EdgeInsets.symmetric(horizontal: 16);
-    return CupertinoPageScaffold(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          CupertinoSliverNavigationBar(
-            padding: EdgeInsetsDirectional.zero,
-            leading: CupertinoNavigationBarBackButton(
-              previousPageTitle: LocalizationService.current.back,
-              onPressed: () => _cancel(model),
-            ),
-            trailing: CupertinoButton(
-              padding: edgeInsets,
-              onPressed: () => context.pop(),
-              child: Text(LocalizationService.current.save),
-            ),
-            largeTitle: Text(model.account.name),
-          ),
-          SliverSafeArea(
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                FormStateHandler(
-                  formState: model.formState,
-                  builder: () => Container(),
-                ),
-              ]),
-            ),
-          ),
-        ],
-      ),
+  Widget _buildScreen(BuildContext context, AccountViewModel model) {
+    return FormStateHandler(
+      formState: model.formState,
+      builder:
+          () => SafeArea(child: AccountForm(model: model, formKey: _formKey)),
     );
   }
-
-  Widget _buildMaterialScaffold(AccountViewModel model) => Scaffold(
-    appBar: AppBar(
-      title: Text(LocalizationService.current.purchase),
-      actions: [
-        TextButton(
-          onPressed: () => context.pop(),
-          child: Text(LocalizationService.current.save),
-        ),
-      ],
-    ),
-    body: SafeArea(
-      child: FormStateHandler(
-        formState: model.formState,
-        builder: () => Container(),
-      ),
-    ),
-  );
-
-  void _cancel(AccountViewModel model) => context.pop();
 }

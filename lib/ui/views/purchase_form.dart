@@ -5,12 +5,12 @@ import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/validators/validators.dart';
 import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
 import 'package:holefeeder/ui/widgets/account_picker.dart';
+import 'package:holefeeder/ui/widgets/adaptive/adaptive_text_field.dart';
 import 'package:holefeeder/ui/widgets/amount_field.dart';
 import 'package:holefeeder/ui/widgets/category_picker.dart';
 import 'package:holefeeder/ui/widgets/date_picker_field.dart';
 import 'package:holefeeder/ui/widgets/hashtag_selector.dart';
 import 'package:holefeeder/ui/widgets/interval_type_picker_field.dart';
-import 'package:holefeeder/ui/widgets/platform_text_field.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class PurchaseForm extends StatelessWidget {
@@ -112,7 +112,7 @@ class PurchaseForm extends StatelessWidget {
       selectedCategory: model.formState.selectedCategory,
       onChanged: model.setSelectedCategory,
     ),
-    PlatformTextField(
+    AdaptiveTextField(
       labelText: LocalizationService.current.note,
       initialValue: model.formState.note,
       onChanged: model.updateNote,
@@ -154,7 +154,7 @@ class PurchaseForm extends StatelessWidget {
         onValueChanged: model.updateIntervalType,
       ),
     if (model.formState.isCashflow)
-      PlatformTextField(
+      AdaptiveTextField(
         labelText: LocalizationService.current.fieldFrequency,
         initialValue: model.formState.frequency.toString(),
         keyboardType: TextInputType.number,
@@ -164,7 +164,7 @@ class PurchaseForm extends StatelessWidget {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       ),
     if (model.formState.isCashflow)
-      PlatformTextField(
+      AdaptiveTextField(
         labelText: LocalizationService.current.fieldRecurrence,
         initialValue: model.formState.recurrence.toString(),
         keyboardType: TextInputType.number,

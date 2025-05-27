@@ -1,5 +1,3 @@
-import 'package:holefeeder/core/providers/providers.dart';
-
 import 'repositories.dart';
 
 class RepositoryFactory {

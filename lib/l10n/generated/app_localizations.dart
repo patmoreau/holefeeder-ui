@@ -245,6 +245,12 @@ abstract class AppLocalizations {
   /// **'One time'**
   String get intervalTypeOneTime;
 
+  /// The last updated timestamp
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get lastUpdated;
+
   /// A note or message
   ///
   /// In en, this message translates to:
@@ -310,6 +316,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// The transactions screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get transactions;
+
+  /// The transactions list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions found'**
+  String get transactionsEmpty;
+
+  /// The upcoming screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// The upcoming list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming cashflows'**
+  String get upcomingEmpty;
 
   /// Validation message for decimal number input
   ///

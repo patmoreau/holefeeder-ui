@@ -2,7 +2,6 @@ import 'package:decimal/decimal.dart';
 import 'package:hive/hive.dart';
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/extensions/extensions.dart';
 
 part 'account.g.dart';
 

@@ -126,7 +126,11 @@ ThemeData holefeederMaterialTheme = ThemeData(
     seedColor: Colors.blue,
     brightness: Brightness.light,
   ),
-  cardTheme: CardTheme(
+  extensions: <ThemeExtension<dynamic>>[
+    defaultFormTheme,
+    defaultErrorDialogTheme,
+  ],
+  cardTheme: CardThemeData(
     elevation: 0,
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

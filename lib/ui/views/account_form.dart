@@ -114,13 +114,21 @@ class _AccountFormState extends State<AccountForm> {
   }
 
   Widget _buildUpcomingList() {
-    // Placeholder for upcoming list items
-    return Center(child: Text(LocalizationService.current.upcomingEmpty));
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(LocalizationService.current.upcomingEmpty),
+      ),
+    );
   }
 
   Widget _buildTransactionList() {
-    // Placeholder for upcoming list items
-    return Center(child: Text(LocalizationService.current.transactionsEmpty));
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(LocalizationService.current.transactionsEmpty),
+      ),
+    );
   }
 
   Color get _backgroundColor =>

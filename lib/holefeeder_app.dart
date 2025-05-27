@@ -112,35 +112,42 @@ class _HolefeederAppState extends State<HolefeederApp>
   Widget _initializeApp(context, child) {
     LocalizationService.initialize(context);
     return NotificationServiceProvider(
-      child: Theme(
-        data: ThemeData(
-          extensions: <ThemeExtension<dynamic>>[
-            defaultFormTheme,
-            defaultErrorDialogTheme,
-          ],
-        ),
-        child: Localizations.override(
-          context: context,
-          delegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          child: child ?? const SizedBox(),
-        ),
-      ),
+      child:
+          UniversalPlatform.isApple
+              ? Theme(
+                data: ThemeData(
+                  extensions: <ThemeExtension<dynamic>>[
+                    defaultFormTheme,
+                    defaultErrorDialogTheme,
+                  ],
+                ),
+                child: Localizations.override(
+                  context: context,
+                  delegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  child: child ?? const SizedBox(),
+                ),
+              )
+              : Localizations.override(
+                context: context,
+                delegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                child: child ?? const SizedBox(),
+              ),
     );
   }
 
   Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
     onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
-    theme: holefeederMaterialTheme.copyWith(
-      extensions: <ThemeExtension<dynamic>>[
-        defaultFormTheme,
-        defaultErrorDialogTheme,
-      ],
-    ),
+    theme: holefeederMaterialTheme,
     routerConfig: router,
     localizationsDelegates: _localizationsDelegates,
     supportedLocales: _supportedLocales,

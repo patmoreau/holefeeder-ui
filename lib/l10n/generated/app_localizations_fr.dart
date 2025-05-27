@@ -137,7 +137,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get validationDecimalNumber => 'Le nombre doit être décimal positif';
 
   @override
-  String get validationNumberGreatherThanZero => 'Le nombre doit être supérieur à zéro';
+  String get validationNumberGreatherThanZero =>
+      'Le nombre doit être supérieur à zéro';
 
   @override
   String get validationPositiveNumber => 'Le nombre doit être positif';

@@ -134,10 +134,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upcomingEmpty => 'No upcoming cashflows';
 
   @override
-  String get validationDecimalNumber => 'Please enter a positive decimal number';
+  String get validationDecimalNumber =>
+      'Please enter a positive decimal number';
 
   @override
-  String get validationNumberGreatherThanZero => 'Please enter a number greater than zero';
+  String get validationNumberGreatherThanZero =>
+      'Please enter a number greater than zero';
 
   @override
   String get validationPositiveNumber => 'Please enter a positive number';

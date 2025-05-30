@@ -75,7 +75,14 @@ class AccountRepository
 
   @override
   Future<Account> refresh(String key) async {
-    throw Exception('Not implemented');
+    try {
+      final account = await _dataProvider.getAccount(key);
+      await _hiveService.save<Account>(boxName, key, account);
+      return account;
+    } catch (e) {
+      developer.log('Error refreshing account from API: $e');
+      return Account.empty;
+    }
   }
 
   Future<List<Account>> _getAllFromApi() async {

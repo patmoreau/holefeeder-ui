@@ -26,8 +26,16 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
     _transactionAddedSubscription = EventBus()
         .on<TransactionAddedEvent>()
         .where((event) => event.accountId == accountId)
-        .listen((event) => loadData());
+        .listen((event) => _handleTransactionAdded());
     loadData();
+  }
+
+  Future<void> _handleTransactionAdded() async {
+    developer.log(
+      'AccountViewModel: Transaction added, refreshing account data',
+    );
+    await _accountRepository.refresh(accountId);
+    await loadData();
   }
 
   String get name => formState.account.name;

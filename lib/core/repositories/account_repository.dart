@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:holefeeder/core/constants/hive_constants.dart';
+import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/core/providers/hive_storage_provider.dart';
@@ -12,12 +14,25 @@ class AccountRepository
   final String boxName = HiveConstants.accountsBoxName;
   final HiveStorageProvider _hiveService;
   final DataProvider _dataProvider;
+  late final StreamSubscription _transactionAddedSubscription;
 
   AccountRepository({
     required HiveStorageProvider hiveService,
     required DataProvider dataProvider,
   }) : _hiveService = hiveService,
-       _dataProvider = dataProvider;
+       _dataProvider = dataProvider {
+    _transactionAddedSubscription = EventBus()
+        .on<TransactionAddedEvent>()
+        .listen(_handleTransactionAdded);
+  }
+
+  Future<void> _handleTransactionAdded(TransactionAddedEvent event) async {
+    developer.log('AccountRepository: Handling transaction added event');
+    final account = await refresh(event.accountId);
+    EventBus().fire<AccountRefreshedEvent>(
+      AccountRefreshedEvent(event.accountId, account),
+    );
+  }
 
   @override
   Future<void> initialize() async {
@@ -115,6 +130,7 @@ class AccountRepository
 
   @override
   Future<void> dispose() async {
+    _transactionAddedSubscription.cancel();
     await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
   }
 }

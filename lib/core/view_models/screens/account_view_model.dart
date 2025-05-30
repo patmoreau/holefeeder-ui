@@ -12,7 +12,7 @@ import '../view_models.dart';
 class AccountViewModel extends BaseViewModel<AccountFormState> {
   final AccountRepository _accountRepository;
   final UpcomingRepository _repository;
-  late final StreamSubscription _transactionAddedSubscription;
+  late final StreamSubscription _accountRefreshedSubscription;
   final String accountId;
 
   AccountViewModel({
@@ -23,19 +23,16 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
   }) : _accountRepository = accountRepository,
        _repository = repository,
        super(formState: AccountFormState(account: Account.empty)) {
-    _transactionAddedSubscription = EventBus()
-        .on<TransactionAddedEvent>()
+    _accountRefreshedSubscription = EventBus()
+        .on<AccountRefreshedEvent>()
         .where((event) => event.accountId == accountId)
-        .listen((event) => _handleTransactionAdded());
+        .listen(_handleAccountRefreshed);
     loadData();
   }
 
-  Future<void> _handleTransactionAdded() async {
-    developer.log(
-      'AccountViewModel: Transaction added, refreshing account data',
-    );
-    await _accountRepository.refresh(accountId);
-    await loadData();
+  void _handleAccountRefreshed(AccountRefreshedEvent event) {
+    developer.log('AccountViewModel: Account refreshed, updating view');
+    loadData();
   }
 
   String get name => formState.account.name;
@@ -109,7 +106,7 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
 
   @override
   void dispose() {
-    _transactionAddedSubscription.cancel();
+    _accountRefreshedSubscription.cancel();
     super.dispose();
   }
 }

@@ -28,7 +28,8 @@ class _AccountScreenState extends State<AccountScreen> {
         (ctx) => AccountViewModel(
           accountId: widget.account.id,
           accountRepository: ctx.read<AccountRepository>(),
-          repository: ctx.read<UpcomingRepository>(),
+          upcomingRepository: ctx.read<UpcomingRepository>(),
+          transactionRepository: ctx.read<TransactionRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
     builder:
@@ -54,9 +55,8 @@ class _AccountScreenState extends State<AccountScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: AdaptiveIconButton(
-                  onPressed: () {
-                    context.push('/purchase');
-                  },
+                  onPressed:
+                      () => context.push('/purchase', extra: model.account),
                   icon: Icon(AdaptiveIcons.purchase, size: 28.0),
                 ),
               ),

@@ -22,7 +22,8 @@ class AccountListTile extends StatelessWidget {
         (ctx) => AccountViewModel(
           accountId: account.id,
           accountRepository: ctx.read<AccountRepository>(),
-          repository: ctx.read<UpcomingRepository>(),
+          upcomingRepository: ctx.read<UpcomingRepository>(),
+          transactionRepository: ctx.read<TransactionRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
     builder: (model) => _buildListTile(context, model),

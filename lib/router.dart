@@ -57,7 +57,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/purchase',
       pageBuilder: (context, state) {
-        return CupertinoPage(fullscreenDialog: true, child: PurchaseScreen());
+        return CupertinoPage(
+          fullscreenDialog: true,
+          child: PurchaseScreen(account: state.extra as Account?),
+        );
       },
     ),
     GoRoute(

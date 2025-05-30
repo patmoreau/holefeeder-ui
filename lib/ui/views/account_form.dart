@@ -48,7 +48,7 @@ class _AccountFormState extends State<AccountForm> {
               child:
                   _selectedSegment == ListType.upcoming
                       ? _buildUpcomingList(model)
-                      : _buildTransactionList(),
+                      : _buildTransactionList(model),
             ),
           ],
         ),
@@ -140,12 +140,29 @@ class _AccountFormState extends State<AccountForm> {
     );
   }
 
-  Widget _buildTransactionList() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Text(LocalizationService.current.transactionsEmpty),
-      ),
+  Widget _buildTransactionList(AccountViewModel model) {
+    if (model.transactions.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(LocalizationService.current.transactionsEmpty),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: model.transactions.length + 1, // +1 for bottom padding
+      itemBuilder: (context, index) {
+        if (index == model.transactions.length) {
+          return const SizedBox(height: 16); // Bottom padding
+        }
+        return TransactionListTile(
+          key: ValueKey(model.transactions[index].id),
+          // Add a key if your model has an ID
+          transaction: model.transactions[index],
+        );
+      },
     );
   }
 

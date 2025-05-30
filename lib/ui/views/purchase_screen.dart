@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/extensions/build_context_extensions.dart';
+import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
 import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/core/view_models/screens/purchase_view_model.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/views/purchase_form.dart';
 import 'package:holefeeder/ui/widgets/form_state_handler.dart';
@@ -13,7 +14,9 @@ import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class PurchaseScreen extends StatefulWidget {
-  const PurchaseScreen({super.key});
+  final Account? account;
+
+  const PurchaseScreen({super.key, this.account});
 
   @override
   State<PurchaseScreen> createState() => _PurchaseScreenState();
@@ -26,6 +29,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   Widget build(BuildContext context) => ViewModelProvider<PurchaseViewModel>(
     create:
         (ctx) => PurchaseViewModel(
+          account: widget.account,
           dataProvider: ctx.read<DataProvider>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),

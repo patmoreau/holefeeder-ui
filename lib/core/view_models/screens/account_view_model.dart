@@ -11,17 +11,20 @@ import '../view_models.dart';
 
 class AccountViewModel extends BaseViewModel<AccountFormState> {
   final AccountRepository _accountRepository;
-  final UpcomingRepository _repository;
+  final UpcomingRepository _upcomingRepository;
+  final TransactionRepository _transactionRepository;
   late final StreamSubscription _accountRefreshedSubscription;
   final String accountId;
 
   AccountViewModel({
     required this.accountId,
     required AccountRepository accountRepository,
-    required UpcomingRepository repository,
+    required UpcomingRepository upcomingRepository,
+    required TransactionRepository transactionRepository,
     required super.notificationService,
   }) : _accountRepository = accountRepository,
-       _repository = repository,
+       _upcomingRepository = upcomingRepository,
+       _transactionRepository = transactionRepository,
        super(formState: AccountFormState(account: Account.empty)) {
     _accountRefreshedSubscription = EventBus()
         .on<AccountRefreshedEvent>()
@@ -46,6 +49,8 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
   bool get isFavorite => formState.account.favorite;
 
   List<Upcoming> get upcoming => formState.upcoming;
+
+  List<Transaction> get transactions => formState.transactions;
 
   int get projectionType {
     final accountTypeMultiplier = formState.account.type.multiplier;
@@ -78,7 +83,10 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
     developer.log('AccountViewModel: loadData() called');
     await handleAsync(() async {
       final account = await _accountRepository.get(accountId);
-      final upcoming = await _repository.getForAccount(accountId);
+      final upcoming = await _upcomingRepository.getForAccount(accountId);
+      final transactions = await _transactionRepository.getForAccount(
+        accountId,
+      );
       developer.log('AccountViewModel: Got ${upcoming.length} upcoming items');
       updateState((s) {
         developer.log(
@@ -87,6 +95,7 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
         return s.copyWith(
           account: account,
           upcoming: upcoming,
+          transactions: transactions,
           state: ViewFormState.ready,
         );
       });

@@ -33,6 +33,12 @@ abstract class DataProvider {
   Future<List<Tag>> getTags();
 
   // Transactions
+  Future<List<Transaction>> getTransactionsForAccount(
+    int offset,
+    int limit,
+    String accountId,
+  );
+
   Future<String?> makePurchase(MakePurchase item);
 
   Future<String> payCashflow(PayCashflow item);
@@ -205,6 +211,28 @@ class DataProviderImpl implements DataProvider {
   }
 
   // Transactions
+  @override
+  Future<List<Transaction>> getTransactionsForAccount(
+    int offset,
+    int limit,
+    String accountId,
+  ) async {
+    try {
+      final result = await _restClient.getTransactions(
+        offset,
+        limit,
+        ["-date"],
+        ["AccountId:eq:$accountId"],
+      );
+      if (result.response.statusCode == 200) {
+        return result.data;
+      }
+      throw Exception('Could not get the transactions for the account');
+    } catch (e) {
+      throw Exception('Could not get the transactions for the account');
+    }
+  }
+
   @override
   Future<String?> makePurchase(MakePurchase item) async {
     try {

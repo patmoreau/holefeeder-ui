@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
+import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/models/make_purchase.dart';
@@ -10,12 +11,15 @@ import '../base_view_model.dart';
 import 'purchase_form_state.dart';
 
 class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
+  final Account? _account;
   final DataProvider _dataProvider;
 
   PurchaseViewModel({
+    Account? account,
     required DataProvider dataProvider,
     required super.notificationService,
-  }) : _dataProvider = dataProvider,
+  }) : _account = account,
+       _dataProvider = dataProvider,
        super(formState: PurchaseFormState()) {
     loadInitialData();
   }
@@ -38,7 +42,7 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
           accounts: accounts,
           categories: categories,
           availableTags: availableTags,
-          selectedAccount: accounts.firstOrNull,
+          selectedAccount: _account ?? accounts.firstOrNull,
           selectedCategory: categories.firstOrNull,
           state: ViewFormState.ready,
         ),
@@ -123,6 +127,7 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
                   : null,
         ),
       );
+      EventBus().fire(TransactionAddedEvent(state.selectedAccount!.id));
     });
   }
 }

@@ -10,6 +10,8 @@ export 'screens/login_view_model.dart';
 export 'screens/profile_view_model.dart';
 export 'screens/purchase_form_state.dart';
 export 'screens/purchase_view_model.dart';
+export 'screens/transaction_form_state.dart';
+export 'screens/transaction_view_model.dart';
 export 'screens/upcoming_form_state.dart';
 export 'screens/upcoming_view_model.dart';
 export 'user_settings_form_state.dart';

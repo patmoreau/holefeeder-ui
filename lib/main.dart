@@ -128,6 +128,21 @@ Future<void> main() async {
                     ),
                   ),
         ),
+        ProxyProvider3<
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          TransactionRepository
+        >(
+          update:
+              (_, hiveService, dataProvider, factory, __) =>
+                  factory.getRepository(
+                    () => TransactionRepository(
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
         Provider<NotificationService>(
           create: (BuildContext context) => NotificationServiceImpl(context),
         ),
@@ -175,6 +190,7 @@ Future<void> _initHive() async {
   Hive.registerAdapter(DecimalAdapter());
   Hive.registerAdapter(UpcomingAdapter());
   Hive.registerAdapter(UserSettingsAdapter());
+  Hive.registerAdapter(TransactionAdapter());
 }
 
 AuthenticationClient _createAuthenticationService() =>

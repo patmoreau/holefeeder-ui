@@ -78,7 +78,7 @@ class UpcomingRepository
 
   @override
   Future<void> dispose() async {
-    await _hiveService.closeBox<Upcoming>(HiveConstants.accountsBoxName);
+    await _hiveService.closeBox<Upcoming>(HiveConstants.upcomingsBoxName);
   }
 
   Future<List<Upcoming>> getForAccount(String accountId) async {
@@ -105,7 +105,7 @@ class UpcomingRepository
   Future<List<Upcoming>> _getAllFromApi() async {
     try {
       final period = await _periodService.getCurrentPeriod();
-      final apiAccounts = await _dataProvider.getUpcomingCashflows(
+      final items = await _dataProvider.getUpcomingCashflows(
         period.start,
         period.end,
         null,
@@ -113,14 +113,22 @@ class UpcomingRepository
 
       await _hiveService.clearall<Upcoming>(boxName);
 
-      for (var account in apiAccounts) {
-        await _hiveService.save<Upcoming>(boxName, account.id, account);
+      for (var item in items) {
+        await _hiveService.save<Upcoming>(
+          boxName,
+          createUpcomingKey(item),
+          item,
+        );
       }
 
-      return apiAccounts;
+      return items;
     } catch (e) {
       developer.log('Error refreshing upcoming cashflows from API: $e');
       return [];
     }
+  }
+
+  String createUpcomingKey(Upcoming value) {
+    return '${value.id}-${value.date}';
   }
 }

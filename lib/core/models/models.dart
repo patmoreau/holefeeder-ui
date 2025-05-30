@@ -7,5 +7,6 @@ export 'make_purchase.dart';
 export 'pay_cashflow.dart';
 export 'store_item.dart';
 export 'tag.dart';
+export 'transaction.dart';
 export 'upcoming.dart';
 export 'user_settings.dart';

@@ -31,7 +31,9 @@ class UpcomingViewModel extends BaseViewModel<UpcomingFormState> {
 
   Future<void> loadData() async {
     await handleAsync(() async {
-      final upcoming = await _repository.get(formState.upcoming.id);
+      final upcoming = await _repository.get(
+        _repository.createUpcomingKey(formState.upcoming),
+      );
       updateState(
         (s) => s.copyWith(upcoming: upcoming, state: ViewFormState.ready),
       );

@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
+import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/views/account_form.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key, required this.account});
 
-  final AccountViewModel account;
+  final Account account;
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -17,17 +21,16 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late final AccountViewModel _accountViewModel;
-
-  @override
-  void initState() {
-    super.initState();
-    _accountViewModel = widget.account;
-  }
 
   @override
   Widget build(BuildContext context) => ViewModelProvider<AccountViewModel>(
-    value: () => _accountViewModel,
+    create:
+        (ctx) => AccountViewModel(
+          accountId: widget.account.id,
+          accountRepository: ctx.read<AccountRepository>(),
+          repository: ctx.read<UpcomingRepository>(),
+          notificationService: NotificationServiceProvider.of(ctx),
+        ),
     builder:
         (model) => AdaptiveScaffold(
           leading: AdaptiveNavigationBackButton(

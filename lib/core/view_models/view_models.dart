@@ -1,3 +1,5 @@
+export 'base_form_state.dart';
+export 'base_view_model.dart';
 export 'screens/account_form_state.dart';
 export 'screens/account_view_model.dart';
 export 'screens/categories_form_state.dart';
@@ -8,7 +10,7 @@ export 'screens/login_view_model.dart';
 export 'screens/profile_view_model.dart';
 export 'screens/purchase_form_state.dart';
 export 'screens/purchase_view_model.dart';
-export 'base_form_state.dart';
-export 'base_view_model.dart';
+export 'screens/upcoming_form_state.dart';
+export 'screens/upcoming_view_model.dart';
 export 'user_settings_form_state.dart';
 export 'user_settings_view_model.dart';

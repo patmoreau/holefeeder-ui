@@ -1,5 +1,5 @@
-import 'package:holefeeder/core/models/date_interval.dart';
-import 'package:holefeeder/core/models/user_settings.dart';
+import 'package:holefeeder/core/models/models.dart';
+
 import 'base_form_state.dart';
 
 class UserSettingsFormState extends BaseFormState {

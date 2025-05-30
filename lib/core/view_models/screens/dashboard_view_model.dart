@@ -1,39 +1,31 @@
 import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
-import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/core/view_models/view_models.dart';
+
+import '../base_form_state.dart';
+import '../base_view_model.dart';
+import 'dashboard_form_state.dart';
 
 class DashboardViewModel extends BaseViewModel<DashboardFormState> {
-  final AccountRepository _accountRepository;
-  final UpcomingRepository _upcomingRepository;
-  final NotificationService _notificationService;
-
-  List<AccountViewModel> get accounts => formState.accounts;
-
-  bool get isRefreshing => formState.isRefreshing;
+  final AccountRepository _repository;
 
   DashboardViewModel({
-    required DataProvider dataProvider,
-    required AccountRepository accountRepository,
-    required UpcomingRepository upcomingRepository,
-    required NotificationService notificationService,
-  }) : _accountRepository = accountRepository,
-       _upcomingRepository = upcomingRepository,
-       _notificationService = notificationService,
-       super(const DashboardFormState(), notificationService) {
+    required AccountRepository repository,
+    required super.notificationService,
+  }) : _repository = repository,
+       super(formState: const DashboardFormState()) {
     loadDashboardData();
   }
 
+  List<Account> get accounts => formState.accounts;
+
+  bool get isRefreshing => formState.isRefreshing;
+
   Future<void> loadDashboardData() async {
     await handleAsync(() async {
-      final accounts = await _accountRepository.getAll();
+      final accounts = await _repository.getAll();
 
       updateState(
-        (s) => s.copyWith(
-          accounts: accounts.map(toViewModel).toList(),
-          state: ViewFormState.ready,
-        ),
+        (s) => s.copyWith(accounts: accounts, state: ViewFormState.ready),
       );
     });
   }
@@ -46,13 +38,5 @@ class DashboardViewModel extends BaseViewModel<DashboardFormState> {
       await loadDashboardData();
       updateState((s) => s.copyWith(isRefreshing: false));
     });
-  }
-
-  AccountViewModel toViewModel(Account account) {
-    return AccountViewModel(
-      account: account,
-      upcomingRepository: _upcomingRepository,
-      notificationService: _notificationService,
-    );
   }
 }

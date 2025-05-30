@@ -1,8 +1,10 @@
+import 'dart:developer' as developer;
+
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/models/user_settings.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/repositories/base_repository.dart';
 import 'package:holefeeder/core/providers/hive_storage_provider.dart';
+import 'package:holefeeder/core/repositories/base_repository.dart';
 
 class UserSettingsRepository
     with RepositoryInitializer
@@ -49,7 +51,7 @@ class UserSettingsRepository
     try {
       await _dataProvider.saveUserSettings(value);
     } catch (e) {
-      print('Error saving user settings to API: $e');
+      developer.log('Error saving user settings to API: $e');
       // Consider implementing a job queue for failed API operations
       // that can be retried when connectivity is restored
     }
@@ -87,7 +89,7 @@ class UserSettingsRepository
 
       return apiData;
     } catch (e) {
-      print('Error refreshing accounts from API: $e');
+      developer.log('Error refreshing accounts from API: $e');
       return UserSettings.empty;
     }
   }

@@ -1,14 +1,8 @@
-import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
-import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/core/models/make_purchase.dart';
-import 'package:holefeeder/core/models/store_item.dart';
-import 'package:holefeeder/core/models/tag.dart';
-import 'package:holefeeder/core/models/user_settings.dart';
-import 'package:holefeeder/core/utils/rest_client.dart';
 import 'dart:convert';
 
-import '../models/upcoming.dart';
+import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/utils/utils.dart';
 
 abstract class DataProvider {
   // Accounts
@@ -40,6 +34,8 @@ abstract class DataProvider {
 
   // Transactions
   Future<String?> makePurchase(MakePurchase item);
+
+  Future<String> payCashflow(PayCashflow item);
 }
 
 class DataProviderImpl implements DataProvider {
@@ -219,6 +215,19 @@ class DataProviderImpl implements DataProvider {
       throw Exception('Could not make the purchase');
     } catch (e) {
       throw Exception('Could not make the purchase');
+    }
+  }
+
+  @override
+  Future<String> payCashflow(PayCashflow item) async {
+    try {
+      final result = await _restClient.payCashflow(item);
+      if (result.response.statusCode == 201) {
+        return result.data;
+      }
+      throw Exception('Could not pay the cashflow');
+    } catch (e) {
+      throw Exception('Could not pay the cashflow');
     }
   }
 }

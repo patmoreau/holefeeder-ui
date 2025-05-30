@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/models/make_purchase.dart';
+import 'package:holefeeder/core/models/pay_cashflow.dart';
 import 'package:holefeeder/core/models/store_item.dart';
 import 'package:holefeeder/core/models/tag.dart';
 import 'package:holefeeder/core/models/upcoming.dart';
@@ -52,4 +53,7 @@ abstract class RestClient {
 
   @POST('api/v2/transactions/make-purchase')
   Future<HttpResponse<String>> makePurchase(@Body() MakePurchase command);
+
+  @POST('api/v2/transactions/pay-cashflow')
+  Future<HttpResponse<String>> payCashflow(@Body() PayCashflow command);
 }

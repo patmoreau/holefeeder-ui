@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/services/services.dart';
@@ -13,9 +12,7 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) => ViewModelProvider<DashboardViewModel>(
     create:
         (ctx) => DashboardViewModel(
-          dataProvider: ctx.read<DataProvider>(),
-          accountRepository: ctx.read<AccountRepository>(),
-          upcomingRepository: ctx.read<UpcomingRepository>(),
+          repository: ctx.read<AccountRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
     builder:

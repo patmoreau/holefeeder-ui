@@ -254,6 +254,18 @@ abstract class AppLocalizations {
   /// **'Last updated'**
   String get lastUpdated;
 
+  /// The title of the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginTitle;
+
+  /// The title of the logout confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logoutTitle;
+
   /// A note or message
   ///
   /// In en, this message translates to:

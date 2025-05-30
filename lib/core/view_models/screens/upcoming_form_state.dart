@@ -2,29 +2,25 @@ import 'package:holefeeder/core/models/models.dart';
 
 import '../base_form_state.dart';
 
-class AccountFormState extends BaseFormState {
-  final Account account;
-  final List<Upcoming> upcoming;
+class UpcomingFormState extends BaseFormState {
+  final Upcoming upcoming;
   final bool isRefreshing;
 
-  const AccountFormState({
-    required this.account,
-    this.upcoming = const [],
+  const UpcomingFormState({
+    required this.upcoming,
     this.isRefreshing = false,
     super.state = ViewFormState.initial,
     super.errorMessage,
   });
 
   @override
-  AccountFormState copyWith({
-    Account? account,
-    List<Upcoming>? upcoming,
+  UpcomingFormState copyWith({
+    Upcoming? upcoming,
     bool? isRefreshing,
     ViewFormState? state,
     String? errorMessage,
   }) {
-    return AccountFormState(
-      account: account ?? this.account,
+    return UpcomingFormState(
       upcoming: upcoming ?? this.upcoming,
       isRefreshing: isRefreshing ?? this.isRefreshing,
       state: state ?? this.state,

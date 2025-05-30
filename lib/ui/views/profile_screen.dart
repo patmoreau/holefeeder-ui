@@ -31,8 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ViewModelProvider<ProfileViewModel>(
       create:
           (ctx) => ProfileViewModel(
-            authenticationProvider: ctx.read<AuthenticationClient>(),
-            notificationService: NotificationServiceProvider.of(context),
+            authenticationClient: ctx.read<AuthenticationClient>(),
+            notificationService: NotificationServiceProvider.of(ctx),
           ),
       builder: (model) {
         _navigationSubscription ??= model.navigationStream.listen((route) {

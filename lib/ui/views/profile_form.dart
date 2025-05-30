@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 
@@ -54,7 +55,7 @@ class ProfileForm extends StatelessWidget {
           const Spacer(),
           AdaptiveButton(
             onPressed: model.logout,
-            child: Text(model.logoutTitle),
+            child: Text(LocalizationService.current.logoutTitle),
           ),
         ],
       ),

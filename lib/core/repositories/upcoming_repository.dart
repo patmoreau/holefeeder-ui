@@ -1,4 +1,7 @@
+import 'dart:developer' as developer;
+
 import 'package:holefeeder/core/constants/constants.dart';
+import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
@@ -31,14 +34,31 @@ class UpcomingRepository
       await ensureInitialized();
       return await _hiveService.get<Upcoming>(boxName, key) ?? Upcoming.empty;
     } catch (e) {
-      print('Error getting upcoming cashflow: $e');
+      developer.log('Error getting upcoming cashflow: $e');
       return Upcoming.empty;
     }
   }
 
   @override
   Future<void> save(String key, Upcoming value) async {
-    throw Exception('Not implemented');
+    try {
+      await _dataProvider.payCashflow(
+        PayCashflow(
+          date: value.date,
+          amount: value.amount,
+          cashflowId: value.id,
+          cashflowDate: value.date,
+        ),
+      );
+      await _getAllFromApi();
+      developer.log(
+        'UpcomingRepository: Firing TransactionAddedEvent for accountId: ${value.account.id}',
+      );
+      EventBus().fire(TransactionAddedEvent(value.account.id));
+    } catch (e) {
+      developer.log('Error saving upcoming cashflow: $e');
+      throw Exception('Failed to save upcoming cashflow');
+    }
   }
 
   @override
@@ -77,7 +97,7 @@ class UpcomingRepository
       sortedCashflows.sort((a, b) => a.date.compareTo(b.date));
       return sortedCashflows;
     } catch (e) {
-      print('Error fetching upcoming cashflows: $e');
+      developer.log('Error fetching upcoming cashflows: $e');
       return [];
     }
   }
@@ -99,7 +119,7 @@ class UpcomingRepository
 
       return apiAccounts;
     } catch (e) {
-      print('Error refreshing upcoming cashflows from API: $e');
+      developer.log('Error refreshing upcoming cashflows from API: $e');
       return [];
     }
   }

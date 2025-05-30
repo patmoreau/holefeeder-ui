@@ -89,6 +89,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastUpdated => 'Last updated';
 
   @override
+  String get loginTitle => 'Login';
+
+  @override
+  String get logoutTitle => 'Logout';
+
+  @override
   String get note => 'Note';
 
   @override

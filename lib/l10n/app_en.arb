@@ -110,6 +110,14 @@
   "@lastUpdated": {
     "description": "The last updated timestamp"
   },
+  "loginTitle": "Login",
+  "@loginTitle": {
+    "description": "The title of the login screen"
+  },
+  "logoutTitle": "Logout",
+  "@logoutTitle": {
+    "description": "The title of the logout confirmation dialog"
+  },
   "note": "Note",
   "@note": {
     "description": "A note or message"

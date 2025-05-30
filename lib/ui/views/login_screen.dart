@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/services/services.dart';
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     create:
         (ctx) => LoginViewModel(
           authenticationProvider: ctx.read<AuthenticationClient>(),
-          notificationService: NotificationServiceProvider.of(context),
+          notificationService: NotificationServiceProvider.of(ctx),
         ),
     builder: (model) {
       // Set up the navigation listener only once when the model is first provided
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       return AdaptiveScaffold(
-        title: model.loginTitle,
+        title: LocalizationService.current.loginTitle,
         child: FormStateHandler(
           formState: model.formState,
           builder:
@@ -46,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     AdaptiveButton(
                       onPressed: model.login,
-                      child: Text(model.loginTitle),
+                      child: Text(LocalizationService.current.loginTitle),
                     ),
                   ],
                 ),

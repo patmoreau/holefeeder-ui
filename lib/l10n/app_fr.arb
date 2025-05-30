@@ -26,6 +26,8 @@
   "intervalTypeYearly": "Annuel",
   "intervalTypeOneTime": "Simple",
   "lastUpdated": "Dernière mise à jour",
+  "loginTitle": "Connexion",
+  "logoutTitle": "Déconnexion",
   "note": "Note",
   "notificationServiceErrorTitle": "Erreur",
   "notificationServiceSuccessTitle": "Succès",

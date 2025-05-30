@@ -89,6 +89,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get lastUpdated => 'Dernière mise à jour';
 
   @override
+  String get loginTitle => 'Connexion';
+
+  @override
+  String get logoutTitle => 'Déconnexion';
+
+  @override
   String get note => 'Note';
 
   @override

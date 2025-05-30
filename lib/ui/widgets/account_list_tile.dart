@@ -1,20 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/core/view_models/screens/account_view_model.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
+import 'package:holefeeder/ui/services/notification_provider.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class AccountListTile extends StatelessWidget {
-  final AccountViewModel account;
+  final Account account;
 
   const AccountListTile({super.key, required this.account});
 
   @override
   Widget build(BuildContext context) => ViewModelProvider<AccountViewModel>(
-    create: (ctx) => account,
+    create:
+        (ctx) => AccountViewModel(
+          accountId: account.id,
+          accountRepository: ctx.read<AccountRepository>(),
+          repository: ctx.read<UpcomingRepository>(),
+          notificationService: NotificationServiceProvider.of(ctx),
+        ),
     builder: (model) => _buildListTile(context, model),
   );
 
@@ -23,11 +33,11 @@ class AccountListTile extends StatelessWidget {
     children: [
       AdaptiveListTile(
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-        onTap: () => context.push('/account', extra: model),
-        leading: _buildLeadingContainer(),
-        title: _buildTitle(),
-        subtitle: _buildSubtitle(),
-        trailing: _buildTrailing(),
+        onTap: () => context.push('/account', extra: model.account),
+        leading: _buildLeadingContainer(model),
+        title: _buildTitle(model),
+        subtitle: _buildSubtitle(model),
+        trailing: _buildTrailing(model),
       ),
       const Padding(
         padding: EdgeInsets.only(left: 24.0),
@@ -36,16 +46,19 @@ class AccountListTile extends StatelessWidget {
     ],
   );
 
-  Widget _buildLeadingContainer() => Container(
+  Widget _buildLeadingContainer(AccountViewModel model) => Container(
     width: 28,
     height: 28,
     decoration: BoxDecoration(
-      color: UniversalPlatform.isApple ? _cupertinoColor() : _materialColor(),
+      color:
+          UniversalPlatform.isApple
+              ? _cupertinoColor(model)
+              : _materialColor(model),
       shape: BoxShape.circle,
     ),
     child: Center(
       child: Text(
-        account.upcomingCashflowsCount.toString(),
+        model.upcomingCashflowsCount.toString(),
         style: TextStyle(
           color:
               UniversalPlatform.isApple ? CupertinoColors.white : Colors.white,
@@ -57,18 +70,18 @@ class AccountListTile extends StatelessWidget {
     ),
   );
 
-  Widget _buildTitle() => LayoutBuilder(
+  Widget _buildTitle(AccountViewModel model) => LayoutBuilder(
     builder:
         (context, constraints) => Row(
           children: [
             Expanded(
               child: Text(
-                account.account.name,
+                model.account.name,
                 style: const TextStyle(fontWeight: FontWeight.w600),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            if (account.account.favorite) ...[
+            if (model.account.favorite) ...[
               const SizedBox(width: 4),
               Icon(
                 UniversalPlatform.isApple
@@ -85,7 +98,7 @@ class AccountListTile extends StatelessWidget {
         ),
   );
 
-  Widget _buildSubtitle() => LayoutBuilder(
+  Widget _buildSubtitle(AccountViewModel model) => LayoutBuilder(
     builder:
         (context, constraints) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +106,7 @@ class AccountListTile extends StatelessWidget {
             CurrencyText(value: account.balance),
             const SizedBox(height: 2),
             Text(
-              '${LocalizationService.current.lastUpdated}: ${DateFormat.yMd(LocalizationService.device.toLanguageTag()).format(account.account.updated)}',
+              '${LocalizationService.current.lastUpdated}: ${DateFormat.yMd(LocalizationService.device.toLanguageTag()).format(model.account.updated)}',
               style: TextStyle(
                 fontSize: 12,
                 color:
@@ -108,17 +121,17 @@ class AccountListTile extends StatelessWidget {
         ),
   );
 
-  Widget _buildTrailing() => Row(
+  Widget _buildTrailing(AccountViewModel model) => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      CurrencyText(value: account.projection),
+      CurrencyText(value: model.projection),
       const SizedBox(width: 8),
       const AdaptiveListTileChevron(),
     ],
   );
 
-  CupertinoDynamicColor _cupertinoColor() {
-    final projectionType = account.projectionType;
+  CupertinoDynamicColor _cupertinoColor(AccountViewModel model) {
+    final projectionType = model.projectionType;
     if (projectionType == 0) {
       return CupertinoColors.systemGrey;
     } else if (projectionType > 0) {
@@ -128,8 +141,8 @@ class AccountListTile extends StatelessWidget {
     }
   }
 
-  MaterialColor _materialColor() {
-    final projectionType = account.projectionType;
+  MaterialColor _materialColor(AccountViewModel model) {
+    final projectionType = model.projectionType;
     if (projectionType == 0) {
       return Colors.grey;
     } else if (projectionType > 0) {

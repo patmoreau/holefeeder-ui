@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:holefeeder/core/services/localization_service.dart';
+import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
-import 'package:holefeeder/ui/widgets/currency_text.dart';
+import 'package:holefeeder/ui/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 enum ListType { upcoming, transactions }
@@ -21,36 +22,36 @@ class _AccountFormState extends State<AccountForm> {
   ListType _selectedSegment = ListType.upcoming;
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      _buildAccountCard(context, widget.model),
-      SizedBox(height: 16),
-      CupertinoSlidingSegmentedControl<ListType>(
-        groupValue: _selectedSegment,
-        // Callback that sets the selected segmented control.
-        onValueChanged: (ListType? value) {
-          if (value != null) {
-            setState(() {
-              _selectedSegment = value;
-            });
-          }
-        },
-        children: <ListType, Widget>{
-          ListType.upcoming: Text(LocalizationService.current.upcoming),
-          ListType.transactions: Text(LocalizationService.current.transactions),
-        },
-      ),
-      Expanded(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+  Widget build(BuildContext context) => Consumer<AccountViewModel>(
+    builder:
+        (context, model, _) => Column(
           children: [
-            _selectedSegment == ListType.upcoming
-                ? _buildUpcomingList()
-                : _buildTransactionList(),
+            _buildAccountCard(context, model),
+            SizedBox(height: 16),
+            CupertinoSlidingSegmentedControl<ListType>(
+              groupValue: _selectedSegment,
+              onValueChanged: (ListType? value) {
+                if (value != null) {
+                  setState(() {
+                    _selectedSegment = value;
+                  });
+                }
+              },
+              children: <ListType, Widget>{
+                ListType.upcoming: Text(LocalizationService.current.upcoming),
+                ListType.transactions: Text(
+                  LocalizationService.current.transactions,
+                ),
+              },
+            ),
+            Expanded(
+              child:
+                  _selectedSegment == ListType.upcoming
+                      ? _buildUpcomingList(model)
+                      : _buildTransactionList(),
+            ),
           ],
         ),
-      ),
-    ],
   );
 
   Widget _buildAccountCard(BuildContext context, AccountViewModel model) {
@@ -61,7 +62,7 @@ class _AccountFormState extends State<AccountForm> {
                 const TextStyle(fontSize: 34, fontWeight: FontWeight.bold);
 
     return Container(
-      color: _backgroundColor,
+      color: _backgroundColor(model),
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,12 +114,29 @@ class _AccountFormState extends State<AccountForm> {
     );
   }
 
-  Widget _buildUpcomingList() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Text(LocalizationService.current.upcomingEmpty),
-      ),
+  Widget _buildUpcomingList(AccountViewModel model) {
+    if (model.upcoming.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(LocalizationService.current.upcomingEmpty),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: model.upcoming.length + 1, // +1 for bottom padding
+      itemBuilder: (context, index) {
+        if (index == model.upcoming.length) {
+          return const SizedBox(height: 16); // Bottom padding
+        }
+        return UpcomingListTile(
+          key: ValueKey(model.upcoming[index].id),
+          // Add a key if your model has an ID
+          upcoming: model.upcoming[index],
+        );
+      },
     );
   }
 
@@ -131,16 +149,16 @@ class _AccountFormState extends State<AccountForm> {
     );
   }
 
-  Color get _backgroundColor =>
+  Color _backgroundColor(AccountViewModel model) =>
       UniversalPlatform.isApple
-          ? (widget.model.projectionType == 0
+          ? (model.projectionType == 0
               ? CupertinoColors.systemGrey6
-              : (widget.model.projectionType > 0
+              : (model.projectionType > 0
                   ? CupertinoColors.systemGreen.withOpacity(0.1)
                   : CupertinoColors.systemRed.withOpacity(0.1)))
-          : (widget.model.projectionType == 0
+          : (model.projectionType == 0
               ? Colors.grey.shade100
-              : (widget.model.projectionType > 0
+              : (model.projectionType > 0
                   ? Colors.green.shade50
                   : Colors.red.shade50));
 }

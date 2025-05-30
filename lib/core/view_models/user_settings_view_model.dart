@@ -1,26 +1,29 @@
 import 'package:holefeeder/core/enums/enums.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
-import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
+
+import 'base_form_state.dart';
 import 'base_view_model.dart';
 import 'user_settings_form_state.dart';
 
 class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
   final UserSettingsRepository _repository;
 
-  UserSettings? get settings => formState.settings;
-  bool get hasSettings => settings != null;
-  String? get storeItemId => formState.storeItemId;
-  DateInterval get currentPeriod => formState.currentPeriod;
-
   UserSettingsViewModel({
     required UserSettingsRepository repository,
-    NotificationService? notificationService,
+    required super.notificationService,
   }) : _repository = repository,
-       super(UserSettingsFormState(), notificationService) {
+       super(formState: UserSettingsFormState()) {
     loadInitialData();
   }
+
+  UserSettings? get settings => formState.settings;
+
+  bool get hasSettings => settings != null;
+
+  String? get storeItemId => formState.storeItemId;
+
+  DateInterval get currentPeriod => formState.currentPeriod;
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {

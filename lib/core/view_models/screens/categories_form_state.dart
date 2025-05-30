@@ -1,5 +1,6 @@
 import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
+
+import '../base_form_state.dart';
 
 class CategoriesFormState extends BaseFormState {
   final List<Category> categories;

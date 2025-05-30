@@ -1,8 +1,10 @@
+import 'dart:developer' as developer;
+
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/repositories/base_repository.dart';
 import 'package:holefeeder/core/providers/hive_storage_provider.dart';
+import 'package:holefeeder/core/repositories/base_repository.dart';
 
 class AccountRepository
     with RepositoryInitializer
@@ -28,7 +30,7 @@ class AccountRepository
       await ensureInitialized();
       return await _hiveService.get<Account>(boxName, key) ?? Account.empty;
     } catch (e) {
-      print('Error getting individual account: $e');
+      developer.log('Error getting individual account: $e');
       return Account.empty;
     }
   }
@@ -51,7 +53,7 @@ class AccountRepository
 
       return await _getAllFromApi();
     } catch (e) {
-      print('Error fetching accounts: $e');
+      developer.log('Error fetching accounts: $e');
       return [];
     }
   }
@@ -88,7 +90,7 @@ class AccountRepository
 
       return apiAccounts;
     } catch (e) {
-      print('Error refreshing accounts from API: $e');
+      developer.log('Error refreshing accounts from API: $e');
       return [];
     }
   }

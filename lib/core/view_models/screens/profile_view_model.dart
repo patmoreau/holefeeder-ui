@@ -1,61 +1,35 @@
 import 'dart:async';
-import 'package:holefeeder/core/enums/authentication_status_enum.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/utils/authentication_client.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/core/view_models/base_view_model.dart';
 
-class ProfileFormState extends BaseFormState {
-  final String name;
-  final String pictureUrl;
+import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/utils/utils.dart';
 
-  ProfileFormState({
-    this.name = '',
-    this.pictureUrl = '',
-    super.state = ViewFormState.initial,
-    super.errorMessage,
-  });
-
-  @override
-  ProfileFormState copyWith({
-    String? name,
-    String? pictureUrl,
-    ViewFormState? state,
-    String? errorMessage,
-  }) => ProfileFormState(
-    name: name ?? this.name,
-    pictureUrl: pictureUrl ?? this.pictureUrl,
-    state: state ?? this.state,
-    errorMessage: errorMessage ?? this.errorMessage,
-  );
-
-  bool get isEmpty => name.isEmpty && pictureUrl.isEmpty;
-}
+import '../base_form_state.dart';
+import '../base_view_model.dart';
+import 'profile_form_state.dart';
 
 class ProfileViewModel extends BaseViewModel<ProfileFormState> {
-  final AuthenticationClient _authenticationProvider;
+  final AuthenticationClient _authenticationClient;
   final _navigationController = StreamController<String>();
-  Stream<String> get navigationStream => _navigationController.stream;
 
   late final StreamSubscription<AuthenticationStatus> _statusSubscription;
 
   ProfileViewModel({
-    required AuthenticationClient authenticationProvider,
-    NotificationService? notificationService,
-  }) : _authenticationProvider = authenticationProvider,
-       super(ProfileFormState(), notificationService) {
+    required AuthenticationClient authenticationClient,
+    required super.notificationService,
+  }) : _authenticationClient = authenticationClient,
+       super(formState: ProfileFormState()) {
     _initializeState();
   }
 
-  String get screenTitle => 'Profile';
-  String get logoutTitle => 'Logout';
+  Stream<String> get navigationStream => _navigationController.stream;
+
   String get fallbackPictureUrl => 'assets/images/default_profile.png';
 
   void _initializeState() {
     // Set initial state based on current authentication status
-    final currentStatus = _authenticationProvider.currentStatus;
+    final currentStatus = _authenticationClient.currentStatus;
     if (currentStatus == AuthenticationStatus.authenticated) {
-      final user = _authenticationProvider.credentials.user;
+      final user = _authenticationClient.credentials.user;
       updateState(
         (s) => s.copyWith(
           state: ViewFormState.ready,
@@ -66,7 +40,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
     }
 
     // Listen to future authentication status changes
-    _statusSubscription = _authenticationProvider.statusStream.listen((status) {
+    _statusSubscription = _authenticationClient.statusStream.listen((status) {
       switch (status) {
         case AuthenticationStatus.unauthenticated:
           _handleUnauthenticated();
@@ -93,7 +67,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
 
   Future<void> logout() async {
     await handleAsync(() async {
-      await _authenticationProvider.logout();
+      await _authenticationClient.logout();
     });
   }
 
@@ -112,7 +86,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
   }
 
   void _handleAuthenticated() {
-    final user = _authenticationProvider.credentials.user;
+    final user = _authenticationClient.credentials.user;
     if (formState.isEmpty || formState.name != user.name) {
       updateState(
         (s) => s.copyWith(
@@ -125,7 +99,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
   }
 
   void _handleError() {
-    final errorMsg = _authenticationProvider.errorMessage ?? 'Unknown error';
+    final errorMsg = _authenticationClient.errorMessage ?? 'Unknown error';
     setFormError(errorMsg);
     showNotification(errorMsg, isError: true);
   }

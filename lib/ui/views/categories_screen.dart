@@ -7,7 +7,6 @@ import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
@@ -86,59 +85,59 @@ class CategoriesScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _showAddCategoryDialog(
-    BuildContext context,
-    CategoriesViewModel model,
-  ) async {
-    final nameController = TextEditingController();
-    final budgetController = TextEditingController(text: '0');
-
-    return showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Add Category'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(labelText: 'Category Name'),
-                  autofocus: true,
-                ),
-                TextField(
-                  controller: budgetController,
-                  decoration: const InputDecoration(labelText: 'Budget Amount'),
-                  keyboardType: TextInputType.number,
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => context.pop(),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  if (nameController.text.isNotEmpty) {
-                    model.createCategory(
-                      Category(
-                        id: const Uuid().v4(),
-                        name: nameController.text,
-                        color: '#000000', // Default color
-                        budgetAmount: Decimal.parse(budgetController.text),
-                        favorite: false,
-                      ),
-                    );
-                    context.pop();
-                  }
-                },
-                child: const Text('Add'),
-              ),
-            ],
-          ),
-    );
-  }
+  // Future<void> _showAddCategoryDialog(
+  //   BuildContext context,
+  //   CategoriesViewModel model,
+  // ) async {
+  //   final nameController = TextEditingController();
+  //   final budgetController = TextEditingController(text: '0');
+  //
+  //   return showDialog(
+  //     context: context,
+  //     builder:
+  //         (context) => AlertDialog(
+  //           title: const Text('Add Category'),
+  //           content: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               TextField(
+  //                 controller: nameController,
+  //                 decoration: const InputDecoration(labelText: 'Category Name'),
+  //                 autofocus: true,
+  //               ),
+  //               TextField(
+  //                 controller: budgetController,
+  //                 decoration: const InputDecoration(labelText: 'Budget Amount'),
+  //                 keyboardType: TextInputType.number,
+  //               ),
+  //             ],
+  //           ),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () => context.pop(),
+  //               child: const Text('Cancel'),
+  //             ),
+  //             TextButton(
+  //               onPressed: () {
+  //                 if (nameController.text.isNotEmpty) {
+  //                   model.createCategory(
+  //                     Category(
+  //                       id: const Uuid().v4(),
+  //                       name: nameController.text,
+  //                       color: '#000000', // Default color
+  //                       budgetAmount: Decimal.parse(budgetController.text),
+  //                       favorite: false,
+  //                     ),
+  //                   );
+  //                   context.pop();
+  //                 }
+  //               },
+  //               child: const Text('Add'),
+  //             ),
+  //           ],
+  //         ),
+  //   );
+  // }
 
   Future<void> _showEditCategoryDialog(
     BuildContext context,

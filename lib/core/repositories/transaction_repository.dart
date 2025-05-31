@@ -90,7 +90,9 @@ class TransactionRepository
         return _getAllFromApi(accountId);
       }
 
-      return transactions.cast<Transaction>().toList();
+      final items = transactions.cast<Transaction>().toList();
+      items.sort((a, b) => b.date.compareTo(a.date));
+      return items;
     } catch (e) {
       developer.log('Error fetching transactions: $e');
       return [];

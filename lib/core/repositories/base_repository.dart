@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:holefeeder/core/models/hive_key.dart';
+
 mixin RepositoryInitializer {
   bool _isInitialized = false;
   Completer<void>? _initializationCompleter;
@@ -30,16 +32,18 @@ mixin RepositoryInitializer {
   Future<void> initialize();
 }
 
-abstract class BaseRepository<T> with RepositoryInitializer {
+abstract class BaseRepository<T extends HiveKey> with RepositoryInitializer {
   Future<T> get(String key);
 
-  Future<void> save(String key, T value);
+  Future<void> save(T value);
 
   Future<void> delete(String key);
 
   Future<bool> exists(String key);
 
   Future<T> refresh(String key);
+
+  Future<T> refreshAll();
 
   Future<void> dispose();
 }

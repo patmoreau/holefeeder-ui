@@ -3,10 +3,12 @@ import 'package:hive/hive.dart';
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/enums/enums.dart';
 
+import 'hive_key.dart';
+
 part 'account.g.dart';
 
 @HiveType(typeId: HiveConstants.accountTypeId)
-class Account {
+class Account with HiveKey {
   @HiveField(0)
   final String id;
 
@@ -54,7 +56,6 @@ class Account {
     required this.inactive,
   });
 
-  // Static empty Account instance
   static final Account empty = Account(
     id: '',
     name: '',
@@ -68,6 +69,11 @@ class Account {
     favorite: false,
     inactive: false,
   );
+
+  @override
+  String get key => createKey(id);
+
+  static String createKey(String id) => id;
 
   @override
   bool operator ==(Object other) =>

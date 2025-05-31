@@ -5,10 +5,12 @@ import 'package:holefeeder/core/models/account_info.dart';
 import 'package:holefeeder/core/models/category_info.dart';
 import 'package:intl/intl.dart';
 
+import 'hive_key.dart';
+
 part 'upcoming.g.dart';
 
 @HiveType(typeId: HiveConstants.upcomingTypeId)
-class Upcoming {
+class Upcoming with HiveKey {
   @HiveField(0)
   final String id;
 
@@ -49,6 +51,11 @@ class Upcoming {
     category: CategoryInfo.empty,
     account: AccountInfo.empty,
   );
+
+  @override
+  String get key => createKey(id, date);
+
+  static String createKey(String id, DateTime date) => '$id-$date';
 
   @override
   bool operator ==(Object other) =>

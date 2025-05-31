@@ -40,7 +40,7 @@ class UpcomingRepository
   }
 
   @override
-  Future<void> save(String key, Upcoming value) async {
+  Future<void> save(Upcoming value) async {
     try {
       await _dataProvider.payCashflow(
         PayCashflow(
@@ -73,6 +73,11 @@ class UpcomingRepository
 
   @override
   Future<Upcoming> refresh(String key) async {
+    throw Exception('Not implemented');
+  }
+
+  @override
+  Future<Upcoming> refreshAll() async {
     throw Exception('Not implemented');
   }
 
@@ -114,11 +119,7 @@ class UpcomingRepository
       await _hiveService.clearall<Upcoming>(boxName);
 
       for (var item in items) {
-        await _hiveService.save<Upcoming>(
-          boxName,
-          createUpcomingKey(item),
-          item,
-        );
+        await _hiveService.save<Upcoming>(boxName, item.key, item);
       }
 
       return items;
@@ -126,9 +127,5 @@ class UpcomingRepository
       developer.log('Error refreshing upcoming cashflows from API: $e');
       return [];
     }
-  }
-
-  String createUpcomingKey(Upcoming value) {
-    return '${value.id}-${value.date}';
   }
 }

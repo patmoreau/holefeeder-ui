@@ -25,11 +25,6 @@ class UserSettingsRepository
     await _getFromApi();
   }
 
-  Future<UserSettings> getDefault() async {
-    await ensureInitialized();
-    return await get(key);
-  }
-
   @override
   Future<UserSettings> get(String key) async {
     await ensureInitialized();
@@ -39,11 +34,11 @@ class UserSettingsRepository
   }
 
   @override
-  Future<void> save(String key, UserSettings value) async {
+  Future<void> save(UserSettings value) async {
     // Save locally
     await _hiveService.save<UserSettings>(
       HiveConstants.userSettingsBoxName,
-      key,
+      value.key,
       value,
     );
 
@@ -76,8 +71,18 @@ class UserSettingsRepository
   }
 
   @override
+  Future<UserSettings> refreshAll() async {
+    throw Exception('Not implemented');
+  }
+
+  @override
   Future<void> dispose() async {
     await _hiveService.closeBox<UserSettings>(boxName);
+  }
+
+  Future<UserSettings> getDefault() async {
+    await ensureInitialized();
+    return await get(key);
   }
 
   Future<UserSettings> _getFromApi() async {

@@ -40,7 +40,7 @@ class TransactionViewModel extends BaseViewModel<TransactionFormState> {
 
   Future<void> pay() async {
     await handleAsync(() async {
-      await _repository.save(formState.transaction.id, formState.transaction);
+      await _repository.save(formState.transaction);
       updateState((s) => s.copyWith(state: ViewFormState.ready));
     });
   }

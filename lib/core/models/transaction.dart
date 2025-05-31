@@ -5,10 +5,12 @@ import 'package:holefeeder/core/models/account_info.dart';
 import 'package:holefeeder/core/models/category_info.dart';
 import 'package:intl/intl.dart';
 
+import 'hive_key.dart';
+
 part 'transaction.g.dart';
 
 @HiveType(typeId: HiveConstants.transactionTypeId)
-class Transaction {
+class Transaction with HiveKey {
   @HiveField(0)
   final String id;
 
@@ -49,6 +51,11 @@ class Transaction {
     category: CategoryInfo.empty,
     account: AccountInfo.empty,
   );
+
+  @override
+  String get key => createKey(id);
+
+  static String createKey(String id) => id;
 
   @override
   bool operator ==(Object other) =>

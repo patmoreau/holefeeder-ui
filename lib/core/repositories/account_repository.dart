@@ -50,31 +50,8 @@ class AccountRepository
     }
   }
 
-  Future<List<Account>> getAll() async {
-    try {
-      await ensureInitialized();
-      final accounts = await _hiveService.getAll<Account>(boxName);
-
-      if (accounts.isNotEmpty) {
-        final sortedAccounts = accounts.cast<Account>().toList();
-        sortedAccounts.sort((a, b) {
-          if (a.favorite != b.favorite) {
-            return b.favorite ? 1 : -1;
-          }
-          return a.name.compareTo(b.name);
-        });
-        return sortedAccounts;
-      }
-
-      return await _getAllFromApi();
-    } catch (e) {
-      developer.log('Error fetching accounts: $e');
-      return [];
-    }
-  }
-
   @override
-  Future<void> save(String key, Account value) async {
+  Future<void> save(Account value) async {
     throw Exception('Not implemented');
   }
 
@@ -100,6 +77,50 @@ class AccountRepository
     }
   }
 
+  @override
+  Future<Account> refreshAll() async {
+    throw Exception('Not implemented');
+  }
+
+  @override
+  Future<void> dispose() async {
+    _transactionAddedSubscription.cancel();
+    await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
+  }
+
+  Future<List<Account>> getAll() async {
+    try {
+      await ensureInitialized();
+      final accounts = await _hiveService.getAll<Account>(boxName);
+
+      if (accounts.isNotEmpty) {
+        final sortedAccounts = accounts.cast<Account>().toList();
+        sortedAccounts.sort((a, b) {
+          if (a.favorite != b.favorite) {
+            return b.favorite ? 1 : -1;
+          }
+          return a.name.compareTo(b.name);
+        });
+        return sortedAccounts;
+      }
+
+      return await _getAllFromApi();
+    } catch (e) {
+      developer.log('Error fetching accounts: $e');
+      return [];
+    }
+  }
+
+  Future<List<Account>> getActiveAccounts() async {
+    final allAccounts = await getAll();
+    return allAccounts.where((account) => !account.inactive).toList();
+  }
+
+  Future<List<Account>> getFavoriteAccounts() async {
+    final allAccounts = await getAll();
+    return allAccounts.where((account) => account.favorite).toList();
+  }
+
   Future<List<Account>> _getAllFromApi() async {
     try {
       final apiAccounts = await _dataProvider.getAccounts();
@@ -115,22 +136,5 @@ class AccountRepository
       developer.log('Error refreshing accounts from API: $e');
       return [];
     }
-  }
-
-  // Helper methods for fetching specific account types
-  Future<List<Account>> getActiveAccounts() async {
-    final allAccounts = await getAll();
-    return allAccounts.where((account) => !account.inactive).toList();
-  }
-
-  Future<List<Account>> getFavoriteAccounts() async {
-    final allAccounts = await getAll();
-    return allAccounts.where((account) => account.favorite).toList();
-  }
-
-  @override
-  Future<void> dispose() async {
-    _transactionAddedSubscription.cancel();
-    await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
   }
 }

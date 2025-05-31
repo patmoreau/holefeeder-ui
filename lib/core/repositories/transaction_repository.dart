@@ -35,7 +35,7 @@ class TransactionRepository
   }
 
   @override
-  Future<void> save(String key, Transaction value) async {
+  Future<void> save(Transaction value) async {
     throw Exception('Not implemented');
   }
 
@@ -51,6 +51,11 @@ class TransactionRepository
 
   @override
   Future<Transaction> refresh(String key) async {
+    throw Exception('Not implemented');
+  }
+
+  @override
+  Future<Transaction> refreshAll() async {
     throw Exception('Not implemented');
   }
 

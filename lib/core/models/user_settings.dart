@@ -1,12 +1,14 @@
+import 'package:hive/hive.dart';
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:intl/intl.dart';
-import 'package:hive/hive.dart';
+
+import 'hive_key.dart';
 
 part 'user_settings.g.dart';
 
 @HiveType(typeId: HiveConstants.userSettingsTypeId)
-class UserSettings {
+class UserSettings with HiveKey {
   @HiveField(0)
   final DateTime effectiveDate;
 
@@ -27,6 +29,11 @@ class UserSettings {
     intervalType: DateIntervalType.monthly,
     frequency: 1,
   );
+
+  @override
+  String get key => createKey();
+
+  static String createKey() => 'userSettings';
 
   @override
   bool operator ==(Object other) =>

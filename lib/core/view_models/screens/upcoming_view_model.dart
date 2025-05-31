@@ -31,9 +31,7 @@ class UpcomingViewModel extends BaseViewModel<UpcomingFormState> {
 
   Future<void> loadData() async {
     await handleAsync(() async {
-      final upcoming = await _repository.get(
-        _repository.createUpcomingKey(formState.upcoming),
-      );
+      final upcoming = await _repository.get(formState.upcoming.key);
       updateState(
         (s) => s.copyWith(upcoming: upcoming, state: ViewFormState.ready),
       );
@@ -42,7 +40,7 @@ class UpcomingViewModel extends BaseViewModel<UpcomingFormState> {
 
   Future<void> pay() async {
     await handleAsync(() async {
-      await _repository.save(formState.upcoming.id, formState.upcoming);
+      await _repository.save(formState.upcoming);
       updateState((s) => s.copyWith(state: ViewFormState.ready));
     });
   }

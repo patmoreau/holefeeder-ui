@@ -1,28 +1,34 @@
 import 'package:decimal/decimal.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
+import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/models/make_purchase.dart';
 import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/core/view_models/base_view_model.dart';
-import 'package:holefeeder/core/view_models/screens/purchase_form_state.dart';
+
+import '../base_form_state.dart';
+import '../base_view_model.dart';
+import 'purchase_form_state.dart';
 
 class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
+  final Account? _account;
   final DataProvider _dataProvider;
 
-  List<Account> get accounts => formState.accounts;
-  List<Category> get categories => formState.categories;
-  List<String> get tags => formState.availableTags;
-
   PurchaseViewModel({
+    Account? account,
     required DataProvider dataProvider,
-    NotificationService? notificationService,
-  }) : _dataProvider = dataProvider,
-       super(PurchaseFormState(), notificationService) {
+    required super.notificationService,
+  }) : _account = account,
+       _dataProvider = dataProvider,
+       super(formState: PurchaseFormState()) {
     loadInitialData();
   }
+
+  List<Account> get accounts => formState.accounts;
+
+  List<Category> get categories => formState.categories;
+
+  List<String> get tags => formState.availableTags;
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {
@@ -36,7 +42,7 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
           accounts: accounts,
           categories: categories,
           availableTags: availableTags,
-          selectedAccount: accounts.firstOrNull,
+          selectedAccount: _account ?? accounts.firstOrNull,
           selectedCategory: categories.firstOrNull,
           state: ViewFormState.ready,
         ),
@@ -121,8 +127,7 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
                   : null,
         ),
       );
-
-      await showNotification('Purchase completed successfully');
+      EventBus().fire(TransactionAddedEvent(state.selectedAccount!.id));
     });
   }
 }

@@ -1,27 +1,25 @@
 import 'dart:async';
 
 import 'package:holefeeder/core/enums/authentication_status_enum.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/core/view_models/base_view_model.dart';
 import 'package:holefeeder/core/utils/authentication_client.dart';
+
+import '../base_form_state.dart';
+import '../base_view_model.dart';
 
 class LoginViewModel extends BaseViewModel<SimpleFormState> {
   final AuthenticationClient _authenticationProvider;
   final _navigationController = StreamController<String>();
   late StreamSubscription<AuthenticationStatus> _statusSubscription;
 
-  String get screenTitle => 'Login';
-  String get loginTitle => 'Login';
-  Stream<String> get navigationStream => _navigationController.stream;
-
   LoginViewModel({
     required AuthenticationClient authenticationProvider,
-    NotificationService? notificationService,
+    required super.notificationService,
   }) : _authenticationProvider = authenticationProvider,
-       super(const SimpleFormState(), notificationService) {
+       super(formState: const SimpleFormState()) {
     loadInitialData();
   }
+
+  Stream<String> get navigationStream => _navigationController.stream;
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {

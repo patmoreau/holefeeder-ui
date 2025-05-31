@@ -86,6 +86,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get intervalTypeOneTime => 'Simple';
 
   @override
+  String get lastUpdated => 'Dernière mise à jour';
+
+  @override
+  String get loginTitle => 'Connexion';
+
+  @override
+  String get logoutTitle => 'Déconnexion';
+
+  @override
   String get note => 'Note';
 
   @override
@@ -119,10 +128,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get save => 'Enregistrer';
 
   @override
+  String get transactions => 'Transactions';
+
+  @override
+  String get transactionsEmpty => 'Aucune transaction trouvée';
+
+  @override
+  String get upcoming => 'À venir';
+
+  @override
+  String get upcomingEmpty => 'Aucun transaction à venir';
+
+  @override
   String get validationDecimalNumber => 'Le nombre doit être décimal positif';
 
   @override
-  String get validationNumberGreatherThanZero => 'Le nombre doit être supérieur à zéro';
+  String get validationNumberGreatherThanZero =>
+      'Le nombre doit être supérieur à zéro';
 
   @override
   String get validationPositiveNumber => 'Le nombre doit être positif';

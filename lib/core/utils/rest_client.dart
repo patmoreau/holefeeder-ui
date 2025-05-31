@@ -1,10 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/core/models/make_purchase.dart';
-import 'package:holefeeder/core/models/store_item.dart';
-import 'package:holefeeder/core/models/tag.dart';
-import 'package:holefeeder/core/models/upcoming.dart';
+import 'package:holefeeder/core/models/models.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';
@@ -25,8 +20,8 @@ abstract class RestClient {
 
   @GET('api/v2/cashflows/get-upcoming')
   Future<HttpResponse<List<Upcoming>>> getUpcomingCashflows(
-    @Query('from') DateTime sort,
-    @Query('to') DateTime filter,
+    @Query('from') DateTime from,
+    @Query('to') DateTime to,
     @Query('accountId') String? accountId,
   );
 
@@ -41,9 +36,26 @@ abstract class RestClient {
     @Query('filter') List<String> filter,
   );
 
+  @POST('api/v2/store-items')
+  Future<HttpResponse<String>> saveStoreItem(@Body() StoreItem item);
+
+  @DELETE('api/v2/store-items/{id}')
+  Future<HttpResponse<void>> deleteStoreItem(@Path('id') String id);
+
   @GET('api/v2/tags')
   Future<HttpResponse<List<Tag>>> getTags();
 
+  @GET('api/v2/transactions')
+  Future<HttpResponse<List<Transaction>>> getTransactions(
+    @Query('offset') int offset,
+    @Query('limit') int limit,
+    @Query('sort') List<String> sort,
+    @Query('filter') List<String> filter,
+  );
+
   @POST('api/v2/transactions/make-purchase')
   Future<HttpResponse<String>> makePurchase(@Body() MakePurchase command);
+
+  @POST('api/v2/transactions/pay-cashflow')
+  Future<HttpResponse<String>> payCashflow(@Body() PayCashflow command);
 }

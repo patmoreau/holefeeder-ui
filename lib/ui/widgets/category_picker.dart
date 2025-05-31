@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/ui/widgets/platform_picker_widget.dart';
+import 'package:holefeeder/ui/widgets/adaptive/adaptive_picker.dart';
 
 class CategoryPicker extends StatelessWidget {
   final List<Category> categories;
@@ -17,7 +17,7 @@ class CategoryPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformPicker<Category>(
+    return AdaptivePicker<Category>(
       label: LocalizationService.current.fieldCategory,
       value: selectedCategory,
       items: categories,

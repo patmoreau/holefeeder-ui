@@ -1,57 +1,56 @@
+import 'dart:async';
+import 'dart:developer' as developer;
+
 import 'package:decimal/decimal.dart';
-import 'package:holefeeder/core/enums/account_type_enum.dart';
-import 'package:holefeeder/core/enums/category_type_enum.dart';
-import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
-import 'package:holefeeder/core/view_models/base_view_model.dart';
-import 'package:holefeeder/core/view_models/screens/account_form_state.dart';
-import 'package:holefeeder/core/view_models/user_settings_view_model.dart';
+import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/events/events.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
+
+import '../view_models.dart';
 
 class AccountViewModel extends BaseViewModel<AccountFormState> {
-  final UserSettingsViewModel _userSettingsViewModel;
-  final DataProvider _dataProvider;
-
-  Account get account => formState.account;
-  bool get isRefreshing => formState.isRefreshing;
-  int get upcomingCashflowsCount => formState.upcoming.length;
-  bool get isFavorite => formState.account.favorite;
+  final AccountRepository _accountRepository;
+  final UpcomingRepository _upcomingRepository;
+  final TransactionRepository _transactionRepository;
+  late final StreamSubscription _accountRefreshedSubscription;
+  final String accountId;
 
   AccountViewModel({
-    required Account account,
-    required UserSettingsViewModel userSettingsViewModel,
-    required DataProvider dataProvider,
-    NotificationService? notificationService,
-  }) : _userSettingsViewModel = userSettingsViewModel,
-       _dataProvider = dataProvider,
-       super(AccountFormState(account: account), notificationService) {
+    required this.accountId,
+    required AccountRepository accountRepository,
+    required UpcomingRepository upcomingRepository,
+    required TransactionRepository transactionRepository,
+    required super.notificationService,
+  }) : _accountRepository = accountRepository,
+       _upcomingRepository = upcomingRepository,
+       _transactionRepository = transactionRepository,
+       super(formState: AccountFormState(account: Account.empty)) {
+    _accountRefreshedSubscription = EventBus()
+        .on<AccountRefreshedEvent>()
+        .where((event) => event.accountId == accountId)
+        .listen(_handleAccountRefreshed);
     loadData();
   }
 
-  Future<void> loadData() async {
-    await handleAsync(() async {
-      final upcoming = await _dataProvider.getUpcomingCashflows(
-        _userSettingsViewModel.currentPeriod.start,
-        _userSettingsViewModel.currentPeriod.end,
-        formState.account.id,
-      );
-      updateState(
-        (s) => s.copyWith(upcoming: upcoming, state: ViewFormState.ready),
-      );
-    });
+  void _handleAccountRefreshed(AccountRefreshedEvent event) {
+    developer.log('AccountViewModel: Account refreshed, updating view');
+    loadData();
   }
 
-  Future<void> refreshAccount() async {
-    if (isRefreshing) return;
+  String get name => formState.account.name;
 
-    await handleAsync(() async {
-      updateState((s) => s.copyWith(isRefreshing: true));
-      await loadData();
-      await showNotification('Dashboard refreshed successfully');
-      updateState((s) => s.copyWith(isRefreshing: false));
-    });
-  }
+  Account get account => formState.account;
+
+  bool get isRefreshing => formState.isRefreshing;
+
+  int get upcomingCashflowsCount => formState.upcoming.length;
+
+  bool get isFavorite => formState.account.favorite;
+
+  List<Upcoming> get upcoming => formState.upcoming;
+
+  List<Transaction> get transactions => formState.transactions;
 
   int get projectionType {
     final accountTypeMultiplier = formState.account.type.multiplier;
@@ -78,5 +77,45 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
                       e.category.type.multiplier,
                 )
                 .reduce((a, b) => a + b));
+  }
+
+  Future<void> loadData() async {
+    developer.log('AccountViewModel: loadData() called');
+    await handleAsync(() async {
+      final account = await _accountRepository.get(accountId);
+      final upcoming = await _upcomingRepository.getForAccount(accountId);
+      final transactions = await _transactionRepository.getForAccount(
+        accountId,
+      );
+      developer.log('AccountViewModel: Got ${upcoming.length} upcoming items');
+      updateState((s) {
+        developer.log(
+          'AccountViewModel: Updating state with new upcoming items',
+        );
+        return s.copyWith(
+          account: account,
+          upcoming: upcoming,
+          transactions: transactions,
+          state: ViewFormState.ready,
+        );
+      });
+      developer.log('AccountViewModel: State updated');
+    });
+  }
+
+  Future<void> refreshAccount() async {
+    if (isRefreshing) return;
+
+    await handleAsync(() async {
+      updateState((s) => s.copyWith(isRefreshing: true));
+      await loadData();
+      updateState((s) => s.copyWith(isRefreshing: false));
+    });
+  }
+
+  @override
+  void dispose() {
+    _accountRefreshedSubscription.cancel();
+    super.dispose();
   }
 }

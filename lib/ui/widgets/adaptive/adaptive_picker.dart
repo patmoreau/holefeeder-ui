@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class PlatformPicker<T> extends StatelessWidget {
+class AdaptivePicker<T> extends StatelessWidget {
   final String label;
   final T? value;
   final List<T> items;
@@ -11,7 +11,7 @@ class PlatformPicker<T> extends StatelessWidget {
   final ValueChanged<T?> onChanged;
   final String? placeholder;
 
-  const PlatformPicker({
+  const AdaptivePicker({
     super.key,
     required this.label,
     required this.value,

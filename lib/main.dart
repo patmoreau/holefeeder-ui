@@ -2,15 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:holefeeder/core/constants/strings.dart';
-import 'package:holefeeder/core/enums/authentication_status_enum.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/utils/authentication_client.dart';
-import 'package:holefeeder/core/utils/rest_client.dart';
-import 'package:holefeeder/core/view_models/user_settings_view_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:holefeeder/core/adapters/adapters.dart';
+import 'package:holefeeder/core/constants/constants.dart';
+import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/events/events.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/providers/providers.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/services/services.dart';
+import 'package:holefeeder/core/utils/utils.dart';
+import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/router.dart';
 import 'package:holefeeder/ui/services/notification_service.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -28,6 +33,9 @@ Future<void> main() async {
   );
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize Hive
+  await _initHive();
+
   final authenticationService = _createAuthenticationService();
   await authenticationService.init();
 
@@ -41,10 +49,11 @@ Future<void> main() async {
         Provider<AuthenticationClient>(
           create: (BuildContext context) => authenticationService,
         ),
+        Provider<EventBus>(create: (BuildContext context) => EventBus()),
         Provider<RestClient>(
-          create: (BuildContext context) {
-            return RestClient(_createDio(context), baseUrl: kServerUrl);
-          },
+          create:
+              (BuildContext context) =>
+                  RestClient(_createDio(context), baseUrl: kServerUrl),
         ),
         Provider<DataProvider>(
           create:
@@ -52,13 +61,98 @@ Future<void> main() async {
                 Provider.of<RestClient>(context, listen: false),
               ),
         ),
+        Provider<HiveStorageProvider>(
+          create: (BuildContext context) => HiveStorageProviderImpl(),
+          lazy: false,
+        ),
+        Provider<RepositoryFactory>(
+          create: (BuildContext context) => RepositoryFactory(),
+          dispose: (_, service) => service.dispose(),
+        ),
+        Provider<AppLifecycleService>(
+          create:
+              (BuildContext context) => AppLifecycleService(
+                Provider.of<RepositoryFactory>(context, listen: false),
+              ),
+          dispose: (_, service) => service.dispose(),
+          lazy:
+              false, // Important: create immediately to register lifecycle observer
+        ),
+        ProxyProvider3<
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          UserSettingsRepository
+        >(
+          update:
+              (_, hiveService, dataProvider, factory, __) =>
+                  factory.getRepository(
+                    () => UserSettingsRepository(
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
+        ProxyProvider3<
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          AccountRepository
+        >(
+          update:
+              (_, hiveService, dataProvider, factory, __) =>
+                  factory.getRepository(
+                    () => AccountRepository(
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
+        ProxyProvider<UserSettingsRepository, PeriodService>(
+          update: (_, repo, __) => PeriodService(settingsRepository: repo),
+        ),
+        ProxyProvider4<
+          PeriodService,
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          UpcomingRepository
+        >(
+          update:
+              (_, periodService, hiveService, dataProvider, factory, __) =>
+                  factory.getRepository(
+                    () => UpcomingRepository(
+                      periodService: periodService,
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
+        ProxyProvider3<
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          TransactionRepository
+        >(
+          update:
+              (_, hiveService, dataProvider, factory, __) =>
+                  factory.getRepository(
+                    () => TransactionRepository(
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
         Provider<NotificationService>(
           create: (BuildContext context) => NotificationServiceImpl(context),
         ),
         ChangeNotifierProvider<UserSettingsViewModel>(
           create:
               (BuildContext context) => UserSettingsViewModel(
-                dataProvider: Provider.of<DataProvider>(context, listen: false),
+                repository: Provider.of<UserSettingsRepository>(
+                  context,
+                  listen: false,
+                ),
                 notificationService: Provider.of<NotificationService>(
                   context,
                   listen: false,
@@ -82,6 +176,23 @@ Future<void> main() async {
   }
 }
 
+Future<void> _initHive() async {
+  // Initialize Hive
+  await Hive.initFlutter();
+
+  // Register adapters
+  Hive.registerAdapter(AccountAdapter());
+  Hive.registerAdapter(AccountInfoAdapter());
+  Hive.registerAdapter(AccountTypeAdapter());
+  Hive.registerAdapter(CategoryInfoAdapter());
+  Hive.registerAdapter(CategoryTypeAdapter());
+  Hive.registerAdapter(DateIntervalTypeAdapter());
+  Hive.registerAdapter(DecimalAdapter());
+  Hive.registerAdapter(UpcomingAdapter());
+  Hive.registerAdapter(UserSettingsAdapter());
+  Hive.registerAdapter(TransactionAdapter());
+}
+
 AuthenticationClient _createAuthenticationService() =>
     UniversalPlatform.isWeb
         ? WebAuthenticationClient()
@@ -89,6 +200,8 @@ AuthenticationClient _createAuthenticationService() =>
 
 Dio _createDio(BuildContext context) {
   final dio = Dio();
+  final df = DateFormat('yyyy-MM-dd');
+
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
@@ -104,5 +217,21 @@ Dio _createDio(BuildContext context) {
       },
     ),
   );
+
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest: (options, handler) {
+        options.queryParameters = {
+          for (var e in options.queryParameters.entries)
+            e.key:
+                DateTime.tryParse(e.value.toString()) != null
+                    ? df.format(DateTime.parse(e.value.toString()))
+                    : e.value,
+        };
+        return handler.next(options);
+      },
+    ),
+  );
+
   return dio;
 }

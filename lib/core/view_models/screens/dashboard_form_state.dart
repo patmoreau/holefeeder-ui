@@ -1,9 +1,9 @@
-import 'package:holefeeder/core/view_models/base_form_state.dart';
+import 'package:holefeeder/core/models/models.dart';
 
-import 'account_view_model.dart';
+import '../base_form_state.dart';
 
 class DashboardFormState extends BaseFormState {
-  final List<AccountViewModel> accounts;
+  final List<Account> accounts;
   final bool isRefreshing;
 
   const DashboardFormState({
@@ -15,7 +15,7 @@ class DashboardFormState extends BaseFormState {
 
   @override
   DashboardFormState copyWith({
-    List<AccountViewModel>? accounts,
+    List<Account>? accounts,
     bool? isRefreshing,
     ViewFormState? state,
     String? errorMessage,

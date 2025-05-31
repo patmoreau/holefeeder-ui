@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class PlatformAvatar extends StatelessWidget {
+class AdaptiveAvatar extends StatelessWidget {
   final double radius;
   final ImageProvider? backgroundImage;
   final Widget? child;
   final Color? backgroundColor;
   final VoidCallback? onBackgroundImageError;
 
-  const PlatformAvatar({
+  const AdaptiveAvatar({
     super.key,
     this.radius = 20,
     this.backgroundImage,
@@ -20,7 +20,9 @@ class PlatformAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UniversalPlatform.isApple ? _buildCupertinoAvatar(context) : _buildMaterialAvatar(context);
+    return UniversalPlatform.isApple
+        ? _buildCupertinoAvatar(context)
+        : _buildMaterialAvatar(context);
   }
 
   Widget _buildCupertinoAvatar(BuildContext context) {
@@ -34,7 +36,10 @@ class PlatformAvatar extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: backgroundColor ?? CupertinoColors.systemGrey6,
-                border: Border.all(color: CupertinoColors.systemGrey5, width: 1),
+                border: Border.all(
+                  color: CupertinoColors.systemGrey5,
+                  width: 1,
+                ),
               ),
             ),
             if (backgroundImage != null)
@@ -72,7 +77,9 @@ class PlatformAvatar extends StatelessWidget {
       backgroundColor: backgroundColor,
       backgroundImage: backgroundImage,
       onBackgroundImageError:
-          onBackgroundImageError != null ? (exception, stackTrace) => onBackgroundImageError!() : null,
+          onBackgroundImageError != null
+              ? (exception, stackTrace) => onBackgroundImageError!()
+              : null,
       child: backgroundImage == null ? child : null,
     );
   }

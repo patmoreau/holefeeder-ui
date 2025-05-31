@@ -86,6 +86,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get intervalTypeOneTime => 'One time';
 
   @override
+  String get lastUpdated => 'Last updated';
+
+  @override
+  String get loginTitle => 'Login';
+
+  @override
+  String get logoutTitle => 'Logout';
+
+  @override
   String get note => 'Note';
 
   @override
@@ -119,10 +128,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
-  String get validationDecimalNumber => 'Please enter a positive decimal number';
+  String get transactions => 'Transactions';
 
   @override
-  String get validationNumberGreatherThanZero => 'Please enter a number greater than zero';
+  String get transactionsEmpty => 'No transactions found';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get upcomingEmpty => 'No upcoming cashflows';
+
+  @override
+  String get validationDecimalNumber =>
+      'Please enter a positive decimal number';
+
+  @override
+  String get validationNumberGreatherThanZero =>
+      'Please enter a number greater than zero';
 
   @override
   String get validationPositiveNumber => 'Please enter a positive number';

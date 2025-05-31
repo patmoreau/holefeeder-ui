@@ -106,6 +106,18 @@
   "@intervalTypeOneTime": {
     "description": "One time interval type"
   },
+  "lastUpdated": "Last updated",
+  "@lastUpdated": {
+    "description": "The last updated timestamp"
+  },
+  "loginTitle": "Login",
+  "@loginTitle": {
+    "description": "The title of the login screen"
+  },
+  "logoutTitle": "Logout",
+  "@logoutTitle": {
+    "description": "The title of the logout confirmation dialog"
+  },
   "note": "Note",
   "@note": {
     "description": "A note or message"
@@ -149,6 +161,22 @@
   "save": "Save",
   "@save": {
     "description": "A button to save changes"
+  },
+  "transactions": "Transactions",
+  "@transactions": {
+    "description": "The transactions screen title"
+  },
+  "transactionsEmpty": "No transactions found",
+  "@transactionsEmpty": {
+    "description": "The transactions list is empty"
+  },
+  "upcoming": "Upcoming",
+  "@upcoming": {
+    "description": "The upcoming screen title"
+  },
+  "upcomingEmpty": "No upcoming cashflows",
+  "@upcomingEmpty": {
+    "description": "The upcoming list is empty"
   },
   "validationDecimalNumber": "Please enter a positive decimal number",
   "@validationDecimalNumber": {

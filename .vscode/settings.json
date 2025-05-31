@@ -27,5 +27,9 @@
     "editor.wordBasedSuggestions": "off",
   },
   "dart.lineLength": 80,
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "$(capture).*.dart",
+  }
 }

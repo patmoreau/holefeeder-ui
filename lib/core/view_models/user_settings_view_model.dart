@@ -1,31 +1,33 @@
-import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
-import 'package:holefeeder/core/models/date_interval.dart';
-import 'package:holefeeder/core/models/user_settings.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/services/notification_service.dart';
-import 'package:holefeeder/core/view_models/base_form_state.dart';
+import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
+
+import 'base_form_state.dart';
 import 'base_view_model.dart';
 import 'user_settings_form_state.dart';
 
 class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
-  final DataProvider _dataProvider;
-
-  UserSettings? get settings => formState.settings;
-  bool get hasSettings => settings != null;
-  String? get storeItemId => formState.storeItemId;
-  DateInterval get currentPeriod => formState.currentPeriod;
+  final UserSettingsRepository _repository;
 
   UserSettingsViewModel({
-    required DataProvider dataProvider,
-    NotificationService? notificationService,
-  }) : _dataProvider = dataProvider,
-       super(UserSettingsFormState(), notificationService) {
+    required UserSettingsRepository repository,
+    required super.notificationService,
+  }) : _repository = repository,
+       super(formState: UserSettingsFormState()) {
     loadInitialData();
   }
 
+  UserSettings? get settings => formState.settings;
+
+  bool get hasSettings => settings != null;
+
+  String? get storeItemId => formState.storeItemId;
+
+  DateInterval get currentPeriod => formState.currentPeriod;
+
   Future<void> loadInitialData() async {
     await handleAsync(() async {
-      final userSettings = await _dataProvider.getUserSettings();
+      final userSettings = await _repository.getDefault();
 
       updateState(
         (s) => s.copyWith(settings: userSettings, state: ViewFormState.ready),
@@ -33,7 +35,6 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     });
   }
 
-  /// Get the current period based on today's date
   Future<DateInterval> getCurrentPeriod() async {
     final today = DateTime.now();
     final newPeriod = calculatePeriod(today, settings!);
@@ -41,21 +42,17 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     return newPeriod;
   }
 
-  /// Get period for a specific date
   DateInterval getPeriod(DateTime asOfDate) =>
       calculatePeriod(asOfDate, settings!);
 
-  /// Set the current period based on a specific date
   void setPeriod(DateTime asOfDate) {
     final newPeriod = calculatePeriod(asOfDate, settings!);
     updateState((state) => state.copyWith(currentPeriod: newPeriod));
   }
 
-  /// Calculate the next date after the given date based on settings
   DateTime getNextDate(DateTime asOfDate) =>
       calculateNextDate(asOfDate, settings!);
 
-  /// Calculate the previous date before the given date based on settings
   DateTime getPreviousDate(DateTime asOfDate) {
     if (settings == null) {
       throw Exception('Settings not loaded');
@@ -64,31 +61,18 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     return calculatePreviousDate(asOfDate, settings!);
   }
 
-  /// Save user settings to the server
   Future<void> saveSettings(UserSettings newSettings) async {
     await handleAsync(() async {
-      if (storeItemId == null) {
-        updateState(
-          (state) => state.copyWith(
-            settings: newSettings,
-            currentPeriod: null, // Reset current period
-          ),
-        );
-        await showNotification('Settings saved successfully');
-      } else {
-        updateState(
-          (state) => state.copyWith(
-            settings: newSettings,
-            currentPeriod: null, // Reset current period
-          ),
-        );
+      await _repository.save(newSettings);
 
-        await showNotification('Settings updated successfully');
-      }
+      updateState(
+        (state) => state.copyWith(settings: newSettings, currentPeriod: null),
+      );
+
+      await showNotification('Settings saved successfully');
     });
   }
 
-  /// Update individual settings field
   Future<void> updateSetting({
     DateTime? effectiveDate,
     DateIntervalType? intervalType,
@@ -103,7 +87,6 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     await saveSettings(updatedSettings);
   }
 
-  /// Calculate the period based on a given date and settings
   DateInterval calculatePeriod(DateTime asOfDate, UserSettings settings) {
     final DateTime start = _startOfDay(asOfDate);
     final DateTime end = calculateNextDate(start, settings);
@@ -148,7 +131,6 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     return DateInterval(start, _addDays(periodEnd, -1));
   }
 
-  /// Calculate the next date after the given date based on settings
   DateTime calculateNextDate(DateTime asOfDate, UserSettings settings) {
     if (settings.intervalType == DateIntervalType.oneTime) {
       return _startOfDay(settings.effectiveDate);
@@ -165,7 +147,6 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     return _startOfDay(start);
   }
 
-  /// Calculate the previous date before the given date based on settings
   DateTime calculatePreviousDate(DateTime asOfDate, UserSettings settings) {
     if (settings.intervalType == DateIntervalType.oneTime ||
         _compareAsc(asOfDate, settings.effectiveDate) != 1) {
@@ -183,7 +164,6 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     return _nextRecurrence(count - 1, settings);
   }
 
-  /// Calculate the next recurrence date based on settings
   DateTime _nextRecurrence(int amount, UserSettings settings) {
     switch (settings.intervalType) {
       case DateIntervalType.weekly:
@@ -197,8 +177,6 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     }
   }
 
-  /// Helper for date comparison
-  /// Returns -1 if date1 is before date2, 0 if equal, 1 if after
   int _compareAsc(DateTime date1, DateTime date2) {
     final d1 = _startOfDay(date1);
     final d2 = _startOfDay(date2);
@@ -208,22 +186,18 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
     return 0;
   }
 
-  /// Get just the date part (no time)
   DateTime _startOfDay(DateTime date) {
     return DateTime(date.year, date.month, date.day);
   }
 
-  /// Add days to a date
   DateTime _addDays(DateTime date, int days) {
     return date.add(Duration(days: days));
   }
 
-  /// Add weeks to a date
   DateTime _addWeeks(DateTime date, int weeks) {
     return date.add(Duration(days: weeks * 7));
   }
 
-  /// Add months to a date
   DateTime _addMonths(DateTime date, int months) {
     int newMonth = date.month + months;
     int newYear = date.year;
@@ -238,14 +212,12 @@ class UserSettingsViewModel extends BaseViewModel<UserSettingsFormState> {
       newYear -= 1;
     }
 
-    // Handle month with fewer days
     final lastDayOfMonth = DateTime(newYear, newMonth + 1, 0).day;
     final day = date.day > lastDayOfMonth ? lastDayOfMonth : date.day;
 
     return DateTime(newYear, newMonth, day);
   }
 
-  /// Add years to a date
   DateTime _addYears(DateTime date, int years) {
     return DateTime(date.year + years, date.month, date.day);
   }

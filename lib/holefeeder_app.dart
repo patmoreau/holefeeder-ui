@@ -109,7 +109,7 @@ class _HolefeederAppState extends State<HolefeederApp>
     builder: _initializeApp,
   );
 
-  Widget _initializeApp(context, child) {
+  Widget _initializeApp(BuildContext context, Widget? child) {
     LocalizationService.initialize(context);
     return NotificationServiceProvider(
       child:

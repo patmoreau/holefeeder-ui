@@ -124,7 +124,7 @@ Future<void> main() async {
                   ),
         ),
         ProxyProvider<UserSettingsRepository, PeriodService>(
-          update: (_, repo, __) => PeriodService(settingsRepository: repo),
+          update: (_, repo, _) => PeriodService(settingsRepository: repo),
         ),
         ProxyProvider4<
           PeriodService,

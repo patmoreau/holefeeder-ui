@@ -85,7 +85,7 @@ Future<void> main() async {
           UserSettingsRepository
         >(
           update:
-              (_, hiveService, dataProvider, factory, __) =>
+              (_, hiveService, dataProvider, factory, _) =>
                   factory.getRepository(
                     () => UserSettingsRepository(
                       hiveService: hiveService,
@@ -100,7 +100,7 @@ Future<void> main() async {
           AccountRepository
         >(
           update:
-              (_, hiveService, dataProvider, factory, __) =>
+              (_, hiveService, dataProvider, factory, _) =>
                   factory.getRepository(
                     () => AccountRepository(
                       hiveService: hiveService,
@@ -115,7 +115,7 @@ Future<void> main() async {
           CategoryRepository
         >(
           update:
-              (_, hiveService, dataProvider, factory, __) =>
+              (_, hiveService, dataProvider, factory, _) =>
                   factory.getRepository(
                     () => CategoryRepository(
                       hiveService: hiveService,
@@ -124,7 +124,7 @@ Future<void> main() async {
                   ),
         ),
         ProxyProvider<UserSettingsRepository, PeriodService>(
-          update: (_, repo, __) => PeriodService(settingsRepository: repo),
+          update: (_, repo, _) => PeriodService(settingsRepository: repo),
         ),
         ProxyProvider4<
           PeriodService,
@@ -134,7 +134,7 @@ Future<void> main() async {
           UpcomingRepository
         >(
           update:
-              (_, periodService, hiveService, dataProvider, factory, __) =>
+              (_, periodService, hiveService, dataProvider, factory, _) =>
                   factory.getRepository(
                     () => UpcomingRepository(
                       periodService: periodService,
@@ -150,7 +150,7 @@ Future<void> main() async {
           TagRepository
         >(
           update:
-              (_, hiveService, dataProvider, factory, __) =>
+              (_, hiveService, dataProvider, factory, _) =>
                   factory.getRepository(
                     () => TagRepository(
                       hiveService: hiveService,
@@ -165,7 +165,7 @@ Future<void> main() async {
           TransactionRepository
         >(
           update:
-              (_, hiveService, dataProvider, factory, __) =>
+              (_, hiveService, dataProvider, factory, _) =>
                   factory.getRepository(
                     () => TransactionRepository(
                       hiveService: hiveService,

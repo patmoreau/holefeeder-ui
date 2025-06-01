@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'base_dialog.dart';
 
-showExampleDialog({required BuildContext context}) {
+void showExampleDialog({required BuildContext context}) {
   showBaseDialog(context: context, child: _Content());
 }
 

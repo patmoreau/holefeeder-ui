@@ -73,7 +73,7 @@ class CategoryRepository
       await ensureInitialized();
 
       final String key = keyOrValue is String ? keyOrValue : keyOrValue.key;
-      final String apiId = keyOrValue is Category ? keyOrValue.id : key;
+      // final String apiId = keyOrValue is Category ? keyOrValue.id : key;
 
       // For API operations, use the API ID
       // await _dataProvider.deleteCategory(apiId);

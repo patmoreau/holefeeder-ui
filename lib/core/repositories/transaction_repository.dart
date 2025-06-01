@@ -83,8 +83,8 @@ class TransactionRepository
       final String key = keyOrValue is String ? keyOrValue : keyOrValue.id;
 
       // If we have the full object, we can get the account ID for events/updates
-      final String accountId =
-          keyOrValue is Transaction ? keyOrValue.account.id : '';
+      // final String accountId =
+      //     keyOrValue is Transaction ? keyOrValue.account.id : '';
 
       // For API operations, use the key as the transaction ID
       // await _dataProvider.deleteTransaction(key);
@@ -118,7 +118,7 @@ class TransactionRepository
   @override
   Future<Transaction> refresh(dynamic keyOrValue) async {
     try {
-      final String key = keyOrValue is String ? keyOrValue : keyOrValue.id;
+      // final String key = keyOrValue is String ? keyOrValue : keyOrValue.id;
 
       // Get the transaction from the API
       // final transaction = await _dataProvider.getTransaction(key);

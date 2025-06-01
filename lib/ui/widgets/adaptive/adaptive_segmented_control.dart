@@ -99,7 +99,7 @@ class AdaptiveSegmentedControl<T extends Object> extends StatelessWidget {
                     unselectedColor != null ||
                     borderColor != null
                 ? unselectedButtonStyle
-                : null,
+                : selectedButtonStyle,
         emptySelectionAllowed: false,
       ),
     );

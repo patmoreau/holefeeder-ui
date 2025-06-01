@@ -89,7 +89,7 @@ class AccountRepository
       await ensureInitialized();
 
       final String key = keyOrValue is String ? keyOrValue : keyOrValue.key;
-      final String apiId = keyOrValue is Account ? keyOrValue.id : key;
+      // final String apiId = keyOrValue is Account ? keyOrValue.id : key;
 
       // await _dataProvider.deleteAccount(apiId);
 

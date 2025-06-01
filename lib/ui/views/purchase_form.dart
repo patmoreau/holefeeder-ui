@@ -70,8 +70,8 @@ class PurchaseForm extends StatelessWidget {
     ),
     AccountPicker(
       accounts: model.accounts,
-      selectedAccount: model.formState.selectedAccount,
-      onChanged: model.setSelectedAccount,
+      selectedAccount: model.formState.selectedFromAccount,
+      onChanged: model.setSelectedFromAccount,
     ),
     CategoryPicker(
       categories: model.categories,

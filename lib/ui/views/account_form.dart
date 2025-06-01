@@ -28,7 +28,7 @@ class _AccountFormState extends State<AccountForm> {
           children: [
             _buildAccountCard(context, model),
             SizedBox(height: 16),
-            CupertinoSlidingSegmentedControl<ListType>(
+            AdaptiveSegmentedControl<ListType>(
               groupValue: _selectedSegment,
               onValueChanged: (ListType? value) {
                 if (value != null) {

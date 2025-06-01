@@ -164,6 +164,21 @@ class TransactionRepository
     }
   }
 
+  Future<void> transfer(Transfer value) async {
+    try {
+      await _dataProvider.transfer(value);
+      await _getAllFromApi(value.fromAccountId);
+      developer.log(
+        'TransactionRepository: Firing TransactionAddedEvent for accountId: ${value.fromAccountId}',
+      );
+      EventBus().fire(TransactionAddedEvent(value.fromAccountId));
+      EventBus().fire(TransactionAddedEvent(value.toAccountId));
+    } catch (e) {
+      _logError('failed to make transfer', e);
+      throw Exception('Failed to make transfer');
+    }
+  }
+
   Future<List<Transaction>> getForAccount(String accountId) async {
     try {
       await ensureInitialized();

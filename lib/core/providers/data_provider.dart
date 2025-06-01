@@ -41,6 +41,8 @@ abstract class DataProvider {
 
   Future<String?> makePurchase(MakePurchase item);
 
+  Future<String?> transfer(Transfer item);
+
   Future<String> payCashflow(PayCashflow item);
 }
 
@@ -243,6 +245,19 @@ class DataProviderImpl implements DataProvider {
       throw Exception('Could not make the purchase');
     } catch (e) {
       throw Exception('Could not make the purchase');
+    }
+  }
+
+  @override
+  Future<String?> transfer(Transfer item) async {
+    try {
+      final result = await _restClient.transfer(item);
+      if (result.response.statusCode == 201) {
+        return result.data;
+      }
+      throw Exception('Could not make the transfer');
+    } catch (e) {
+      throw Exception('Could not make the transfer');
     }
   }
 

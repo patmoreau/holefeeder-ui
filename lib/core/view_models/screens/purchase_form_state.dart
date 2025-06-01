@@ -8,7 +8,8 @@ class PurchaseFormState extends BaseFormState {
   final Decimal amount;
   final DateTime date;
   final String note;
-  final Account? selectedAccount;
+  final Account? selectedFromAccount;
+  final Account? selectedToAccount;
   final Category? selectedCategory;
   final List<String> tags;
   final bool isCashflow;
@@ -24,7 +25,8 @@ class PurchaseFormState extends BaseFormState {
     Decimal? amount,
     DateTime? date,
     this.note = '',
-    this.selectedAccount,
+    this.selectedFromAccount,
+    this.selectedToAccount,
     this.selectedCategory,
     this.tags = const [],
     this.isCashflow = false,
@@ -46,7 +48,8 @@ class PurchaseFormState extends BaseFormState {
     Decimal? amount,
     DateTime? date,
     String? note,
-    Account? selectedAccount,
+    Account? selectedFromAccount,
+    Account? selectedToAccount,
     Category? selectedCategory,
     List<String>? tags,
     bool? isCashflow,
@@ -64,7 +67,8 @@ class PurchaseFormState extends BaseFormState {
       amount: amount ?? this.amount,
       date: date ?? this.date,
       note: note ?? this.note,
-      selectedAccount: selectedAccount ?? this.selectedAccount,
+      selectedFromAccount: selectedFromAccount ?? this.selectedFromAccount,
+      selectedToAccount: selectedToAccount ?? this.selectedToAccount,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       tags: tags ?? this.tags,
       isCashflow: isCashflow ?? this.isCashflow,

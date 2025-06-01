@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/extensions/extensions.dart';
 import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
@@ -10,6 +9,10 @@ import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/views/purchase_form.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+
+import 'purchase_transfer_form.dart';
+
+enum ListType { purchase, transfer }
 
 class PurchaseScreen extends StatefulWidget {
   final Account? account;
@@ -22,6 +25,7 @@ class PurchaseScreen extends StatefulWidget {
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ListType _selectedSegment = ListType.purchase;
 
   @override
   Widget build(BuildContext context) => ViewModelProvider<PurchaseViewModel>(
@@ -43,7 +47,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                     ? LocalizationService.current.dashboard
                     : LocalizationService.current.fieldAccount,
           ),
-          title: LocalizationService.current.purchaseTitle,
+          title: LocalizationService.current.add,
           actions: [
             AdaptiveIconButton(
               onPressed: () => _save(model),
@@ -58,13 +62,39 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     return FormStateHandler(
       formState: model.formState,
       builder:
-          () => ScrollConfiguration(
-            behavior: ScrollConfiguration.of(
-              context,
-            ).copyWith(scrollbars: true),
-            child: SafeArea(
-              child: PurchaseForm(model: model, formKey: _formKey),
-            ),
+          () => Column(
+            children: [
+              AdaptiveSegmentedControl<ListType>(
+                groupValue: _selectedSegment,
+                onValueChanged: (ListType? value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedSegment = value;
+                    });
+                  }
+                },
+                children: <ListType, Widget>{
+                  ListType.purchase: Text(LocalizationService.current.purchase),
+                  ListType.transfer: Text(LocalizationService.current.transfer),
+                },
+              ),
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(
+                    context,
+                  ).copyWith(scrollbars: true),
+                  child: SafeArea(
+                    child:
+                        _selectedSegment == ListType.purchase
+                            ? PurchaseForm(model: model, formKey: _formKey)
+                            : PurchaseTransferForm(
+                              model: model,
+                              formKey: _formKey,
+                            ),
+                  ),
+                ),
+              ),
+            ],
           ),
     );
   }
@@ -72,12 +102,26 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   void _cancel(PurchaseViewModel model) => context.pop();
 
   Future<void> _save(PurchaseViewModel model) async {
-    if (!_formKey.currentState!.validate()) {
+    // First validate the form fields using Flutter's form validation
+    final isFormValid = _formKey.currentState!.validate();
+
+    // Next, run the ViewModel's validation based on the selected segment
+    final isModelValid =
+        _selectedSegment == ListType.purchase
+            ? model.validatePurchase()
+            : model.validateTransfer();
+
+    // Only proceed if both validations pass
+    if (!isFormValid || !isModelValid) {
       return;
     }
 
     _formKey.currentState!.save();
-    await model.makePurchase();
+    if (_selectedSegment == ListType.purchase) {
+      await model.makePurchase();
+    } else {
+      await model.makeTransfer();
+    }
 
     if (mounted) {
       context.popOrGoHome();

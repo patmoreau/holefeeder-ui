@@ -1,5 +1,9 @@
 {
   "@@locale": "en",
+  "add": "Add",
+  "@addTitle": {
+    "description": "add"
+  },
   "appTitle": "Holefeeder",
   "@appTitle": {
     "description": "The application name"
@@ -28,9 +32,17 @@
   "@fieldAccount": {
     "description": "The account field label"
   },
+  "fieldAccountFrom": "From account",
+  "@fieldAccountFrom": {
+    "description": "The from account field label"
+  },
   "fieldAccountPlaceHolder": "Select your account",
   "@fieldAccountPlaceHolder": {
     "description": "Placeholder text for the account field"
+  },
+  "fieldAccountTo": "To account",
+  "@fieldAccountTo": {
+    "description": "The to account field label"
   },
   "fieldAmount": "Amount",
   "@fieldAmount": {
@@ -150,7 +162,7 @@
   "@purchaseCashflowDetails": {
     "description": "The title of the cashflow details in the purchase screen"
   },
-  "purchaseTitle": "Make purchase",
+  "purchaseTitle": "Purchase",
   "@purchaseTitle": {
     "description": "The title of the purchase screen"
   },
@@ -169,6 +181,10 @@
   "transactionsEmpty": "No transactions found",
   "@transactionsEmpty": {
     "description": "The transactions list is empty"
+  },
+  "transfer": "Transfer",
+  "@transfer": {
+    "description": "A button to transfer an item"
   },
   "upcoming": "Upcoming",
   "@upcoming": {

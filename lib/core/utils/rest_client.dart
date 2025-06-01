@@ -56,6 +56,9 @@ abstract class RestClient {
   @POST('api/v2/transactions/make-purchase')
   Future<HttpResponse<String>> makePurchase(@Body() MakePurchase command);
 
+  @POST('api/v2/transactions/transfer')
+  Future<HttpResponse<String>> transfer(@Body() Transfer command);
+
   @POST('api/v2/transactions/pay-cashflow')
   Future<HttpResponse<String>> payCashflow(@Body() PayCashflow command);
 }

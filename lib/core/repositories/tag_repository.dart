@@ -63,7 +63,7 @@ class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
 
   @override
   Future<void> save(Tag value) async {
-    _logError('refresh operation', 'This operation is not yet implemented');
+    _logError('saving tag', 'This operation is not yet implemented');
     throw Exception(
       'The save operation for individual tag is not yet implemented',
     );

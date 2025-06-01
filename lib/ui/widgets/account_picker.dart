@@ -4,12 +4,14 @@ import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/ui/widgets/adaptive/adaptive_picker.dart';
 
 class AccountPicker extends StatelessWidget {
+  final String? label;
   final List<Account> accounts;
   final Account? selectedAccount;
   final ValueChanged<Account?> onChanged;
 
   const AccountPicker({
     super.key,
+    this.label,
     required this.accounts,
     required this.selectedAccount,
     required this.onChanged,
@@ -17,7 +19,7 @@ class AccountPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AdaptivePicker<Account>(
-    label: LocalizationService.current.fieldAccount,
+    label: label ?? LocalizationService.current.fieldAccount,
     value: selectedAccount,
     items: accounts,
     displayStringFor: (account) => account.name,

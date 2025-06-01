@@ -1,6 +1,7 @@
 export 'adaptive_activity_indicator.dart';
 export 'adaptive_avatar.dart';
 export 'adaptive_button.dart';
+export 'adaptive_form_section.dart';
 export 'adaptive_icon_button.dart';
 export 'adaptive_icons.dart';
 export 'adaptive_list_tile.dart';
@@ -10,4 +11,6 @@ export 'adaptive_navigation_item.dart';
 export 'adaptive_navigation_scaffold.dart';
 export 'adaptive_picker.dart';
 export 'adaptive_scaffold.dart';
+export 'adaptive_segmented_control.dart';
+export 'adaptive_switch.dart';
 export 'adaptive_text_field.dart';

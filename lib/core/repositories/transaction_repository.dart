@@ -20,7 +20,9 @@ class TransactionRepository
        _dataProvider = dataProvider;
 
   @override
-  Future<void> initialize() async {}
+  Future<void> initialize() async {
+    // No-op initialization - transactions are loaded on-demand per account
+  }
 
   @override
   Future<Transaction> get(String key) async {
@@ -29,42 +31,126 @@ class TransactionRepository
       return await _hiveService.get<Transaction>(boxName, key) ??
           Transaction.empty;
     } catch (e) {
-      developer.log('Error getting transaction cashflow: $e');
+      _logError('getting individual transaction', e);
       return Transaction.empty;
     }
   }
 
   @override
-  Future<void> save(Transaction value) async {
-    throw Exception('Not implemented');
+  Future<List<Transaction>> getAll() async {
+    try {
+      await ensureInitialized();
+      final transactions = await _hiveService.getAll<Transaction>(boxName);
+
+      if (transactions.isNotEmpty) {
+        return _sortByDate(transactions.cast<Transaction>().toList());
+      }
+
+      // Since transactions are per-account, we might not want to load all transactions
+      // from all accounts here. Return empty list instead.
+      return [];
+    } catch (e) {
+      _logError('fetching all transactions', e);
+      return [];
+    }
   }
 
   @override
-  Future<void> delete(String key) async {
-    throw Exception('Not implemented');
+  Future<void> save(Transaction value) async {
+    try {
+      await ensureInitialized();
+
+      // Assuming _dataProvider has a method to save transactions
+      // await _dataProvider.saveTransaction(value);
+
+      await _hiveService.save<Transaction>(boxName, value.id, value);
+
+      EventBus().fire<TransactionAddedEvent>(
+        TransactionAddedEvent(value.account.id),
+      );
+    } catch (e) {
+      _logError('saving transaction', e);
+      throw Exception('Failed to save transaction: $e');
+    }
+  }
+
+  @override
+  Future<void> delete(dynamic keyOrValue) async {
+    try {
+      await ensureInitialized();
+
+      // Extract the key based on whether we received a string key or a Transaction object
+      final String key = keyOrValue is String ? keyOrValue : keyOrValue.id;
+
+      // If we have the full object, we can get the account ID for events/updates
+      // final String accountId =
+      //     keyOrValue is Transaction ? keyOrValue.account.id : '';
+
+      // For API operations, use the key as the transaction ID
+      // await _dataProvider.deleteTransaction(key);
+
+      // For local storage operations, use the key
+      await _hiveService.delete<Transaction>(boxName, key);
+
+      // Fire event if we know the account ID
+      // if (accountId.isNotEmpty) {
+      //   EventBus().fire<TransactionDeletedEvent>(
+      //     TransactionDeletedEvent(key, accountId),
+      //   );
+      // }
+    } catch (e) {
+      _logError('deleting transaction', e);
+      throw Exception('Failed to delete transaction: $e');
+    }
   }
 
   @override
   Future<bool> exists(String key) async {
-    throw Exception('Not implemented');
+    try {
+      await ensureInitialized();
+      return await _hiveService.exists<Transaction>(boxName, key);
+    } catch (e) {
+      _logError('checking if transaction exists', e);
+      throw Exception('Failed to check if transaction exists: $e');
+    }
   }
 
   @override
-  Future<Transaction> refresh(String key) async {
-    throw Exception('Not implemented');
+  Future<Transaction> refresh(dynamic keyOrValue) async {
+    try {
+      // final String key = keyOrValue is String ? keyOrValue : keyOrValue.id;
+
+      // Get the transaction from the API
+      // final transaction = await _dataProvider.getTransaction(key);
+
+      // Save to local storage
+      // await _hiveService.save<Transaction>(boxName, transaction.id, transaction);
+
+      return Transaction.empty;
+    } catch (e) {
+      _logError('refreshing transaction from API', e);
+      return Transaction.empty;
+    }
   }
 
   @override
-  Future<Transaction> refreshAll() async {
-    throw Exception('Not implemented');
+  Future<void> refreshAll() async {
+    try {
+      // Since transactions are normally fetched per account,
+      // this method might not be very efficient for transactions
+      // Consider implementing a more targeted approach if needed
+      await _hiveService.clearall<Transaction>(boxName);
+    } catch (e) {
+      _logError('refreshing all transactions', e);
+    }
   }
 
   @override
   Future<void> dispose() async {
-    await _hiveService.closeBox<Transaction>(HiveConstants.transactionsBoxName);
+    await _hiveService.closeBox<Transaction>(boxName);
   }
 
-  Future<void> makePurchase(String key, MakePurchase value) async {
+  Future<void> makePurchase(MakePurchase value) async {
     try {
       await _dataProvider.makePurchase(value);
       await _getAllFromApi(value.accountId);
@@ -73,8 +159,23 @@ class TransactionRepository
       );
       EventBus().fire(TransactionAddedEvent(value.accountId));
     } catch (e) {
-      developer.log('Error saving transaction: $e');
+      _logError('saving transaction purchase', e);
       throw Exception('Failed to save transaction');
+    }
+  }
+
+  Future<void> transfer(Transfer value) async {
+    try {
+      await _dataProvider.transfer(value);
+      await _getAllFromApi(value.fromAccountId);
+      developer.log(
+        'TransactionRepository: Firing TransactionAddedEvent for accountId: ${value.fromAccountId}',
+      );
+      EventBus().fire(TransactionAddedEvent(value.fromAccountId));
+      EventBus().fire(TransactionAddedEvent(value.toAccountId));
+    } catch (e) {
+      _logError('failed to make transfer', e);
+      throw Exception('Failed to make transfer');
     }
   }
 
@@ -90,13 +191,16 @@ class TransactionRepository
         return _getAllFromApi(accountId);
       }
 
-      final items = transactions.cast<Transaction>().toList();
-      items.sort((a, b) => b.date.compareTo(a.date));
-      return items;
+      return _sortByDate(transactions.cast<Transaction>().toList());
     } catch (e) {
-      developer.log('Error fetching transactions: $e');
+      _logError('fetching transactions for account', e);
       return [];
     }
+  }
+
+  List<Transaction> _sortByDate(List<Transaction> items) {
+    items.sort((a, b) => b.date.compareTo(a.date));
+    return items;
   }
 
   Future<List<Transaction>> _getAllFromApi(String accountId) async {
@@ -110,13 +214,17 @@ class TransactionRepository
       await _hiveService.clearall<Transaction>(boxName);
 
       for (var item in items) {
-        await _hiveService.save<Transaction>(boxName, item.id, item);
+        await _hiveService.save<Transaction>(boxName, item.key, item);
       }
 
-      return items;
+      return _sortByDate(items);
     } catch (e) {
-      developer.log('Error refreshing transactions from API: $e');
+      _logError('refreshing transactions from API', e);
       return [];
     }
+  }
+
+  void _logError(String operation, dynamic error) {
+    developer.log('TransactionRepository error when $operation: $error');
   }
 }

@@ -33,7 +33,7 @@ class UserSettings with HiveKey {
   @override
   String get key => createKey();
 
-  static String createKey() => 'userSettings';
+  static String createKey() => HiveConstants.userSettingsKey;
 
   @override
   bool operator ==(Object other) =>

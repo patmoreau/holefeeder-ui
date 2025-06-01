@@ -34,14 +34,32 @@ class UpcomingRepository
       await ensureInitialized();
       return await _hiveService.get<Upcoming>(boxName, key) ?? Upcoming.empty;
     } catch (e) {
-      developer.log('Error getting upcoming cashflow: $e');
+      _logError('getting individual upcoming', e);
       return Upcoming.empty;
+    }
+  }
+
+  @override
+  Future<List<Upcoming>> getAll() async {
+    try {
+      await ensureInitialized();
+      final upcomings = await _hiveService.getAll<Upcoming>(boxName);
+
+      if (upcomings.isNotEmpty) {
+        return _sortByDate(upcomings.cast<Upcoming>().toList());
+      }
+
+      return await _getAllFromApi();
+    } catch (e) {
+      _logError('fetching all upcomings', e);
+      return [];
     }
   }
 
   @override
   Future<void> save(Upcoming value) async {
     try {
+      await ensureInitialized();
       await _dataProvider.payCashflow(
         PayCashflow(
           date: value.date,
@@ -51,34 +69,54 @@ class UpcomingRepository
         ),
       );
       await _getAllFromApi();
-      developer.log(
-        'UpcomingRepository: Firing TransactionAddedEvent for accountId: ${value.account.id}',
+
+      _logInfo(
+        'Firing TransactionAddedEvent for accountId: ${value.account.id}',
       );
       EventBus().fire(TransactionAddedEvent(value.account.id));
     } catch (e) {
-      developer.log('Error saving upcoming cashflow: $e');
-      throw Exception('Failed to save upcoming cashflow');
+      _logError('saving upcoming cashflow', e);
+      throw Exception('Failed to save upcoming cashflow: $e');
     }
   }
 
   @override
-  Future<void> delete(String key) async {
-    throw Exception('Not implemented');
+  Future<void> delete(dynamic keyOrValue) async {
+    _logError('delete operation', 'This operation is not yet implemented');
+    throw Exception(
+      'The delete operation for upcoming cashflows is not yet implemented',
+    );
   }
 
   @override
   Future<bool> exists(String key) async {
-    throw Exception('Not implemented');
+    try {
+      await ensureInitialized();
+      return await _hiveService.exists<Upcoming>(boxName, key);
+    } catch (e) {
+      _logError('checking if upcoming exists', e);
+      throw Exception('Failed to check if upcoming exists: $e');
+    }
   }
 
   @override
-  Future<Upcoming> refresh(String key) async {
-    throw Exception('Not implemented');
+  Future<Upcoming> refresh(dynamic keyOrValue) async {
+    // Preserve as unimplemented but with improved error message
+    _logError('refresh operation', 'This operation is not yet implemented');
+    throw Exception(
+      'The refresh operation for individual upcoming cashflows is not yet implemented',
+    );
   }
 
   @override
-  Future<Upcoming> refreshAll() async {
-    throw Exception('Not implemented');
+  Future<void> refreshAll() async {
+    try {
+      await _hiveService.clearall<Upcoming>(boxName);
+      await _getAllFromApi();
+    } catch (e) {
+      _logError('refreshing all upcomings', e);
+      throw Exception('Failed to refresh all upcoming cashflows: $e');
+    }
   }
 
   @override
@@ -98,13 +136,16 @@ class UpcomingRepository
         return cashflows;
       }
 
-      final sortedCashflows = cashflows.cast<Upcoming>().toList();
-      sortedCashflows.sort((a, b) => a.date.compareTo(b.date));
-      return sortedCashflows;
+      return _sortByDate(cashflows.cast<Upcoming>().toList());
     } catch (e) {
-      developer.log('Error fetching upcoming cashflows: $e');
+      _logError('fetching upcoming cashflows for account', e);
       return [];
     }
+  }
+
+  List<Upcoming> _sortByDate(List<Upcoming> items) {
+    items.sort((a, b) => a.date.compareTo(b.date));
+    return items;
   }
 
   Future<List<Upcoming>> _getAllFromApi() async {
@@ -122,10 +163,18 @@ class UpcomingRepository
         await _hiveService.save<Upcoming>(boxName, item.key, item);
       }
 
-      return items;
+      return _sortByDate(items);
     } catch (e) {
-      developer.log('Error refreshing upcoming cashflows from API: $e');
+      _logError('refreshing upcoming cashflows from API', e);
       return [];
     }
+  }
+
+  void _logError(String operation, dynamic error) {
+    developer.log('UpcomingRepository error when $operation: $error');
+  }
+
+  void _logInfo(String message) {
+    developer.log('UpcomingRepository: $message');
   }
 }

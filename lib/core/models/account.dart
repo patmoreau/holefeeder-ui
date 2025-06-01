@@ -78,7 +78,7 @@ class Account with HiveKey {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Account &&
+      (other is Account &&
           id == other.id &&
           name == other.name &&
           type == other.type &&
@@ -89,7 +89,7 @@ class Account with HiveKey {
           updated.isAtSameMomentAs(other.updated) &&
           description == other.description &&
           favorite == other.favorite &&
-          inactive == other.inactive;
+          inactive == other.inactive);
 
   @override
   int get hashCode =>

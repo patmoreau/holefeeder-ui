@@ -5,8 +5,10 @@ import 'package:universal_platform/universal_platform.dart';
 
 class AdaptiveTextField extends StatelessWidget {
   final String? labelText;
-  final String initialValue;
+  final String? initialValue;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final bool autofocus;
   final String? Function(String?)? validator;
   final ValueChanged<String> onChanged;
   final TextInputType? keyboardType;
@@ -15,10 +17,12 @@ class AdaptiveTextField extends StatelessWidget {
 
   const AdaptiveTextField({
     super.key,
-    required this.initialValue,
+    this.initialValue,
     required this.onChanged,
     this.labelText,
     this.controller,
+    this.focusNode,
+    this.autofocus = false,
     this.validator,
     this.keyboardType,
     this.textAlign = TextAlign.start,
@@ -32,6 +36,8 @@ class AdaptiveTextField extends StatelessWidget {
           prefix: labelText != null ? Text(labelText!) : null,
           initialValue: initialValue,
           controller: controller,
+          focusNode: focusNode,
+          autofocus: autofocus,
           onChanged: onChanged,
           validator: validator,
           keyboardType: keyboardType,
@@ -42,6 +48,8 @@ class AdaptiveTextField extends StatelessWidget {
           decoration: InputDecoration(labelText: labelText, filled: true),
           initialValue: initialValue,
           controller: controller,
+          focusNode: focusNode,
+          autofocus: autofocus,
           validator: validator,
           onChanged: onChanged,
           keyboardType: keyboardType,

@@ -35,15 +35,17 @@ mixin RepositoryInitializer {
 abstract class BaseRepository<T extends HiveKey> with RepositoryInitializer {
   Future<T> get(String key);
 
+  Future<List<T>> getAll();
+
   Future<void> save(T value);
 
-  Future<void> delete(String key);
+  Future<void> delete(dynamic keyOrValue);
 
   Future<bool> exists(String key);
 
-  Future<T> refresh(String key);
+  Future<T> refresh(dynamic keyOrValue);
 
-  Future<T> refreshAll();
+  Future<void> refreshAll();
 
   Future<void> dispose();
 }

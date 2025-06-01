@@ -9,6 +9,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get add => 'Add';
+
+  @override
   String get appTitle => 'Holefeeder';
 
   @override
@@ -30,7 +33,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldAccount => 'Account';
 
   @override
+  String get fieldAccountFrom => 'From account';
+
+  @override
   String get fieldAccountPlaceHolder => 'Select your account';
+
+  @override
+  String get fieldAccountTo => 'To account';
 
   @override
   String get fieldAmount => 'Amount';
@@ -110,16 +119,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchase => 'Purchase';
 
   @override
+  String get purchaseAdditionalDetails => 'Additional details';
+
+  @override
   String get purchaseBasicDetails => 'Basic details';
 
   @override
   String get purchaseCashflowDetails => 'Cashflow details';
 
   @override
-  String get purchaseTagsDetails => 'Tags details';
-
-  @override
-  String get purchaseTitle => 'Make purchase';
+  String get purchaseTitle => 'Purchase';
 
   @override
   String get retry => 'Retry';
@@ -132,6 +141,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transactionsEmpty => 'No transactions found';
+
+  @override
+  String get transfer => 'Transfer';
 
   @override
   String get upcoming => 'Upcoming';

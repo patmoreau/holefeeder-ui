@@ -1,10 +1,8 @@
 import 'package:decimal/decimal.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/events/events.dart';
-import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/core/models/make_purchase.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
 
 import '../base_form_state.dart';
 import '../base_view_model.dart';
@@ -12,14 +10,23 @@ import 'purchase_form_state.dart';
 
 class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
   final Account? _account;
-  final DataProvider _dataProvider;
+  final TransactionRepository _transactionRepository;
+  final AccountRepository _accountRepository;
+  final CategoryRepository _categoryRepository;
+  final TagRepository _tagRepository;
 
   PurchaseViewModel({
     Account? account,
-    required DataProvider dataProvider,
+    required TransactionRepository transactionRepository,
+    required AccountRepository accountRepository,
+    required CategoryRepository categoryRepository,
+    required TagRepository tagRepository,
     required super.notificationService,
   }) : _account = account,
-       _dataProvider = dataProvider,
+       _transactionRepository = transactionRepository,
+       _accountRepository = accountRepository,
+       _categoryRepository = categoryRepository,
+       _tagRepository = tagRepository,
        super(formState: PurchaseFormState()) {
     loadInitialData();
   }
@@ -32,17 +39,18 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {
-      final accounts = await _dataProvider.getAccounts();
-      final categories = await _dataProvider.getCategories();
+      final accounts = await _accountRepository.getActiveAccounts();
+      final categories = await _categoryRepository.getAll();
       final availableTags =
-          (await _dataProvider.getTags()).map((t) => t.tag).toList();
+          (await _tagRepository.getAll()).map((t) => t.tag).toList();
 
       updateState(
         (s) => s.copyWith(
           accounts: accounts,
           categories: categories,
           availableTags: availableTags,
-          selectedAccount: _account ?? accounts.firstOrNull,
+          selectedFromAccount: _account ?? accounts.firstOrNull,
+          selectedToAccount: _account ?? accounts.firstOrNull,
           selectedCategory: categories.firstOrNull,
           state: ViewFormState.ready,
         ),
@@ -58,8 +66,11 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
 
   void updateNote(String value) => updateState((s) => s.copyWith(note: value));
 
-  void setSelectedAccount(Account? account) =>
-      updateState((s) => s.copyWith(selectedAccount: account));
+  void setSelectedFromAccount(Account? account) =>
+      updateState((s) => s.copyWith(selectedFromAccount: account));
+
+  void setSelectedToAccount(Account? account) =>
+      updateState((s) => s.copyWith(selectedToAccount: account));
 
   void setSelectedCategory(Category? category) =>
       updateState((s) => s.copyWith(selectedCategory: category));
@@ -85,12 +96,12 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
   void updateRecurrence(int value) =>
       updateState((s) => s.copyWith(recurrence: value));
 
-  bool validate() {
+  bool validatePurchase() {
     if (formState.amount <= Decimal.zero) {
       setFormError('Amount must be greater than zero');
       return false;
     }
-    if (formState.selectedAccount == null) {
+    if (formState.selectedFromAccount == null) {
       setFormError('Please select an account');
       return false;
     }
@@ -101,18 +112,38 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
     return true;
   }
 
+  bool validateTransfer() {
+    if (formState.amount <= Decimal.zero) {
+      setFormError('Amount must be greater than zero');
+      return false;
+    }
+    if (formState.selectedFromAccount == null) {
+      setFormError('Please select an account from');
+      return false;
+    }
+    if (formState.selectedToAccount == null) {
+      setFormError('Please select an account to');
+      return false;
+    }
+    if (formState.selectedFromAccount == formState.selectedToAccount) {
+      setFormError('From and To accounts cannot be the same');
+      return false;
+    }
+    return true;
+  }
+
   Future<void> makePurchase() async {
-    if (!validate()) {
+    if (!validatePurchase()) {
       return;
     }
 
     await handleAsync(() async {
       final state = formState;
-      await _dataProvider.makePurchase(
+      await _transactionRepository.makePurchase(
         MakePurchase(
           amount: state.amount,
           description: state.note,
-          accountId: state.selectedAccount!.id,
+          accountId: state.selectedFromAccount!.id,
           categoryId: state.selectedCategory!.id,
           tags: state.tags.toList(),
           date: state.date,
@@ -127,7 +158,27 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
                   : null,
         ),
       );
-      EventBus().fire(TransactionAddedEvent(state.selectedAccount!.id));
+      EventBus().fire(TransactionAddedEvent(state.selectedFromAccount!.id));
+    });
+  }
+
+  Future<void> makeTransfer() async {
+    if (!validateTransfer()) {
+      return;
+    }
+
+    await handleAsync(() async {
+      final state = formState;
+      await _transactionRepository.transfer(
+        Transfer(
+          date: state.date,
+          amount: state.amount,
+          description: state.note,
+          fromAccountId: state.selectedFromAccount!.id,
+          toAccountId: state.selectedToAccount!.id,
+        ),
+      );
+      EventBus().fire(TransactionAddedEvent(state.selectedFromAccount!.id));
     });
   }
 }

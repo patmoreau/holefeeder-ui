@@ -108,6 +108,21 @@ Future<void> main() async {
                     ),
                   ),
         ),
+        ProxyProvider3<
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          CategoryRepository
+        >(
+          update:
+              (_, hiveService, dataProvider, factory, __) =>
+                  factory.getRepository(
+                    () => CategoryRepository(
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
         ProxyProvider<UserSettingsRepository, PeriodService>(
           update: (_, repo, __) => PeriodService(settingsRepository: repo),
         ),
@@ -123,6 +138,21 @@ Future<void> main() async {
                   factory.getRepository(
                     () => UpcomingRepository(
                       periodService: periodService,
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
+        ProxyProvider3<
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          TagRepository
+        >(
+          update:
+              (_, hiveService, dataProvider, factory, __) =>
+                  factory.getRepository(
+                    () => TagRepository(
                       hiveService: hiveService,
                       dataProvider: dataProvider,
                     ),
@@ -184,12 +214,14 @@ Future<void> _initHive() async {
   Hive.registerAdapter(AccountAdapter());
   Hive.registerAdapter(AccountInfoAdapter());
   Hive.registerAdapter(AccountTypeAdapter());
+  Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(CategoryInfoAdapter());
   Hive.registerAdapter(CategoryTypeAdapter());
   Hive.registerAdapter(DateIntervalTypeAdapter());
   Hive.registerAdapter(DecimalAdapter());
   Hive.registerAdapter(UpcomingAdapter());
   Hive.registerAdapter(UserSettingsAdapter());
+  Hive.registerAdapter(TagAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 

@@ -71,7 +71,7 @@ class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
 
   @override
   Future<void> delete(dynamic keyOrValue) async {
-    _logError('refresh operation', 'This operation is not yet implemented');
+    _logError('deleting tag', 'This operation is not yet implemented');
     throw Exception(
       'The delete operation for individual tag is not yet implemented',
     );

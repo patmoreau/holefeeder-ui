@@ -138,6 +138,10 @@
   "@purchase": {
     "description": "A button to purchase an item"
   },
+  "purchaseAdditionalDetails": "Additional details",
+  "@purchaseAdditionalDetails": {
+    "description": "The title of the additional details in the purchase screen"
+  },
   "purchaseBasicDetails": "Basic details",
   "@purchaseBasicDetails": {
     "description": "The title of the basic details in the purchase screen"
@@ -145,10 +149,6 @@
   "purchaseCashflowDetails": "Cashflow details",
   "@purchaseCashflowDetails": {
     "description": "The title of the cashflow details in the purchase screen"
-  },
-  "purchaseTagsDetails": "Tags details",
-  "@purchaseTagsDetails": {
-    "description": "The title of the tags details in the purchase screen"
   },
   "purchaseTitle": "Make purchase",
   "@purchaseTitle": {

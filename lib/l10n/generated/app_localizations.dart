@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'Purchase'**
   String get purchase;
 
+  /// The title of the additional details in the purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Additional details'**
+  String get purchaseAdditionalDetails;
+
   /// The title of the basic details in the purchase screen
   ///
   /// In en, this message translates to:
@@ -307,12 +313,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cashflow details'**
   String get purchaseCashflowDetails;
-
-  /// The title of the tags details in the purchase screen
-  ///
-  /// In en, this message translates to:
-  /// **'Tags details'**
-  String get purchaseTagsDetails;
 
   /// The title of the purchase screen
   ///

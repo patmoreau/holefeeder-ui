@@ -1,19 +1,20 @@
 import 'package:decimal/decimal.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/validators/validators.dart';
-import 'package:universal_platform/universal_platform.dart';
+import 'package:holefeeder/ui/widgets/widgets.dart';
 
 class AmountField extends StatefulWidget {
   final Decimal initialValue;
   final ValueChanged<Decimal> onChanged;
+  final bool autofocus;
 
   const AmountField({
     super.key,
     required this.initialValue,
     required this.onChanged,
+    this.autofocus = false,
   });
 
   @override
@@ -29,6 +30,37 @@ class _AmountFieldState extends State<AmountField> {
     super.initState();
     _controller = TextEditingController(text: widget.initialValue.toString());
     _focusNode.addListener(_handleFocusChange);
+
+    if (widget.autofocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _focusNode.requestFocus();
+        _controller.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: _controller.text.length,
+        );
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveTextField(
+      labelText: LocalizationService.current.fieldAmount,
+      controller: _controller,
+      focusNode: _focusNode,
+      autofocus: widget.autofocus,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      textAlign: TextAlign.right,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+      ],
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          widget.onChanged(Decimal.parse(value));
+        }
+      },
+      validator: decimalValidator(),
+    );
   }
 
   @override
@@ -53,52 +85,4 @@ class _AmountFieldState extends State<AmountField> {
       }
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return UniversalPlatform.isApple
-        ? _buildCupertinoField()
-        : _buildMaterialField();
-  }
-
-  Widget _buildCupertinoField() => CupertinoTextFormFieldRow(
-    placeholder: LocalizationService.current.fieldAmount,
-    prefix: Text(LocalizationService.current.fieldAmount),
-    controller: _controller,
-    focusNode: _focusNode,
-    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-    textAlign: TextAlign.right,
-    inputFormatters: [
-      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
-    ],
-    onChanged: (value) {
-      if (value.isNotEmpty) {
-        widget.onChanged(Decimal.parse(value));
-      }
-    },
-    validator: decimalValidator(),
-  );
-
-  Widget _buildMaterialField() => SizedBox(
-    width: double.infinity,
-    child: TextFormField(
-      controller: _controller,
-      focusNode: _focusNode,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(
-        labelText: LocalizationService.current.fieldAmount,
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      ),
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
-      ],
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          widget.onChanged(Decimal.parse(value));
-        }
-      },
-      validator: decimalValidator(),
-    ),
-  );
 }

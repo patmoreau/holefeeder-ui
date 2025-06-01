@@ -2,11 +2,14 @@
 class HiveConstants {
   /// Box names
   static const String userSettingsBoxName = 'userSettingsBox';
-  static const String userSettingsKey = 'userSettings';
   static const String accountsBoxName = 'accountsBox';
-  static const String accountKey = 'account';
+  static const String categoriesBoxName = 'categoriesBox';
   static const String upcomingsBoxName = 'upcomingsBox';
   static const String transactionsBoxName = 'transactionsBox';
+  static const String tagBoxName = 'tagBox';
+
+  /// Constant key names
+  static const String userSettingsKey = 'userSettings';
 
   /// Type IDs
   static const int dateIntervalTypeId = 0;
@@ -19,6 +22,8 @@ class HiveConstants {
   static const int accountInfoTypeId = 7;
   static const int upcomingTypeId = 8;
   static const int transactionTypeId = 9;
+  static const int categoryTypeId = 10;
+  static const int tagTypeId = 11;
 
   // Platform-specific settings
   /// Maximum size (in bytes) to compact a box automatically (used mainly for web)

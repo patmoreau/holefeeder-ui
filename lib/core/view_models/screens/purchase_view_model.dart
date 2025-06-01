@@ -1,10 +1,9 @@
 import 'package:decimal/decimal.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/events/events.dart';
-import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/core/models/make_purchase.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/repositories/tag_repository.dart';
 
 import '../base_form_state.dart';
 import '../base_view_model.dart';
@@ -12,14 +11,23 @@ import 'purchase_form_state.dart';
 
 class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
   final Account? _account;
-  final DataProvider _dataProvider;
+  final TransactionRepository _transactionRepository;
+  final AccountRepository _accountRepository;
+  final CategoryRepository _categoryRepository;
+  final TagRepository _tagRepository;
 
   PurchaseViewModel({
     Account? account,
-    required DataProvider dataProvider,
+    required TransactionRepository transactionRepository,
+    required AccountRepository accountRepository,
+    required CategoryRepository categoryRepository,
+    required TagRepository tagRepository,
     required super.notificationService,
   }) : _account = account,
-       _dataProvider = dataProvider,
+       _transactionRepository = transactionRepository,
+       _accountRepository = accountRepository,
+       _categoryRepository = categoryRepository,
+       _tagRepository = tagRepository,
        super(formState: PurchaseFormState()) {
     loadInitialData();
   }
@@ -32,10 +40,10 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {
-      final accounts = await _dataProvider.getAccounts();
-      final categories = await _dataProvider.getCategories();
+      final accounts = await _accountRepository.getActiveAccounts();
+      final categories = await _categoryRepository.getAll();
       final availableTags =
-          (await _dataProvider.getTags()).map((t) => t.tag).toList();
+          (await _tagRepository.getAll()).map((t) => t.tag).toList();
 
       updateState(
         (s) => s.copyWith(
@@ -108,7 +116,7 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
 
     await handleAsync(() async {
       final state = formState;
-      await _dataProvider.makePurchase(
+      await _transactionRepository.makePurchase(
         MakePurchase(
           amount: state.amount,
           description: state.note,

@@ -45,96 +45,148 @@ class AccountRepository
       await ensureInitialized();
       return await _hiveService.get<Account>(boxName, key) ?? Account.empty;
     } catch (e) {
-      developer.log('Error getting individual account: $e');
+      _logError('getting individual account', e);
       return Account.empty;
     }
   }
 
   @override
-  Future<void> save(Account value) async {
-    throw Exception('Not implemented');
-  }
-
-  @override
-  Future<void> delete(String key) async {
-    throw Exception('Not implemented');
-  }
-
-  @override
-  Future<bool> exists(String key) async {
-    throw Exception('Not implemented');
-  }
-
-  @override
-  Future<Account> refresh(String key) async {
-    try {
-      final account = await _dataProvider.getAccount(key);
-      await _hiveService.save<Account>(boxName, key, account);
-      return account;
-    } catch (e) {
-      developer.log('Error refreshing account from API: $e');
-      return Account.empty;
-    }
-  }
-
-  @override
-  Future<Account> refreshAll() async {
-    throw Exception('Not implemented');
-  }
-
-  @override
-  Future<void> dispose() async {
-    _transactionAddedSubscription.cancel();
-    await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
-  }
-
   Future<List<Account>> getAll() async {
     try {
       await ensureInitialized();
       final accounts = await _hiveService.getAll<Account>(boxName);
 
       if (accounts.isNotEmpty) {
-        final sortedAccounts = accounts.cast<Account>().toList();
-        sortedAccounts.sort((a, b) {
-          if (a.favorite != b.favorite) {
-            return b.favorite ? 1 : -1;
-          }
-          return a.name.compareTo(b.name);
-        });
-        return sortedAccounts;
+        return _sort(accounts.cast<Account>().toList());
       }
 
       return await _getAllFromApi();
     } catch (e) {
-      developer.log('Error fetching accounts: $e');
+      _logError('fetching accounts', e);
       return [];
     }
   }
 
-  Future<List<Account>> getActiveAccounts() async {
+  @override
+  Future<void> save(Account value) async {
+    try {
+      await ensureInitialized();
+      // Assuming _dataProvider has a method to save accounts
+      // await _dataProvider.saveAccount(value);
+      await _hiveService.save<Account>(boxName, value.key, value);
+      EventBus().fire<AccountRefreshedEvent>(
+        AccountRefreshedEvent(value.key, value),
+      );
+    } catch (e) {
+      _logError('saving account', e);
+      throw Exception('Failed to save account: $e');
+    }
+  }
+
+  @override
+  Future<void> delete(dynamic keyOrValue) async {
+    try {
+      await ensureInitialized();
+
+      final String key = keyOrValue is String ? keyOrValue : keyOrValue.key;
+      final String apiId = keyOrValue is Account ? keyOrValue.id : key;
+
+      // await _dataProvider.deleteAccount(apiId);
+
+      await _hiveService.delete<Account>(boxName, key);
+
+      // Fire event with the key that was deleted
+      // EventBus().fire<AccountDeletedEvent>(AccountDeletedEvent(key));
+    } catch (e) {
+      _logError('deleting account', e);
+      throw Exception('Failed to delete account: $e');
+    }
+  }
+
+  @override
+  Future<bool> exists(String key) async {
+    try {
+      await ensureInitialized();
+      return await _hiveService.exists<Account>(boxName, key);
+    } catch (e) {
+      _logError('checking if account exists', e);
+      throw Exception('Failed to check if account exists: $e');
+    }
+  }
+
+  @override
+  Future<Account> refresh(dynamic keyOrValue) async {
+    try {
+      final String key = keyOrValue is String ? keyOrValue : keyOrValue.key;
+      final String apiId = keyOrValue is Account ? keyOrValue.id : key;
+
+      final account = await _dataProvider.getAccount(apiId);
+
+      await _hiveService.save<Account>(boxName, account.key, account);
+      return account;
+    } catch (e) {
+      _logError('refreshing account from API', e);
+      return Account.empty;
+    }
+  }
+
+  @override
+  Future<void> refreshAll() async {
+    try {
+      await _hiveService.clearall<Account>(boxName);
+      await _getAllFromApi();
+    } catch (e) {
+      _logError('refreshing all accounts', e);
+    }
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _transactionAddedSubscription.cancel();
+    await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
+  }
+
+  List<Account> _sort(List<Account> items) {
+    items.sort((a, b) {
+      if (a.favorite != b.favorite) {
+        return b.favorite ? 1 : -1;
+      }
+      return a.name.compareTo(b.name);
+    });
+    return items;
+  }
+
+  Future<List<Account>> _getFilteredAccounts(
+    bool Function(Account) predicate,
+  ) async {
     final allAccounts = await getAll();
-    return allAccounts.where((account) => !account.inactive).toList();
+    return allAccounts.where(predicate).toList();
+  }
+
+  Future<List<Account>> getActiveAccounts() async {
+    return _getFilteredAccounts((account) => !account.inactive);
   }
 
   Future<List<Account>> getFavoriteAccounts() async {
-    final allAccounts = await getAll();
-    return allAccounts.where((account) => account.favorite).toList();
+    return _getFilteredAccounts((account) => account.favorite);
   }
 
   Future<List<Account>> _getAllFromApi() async {
     try {
       final apiAccounts = await _dataProvider.getAccounts();
 
-      await _hiveService.clearall<Account>(boxName);
-
       for (var account in apiAccounts) {
-        await _hiveService.save<Account>(boxName, account.id, account);
+        await _hiveService.save<Account>(boxName, account.key, account);
       }
 
-      return apiAccounts;
+      return _sort(apiAccounts);
     } catch (e) {
-      developer.log('Error refreshing accounts from API: $e');
+      _logError('refreshing accounts from API', e);
       return [];
     }
+  }
+
+  void _logError(String operation, dynamic error) {
+    developer.log('AccountRepository error when $operation: $error');
   }
 }

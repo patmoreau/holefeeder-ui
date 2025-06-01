@@ -34,7 +34,7 @@ class _HolefeederAppState extends State<HolefeederApp>
     GlobalCupertinoLocalizations.delegate,
   ];
   final _supportedLocales = const <Locale>[Locale('en'), Locale('fr')];
-  final _locale = const Locale('fr');
+  final _locale = const Locale('en-CA');
 
   @override
   void initState() {

@@ -110,13 +110,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get purchase => 'Acheter';
 
   @override
-  String get purchaseBasicDetails => 'Détails de l\'achat';
+  String get purchaseAdditionalDetails => 'Détails supplémentaires';
+
+  @override
+  String get purchaseBasicDetails => 'Détails de base';
 
   @override
   String get purchaseCashflowDetails => 'Détails du flux de trésorerie';
-
-  @override
-  String get purchaseTagsDetails => 'Étiquettes de l\'achat';
 
   @override
   String get purchaseTitle => 'Faire un achat';

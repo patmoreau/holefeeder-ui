@@ -1,17 +1,15 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/extensions/build_context_extensions.dart';
+import 'package:holefeeder/core/extensions/extensions.dart';
 import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
+import 'package:holefeeder/core/providers/providers.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/views/purchase_form.dart';
-import 'package:holefeeder/ui/widgets/form_state_handler.dart';
-import 'package:holefeeder/ui/widgets/view_model_provider.dart';
+import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_platform/universal_platform.dart';
 
 class PurchaseScreen extends StatefulWidget {
   final Account? account;
@@ -30,67 +28,46 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     create:
         (ctx) => PurchaseViewModel(
           account: widget.account,
-          dataProvider: ctx.read<DataProvider>(),
+          transactionRepository: ctx.read<TransactionRepository>(),
+          accountRepository: ctx.read<AccountRepository>(),
+          categoryRepository: ctx.read<CategoryRepository>(),
+          tagRepository: ctx.read<TagRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
-    builder: (model) {
-      return UniversalPlatform.isApple
-          ? _buildCupertinoScaffold(model)
-          : _buildMaterialScaffold(model);
-    },
+    builder:
+        (model) => AdaptiveScaffold(
+          leading: AdaptiveNavigationBackButton(
+            onPressed: () => _cancel(model),
+            previousPageTitle:
+                (widget.account == null)
+                    ? LocalizationService.current.dashboard
+                    : LocalizationService.current.fieldAccount,
+          ),
+          title: LocalizationService.current.purchaseTitle,
+          actions: [
+            AdaptiveIconButton(
+              onPressed: () => _save(model),
+              icon: Icon(AdaptiveIcons.add_purchase),
+            ),
+          ],
+          child: _buildScreen(context, model),
+        ),
   );
 
-  Widget _buildCupertinoScaffold(PurchaseViewModel model) {
-    const edgeInsets = EdgeInsets.symmetric(horizontal: 16);
-    return CupertinoPageScaffold(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          CupertinoSliverNavigationBar(
-            padding: EdgeInsetsDirectional.zero,
-            leading: CupertinoNavigationBarBackButton(
-              previousPageTitle: LocalizationService.current.back,
-              onPressed: () => _cancel(model),
-            ),
-            trailing: CupertinoButton(
-              padding: edgeInsets,
-              onPressed: () => _save(model),
-              child: Text(LocalizationService.current.save),
-            ),
-            largeTitle: Text(LocalizationService.current.purchase),
-          ),
-          SliverSafeArea(
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                FormStateHandler(
-                  formState: model.formState,
-                  builder: () => PurchaseForm(model: model, formKey: _formKey),
-                ),
-              ]),
+  Widget _buildScreen(BuildContext context, PurchaseViewModel model) {
+    return FormStateHandler(
+      formState: model.formState,
+      builder:
+          () => ScrollConfiguration(
+            behavior: ScrollConfiguration.of(
+              context,
+            ).copyWith(scrollbars: true),
+            child: SafeArea(
+              child: PurchaseForm(model: model, formKey: _formKey),
             ),
           ),
-        ],
-      ),
     );
   }
-
-  Widget _buildMaterialScaffold(PurchaseViewModel model) => Scaffold(
-    appBar: AppBar(
-      title: Text(LocalizationService.current.purchase),
-      leading: BackButton(onPressed: () => _cancel(model)),
-      actions: [
-        TextButton(
-          onPressed: () => _save(model),
-          child: Text(LocalizationService.current.save),
-        ),
-      ],
-    ),
-    body: SafeArea(
-      child: FormStateHandler(
-        formState: model.formState,
-        builder: () => PurchaseForm(model: model, formKey: _formKey),
-      ),
-    ),
-  );
 
   void _cancel(PurchaseViewModel model) => context.pop();
 

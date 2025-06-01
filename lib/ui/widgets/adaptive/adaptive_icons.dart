@@ -22,8 +22,13 @@ abstract final class AdaptiveIcons {
 
   static IconData purchase =
       UniversalPlatform.isApple
-          ? CupertinoIcons.purchased_circle
+          ? CupertinoIcons.cart_badge_plus
           : Icons.shopping_cart_checkout_rounded;
+
+  static IconData add_purchase =
+      UniversalPlatform.isApple
+          ? CupertinoIcons.add_circled
+          : Icons.add_circle_outline;
 
   static IconData star =
       UniversalPlatform.isApple ? CupertinoIcons.star_fill : Icons.star;

@@ -21,10 +21,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get buttonOk => 'OK';
 
   @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get cancelUpcoming => 'Annuler';
+
+  @override
+  String get cancelUpcomingMessage =>
+      'Êtes-vous sûr de vouloir annuler ce flux de trésorerie à venir ?';
+
+  @override
+  String get cancelUpcomingTitle => 'Annuler à venir';
+
+  @override
   String get categories => 'Catégories';
 
   @override
   String get dashboard => 'Tableau de bord';
+
+  @override
+  String get deleteCashflow => 'Supprimer';
+
+  @override
+  String get deleteCashflowMessage =>
+      'Êtes-vous sûr de vouloir supprimer ce flux de trésorerie actuel et tous les flux futurs ?';
+
+  @override
+  String get deleteCashflowTitle => 'Supprimer le flux de trésorerie';
 
   @override
   String get errorGeneric => 'Une erreur s\'est produite';
@@ -163,4 +186,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get welcomeMessage => 'Bienvenue dans notre application';
+
+  @override
+  String get yes => 'Oui';
 }

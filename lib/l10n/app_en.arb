@@ -16,6 +16,22 @@
   "@buttonOk": {
     "description": "A button to confirm an action"
   },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "A button to cancel an action"
+  },
+  "cancelUpcoming": "Cancel",
+  "@cancelUpcoming": {
+    "description": "A button to cancel an upcoming cashflow"
+  },
+  "cancelUpcomingMessage": "Are you sure you want to cancel this upcoming cashflow?",
+  "@cancelUpcomingMessage": {
+    "description": "Confirmation message for canceling an upcoming cashflow"
+  },
+  "cancelUpcomingTitle": "Cancel upcoming cashflow",
+  "@cancelUpcomingTitle": {
+    "description": "The title of the cancel upcoming cashflow dialog"
+  },
   "categories": "Categories",
   "@categories": {
     "description": "The categories screen title"
@@ -23,6 +39,18 @@
   "dashboard": "Dashboard",
   "@dashboard": {
     "description": "The dashboard screen title"
+  },
+  "deleteCashflow": "Delete",
+  "@deleteCashflow": {
+    "description": "The button of the delete cashflow dialog"
+  },
+  "deleteCashflowMessage": "Are you sure you want to this current and all future cashflow?",
+  "@deleteCashflowMessage": {
+    "description": "Confirmation message for deleting a cashflow"
+  },
+  "deleteCashflowTitle": "Delete cashflow",
+  "@deleteCashflowTitle": {
+    "description": "The title of the delete cashflow dialog"
   },
   "errorGeneric": "An error occurred",
   "@errorGeneric": {
@@ -209,5 +237,9 @@
   "welcomeMessage": "Welcome to our app",
   "@welcomeMessage": {
     "description": "A welcome message for the app"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "A button to confirm an action"
   }
 }

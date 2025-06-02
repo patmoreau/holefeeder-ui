@@ -14,3 +14,4 @@ export 'adaptive_scaffold.dart';
 export 'adaptive_segmented_control.dart';
 export 'adaptive_switch.dart';
 export 'adaptive_text_field.dart';
+export 'swipeable_adaptive_list_tile.dart';

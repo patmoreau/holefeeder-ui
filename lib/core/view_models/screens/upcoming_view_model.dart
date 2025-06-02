@@ -44,4 +44,28 @@ class UpcomingViewModel extends BaseViewModel<UpcomingFormState> {
       updateState((s) => s.copyWith(state: ViewFormState.ready));
     });
   }
+
+  Future<void> cancel() async {
+    await handleAsync(() async {
+      final upcoming = Upcoming(
+        id: formState.upcoming.id,
+        date: formState.upcoming.date,
+        amount: Decimal.fromInt(0),
+        description: formState.upcoming.description,
+        tags: formState.upcoming.tags,
+        category: formState.upcoming.category,
+        account: formState.upcoming.account,
+      );
+      await _repository.save(upcoming);
+      updateState((s) => s.copyWith(state: ViewFormState.ready));
+    });
+  }
+
+  Future<void> delete() async {
+    await handleAsync(() async {
+      notificationService.showNotification(
+        'Deleting a cashflow is coming soon!',
+      );
+    });
+  }
 }

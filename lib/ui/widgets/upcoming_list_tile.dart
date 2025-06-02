@@ -8,6 +8,7 @@ import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class UpcomingListTile extends StatelessWidget {
   final Upcoming upcoming;
@@ -22,18 +23,61 @@ class UpcomingListTile extends StatelessWidget {
           repository: ctx.read<UpcomingRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
-    builder: (model) => _buildListTile(context, model),
+    builder: (model) => _buildSwipeableTile(context, model),
   );
+
+  Widget _buildSwipeableTile(BuildContext context, UpcomingViewModel model) {
+    final leadingActions = [
+      SwipeAction(
+        label: LocalizationService.current.cancelUpcoming,
+        icon: AdaptiveIcons.cancel,
+        color:
+            UniversalPlatform.isApple
+                ? CupertinoColors.systemBlue
+                : Colors.blue,
+        onTap: () async {
+          await SwipeActionDialogs.showConfirmationDialog(
+            context,
+            title: LocalizationService.current.cancelUpcomingTitle,
+            message: LocalizationService.current.cancelUpcomingMessage,
+            action: () => model.cancel(),
+          );
+        },
+      ),
+    ];
+
+    final trailingActions = [
+      SwipeAction(
+        label: LocalizationService.current.deleteCashflow,
+        icon: AdaptiveIcons.delete,
+        color:
+            UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
+        onTap: () async {
+          await SwipeActionDialogs.showConfirmationDialog(
+            context,
+            title: LocalizationService.current.deleteCashflowTitle,
+            message: LocalizationService.current.deleteCashflowMessage,
+            action: () => model.delete(),
+          );
+        },
+        isDestructive: true,
+      ),
+    ];
+
+    return SwipeableAdaptiveListTile(
+      dismissibleKey: Key(model.formState.upcoming.id),
+      leadingActions: leadingActions,
+      trailingActions: trailingActions,
+      child: _buildListTile(context, model),
+    );
+  }
 
   Widget _buildListTile(BuildContext context, UpcomingViewModel model) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           AdaptiveListTile(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 16.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
             // onTap: () {},
             leading: _buildLeadingContainer(model),
             title: _buildTitle(model),
@@ -41,7 +85,7 @@ class UpcomingListTile extends StatelessWidget {
             trailing: _buildTrailing(model),
           ),
           const Padding(
-            padding: EdgeInsets.only(left: 24.0),
+            padding: EdgeInsets.only(left: 52.0),
             child: Divider(height: 1),
           ),
         ],

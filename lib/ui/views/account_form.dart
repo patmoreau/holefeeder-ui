@@ -44,6 +44,7 @@ class _AccountFormState extends State<AccountForm> {
                 ),
               },
             ),
+            SizedBox(height: 16),
             Expanded(
               child:
                   _selectedSegment == ListType.upcoming
@@ -125,7 +126,6 @@ class _AccountFormState extends State<AccountForm> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
       itemCount: model.upcoming.length + 1, // +1 for bottom padding
       itemBuilder: (context, index) {
         if (index == model.upcoming.length) {
@@ -151,7 +151,6 @@ class _AccountFormState extends State<AccountForm> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
       itemCount: model.transactions.length + 1, // +1 for bottom padding
       itemBuilder: (context, index) {
         if (index == model.transactions.length) {

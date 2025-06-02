@@ -122,6 +122,30 @@ abstract class AppLocalizations {
   /// **'OK'**
   String get buttonOk;
 
+  /// A button to cancel an action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// A button to cancel an upcoming cashflow
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelUpcoming;
+
+  /// Confirmation message for canceling an upcoming cashflow
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this upcoming cashflow?'**
+  String get cancelUpcomingMessage;
+
+  /// The title of the cancel upcoming cashflow dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel upcoming cashflow'**
+  String get cancelUpcomingTitle;
+
   /// The categories screen title
   ///
   /// In en, this message translates to:
@@ -133,6 +157,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dashboard'**
   String get dashboard;
+
+  /// The button of the delete cashflow dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteCashflow;
+
+  /// Confirmation message for deleting a cashflow
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to this current and all future cashflow?'**
+  String get deleteCashflowMessage;
+
+  /// The title of the delete cashflow dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete cashflow'**
+  String get deleteCashflowTitle;
 
   /// A generic error message
   ///
@@ -403,6 +445,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to our app'**
   String get welcomeMessage;
+
+  /// A button to confirm an action
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
 }
 
 class _AppLocalizationsDelegate

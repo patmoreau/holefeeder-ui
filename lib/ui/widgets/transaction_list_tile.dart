@@ -45,11 +45,9 @@ class TransactionListTile extends StatelessWidget {
       );
 
   Widget _buildLeadingContainer(TransactionViewModel model) => SizedBox(
-    width: 28,
-    height: 28,
     child: AdaptiveIconButton(
       onPressed: () {},
-      icon: Icon(AdaptiveIcons.purchase),
+      icon: Icon(AdaptiveIcons.purchase, size: 28.0),
     ),
   );
 

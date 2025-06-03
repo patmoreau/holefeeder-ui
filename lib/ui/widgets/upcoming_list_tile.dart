@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
@@ -78,7 +79,7 @@ class UpcomingListTile extends StatelessWidget {
         children: [
           AdaptiveListTile(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            // onTap: () {},
+            onTap: () => context.push('/pay', extra: model.formState.upcoming),
             leading: _buildLeadingContainer(model),
             title: _buildTitle(model),
             subtitle: _buildSubtitle(model),
@@ -91,12 +92,15 @@ class UpcomingListTile extends StatelessWidget {
         ],
       );
 
-  Widget _buildLeadingContainer(UpcomingViewModel model) => SizedBox(
-    width: 28,
-    height: 28,
-    child: AdaptiveIconButton(
-      onPressed: () async => await model.pay(),
-      icon: Icon(AdaptiveIcons.purchase),
+  Widget _buildLeadingContainer(UpcomingViewModel model) => GestureDetector(
+    onTap: () async => await model.pay(),
+    behavior: HitTestBehavior.opaque,
+    child: SizedBox(
+      child: Icon(
+        AdaptiveIcons.purchase,
+        size: 28.0,
+        color: CupertinoColors.systemBlue,
+      ),
     ),
   );
 

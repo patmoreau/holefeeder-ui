@@ -38,6 +38,46 @@ class UpcomingViewModel extends BaseViewModel<UpcomingFormState> {
     });
   }
 
+  void updateAmount(Decimal value) {
+    updateState(
+      (s) => s.copyWith(
+        upcoming: Upcoming(
+          id: s.upcoming.id,
+          date: s.upcoming.date,
+          amount: value,
+          description: s.upcoming.description,
+          tags: s.upcoming.tags,
+          category: s.upcoming.category,
+          account: s.upcoming.account,
+        ),
+      ),
+    );
+  }
+
+  void updateDate(DateTime value) {
+    updateState(
+      (s) => s.copyWith(
+        upcoming: Upcoming(
+          id: s.upcoming.id,
+          date: value,
+          amount: s.upcoming.amount,
+          description: s.upcoming.description,
+          tags: s.upcoming.tags,
+          category: s.upcoming.category,
+          account: s.upcoming.account,
+        ),
+      ),
+    );
+  }
+
+  bool validate() {
+    if (formState.upcoming.amount < Decimal.zero) {
+      setFormError('Amount cannot be negative');
+      return false;
+    }
+    return true;
+  }
+
   Future<void> pay() async {
     await handleAsync(() async {
       await _repository.save(formState.upcoming);

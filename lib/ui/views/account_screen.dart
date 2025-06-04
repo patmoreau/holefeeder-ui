@@ -39,29 +39,32 @@ class _AccountScreenState extends State<AccountScreen> {
             previousPageTitle: LocalizationService.current.dashboard,
           ),
           actions: [],
-          bottomBar: Stack(
-            alignment: Alignment.center,
-            children: [
-              Center(
-                child: Text(
-                  '${LocalizationService.current.lastUpdated}: ${DateFormat.yMd(LocalizationService.device.toLanguageTag()).format(model.account.updated)}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: CupertinoColors.systemGrey,
-                    fontStyle: FontStyle.italic,
+          bottomBar: SizedBox(
+            height: 28.0,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Center(
+                  child: Text(
+                    '${LocalizationService.current.lastUpdated}: ${DateFormat.yMd(LocalizationService.device.toLanguageTag()).format(model.account.updated)}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: CupertinoColors.systemGrey,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: AdaptiveIconButton(
-                  padding: EdgeInsets.only(right: 16.0),
-                  onPressed:
-                      () => context.push('/purchase', extra: model.account),
-                  icon: Icon(AdaptiveIcons.purchase, size: 28.0),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: AdaptiveIconButton(
+                    padding: EdgeInsets.only(right: 16.0),
+                    onPressed:
+                        () => context.push('/purchase', extra: model.account),
+                    icon: Icon(AdaptiveIcons.purchase, size: 28.0),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           child: _buildScreen(context, model),
         ),

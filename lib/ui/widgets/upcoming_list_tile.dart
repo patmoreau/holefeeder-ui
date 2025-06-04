@@ -1,3 +1,5 @@
+import 'dart:developer' as developper show log;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -77,13 +79,24 @@ class UpcomingListTile extends StatelessWidget {
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AdaptiveListTile(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            onTap: () => context.push('/pay', extra: model.formState.upcoming),
-            leading: _buildLeadingContainer(model),
-            title: _buildTitle(model),
-            subtitle: _buildSubtitle(model),
-            trailing: _buildTrailing(model),
+          AdaptivePressable(
+            onTap: () {
+              developper.log(
+                'UpcomingListTile tapped: ${model.formState.upcoming.id}',
+                name: 'UpcomingListTile.Tile.onTap',
+              );
+              context.push('/pay', extra: model.formState.upcoming);
+            },
+            child: AdaptiveListTile(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 8.0,
+              ),
+              leading: _buildLeadingContainer(model),
+              title: _buildTitle(model),
+              subtitle: _buildSubtitle(model),
+              trailing: _buildTrailing(model),
+            ),
           ),
           const Padding(
             padding: EdgeInsets.only(left: 52.0),
@@ -93,9 +106,18 @@ class UpcomingListTile extends StatelessWidget {
       );
 
   Widget _buildLeadingContainer(UpcomingViewModel model) => GestureDetector(
-    onTap: () async => await model.pay(),
+    onTap: () async {
+      developper.log(
+        'Leading Container onTap: ${model.formState.upcoming.id}',
+        name: 'UpcomingListTile.Leading.onTap',
+      );
+      await model.pay();
+    },
     behavior: HitTestBehavior.opaque,
-    child: SizedBox(
+    child: Container(
+      width: 52.0,
+      height: 52.0,
+      alignment: Alignment.center,
       child: Icon(
         AdaptiveIcons.purchase,
         size: 28.0,

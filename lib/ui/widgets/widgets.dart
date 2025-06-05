@@ -6,6 +6,7 @@ import 'package:universal_platform/universal_platform.dart';
 
 export './account_list_tile.dart';
 export './adaptive/adaptive.dart';
+export './adaptive_pressable.dart';
 export './currency_text.dart';
 export './form_state_handler.dart';
 export './transaction_list_tile.dart';

@@ -33,7 +33,7 @@ class AccountListTile extends StatelessWidget {
     mainAxisSize: MainAxisSize.min,
     children: [
       AdaptiveListTile(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         onTap: () => context.push('/account', extra: model.account),
         leading: _buildLeadingContainer(model),
         title: _buildTitle(model),
@@ -41,7 +41,7 @@ class AccountListTile extends StatelessWidget {
         trailing: _buildTrailing(model),
       ),
       const Padding(
-        padding: EdgeInsets.only(left: 24.0),
+        padding: EdgeInsets.only(left: 52.0),
         child: Divider(height: 1),
       ),
     ],

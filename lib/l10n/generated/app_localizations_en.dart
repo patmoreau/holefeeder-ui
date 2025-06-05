@@ -21,10 +21,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buttonOk => 'OK';
 
   @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get cancelUpcoming => 'Cancel';
+
+  @override
+  String get cancelUpcomingMessage =>
+      'Are you sure you want to cancel this upcoming cashflow?';
+
+  @override
+  String get cancelUpcomingTitle => 'Cancel upcoming cashflow';
+
+  @override
   String get categories => 'Categories';
 
   @override
   String get dashboard => 'Dashboard';
+
+  @override
+  String get deleteCashflow => 'Delete';
+
+  @override
+  String get deleteCashflowMessage =>
+      'Are you sure you want to this current and all future cashflow?';
+
+  @override
+  String get deleteCashflowTitle => 'Delete cashflow';
 
   @override
   String get errorGeneric => 'An error occurred';
@@ -164,4 +187,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeMessage => 'Welcome to our app';
+
+  @override
+  String get yes => 'Yes';
 }

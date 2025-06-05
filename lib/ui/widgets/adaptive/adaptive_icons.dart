@@ -12,10 +12,16 @@ abstract final class AdaptiveIcons {
   static IconData home_outlined =
       UniversalPlatform.isApple ? CupertinoIcons.home : Icons.home_outlined;
 
+  static IconData cancel =
+      UniversalPlatform.isApple ? CupertinoIcons.xmark_circle : Icons.cancel;
+
   static IconData category =
       UniversalPlatform.isApple
           ? CupertinoIcons.archivebox
           : Icons.category_outlined;
+
+  static IconData delete =
+      UniversalPlatform.isApple ? CupertinoIcons.delete : Icons.delete;
 
   static IconData person =
       UniversalPlatform.isApple ? CupertinoIcons.person : Icons.person;

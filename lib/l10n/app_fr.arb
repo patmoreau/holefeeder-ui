@@ -5,7 +5,14 @@
   "back": "Retour",
   "buttonOk": "OK",
   "categories": "Catégories",
+  "cancel": "Annuler",
+  "cancelUpcoming": "Annuler",
+  "cancelUpcomingTitle": "Annuler à venir",
+  "cancelUpcomingMessage": "Êtes-vous sûr de vouloir annuler ce flux de trésorerie à venir ?",
   "dashboard": "Tableau de bord",
+  "deleteCashflow": "Supprimer",
+  "deleteCashflowMessage": "Êtes-vous sûr de vouloir supprimer ce flux de trésorerie actuel et tous les flux futurs ?",
+  "deleteCashflowTitle": "Supprimer le flux de trésorerie",
   "errorGeneric": "Une erreur s'est produite",
   "fieldAccount": "Compte",
   "fieldAccountFrom": "Du compte",
@@ -50,5 +57,6 @@
   "validationDecimalNumber": "Le nombre doit être décimal positif",
   "validationNumberGreatherThanZero": "Le nombre doit être supérieur à zéro",
   "validationPositiveNumber": "Le nombre doit être positif",
-  "welcomeMessage": "Bienvenue dans notre application"
+  "welcomeMessage": "Bienvenue dans notre application",
+  "yes": "Oui"
 }

@@ -101,56 +101,84 @@ class SwipeActionDialogs {
     required String title,
     required String message,
     required Future<void> Function() action,
-  }) async {
-    final bool? result =
-        UniversalPlatform.isApple
-            ? await showCupertinoDialog<bool>(
-              context: context,
-              builder:
-                  (context) => CupertinoAlertDialog(
-                    title: Text(title),
-                    content: Text(message),
-                    actions: [
-                      CupertinoDialogAction(
-                        isDefaultAction: true,
-                        child: Text(LocalizationService.current.cancel),
-                        onPressed: () => Navigator.of(context).pop(false),
-                      ),
-                      CupertinoDialogAction(
-                        isDestructiveAction: true,
-                        child: Text(LocalizationService.current.yes),
-                        onPressed: () async {
-                          await action();
-                          Navigator.of(context).pop(true);
-                        },
-                      ),
-                    ],
-                  ),
-            )
-            : await showDialog<bool>(
-              context: context,
-              builder:
-                  (context) => AlertDialog(
-                    title: Text(title),
-                    content: Text(message),
-                    actions: [
-                      TextButton(
-                        child: Text(LocalizationService.current.cancel),
-                        onPressed: () => Navigator.of(context).pop(false),
-                      ),
-                      TextButton(
-                        child: Text(LocalizationService.current.yes),
-                        onPressed: () async {
-                          await action();
-                          Navigator.of(context).pop(true);
-                        },
-                      ),
-                    ],
-                  ),
-            );
+  }) =>
+      UniversalPlatform.isApple
+          ? _showCupertinoConfirmationDialog(
+            context,
+            title: title,
+            message: message,
+            action: action,
+          )
+          : _showMaterialConfirmationDialog(
+            context,
+            title: title,
+            message: message,
+            action: action,
+          );
 
-    return result ?? false;
-  }
+  static Future<bool?> _showCupertinoConfirmationDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Future<void> Function() action,
+  }) => showCupertinoDialog<bool>(
+    context: context,
+    builder:
+        (context) => CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text(LocalizationService.current.cancel),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              child: Text(LocalizationService.current.yes),
+              onPressed: () {
+                final navigatorContext = context;
+                action().then((_) {
+                  if (navigatorContext.mounted) {
+                    Navigator.of(navigatorContext).pop(true);
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+  );
+
+  static Future<bool?> _showMaterialConfirmationDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Future<void> Function() action,
+  }) => showDialog<bool>(
+    context: context,
+    builder:
+        (context) => AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text(LocalizationService.current.cancel),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            TextButton(
+              child: Text(LocalizationService.current.yes),
+              onPressed: () {
+                final navigatorContext = context;
+                action().then((_) {
+                  if (navigatorContext.mounted) {
+                    Navigator.of(navigatorContext).pop(true);
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+  );
 
   /// Shows a dialog with multiple options
   static Future<bool?> showOptionsDialog(
@@ -159,70 +187,104 @@ class SwipeActionDialogs {
     required String message,
     required Map<String, Future<void> Function()> options,
     bool isDestructive = false,
-  }) async {
-    final bool? result =
-        UniversalPlatform.isApple
-            ? await showCupertinoDialog<bool>(
-              context: context,
-              builder: (context) {
-                final List<Widget> actions = [
-                  CupertinoDialogAction(
-                    isDefaultAction: true,
-                    child: Text(LocalizationService.current.cancel),
-                    onPressed: () => Navigator.of(context).pop(false),
-                  ),
-                ];
+  }) =>
+      UniversalPlatform.isApple
+          ? _showCupertinoOptionsDialog(
+            context,
+            title: title,
+            message: message,
+            options: options,
+            isDestructive: isDestructive,
+          )
+          : _showMaterialOptionsDialog(
+            context,
+            title: title,
+            message: message,
+            options: options,
+            isDestructive: isDestructive,
+          );
 
-                options.forEach((label, action) {
-                  actions.add(
-                    CupertinoDialogAction(
-                      isDestructiveAction: isDestructive,
-                      child: Text(label),
-                      onPressed: () async {
-                        await action();
-                        Navigator.of(context).pop(true);
-                      },
-                    ),
-                  );
-                });
+  static Future<bool?> _showCupertinoOptionsDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Map<String, Future<void> Function()> options,
+    bool isDestructive = false,
+  }) {
+    final List<Widget> actions = [
+      CupertinoDialogAction(
+        isDefaultAction: true,
+        child: Text(LocalizationService.current.cancel),
+        onPressed: () => Navigator.of(context).pop(false),
+      ),
+    ];
 
-                return CupertinoAlertDialog(
-                  title: Text(title),
-                  content: Text(message),
-                  actions: actions,
-                );
-              },
-            )
-            : await showDialog<bool>(
-              context: context,
-              builder: (context) {
-                final List<Widget> actions = [
-                  TextButton(
-                    child: Text(LocalizationService.current.cancel),
-                    onPressed: () => Navigator.of(context).pop(false),
-                  ),
-                ];
+    options.forEach((label, action) {
+      actions.add(
+        CupertinoDialogAction(
+          isDestructiveAction: isDestructive,
+          child: Text(label),
+          onPressed: () {
+            final navigatorContext = context;
+            action().then((_) {
+              if (navigatorContext.mounted) {
+                Navigator.of(navigatorContext).pop(true);
+              }
+            });
+          },
+        ),
+      );
+    });
 
-                options.forEach((label, action) {
-                  actions.add(
-                    TextButton(
-                      child: Text(label),
-                      onPressed: () async {
-                        await action();
-                        Navigator.of(context).pop(true);
-                      },
-                    ),
-                  );
-                });
+    return showCupertinoDialog<bool>(
+      context: context,
+      builder:
+          (context) => CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: actions,
+          ),
+    );
+  }
 
-                return AlertDialog(
-                  title: Text(title),
-                  content: Text(message),
-                  actions: actions,
-                );
-              },
-            );
+  static Future<bool?> _showMaterialOptionsDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Map<String, Future<void> Function()> options,
+    bool isDestructive = false,
+  }) {
+    final List<Widget> actions = [
+      TextButton(
+        child: Text(LocalizationService.current.cancel),
+        onPressed: () => Navigator.of(context).pop(false),
+      ),
+    ];
 
-    return result ?? false;
+    options.forEach((label, action) {
+      actions.add(
+        TextButton(
+          child: Text(label),
+          onPressed: () {
+            final navigatorContext = context;
+            action().then((_) {
+              if (navigatorContext.mounted) {
+                Navigator.of(navigatorContext).pop(true);
+              }
+            });
+          },
+        ),
+      );
+    });
+
+    return showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: actions,
+          ),
+    );
   }
 }

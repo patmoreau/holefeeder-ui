@@ -38,14 +38,13 @@ class UpcomingListTile extends StatelessWidget {
             UniversalPlatform.isApple
                 ? CupertinoColors.systemBlue
                 : Colors.blue,
-        onTap: () async {
-          await SwipeActionDialogs.showConfirmationDialog(
-            context,
-            title: LocalizationService.current.cancelUpcomingTitle,
-            message: LocalizationService.current.cancelUpcomingMessage,
-            action: () => model.cancel(),
-          );
-        },
+        onTap:
+            () => SwipeActionDialogs.showConfirmationDialog(
+              context,
+              title: LocalizationService.current.cancelUpcomingTitle,
+              message: LocalizationService.current.cancelUpcomingMessage,
+              action: () => model.cancel(),
+            ),
       ),
     ];
 
@@ -55,14 +54,13 @@ class UpcomingListTile extends StatelessWidget {
         icon: AdaptiveIcons.delete,
         color:
             UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
-        onTap: () async {
-          await SwipeActionDialogs.showConfirmationDialog(
-            context,
-            title: LocalizationService.current.deleteCashflowTitle,
-            message: LocalizationService.current.deleteCashflowMessage,
-            action: () => model.delete(),
-          );
-        },
+        onTap:
+            () => SwipeActionDialogs.showConfirmationDialog(
+              context,
+              title: LocalizationService.current.deleteCashflowTitle,
+              message: LocalizationService.current.deleteCashflowMessage,
+              action: () => model.delete(),
+            ),
         isDestructive: true,
       ),
     ];

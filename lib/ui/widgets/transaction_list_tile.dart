@@ -1,5 +1,8 @@
+import 'dart:developer' as developper show log;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
@@ -8,6 +11,7 @@ import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class TransactionListTile extends StatelessWidget {
   final Transaction transaction;
@@ -22,20 +26,60 @@ class TransactionListTile extends StatelessWidget {
           repository: ctx.read<TransactionRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
-    builder: (model) => _buildListTile(context, model),
+    builder: (model) => _buildSwipeableTile(context, model),
   );
+
+  Widget _buildSwipeableTile(BuildContext context, TransactionViewModel model) {
+    final trailingActions = [
+      SwipeAction(
+        label: LocalizationService.current.deleteCashflow,
+        icon: AdaptiveIcons.delete,
+        color:
+            UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
+        onTap:
+            () => SwipeActionDialogs.showConfirmationDialog(
+              context,
+              title: LocalizationService.current.deleteCashflowTitle,
+              message: LocalizationService.current.deleteCashflowMessage,
+              action: () => model.delete(),
+            ),
+        isDestructive: true,
+      ),
+    ];
+
+    return SwipeableAdaptiveListTile(
+      dismissibleKey: Key(model.id),
+      trailingActions: trailingActions,
+      child: _buildListTile(context, model),
+    );
+  }
 
   Widget _buildListTile(BuildContext context, TransactionViewModel model) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AdaptiveListTile(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            // onTap: () {},
-            leading: _buildLeadingContainer(model),
-            title: _buildTitle(model),
-            subtitle: _buildSubtitle(model),
-            trailing: _buildTrailing(model),
+          AdaptivePressable(
+            onTap: () {
+              developper.log(
+                'TransactionListTile tapped: ${model.id}',
+                name: 'TransactionListTile.Tile.onTap',
+              );
+              context.push(
+                '/modify-transaction',
+                extra: model.formState.transaction,
+              );
+            },
+            child: AdaptiveListTile(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 8.0,
+              ),
+              // onTap: () {},
+              leading: _buildLeadingContainer(model),
+              title: _buildTitle(model),
+              subtitle: _buildSubtitle(model),
+              trailing: _buildTrailing(model),
+            ),
           ),
           const Padding(
             padding: EdgeInsets.only(left: 52.0),

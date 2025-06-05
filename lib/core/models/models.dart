@@ -4,6 +4,7 @@ export 'category.dart';
 export 'category_info.dart';
 export 'date_interval.dart';
 export 'make_purchase.dart';
+export 'modify_transaction.dart';
 export 'pay_cashflow.dart';
 export 'store_item.dart';
 export 'tag.dart';

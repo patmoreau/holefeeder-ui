@@ -20,6 +20,8 @@ class TransactionViewModel extends BaseViewModel<TransactionFormState> {
     loadData();
   }
 
+  String get id => formState.transaction.id;
+
   String get description =>
       formState.transaction.description.isNotEmpty
           ? formState.transaction.description
@@ -38,9 +40,9 @@ class TransactionViewModel extends BaseViewModel<TransactionFormState> {
     });
   }
 
-  Future<void> pay() async {
+  Future<void> delete() async {
     await handleAsync(() async {
-      await _repository.save(formState.transaction);
+      await _repository.delete(formState.transaction);
       updateState((s) => s.copyWith(state: ViewFormState.ready));
     });
   }

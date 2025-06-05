@@ -39,7 +39,11 @@ abstract class DataProvider {
     String accountId,
   );
 
+  Future<void> deleteTransaction(String id);
+
   Future<String?> makePurchase(MakePurchase item);
+
+  Future<void> modifyTransaction(ModifyTransaction item);
 
   Future<String?> transfer(Transfer item);
 
@@ -236,11 +240,36 @@ class DataProviderImpl implements DataProvider {
   }
 
   @override
+  Future<void> deleteTransaction(String id) async {
+    try {
+      final result = await _restClient.deleteTransaction(id);
+      if (result.response.statusCode != 204) {
+        throw Exception('Could not delete transaction with id: $id');
+      }
+    } catch (e) {
+      throw Exception('Could not delete transaction with id: $id - $e');
+    }
+  }
+
+  @override
   Future<String?> makePurchase(MakePurchase item) async {
     try {
       final result = await _restClient.makePurchase(item);
       if (result.response.statusCode == 201) {
         return result.data;
+      }
+      throw Exception('Could not make the purchase');
+    } catch (e) {
+      throw Exception('Could not make the purchase');
+    }
+  }
+
+  @override
+  Future<void> modifyTransaction(ModifyTransaction item) async {
+    try {
+      final result = await _restClient.modifyTransaction(item);
+      if (result.response.statusCode == 204) {
+        return;
       }
       throw Exception('Could not make the purchase');
     } catch (e) {

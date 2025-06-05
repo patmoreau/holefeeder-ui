@@ -6,6 +6,8 @@ export 'screens/categories_form_state.dart';
 export 'screens/categories_view_model.dart';
 export 'screens/dashboard_form_state.dart';
 export 'screens/dashboard_view_model.dart';
+export 'screens/edit_transaction_form_state.dart';
+export 'screens/edit_transaction_view_model.dart';
 export 'screens/login_view_model.dart';
 export 'screens/profile_view_model.dart';
 export 'screens/purchase_form_state.dart';

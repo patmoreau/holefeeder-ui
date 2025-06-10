@@ -4,9 +4,8 @@ import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:auth0_flutter/auth0_flutter_web.dart';
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/constants/strings.dart';
-import 'package:rxdart/rxdart.dart';
-
 import 'package:holefeeder/core/enums/authentication_status_enum.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class AuthenticationClient {
   static const parameters = {'screen_hint': 'signup'};
@@ -17,6 +16,7 @@ abstract class AuthenticationClient {
   String? _errorMessage;
 
   AuthenticationStatus _currentStatus = AuthenticationStatus.unauthenticated;
+
   AuthenticationStatus get currentStatus => _currentStatus;
 
   Stream<AuthenticationStatus> get statusStream => _statusController.stream;
@@ -62,6 +62,10 @@ abstract class AuthenticationClient {
   Future<void> logout();
 
   Future<void> verifyAuthenticationStatus();
+
+  Future<bool> isTokenExpired();
+
+  Future<void> refreshToken();
 }
 
 class MobileAuthenticationClient extends AuthenticationClient {
@@ -135,6 +139,37 @@ class MobileAuthenticationClient extends AuthenticationClient {
       }
     } catch (e) {
       setError('Verification error: $e');
+    }
+  }
+
+  @override
+  Future<bool> isTokenExpired() async {
+    try {
+      if (_credentials == null) return true;
+
+      // Check if credentials exist and are not expired
+      final hasValidCredentials =
+          await _auth0.credentialsManager.hasValidCredentials();
+      return !hasValidCredentials;
+    } catch (e) {
+      setError('Token expiration check error: $e');
+      return true;
+    }
+  }
+
+  @override
+  Future<void> refreshToken() async {
+    try {
+      if (_credentials == null) {
+        throw Exception('No credentials available to refresh');
+      }
+
+      final freshCredentials = await _auth0.credentialsManager.credentials();
+      setCredentials(freshCredentials);
+      setStatus(AuthenticationStatus.authenticated);
+    } catch (e) {
+      setError('Token refresh error: $e');
+      clear();
     }
   }
 }
@@ -211,6 +246,49 @@ class WebAuthenticationClient extends AuthenticationClient {
   Future<void> verifyAuthenticationStatus() async {
     if (_credentials == null) {
       setStatus(AuthenticationStatus.unauthenticated);
+    }
+  }
+
+  @override
+  Future<bool> isTokenExpired() async {
+    try {
+      if (_credentials == null) return true;
+
+      // For web authentication, check the expiration time of the current token
+      final expiresAt = _credentials?.expiresAt;
+      if (expiresAt == null) return true;
+
+      return DateTime.now().isAfter(expiresAt);
+    } catch (e) {
+      setError('Token expiration check error: $e');
+      return true;
+    }
+  }
+
+  @override
+  Future<void> refreshToken() async {
+    try {
+      if (_credentials == null) {
+        throw Exception('No credentials available to refresh');
+      }
+
+      // Auth0Web will automatically handle token refresh
+      final freshCredentials = await _auth0.onLoad(
+        audience: kAuth0Audience,
+        scopes: kAuth0Scopes,
+        cookieDomain: kAuth0RedirectUriWeb,
+        useRefreshTokens: true,
+      );
+
+      if (freshCredentials != null) {
+        setCredentials(freshCredentials);
+        setStatus(AuthenticationStatus.authenticated);
+      } else {
+        throw Exception('Failed to refresh token');
+      }
+    } catch (e) {
+      setError('Token refresh error: $e');
+      clear();
     }
   }
 }

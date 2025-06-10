@@ -30,7 +30,6 @@ class ProfileForm extends StatelessWidget {
                 model.formState.pictureUrl.isNotEmpty
                     ? NetworkImage(model.formState.pictureUrl)
                     : AssetImage(model.fallbackPictureUrl) as ImageProvider,
-            // Remove onBackgroundImageError and use Image.network with errorBuilder instead
             child:
                 model.formState.pictureUrl.isNotEmpty
                     ? Image.network(
@@ -52,6 +51,31 @@ class ProfileForm extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 24),
+          AdaptiveCard(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Authentication Details',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 12),
+                _buildInfoRow(
+                  context,
+                  'Token Type:',
+                  model.formState.tokenType.toUpperCase(),
+                ),
+                const SizedBox(height: 8),
+                _buildInfoRow(
+                  context,
+                  'Token Expires In:',
+                  model.formatTimeRemaining(model.formState.tokenExpiresAt),
+                ),
+              ],
+            ),
+          ),
           const Spacer(),
           AdaptiveButton(
             onPressed: model.logout,
@@ -59,6 +83,28 @@ class ProfileForm extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildInfoRow(BuildContext context, String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(
+              179,
+            ), // ~70% opacity (0.7 * 255 ≈ 179)
+          ),
+        ),
+        Text(
+          value,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+        ),
+      ],
     );
   }
 }

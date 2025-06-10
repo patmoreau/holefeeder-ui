@@ -6,12 +6,12 @@ import 'package:universal_platform/universal_platform.dart';
 
 export './account_list_tile.dart';
 export './adaptive/adaptive.dart';
-export './adaptive_pressable.dart';
 export './currency_text.dart';
 export './form_state_handler.dart';
 export './transaction_list_tile.dart';
 export './upcoming_list_tile.dart';
 export './view_model_provider.dart';
+export 'adaptive/adaptive_pressable.dart';
 
 abstract final class HolefeederWidgets {
   static Widget textFormField({

@@ -239,6 +239,9 @@ Dio _createDio(BuildContext context) {
       onRequest: (options, handler) async {
         final authenticationClient = context.read<AuthenticationClient>();
 
+        if (await authenticationClient.isTokenExpired()) {
+          await authenticationClient.refreshToken();
+        }
         final status = await authenticationClient.statusStream.first;
         if (status == AuthenticationStatus.authenticated) {
           final token = authenticationClient.credentials.accessToken;

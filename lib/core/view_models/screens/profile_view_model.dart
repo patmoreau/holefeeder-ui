@@ -36,7 +36,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
           name: user.name ?? '',
           pictureUrl: (user.pictureUrl.toString() as String?) ?? '',
           tokenExpiresAt: _authenticationClient.credentials.expiresAt,
-          tokenType: _authenticationClient.credentials.tokenType ?? '',
+          tokenType: _authenticationClient.credentials.tokenType,
         ),
       );
     }
@@ -97,7 +97,7 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
           name: user.name ?? '',
           pictureUrl: (user.pictureUrl.toString() as String?) ?? '',
           tokenExpiresAt: credentials.expiresAt,
-          tokenType: credentials.tokenType ?? '',
+          tokenType: credentials.tokenType,
         ),
       );
     }

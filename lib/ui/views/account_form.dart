@@ -6,8 +6,6 @@ import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-enum ListType { upcoming, transactions }
-
 class AccountForm extends StatefulWidget {
   final AccountViewModel model;
   final GlobalKey<FormState> formKey;
@@ -19,8 +17,6 @@ class AccountForm extends StatefulWidget {
 }
 
 class _AccountFormState extends State<AccountForm> {
-  ListType _selectedSegment = ListType.upcoming;
-
   @override
   Widget build(BuildContext context) => Consumer<AccountViewModel>(
     builder:
@@ -29,12 +25,10 @@ class _AccountFormState extends State<AccountForm> {
             _buildAccountCard(context, model),
             SizedBox(height: 16),
             AdaptiveSegmentedControl<ListType>(
-              groupValue: _selectedSegment,
-              onValueChanged: (ListType? value) {
+              groupValue: model.selectedSegment,
+              onValueChanged: (ListType? value) async {
                 if (value != null) {
-                  setState(() {
-                    _selectedSegment = value;
-                  });
+                  await model.setSegment(value);
                 }
               },
               children: <ListType, Widget>{
@@ -46,10 +40,13 @@ class _AccountFormState extends State<AccountForm> {
             ),
             SizedBox(height: 16),
             Expanded(
-              child:
-                  _selectedSegment == ListType.upcoming
-                      ? _buildUpcomingList(model)
-                      : _buildTransactionList(model),
+              child: RefreshIndicator.adaptive(
+                onRefresh: () => model.refreshAccount(),
+                child:
+                    model.selectedSegment == ListType.upcoming
+                        ? _buildUpcomingList(model)
+                        : _buildTransactionList(model),
+              ),
             ),
           ],
         ),

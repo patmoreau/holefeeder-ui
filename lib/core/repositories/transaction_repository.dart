@@ -193,9 +193,15 @@ class TransactionRepository
     }
   }
 
-  Future<List<Transaction>> getForAccount(String accountId) async {
+  Future<List<Transaction>> getForAccount(
+    String accountId, {
+    bool force = false,
+  }) async {
     try {
       await ensureInitialized();
+      if (force) {
+        return _getAllFromApi(accountId);
+      }
       final transactions =
           (await _hiveService.getAll<Transaction>(boxName))
               .where((transaction) => transaction.account.id == accountId)

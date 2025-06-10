@@ -1,4 +1,4 @@
-import 'dart:developer' as developper show log;
+import 'dart:developer' as developer show log;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

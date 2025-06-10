@@ -29,13 +29,17 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
     _accountRefreshedSubscription = EventBus()
         .on<AccountRefreshedEvent>()
         .where((event) => event.accountId == accountId)
-        .listen(_handleAccountRefreshed);
-    loadData();
+        .listen((event) {
+          unawaited(_handleAccountRefreshed(event));
+        });
+    unawaited(loadData());
   }
 
-  void _handleAccountRefreshed(AccountRefreshedEvent event) {
+  Future<void> _handleAccountRefreshed(AccountRefreshedEvent event) async {
     developer.log('AccountViewModel: Account refreshed, updating view');
-    loadData();
+    updateState((s) => s.copyWith(isRefreshing: true));
+    await loadData();
+    updateState((s) => s.copyWith(isRefreshing: false));
   }
 
   String get name => formState.account.name;
@@ -51,6 +55,8 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
   List<Upcoming> get upcoming => formState.upcoming;
 
   List<Transaction> get transactions => formState.transactions;
+
+  ListType get selectedSegment => formState.selectedSegment;
 
   int get projectionType {
     final accountTypeMultiplier = formState.account.type.multiplier;
@@ -86,6 +92,7 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
       final upcoming = await _upcomingRepository.getForAccount(accountId);
       final transactions = await _transactionRepository.getForAccount(
         accountId,
+        force: formState.isRefreshing,
       );
       developer.log('AccountViewModel: Got ${upcoming.length} upcoming items');
       updateState((s) {
@@ -111,6 +118,12 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
       await loadData();
       updateState((s) => s.copyWith(isRefreshing: false));
     });
+  }
+
+  Future<void> setSegment(ListType segment) async {
+    if (formState.selectedSegment == segment) return;
+
+    updateState((s) => s.copyWith(selectedSegment: segment));
   }
 
   @override

@@ -15,6 +15,7 @@ class AccountRepository
   final HiveStorageProvider _hiveService;
   final DataProvider _dataProvider;
   late final StreamSubscription _transactionAddedSubscription;
+  late final StreamSubscription _transactionDeletedSubscription;
 
   AccountRepository({
     required HiveStorageProvider hiveService,
@@ -23,11 +24,22 @@ class AccountRepository
        _dataProvider = dataProvider {
     _transactionAddedSubscription = EventBus()
         .on<TransactionAddedEvent>()
-        .listen(_handleTransactionAdded);
+        .listen((event) => unawaited(_handleTransactionAdded(event)));
+    _transactionDeletedSubscription = EventBus()
+        .on<TransactionDeletedEvent>()
+        .listen((event) => unawaited(_handleTransactionDeleted(event)));
   }
 
   Future<void> _handleTransactionAdded(TransactionAddedEvent event) async {
     developer.log('AccountRepository: Handling transaction added event');
+    final account = await refresh(event.accountId);
+    EventBus().fire<AccountRefreshedEvent>(
+      AccountRefreshedEvent(event.accountId, account),
+    );
+  }
+
+  Future<void> _handleTransactionDeleted(TransactionDeletedEvent event) async {
+    developer.log('AccountRepository: Handling transaction deleted event');
     final account = await refresh(event.accountId);
     EventBus().fire<AccountRefreshedEvent>(
       AccountRefreshedEvent(event.accountId, account),
@@ -143,6 +155,7 @@ class AccountRepository
   @override
   Future<void> dispose() async {
     await _transactionAddedSubscription.cancel();
+    await _transactionDeletedSubscription.cancel();
     await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
   }
 

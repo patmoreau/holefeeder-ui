@@ -81,23 +81,22 @@ class TransactionRepository
 
       // Extract the key based on whether we received a string key or a Transaction object
       final String key = keyOrValue is String ? keyOrValue : keyOrValue.id;
+      final String apiId = keyOrValue is Transaction ? keyOrValue.id : key;
 
-      // If we have the full object, we can get the account ID for events/updates
-      // final String accountId =
-      //     keyOrValue is Transaction ? keyOrValue.account.id : '';
+      final transaction = await _hiveService.get<Transaction>(boxName, key);
 
       // For API operations, use the key as the transaction ID
-      // await _dataProvider.deleteTransaction(key);
+      await _dataProvider.deleteTransaction(apiId);
 
       // For local storage operations, use the key
       await _hiveService.delete<Transaction>(boxName, key);
 
       // Fire event if we know the account ID
-      // if (accountId.isNotEmpty) {
-      //   EventBus().fire<TransactionDeletedEvent>(
-      //     TransactionDeletedEvent(key, accountId),
-      //   );
-      // }
+      if (transaction != null && transaction.account.id.isNotEmpty) {
+        EventBus().fire<TransactionDeletedEvent>(
+          TransactionDeletedEvent(transaction.account.id),
+        );
+      }
     } catch (e) {
       _logError('deleting transaction', e);
       throw Exception('Failed to delete transaction: $e');
@@ -164,6 +163,21 @@ class TransactionRepository
     }
   }
 
+  Future<void> modify(ModifyTransaction value) async {
+    try {
+      await ensureInitialized();
+
+      await _dataProvider.modifyTransaction(value);
+
+      EventBus().fire<TransactionAddedEvent>(
+        TransactionAddedEvent(value.accountId),
+      );
+    } catch (e) {
+      _logError('saving transaction', e);
+      throw Exception('Failed to save transaction: $e');
+    }
+  }
+
   Future<void> transfer(Transfer value) async {
     try {
       await _dataProvider.transfer(value);
@@ -179,9 +193,15 @@ class TransactionRepository
     }
   }
 
-  Future<List<Transaction>> getForAccount(String accountId) async {
+  Future<List<Transaction>> getForAccount(
+    String accountId, {
+    bool force = false,
+  }) async {
     try {
       await ensureInitialized();
+      if (force) {
+        return _getAllFromApi(accountId);
+      }
       final transactions =
           (await _hiveService.getAll<Transaction>(boxName))
               .where((transaction) => transaction.account.id == accountId)

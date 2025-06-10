@@ -53,8 +53,16 @@ abstract class RestClient {
     @Query('filter') List<String> filter,
   );
 
+  @DELETE('api/v2/transactions/{id}')
+  Future<HttpResponse<void>> deleteTransaction(@Path('id') String id);
+
   @POST('api/v2/transactions/make-purchase')
   Future<HttpResponse<String>> makePurchase(@Body() MakePurchase command);
+
+  @POST('api/v2/transactions/modify')
+  Future<HttpResponse<void>> modifyTransaction(
+    @Body() ModifyTransaction command,
+  );
 
   @POST('api/v2/transactions/transfer')
   Future<HttpResponse<String>> transfer(@Body() Transfer command);

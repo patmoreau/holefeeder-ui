@@ -30,15 +30,15 @@ String? Function(String?) positiveValueValidator() => (String? value) {
 
 String? Function(String?) greatherThanZeroValueValidator() => (String? value) {
   if (value == null || value.isEmpty) {
-    return LocalizationService.current.validationNumberGreatherThanZero;
+    return LocalizationService.current.validationNumberGreaterThanZero;
   }
   try {
     var intValue = int.parse(value);
     if (intValue <= 0) {
-      return LocalizationService.current.validationNumberGreatherThanZero;
+      return LocalizationService.current.validationNumberGreaterThanZero;
     }
     return null;
   } catch (_) {
-    return LocalizationService.current.validationNumberGreatherThanZero;
+    return LocalizationService.current.validationNumberGreaterThanZero;
   }
 };

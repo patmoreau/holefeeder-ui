@@ -103,15 +103,15 @@ class EditTransactionViewModel extends BaseViewModel<EditTransactionFormState> {
 
   bool validatePurchase() {
     if (formState.amount <= Decimal.zero) {
-      setFormError('Amount must be greater than zero');
+      setFormError(LocalizationService.current.amountGreaterThanZero);
       return false;
     }
     if (formState.selectedAccount == null) {
-      setFormError('Please select an account');
+      setFormError(LocalizationService.current.selectAccount);
       return false;
     }
     if (formState.selectedCategory == null) {
-      setFormError('Please select a category');
+      setFormError(LocalizationService.current.selectCategory);
       return false;
     }
     return true;

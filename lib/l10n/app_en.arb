@@ -202,6 +202,14 @@
   "@save": {
     "description": "A button to save changes"
   },
+  "selectAccountError": "An account must be selected",
+  "@selectAccountError": {
+    "description": "An error prompt to select an account"
+  },
+  "selectCategoryError": "A category must be selected",
+  "@selectCategoryError": {
+    "description": "An error prompt to select a category"
+  },
   "transactions": "Transactions",
   "@transactions": {
     "description": "The transactions screen title"
@@ -226,8 +234,8 @@
   "@validationDecimalNumber": {
     "description": "Validation message for decimal number input"
   },
-  "validationNumberGreatherThanZero": "Please enter a number greater than zero",
-  "@validationNumberGreatherThanZero": {
+  "validationNumberGreaterThanZero": "Please enter a number greater than zero",
+  "@validationNumberGreaterThanZero": {
     "description": "Validation message for number greater than zero input"
   },
   "validationPositiveNumber": "Please enter a positive number",

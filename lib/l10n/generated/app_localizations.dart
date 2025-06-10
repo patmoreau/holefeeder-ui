@@ -392,6 +392,18 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get save;
 
+  /// An error prompt to select an account
+  ///
+  /// In en, this message translates to:
+  /// **'An account must be selected'**
+  String get selectAccountError;
+
+  /// An error prompt to select a category
+  ///
+  /// In en, this message translates to:
+  /// **'A category must be selected'**
+  String get selectCategoryError;
+
   /// The transactions screen title
   ///
   /// In en, this message translates to:
@@ -432,7 +444,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Please enter a number greater than zero'**
-  String get validationNumberGreatherThanZero;
+  String get validationNumberGreaterThanZero;
 
   /// Validation message for positive number input
   ///

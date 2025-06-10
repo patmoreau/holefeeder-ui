@@ -160,6 +160,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
+  String get selectAccountError => 'An account must be selected';
+
+  @override
+  String get selectCategoryError => 'A category must be selected';
+
+  @override
   String get transactions => 'Transactions';
 
   @override
@@ -179,7 +185,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please enter a positive decimal number';
 
   @override
-  String get validationNumberGreatherThanZero =>
+  String get validationNumberGreaterThanZero =>
       'Please enter a number greater than zero';
 
   @override

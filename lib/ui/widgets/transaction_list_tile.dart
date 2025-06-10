@@ -60,7 +60,7 @@ class TransactionListTile extends StatelessWidget {
         children: [
           AdaptivePressable(
             onTap: () {
-              developper.log(
+              developer.log(
                 'TransactionListTile tapped: ${model.id}',
                 name: 'TransactionListTile.Tile.onTap',
               );

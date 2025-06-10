@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/services/services.dart';
 
 import '../base_form_state.dart';
 import '../base_view_model.dart';
@@ -103,15 +104,15 @@ class EditTransactionViewModel extends BaseViewModel<EditTransactionFormState> {
 
   bool validatePurchase() {
     if (formState.amount <= Decimal.zero) {
-      setFormError(LocalizationService.current.amountGreaterThanZero);
+      setFormError(LocalizationService.current.validationNumberGreaterThanZero);
       return false;
     }
     if (formState.selectedAccount == null) {
-      setFormError(LocalizationService.current.selectAccount);
+      setFormError(LocalizationService.current.selectAccountError);
       return false;
     }
     if (formState.selectedCategory == null) {
-      setFormError(LocalizationService.current.selectCategory);
+      setFormError(LocalizationService.current.selectCategoryError);
       return false;
     }
     return true;

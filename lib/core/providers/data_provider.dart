@@ -271,9 +271,9 @@ class DataProviderImpl implements DataProvider {
       if (result.response.statusCode == 204) {
         return;
       }
-      throw Exception('Could not make the purchase');
+      throw Exception('Could not modify transaction');
     } catch (e) {
-      throw Exception('Could not make the purchase');
+      throw Exception('Could not modify transaction - $e');
     }
   }
 

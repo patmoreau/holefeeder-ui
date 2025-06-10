@@ -24,10 +24,10 @@ class AccountRepository
        _dataProvider = dataProvider {
     _transactionAddedSubscription = EventBus()
         .on<TransactionAddedEvent>()
-        .listen(_handleTransactionAdded);
+        .listen((event) => unawaited(_handleTransactionAdded(event)));
     _transactionDeletedSubscription = EventBus()
         .on<TransactionDeletedEvent>()
-        .listen(_handleTransactionDeleted);
+        .listen((event) => unawaited(_handleTransactionDeleted(event)));
   }
 
   Future<void> _handleTransactionAdded(TransactionAddedEvent event) async {
@@ -155,6 +155,7 @@ class AccountRepository
   @override
   Future<void> dispose() async {
     await _transactionAddedSubscription.cancel();
+    await _transactionDeletedSubscription.cancel();
     await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
   }
 

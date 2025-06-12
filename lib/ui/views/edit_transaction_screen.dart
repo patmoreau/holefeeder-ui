@@ -56,15 +56,20 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     return FormStateHandler(
       formState: model.formState,
       builder:
-          () => Expanded(
-            child: ScrollConfiguration(
-              behavior: ScrollConfiguration.of(
-                context,
-              ).copyWith(scrollbars: true),
-              child: SafeArea(
-                child: EditTransactionForm(model: model, formKey: _formKey),
+          () => Column(
+            // Wrap Expanded with Column
+            children: [
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(
+                    context,
+                  ).copyWith(scrollbars: true),
+                  child: SafeArea(
+                    child: EditTransactionForm(model: model, formKey: _formKey),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
     );
   }

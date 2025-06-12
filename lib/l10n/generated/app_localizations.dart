@@ -404,6 +404,12 @@ abstract class AppLocalizations {
   /// **'A category must be selected'**
   String get selectCategoryError;
 
+  /// A single transaction
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction'**
+  String get transaction;
+
   /// The transactions screen title
   ///
   /// In en, this message translates to:

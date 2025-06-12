@@ -166,6 +166,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectCategoryError => 'A category must be selected';
 
   @override
+  String get transaction => 'Transaction';
+
+  @override
   String get transactions => 'Transactions';
 
   @override

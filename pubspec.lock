@@ -42,18 +42,18 @@ packages:
     dependency: "direct main"
     description:
       name: auth0_flutter
-      sha256: "304bf792c8664c226499413a571f99b61164d04d14dcc391b0d9a63ea78f234f"
+      sha256: "41cf17500412e763d38063daebd55813abeb898c818eb1d192b4d00ad8f9a8b0"
       url: "https://pub.dev"
     source: hosted
-    version: "1.10.0"
+    version: "1.11.0"
   auth0_flutter_platform_interface:
     dependency: transitive
     description:
       name: auth0_flutter_platform_interface
-      sha256: a4338a06a3a4f8c763ed2d28d99fed03b9c96f4ad274f80b6a6b215b48b46e04
+      sha256: "09b6c02e508bd73b9e4a1c8f6ce0a51efda2ff0cdf37147970e40b4e0bccd910"
       url: "https://pub.dev"
     source: hosted
-    version: "1.10.0"
+    version: "1.11.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -390,10 +390,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "0b1e06223bee260dee31a171fb1153e306907563a0b0225e8c1733211911429a"
+      sha256: b453934c36e289cef06525734d1e676c1f91da9e22e2017d9dcab6ce0f999175
       url: "https://pub.dev"
     source: hosted
-    version: "15.1.2"
+    version: "15.1.3"
   graphs:
     dependency: transitive
     description:
@@ -923,10 +923,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics
-      sha256: "44cc7104ff32563122a929e4620cf3efd584194eec6d1d913eb5ba593dbcf6de"
+      sha256: a4f059dc26fc8295b5921376600a194c4ec7d55e72f2fe4c7d2831e103d461e6
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.18"
+    version: "1.1.19"
   vector_graphics_codec:
     dependency: transitive
     description:
@@ -963,10 +963,10 @@ packages:
     dependency: transitive
     description:
       name: watcher
-      sha256: "69da27e49efa56a15f8afe8f4438c4ec02eff0a117df1b22ea4aad194fe1c104"
+      sha256: "0b7fd4a0bbc4b92641dbf20adfd7e3fd1398fe17102d94b674234563e110088a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   web:
     dependency: transitive
     description:
@@ -995,10 +995,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "329edf97fdd893e0f1e3b9e88d6a0e627128cc17cc316a8d67fda8f1451178ba"
+      sha256: "66814138c3562338d05613a6e368ed8cfb237ad6d64a9e9334be3f309acfca03"
       url: "https://pub.dev"
     source: hosted
-    version: "5.13.0"
+    version: "5.14.0"
   xdg_directories:
     dependency: transitive
     description:

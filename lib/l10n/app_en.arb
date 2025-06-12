@@ -210,6 +210,10 @@
   "@selectCategoryError": {
     "description": "An error prompt to select a category"
   },
+  "transaction": "Transaction",
+  "@transaction": {
+    "description": "A single transaction"
+  },
   "transactions": "Transactions",
   "@transactions": {
     "description": "The transactions screen title"

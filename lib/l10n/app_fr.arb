@@ -51,6 +51,7 @@
   "save": "Enregistrer",
   "selectAccountError": "Veuillez sélectionner un compte",
   "selectCategoryError": "Veuillez sélectionner une catégorie",
+  "transaction": "Transaction",
   "transactions": "Transactions",
   "transactionsEmpty": "Aucune transaction trouvée",
   "transfer": "Transfert",

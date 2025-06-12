@@ -166,6 +166,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get selectCategoryError => 'Veuillez sélectionner une catégorie';
 
   @override
+  String get transaction => 'Transaction';
+
+  @override
   String get transactions => 'Transactions';
 
   @override

@@ -9,7 +9,7 @@ import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-import 'transaction_form.dart';
+import 'edit_transaction_form.dart';
 
 class EditTransactionScreen extends StatefulWidget {
   final Transaction? transaction;
@@ -39,12 +39,9 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
             (model) => AdaptiveScaffold(
               leading: AdaptiveNavigationBackButton(
                 onPressed: () => _cancel(model),
-                previousPageTitle:
-                    (widget.transaction == null)
-                        ? LocalizationService.current.dashboard
-                        : LocalizationService.current.fieldAccount,
+                previousPageTitle: LocalizationService.current.fieldAccount,
               ),
-              title: LocalizationService.current.add,
+              title: LocalizationService.current.transaction,
               actions: [
                 AdaptiveIconButton(
                   onPressed: () => _save(model),
@@ -59,15 +56,20 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     return FormStateHandler(
       formState: model.formState,
       builder:
-          () => Expanded(
-            child: ScrollConfiguration(
-              behavior: ScrollConfiguration.of(
-                context,
-              ).copyWith(scrollbars: true),
-              child: SafeArea(
-                child: EditTransactionForm(model: model, formKey: _formKey),
+          () => Column(
+            // Wrap Expanded with Column
+            children: [
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(
+                    context,
+                  ).copyWith(scrollbars: true),
+                  child: SafeArea(
+                    child: EditTransactionForm(model: model, formKey: _formKey),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
     );
   }

@@ -3,10 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/ui/views/account_screen.dart';
+import 'package:holefeeder/ui/views/edit_transaction_screen.dart';
 import 'package:holefeeder/ui/views/home_screen.dart';
 import 'package:holefeeder/ui/views/login_screen.dart';
 import 'package:holefeeder/ui/views/purchase_screen.dart';
-import 'package:holefeeder/ui/views/transaction_screen.dart';
 import 'package:holefeeder/ui/views/upcoming_screen.dart';
 import 'package:provider/provider.dart';
 

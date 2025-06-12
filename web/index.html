@@ -19,45 +19,51 @@
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="A new Flutter project.">
+    <meta content="A new Flutter project." name="description">
 
     <!-- iOS meta tags & icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="holefeeder">
-    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <meta content="yes" name="mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="holefeeder" name="apple-mobile-web-app-title">
+    <link href="icons/Icon-192.png" rel="apple-touch-icon">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="favicon.png" rel="icon" type="image/png"/>
 
     <title>holefeeder</title>
-    <link rel="manifest" href="manifest.json">
+    <link href="manifest.json" rel="manifest">
 
     <script>
         // The value below is injected by flutter build, do not touch.
         var serviceWorkerVersion = {{flutter_service_worker_version}};
     </script>
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js" defer></script>
+    <script>
+        // Enable wasm optimization when available
+        if (WebAssembly) {
+          window.flutterWebRenderer = "canvaskit";
+        }
+    </script>
+    <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 </head>
 
 <body>
-    <script>{{flutter_js}}</script>
-    <script>{{flutter_build_config}}</script>
-    <script>
-        window.addEventListener('load', function (ev) {
-            // Download main.dart.js
-            _flutter.loader.load({
-                serviceWorker: {
-                    serviceWorkerVersion: serviceWorkerVersion,
-                },
-                onEntrypointLoaded: function (engineInitializer) {
-                    engineInitializer.initializeEngine().then(function (appRunner) {
-                        appRunner.runApp();
-                    });
-                }
-            });
+<script>{{flutter_js}}</script>
+<script>{{flutter_build_config}}</script>
+<script>
+    window.addEventListener('load', function (ev) {
+        // Download main.dart.js
+        _flutter.loader.load({
+            serviceWorker: {
+                serviceWorkerVersion: serviceWorkerVersion,
+            },
+            onEntrypointLoaded: function (engineInitializer) {
+                engineInitializer.initializeEngine().then(function (appRunner) {
+                    appRunner.runApp();
+                });
+            }
         });
-    </script>
+    });
+</script>
 
 </body>
 

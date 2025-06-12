@@ -53,6 +53,10 @@ abstract class AuthenticationClient {
     setStatus(AuthenticationStatus.unauthenticated);
   }
 
+  void dispose() {
+    _statusController.close();
+  }
+
   Future<void> init();
 
   Future<void> login();

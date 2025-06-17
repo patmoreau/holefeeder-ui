@@ -1,14 +1,22 @@
 import 'package:auth0_flutter/auth0_flutter_web.dart';
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/enums/enums.dart';
+import 'package:web/web.dart';
 
 import 'authentication_client.dart';
 
 class WebAuthenticationClient extends AuthenticationClient {
   late Auth0Web _auth0;
+  late final Uri _redirectUri;
+  late final String _cookieDomain;
 
   @override
   Future<void> init() async {
+    final location = window.location;
+    _redirectUri = Uri.parse('${location.origin}${location.pathname}');
+    _cookieDomain = location.hostname;
+
+    createAuth0Client();
     _auth0 = Auth0Web(kAuth0Domain, kAuth0ClientId);
     setStatus(AuthenticationStatus.unauthenticated);
     try {
@@ -16,7 +24,7 @@ class WebAuthenticationClient extends AuthenticationClient {
           .onLoad(
             audience: kAuth0Audience,
             scopes: kAuth0Scopes,
-            cookieDomain: kAuth0RedirectUriWeb,
+            cookieDomain: _cookieDomain,
             useRefreshTokens: true,
             cacheLocation: CacheLocation.localStorage,
             useCookiesForTransactions: true,
@@ -30,30 +38,8 @@ class WebAuthenticationClient extends AuthenticationClient {
             );
           });
     } catch (e) {
-      // Handle missing_transaction error specifically
-      // if (e.toString().contains('missing_transaction')) {
-      //   // Clear any stale auth state
-      //   await _clearAuthState();
-      //   setStatus(AuthenticationStatus.unauthenticated);
-      // } else {
-      //   setError('Init error: $e');
-      // }
       setError('Init error: $e');
     }
-  }
-
-  // Add this helper method
-  Future<void> _clearAuthState() async {
-    // Clear any local Auth0 state that might be corrupted
-    try {
-      // Try to clear session data gracefully
-      await _auth0.logout(returnToUrl: null);
-    } catch (e) {
-      // Ignore errors during cleanup
-    }
-
-    // Reset the client state
-    clear();
   }
 
   @override
@@ -63,7 +49,7 @@ class WebAuthenticationClient extends AuthenticationClient {
       await _auth0.loginWithRedirect(
         audience: kAuth0Audience,
         scopes: kAuth0Scopes,
-        redirectUrl: kAuth0RedirectUriWeb,
+        redirectUrl: _redirectUri.toString(),
       );
     } catch (e) {
       setError('Login error: $e');
@@ -77,7 +63,7 @@ class WebAuthenticationClient extends AuthenticationClient {
       await _auth0.loginWithRedirect(
         audience: kAuth0Audience,
         scopes: kAuth0Scopes,
-        redirectUrl: kAuth0RedirectUriWeb,
+        redirectUrl: _redirectUri.toString(),
         parameters: AuthenticationClient.parameters,
       );
     } catch (e) {
@@ -89,7 +75,7 @@ class WebAuthenticationClient extends AuthenticationClient {
   Future<void> logout() async {
     setStatus(AuthenticationStatus.loading);
     try {
-      await _auth0.logout(returnToUrl: kAuth0RedirectUriWeb);
+      await _auth0.logout(returnToUrl: _redirectUri.toString());
       clear();
     } catch (e) {
       setError('Logout error: $e');
@@ -129,8 +115,10 @@ class WebAuthenticationClient extends AuthenticationClient {
       final freshCredentials = await _auth0.onLoad(
         audience: kAuth0Audience,
         scopes: kAuth0Scopes,
-        cookieDomain: kAuth0RedirectUriWeb,
+        cookieDomain: _cookieDomain,
         useRefreshTokens: true,
+        cacheLocation: CacheLocation.localStorage,
+        useCookiesForTransactions: true,
       );
 
       if (freshCredentials != null) {

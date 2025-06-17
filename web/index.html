@@ -37,12 +37,6 @@
         // The value below is injected by flutter build, do not touch.
         var serviceWorkerVersion = {{flutter_service_worker_version}};
     </script>
-    <script>
-        // Enable wasm optimization when available
-        if (WebAssembly) {
-          window.flutterWebRenderer = "canvaskit";
-        }
-    </script>
     <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 </head>
 

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/adapters/adapters.dart';
 import 'package:holefeeder/core/constants/constants.dart';
@@ -28,6 +29,7 @@ const appScheme = 'https';
 bool launchedFromQuickAction = false;
 
 Future<void> main() async {
+  usePathUrlStrategy();
   await dotenv.load(
     fileName: 'assets/env/.env.${kReleaseMode ? "production" : "development"}',
   );

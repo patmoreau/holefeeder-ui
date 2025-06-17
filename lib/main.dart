@@ -241,9 +241,19 @@ Dio _createDio(BuildContext context) {
 
         if (await authenticationClient.isTokenExpired()) {
           await authenticationClient.refreshToken();
+          if (authenticationClient.currentStatus ==
+              AuthenticationStatus.unauthenticated) {
+            router.go('/login');
+            return handler.reject(
+              DioException(
+                requestOptions: options,
+                error: 'Authentication required',
+              ),
+            );
+          }
         }
-        final status = await authenticationClient.statusStream.first;
-        if (status == AuthenticationStatus.authenticated) {
+        if (authenticationClient.currentStatus ==
+            AuthenticationStatus.authenticated) {
           final token = authenticationClient.credentials.accessToken;
           options.headers['Authorization'] = 'Bearer $token';
         }

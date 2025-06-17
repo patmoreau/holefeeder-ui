@@ -83,7 +83,6 @@ class MobileAuthenticationClient extends AuthenticationClient {
     try {
       if (currentStatus == AuthenticationStatus.unauthenticated) return true;
 
-      // Check if credentials exist and are not expired
       final hasValidCredentials =
           await _auth0.credentialsManager.hasValidCredentials();
       return !hasValidCredentials;
@@ -97,7 +96,7 @@ class MobileAuthenticationClient extends AuthenticationClient {
   Future<void> refreshToken() async {
     try {
       if (currentStatus == AuthenticationStatus.unauthenticated) {
-        throw Exception('No credentials available to refresh');
+        return await login();
       }
 
       final freshCredentials = await _auth0.credentialsManager.credentials();

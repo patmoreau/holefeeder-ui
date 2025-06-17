@@ -18,6 +18,8 @@ class WebAuthenticationClient extends AuthenticationClient {
             scopes: kAuth0Scopes,
             cookieDomain: kAuth0RedirectUriWeb,
             useRefreshTokens: true,
+            cacheLocation: CacheLocation.localStorage,
+            useCookiesForTransactions: true,
           )
           .then((final credentials) async {
             setCredentials(credentials);
@@ -28,8 +30,30 @@ class WebAuthenticationClient extends AuthenticationClient {
             );
           });
     } catch (e) {
+      // Handle missing_transaction error specifically
+      // if (e.toString().contains('missing_transaction')) {
+      //   // Clear any stale auth state
+      //   await _clearAuthState();
+      //   setStatus(AuthenticationStatus.unauthenticated);
+      // } else {
+      //   setError('Init error: $e');
+      // }
       setError('Init error: $e');
     }
+  }
+
+  // Add this helper method
+  Future<void> _clearAuthState() async {
+    // Clear any local Auth0 state that might be corrupted
+    try {
+      // Try to clear session data gracefully
+      await _auth0.logout(returnToUrl: null);
+    } catch (e) {
+      // Ignore errors during cleanup
+    }
+
+    // Reset the client state
+    clear();
   }
 
   @override

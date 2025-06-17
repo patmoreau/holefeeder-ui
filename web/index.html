@@ -37,12 +37,12 @@
         // The value below is injected by flutter build, do not touch.
         var serviceWorkerVersion = {{flutter_service_worker_version}};
     </script>
-    <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 </head>
 
 <body>
 <script>{{flutter_js}}</script>
 <script>{{flutter_build_config}}</script>
+<script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 <script>
     window.addEventListener('load', function (ev) {
         // Download main.dart.js

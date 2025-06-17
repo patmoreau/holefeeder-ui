@@ -16,27 +16,11 @@ class WebAuthenticationClient extends AuthenticationClient {
     _redirectUri = Uri.parse('${location.origin}${location.pathname}');
     _cookieDomain = location.hostname;
 
-    createAuth0Client();
     _auth0 = Auth0Web(kAuth0Domain, kAuth0ClientId);
     setStatus(AuthenticationStatus.unauthenticated);
+
     try {
-      await _auth0
-          .onLoad(
-            audience: kAuth0Audience,
-            scopes: kAuth0Scopes,
-            cookieDomain: _cookieDomain,
-            useRefreshTokens: true,
-            cacheLocation: CacheLocation.localStorage,
-            useCookiesForTransactions: true,
-          )
-          .then((final credentials) async {
-            setCredentials(credentials);
-            setStatus(
-              credentials == null
-                  ? AuthenticationStatus.unauthenticated
-                  : AuthenticationStatus.authenticated,
-            );
-          });
+      await load();
     } catch (e) {
       setError('Init error: $e');
     }
@@ -111,25 +95,34 @@ class WebAuthenticationClient extends AuthenticationClient {
         throw Exception('No credentials available to refresh');
       }
 
-      // Auth0Web will automatically handle token refresh
-      final freshCredentials = await _auth0.onLoad(
-        audience: kAuth0Audience,
-        scopes: kAuth0Scopes,
-        cookieDomain: _cookieDomain,
-        useRefreshTokens: true,
-        cacheLocation: CacheLocation.localStorage,
-        useCookiesForTransactions: true,
-      );
-
-      if (freshCredentials != null) {
-        setCredentials(freshCredentials);
-        setStatus(AuthenticationStatus.authenticated);
-      } else {
-        throw Exception('Failed to refresh token');
-      }
+      await load();
     } catch (e) {
       setError('Token refresh error: $e');
       clear();
+    }
+  }
+
+  Future<void> load() async {
+    final credentials = await _auth0.onLoad(
+      audience: kAuth0Audience,
+      scopes: kAuth0Scopes,
+      cookieDomain: _cookieDomain,
+      useRefreshTokens: true,
+      cacheLocation: CacheLocation.localStorage,
+      useCookiesForTransactions: true,
+    );
+
+    // remove Auth0 query params if present
+    final location = window.location;
+    if (location.search.isNotEmpty) {
+      window.history.replaceState(null, document.title, location.pathname);
+    }
+
+    if (credentials != null) {
+      setCredentials(credentials);
+      setStatus(AuthenticationStatus.authenticated);
+    } else {
+      setStatus(AuthenticationStatus.unauthenticated);
     }
   }
 }

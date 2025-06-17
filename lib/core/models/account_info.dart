@@ -1,17 +1,11 @@
-import 'package:hive/hive.dart';
-import 'package:holefeeder/core/constants/hive_constants.dart';
+import 'package:hive_ce/hive.dart';
 
-part 'account_info.g.dart';
-
-@HiveType(typeId: HiveConstants.accountInfoTypeId)
-class AccountInfo {
-  @HiveField(0)
+class AccountInfo extends HiveObject {
   final String id;
 
-  @HiveField(1)
   final String name;
 
-  const AccountInfo({required this.id, required this.name});
+  AccountInfo({required this.id, required this.name});
 
   static final AccountInfo empty = AccountInfo(id: '', name: '');
 

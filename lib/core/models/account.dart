@@ -1,45 +1,30 @@
 import 'package:decimal/decimal.dart';
-import 'package:hive/hive.dart';
-import 'package:holefeeder/core/constants/constants.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/enums/enums.dart';
 
 import 'hive_key.dart';
 
-part 'account.g.dart';
-
-@HiveType(typeId: HiveConstants.accountTypeId)
-class Account with HiveKey {
-  @HiveField(0)
+class Account extends HiveObject with HiveKey {
   final String id;
 
-  @HiveField(1)
   final String name;
 
-  @HiveField(2)
   final AccountType type;
 
-  @HiveField(3)
   final Decimal openBalance;
 
-  @HiveField(4)
   final DateTime openDate;
 
-  @HiveField(5)
   final int transactionCount;
 
-  @HiveField(6)
   final Decimal balance;
 
-  @HiveField(7)
   final DateTime updated;
 
-  @HiveField(8)
   final String description;
 
-  @HiveField(9)
   final bool favorite;
 
-  @HiveField(10)
   final bool inactive;
 
   Account({

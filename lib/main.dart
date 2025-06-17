@@ -3,17 +3,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/adapters/adapters.dart';
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/enums/enums.dart';
 import 'package:holefeeder/core/events/events.dart';
-import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
+import 'package:holefeeder/hive/hive_registrar.g.dart';
 import 'package:holefeeder/router.dart';
 import 'package:holefeeder/ui/services/notification_service.dart';
 import 'package:intl/intl.dart';
@@ -212,19 +212,9 @@ Future<void> _initHive() async {
   // Initialize Hive
   await Hive.initFlutter();
 
-  // Register adapters
-  Hive.registerAdapter(AccountAdapter());
-  Hive.registerAdapter(AccountInfoAdapter());
-  Hive.registerAdapter(AccountTypeAdapter());
-  Hive.registerAdapter(CategoryAdapter());
-  Hive.registerAdapter(CategoryInfoAdapter());
-  Hive.registerAdapter(CategoryTypeAdapter());
-  Hive.registerAdapter(DateIntervalTypeAdapter());
-  Hive.registerAdapter(DecimalAdapter());
-  Hive.registerAdapter(UpcomingAdapter());
-  Hive.registerAdapter(UserSettingsAdapter());
-  Hive.registerAdapter(TagAdapter());
-  Hive.registerAdapter(TransactionAdapter());
+  Hive
+    ..registerAdapter(DecimalAdapter())
+    ..registerAdapters();
 }
 
 AuthenticationClient _createAuthenticationService() =>

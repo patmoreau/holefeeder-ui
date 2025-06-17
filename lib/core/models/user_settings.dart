@@ -1,24 +1,18 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:intl/intl.dart';
 
 import 'hive_key.dart';
 
-part 'user_settings.g.dart';
-
-@HiveType(typeId: HiveConstants.userSettingsTypeId)
-class UserSettings with HiveKey {
-  @HiveField(0)
+class UserSettings extends HiveObject with HiveKey {
   final DateTime effectiveDate;
 
-  @HiveField(1)
   final DateIntervalType intervalType;
 
-  @HiveField(2)
   final int frequency;
 
-  const UserSettings({
+  UserSettings({
     required this.effectiveDate,
     required this.intervalType,
     required this.frequency,

@@ -1,5 +1,5 @@
 import 'package:decimal/decimal.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:holefeeder/core/constants/constants.dart';
 
 class DecimalAdapter extends TypeAdapter<Decimal> {

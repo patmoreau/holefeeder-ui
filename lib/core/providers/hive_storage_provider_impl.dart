@@ -2,7 +2,7 @@ import 'dart:async' as async;
 import 'dart:developer' as developer;
 
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/providers/hive_storage_provider.dart';
 

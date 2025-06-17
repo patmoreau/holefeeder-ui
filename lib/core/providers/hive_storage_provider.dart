@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 abstract class HiveStorageProvider {
   Future<Box<T>> openBox<T>(String boxName);

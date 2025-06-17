@@ -1,26 +1,17 @@
 import 'package:decimal/decimal.dart';
-import 'package:hive/hive.dart';
-import 'package:holefeeder/core/constants/constants.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'hive_key.dart';
 
-part 'category.g.dart';
-
-@HiveType(typeId: HiveConstants.categoryTypeId)
-class Category with HiveKey {
-  @HiveField(0)
+class Category extends HiveObject with HiveKey {
   final String id;
 
-  @HiveField(1)
   final String name;
 
-  @HiveField(2)
   final String color;
 
-  @HiveField(3)
   final Decimal budgetAmount;
 
-  @HiveField(4)
   final bool favorite;
 
   static final Category empty = Category(
@@ -54,7 +45,7 @@ class Category with HiveKey {
       budgetAmount.hashCode ^
       favorite.hashCode;
 
-  const Category({
+  Category({
     required this.id,
     required this.name,
     required this.color,

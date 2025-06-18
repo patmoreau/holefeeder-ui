@@ -5,7 +5,7 @@ import 'package:web/web.dart';
 
 import 'authentication_client.dart';
 
-class WebAuthenticationClient extends AuthenticationClient {
+class AuthenticationClientImpl extends AuthenticationClient {
   late Auth0Web _auth0;
   late final Uri _redirectUri;
   late final String _cookieDomain;

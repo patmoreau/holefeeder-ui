@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:flutter_web_plugins/url_strategy.dart' show usePathUrlStrategy;
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/adapters/adapters.dart';
 import 'package:holefeeder/core/constants/constants.dart';
@@ -19,7 +19,6 @@ import 'package:holefeeder/ui/services/notification_service.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:universal_platform/universal_platform.dart';
 
 import 'holefeeder_app.dart';
 
@@ -38,7 +37,7 @@ Future<void> main() async {
   // Initialize Hive
   await _initHive();
 
-  final authenticationService = _createAuthenticationService();
+  final authenticationService = AuthenticationFactory.createClient();
   await authenticationService.init();
 
   // Check authentication status before proceeding
@@ -216,11 +215,6 @@ Future<void> _initHive() async {
     ..registerAdapter(DecimalAdapter())
     ..registerAdapters();
 }
-
-AuthenticationClient _createAuthenticationService() =>
-    UniversalPlatform.isWeb
-        ? WebAuthenticationClient()
-        : MobileAuthenticationClient();
 
 Dio _createDio(BuildContext context) {
   final dio = Dio();

@@ -139,6 +139,20 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
     }
   }
 
+  @override
+  Future<void> resetBox<T>(String boxName) async {
+    developer.log(
+      'HiveStorageProviderImpl: Deleting box $boxName',
+      name: 'HiveStorageProviderImpl',
+    );
+    _cancelBoxCloseTimer(boxName);
+    if (Hive.isBoxOpen(boxName)) {
+      final box = Hive.box<T>(boxName);
+      await box.close();
+    }
+    await Hive.deleteBoxFromDisk(boxName);
+  }
+
   // Schedule box closure with a delay on web platform
   void scheduleBoxClose<T>(Box<T> box) {
     if (!kIsWeb) return;

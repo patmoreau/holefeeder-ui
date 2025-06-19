@@ -159,6 +159,17 @@ class AccountRepository
     await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<Account>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing account data', e);
+      throw Exception('Failed to clear account data: $e');
+    }
+  }
+
   List<Account> _sort(List<Account> items) {
     items.sort((a, b) {
       if (a.favorite != b.favorite) {

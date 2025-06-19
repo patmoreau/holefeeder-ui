@@ -37,6 +37,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categories => 'Categories';
 
   @override
+  String get clearData => 'Clear data';
+
+  @override
+  String get clearDataMessage =>
+      'Are you sure you want to clear all data? This action cannot be undone.';
+
+  @override
+  String get clearDataTitle => 'Clear data';
+
+  @override
   String get dashboard => 'Dashboard';
 
   @override

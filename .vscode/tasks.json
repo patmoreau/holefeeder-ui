@@ -17,6 +17,20 @@
         "panel": "new"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Build l10n Files",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "gen-l10n",
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
     }
   ]
 }

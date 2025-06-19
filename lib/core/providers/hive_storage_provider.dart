@@ -18,4 +18,6 @@ abstract class HiveStorageProvider {
   Future<bool> empty<T>(String boxName);
 
   Future<void> closeBox<T>(String boxName);
+
+  Future<void> resetBox<T>(String boxName);
 }

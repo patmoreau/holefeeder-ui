@@ -133,6 +133,17 @@ class CategoryRepository
     await _hiveService.closeBox<Category>(boxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<Category>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing category data', e);
+      throw Exception('Failed to clear category data: $e');
+    }
+  }
+
   List<Category> _sort(List<Category> items) {
     items.sort((a, b) {
       if (a.favorite != b.favorite) {

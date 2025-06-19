@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 
 import '../base_form_state.dart';
@@ -9,14 +10,32 @@ import 'profile_form_state.dart';
 
 class ProfileViewModel extends BaseViewModel<ProfileFormState> {
   final AuthenticationClient _authenticationClient;
+  final AccountRepository _accountRepository;
+  final CategoryRepository _categoryRepository;
+  final TagRepository _tagRepository;
+  final TransactionRepository _transactionRepository;
+  final UpcomingRepository _upcomingRepository;
+  final UserSettingsRepository _userSettingsRepository;
   final _navigationController = StreamController<String>();
 
   late final StreamSubscription<AuthenticationStatus> _statusSubscription;
 
   ProfileViewModel({
     required AuthenticationClient authenticationClient,
+    required AccountRepository accountRepository,
+    required CategoryRepository categoryRepository,
+    required TagRepository tagRepository,
+    required TransactionRepository transactionRepository,
+    required UpcomingRepository upcomingRepository,
+    required UserSettingsRepository userSettingsRepository,
     required super.notificationService,
   }) : _authenticationClient = authenticationClient,
+       _accountRepository = accountRepository,
+       _categoryRepository = categoryRepository,
+       _tagRepository = tagRepository,
+       _transactionRepository = transactionRepository,
+       _upcomingRepository = upcomingRepository,
+       _userSettingsRepository = userSettingsRepository,
        super(formState: ProfileFormState()) {
     _initializeState();
   }
@@ -70,6 +89,17 @@ class ProfileViewModel extends BaseViewModel<ProfileFormState> {
   Future<void> logout() async {
     await handleAsync(() async {
       await _authenticationClient.logout();
+    });
+  }
+
+  Future<void> clearData() async {
+    await handleAsync(() async {
+      await _accountRepository.clearData();
+      await _categoryRepository.clearData();
+      await _tagRepository.clearData();
+      await _transactionRepository.clearData();
+      await _upcomingRepository.clearData();
+      await _userSettingsRepository.clearData();
     });
   }
 

@@ -10,6 +10,8 @@ import 'package:holefeeder/ui/views/profile_form.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
+import 'package:holefeeder/core/repositories/repositories.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -32,6 +34,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       create:
           (ctx) => ProfileViewModel(
             authenticationClient: ctx.read<AuthenticationClient>(),
+            accountRepository: ctx.read<AccountRepository>(),
+            categoryRepository: ctx.read<CategoryRepository>(),
+            tagRepository: ctx.read<TagRepository>(),
+            transactionRepository: ctx.read<TransactionRepository>(),
+            upcomingRepository: ctx.read<UpcomingRepository>(),
+            userSettingsRepository: ctx.read<UserSettingsRepository>(),
             notificationService: NotificationServiceProvider.of(ctx),
           ),
       builder: (model) {

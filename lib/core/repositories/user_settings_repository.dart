@@ -116,6 +116,17 @@ class UserSettingsRepository
     await _hiveService.closeBox<UserSettings>(boxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<UserSettings>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing user settings data', e);
+      throw Exception('Failed to clear user settings data: $e');
+    }
+  }
+
   Future<UserSettings> getDefault() async {
     try {
       await ensureInitialized();

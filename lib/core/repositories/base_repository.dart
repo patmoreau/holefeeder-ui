@@ -48,4 +48,6 @@ abstract class BaseRepository<T extends HiveKey> with RepositoryInitializer {
   Future<void> refreshAll();
 
   Future<void> dispose();
+
+  Future<void> clearData();
 }

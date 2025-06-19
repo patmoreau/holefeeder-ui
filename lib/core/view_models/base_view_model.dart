@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/widgets.dart';
 
 import '../services/notification_service.dart';
@@ -45,6 +47,7 @@ abstract class BaseViewModel<T extends BaseFormState> extends ChangeNotifier {
 
       updateState((state) => state.copyWith(state: ViewFormState.ready) as T);
     } catch (e) {
+      developer.log('BaseViewModel: Error occurred: $e');
       updateState(
         (state) =>
             state.copyWith(

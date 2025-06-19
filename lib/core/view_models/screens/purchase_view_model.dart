@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:decimal/decimal.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/events/events.dart';
@@ -39,11 +41,60 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
 
   Future<void> loadInitialData() async {
     await handleAsync(() async {
-      final accounts = await _accountRepository.getActiveAccounts();
-      final categories = await _categoryRepository.getAll();
-      final availableTags =
-          (await _tagRepository.getAll()).map((t) => t.tag).toList();
+      // Load data with proper error handling and timeouts
+      List<Account> accounts = [];
+      List<Category> categories = [];
+      List<String> availableTags = [];
 
+      try {
+        // Try to load accounts with timeout
+        accounts = await _accountRepository.getActiveAccounts().timeout(
+          const Duration(seconds: 10),
+          onTimeout: () {
+            developer.log('PurchaseViewModel: Account loading timed out');
+            return _account != null ? [_account] : <Account>[];
+          },
+        );
+        developer.log('PurchaseViewModel: Loaded ${accounts.length} accounts');
+      } catch (e) {
+        developer.log('PurchaseViewModel: Failed to load accounts: $e');
+        accounts = _account != null ? [_account] : <Account>[];
+      }
+
+      try {
+        // Try to load categories with timeout
+        categories = await _categoryRepository.getAll().timeout(
+          const Duration(seconds: 10),
+          onTimeout: () {
+            developer.log('PurchaseViewModel: Category loading timed out');
+            return <Category>[];
+          },
+        );
+        developer.log(
+          'PurchaseViewModel: Loaded ${categories.length} categories',
+        );
+      } catch (e) {
+        developer.log('PurchaseViewModel: Failed to load categories: $e');
+        categories = <Category>[];
+      }
+
+      try {
+        // Try to load tags with timeout
+        final tags = await _tagRepository.getAll().timeout(
+          const Duration(seconds: 10),
+          onTimeout: () {
+            developer.log('PurchaseViewModel: Tag loading timed out');
+            return <Tag>[];
+          },
+        );
+        availableTags = tags.map((t) => t.tag).toList();
+        developer.log('PurchaseViewModel: Loaded ${availableTags.length} tags');
+      } catch (e) {
+        developer.log('PurchaseViewModel: Failed to load tags: $e');
+        availableTags = <String>[];
+      }
+
+      // Always update state, even with partial data
       updateState(
         (s) => s.copyWith(
           accounts: accounts,
@@ -55,6 +106,7 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
           state: ViewFormState.ready,
         ),
       );
+      developer.log('PurchaseViewModel: State updated successfully');
     });
   }
 

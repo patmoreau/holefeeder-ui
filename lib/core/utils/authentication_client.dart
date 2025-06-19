@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ abstract class AuthenticationClient {
 
   @protected
   void setError(String message) {
-    debugPrint('AuthService error: $message');
+    developer.log('AuthService error: $message');
     _errorMessage = message;
     setStatus(AuthenticationStatus.error);
   }

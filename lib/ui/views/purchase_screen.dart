@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/extensions/extensions.dart';
@@ -28,18 +30,27 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   ListType _selectedSegment = ListType.purchase;
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<PurchaseViewModel>(
-    create:
-        (ctx) => PurchaseViewModel(
+  Widget build(BuildContext context) {
+    developer.log(
+      '[PurchaseScreen] Building with account: ${widget.account?.name}',
+    );
+    return ViewModelProvider<PurchaseViewModel>(
+      create: (ctx) {
+        developer.log('[PurchaseScreen] Creating PurchaseViewModel');
+        return PurchaseViewModel(
           account: widget.account,
           transactionRepository: ctx.read<TransactionRepository>(),
           accountRepository: ctx.read<AccountRepository>(),
           categoryRepository: ctx.read<CategoryRepository>(),
           tagRepository: ctx.read<TagRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
-        ),
-    builder:
-        (model) => AdaptiveScaffold(
+        );
+      },
+      builder: (model) {
+        developer.log(
+          '[PurchaseScreen] Builder called with model state: ${model.formState.state}',
+        );
+        return AdaptiveScaffold(
           leading: AdaptiveNavigationBackButton(
             onPressed: () => _cancel(model),
             previousPageTitle:
@@ -55,47 +66,61 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             ),
           ],
           child: _buildScreen(context, model),
-        ),
-  );
+        );
+      },
+    );
+  }
 
   Widget _buildScreen(BuildContext context, PurchaseViewModel model) {
+    developer.log(
+      '[PurchaseScreen] _buildScreen called with formState: ${model.formState.state}',
+    );
     return FormStateHandler(
       formState: model.formState,
-      builder:
-          () => Column(
-            children: [
-              AdaptiveSegmentedControl<ListType>(
-                groupValue: _selectedSegment,
-                onValueChanged: (ListType? value) {
-                  if (value != null) {
-                    setState(() {
-                      _selectedSegment = value;
-                    });
-                  }
-                },
-                children: <ListType, Widget>{
-                  ListType.purchase: Text(LocalizationService.current.purchase),
-                  ListType.transfer: Text(LocalizationService.current.transfer),
-                },
-              ),
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(
-                    context,
-                  ).copyWith(scrollbars: true),
-                  child: SafeArea(
-                    child:
-                        _selectedSegment == ListType.purchase
-                            ? PurchaseForm(model: model, formKey: _formKey)
-                            : PurchaseTransferForm(
-                              model: model,
-                              formKey: _formKey,
-                            ),
-                  ),
+      builder: () {
+        developer.log(
+          '[PurchaseScreen] FormStateHandler builder called, rendering content',
+        );
+        developer.log('[PurchaseScreen] About to build Column widget');
+        return Column(
+          children: [
+            AdaptiveSegmentedControl<ListType>(
+              groupValue: _selectedSegment,
+              onValueChanged: (ListType? value) {
+                developer.log(
+                  '[PurchaseScreen] SegmentedControl value changed to: $value',
+                );
+                if (value != null) {
+                  setState(() {
+                    _selectedSegment = value;
+                  });
+                }
+              },
+              children: <ListType, Widget>{
+                ListType.purchase: Text(LocalizationService.current.purchase),
+                ListType.transfer: Text(LocalizationService.current.transfer),
+              },
+            ),
+            Expanded(
+              child: ScrollConfiguration(
+                behavior: ScrollConfiguration.of(
+                  context,
+                ).copyWith(scrollbars: true),
+                child: SafeArea(
+                  child: () {
+                    developer.log(
+                      '[PurchaseScreen] About to render form, selectedSegment: $_selectedSegment',
+                    );
+                    return _selectedSegment == ListType.purchase
+                        ? PurchaseForm(model: model, formKey: _formKey)
+                        : PurchaseTransferForm(model: model, formKey: _formKey);
+                  }(),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        );
+      },
     );
   }
 

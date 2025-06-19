@@ -47,7 +47,7 @@ abstract class BaseViewModel<T extends BaseFormState> extends ChangeNotifier {
 
       updateState((state) => state.copyWith(state: ViewFormState.ready) as T);
     } catch (e) {
-      developer.log('BaseViewModel: Error occurred: $e');
+      developer.log('Error occurred', name: 'BaseViewModel', error: e);
       updateState(
         (state) =>
             state.copyWith(

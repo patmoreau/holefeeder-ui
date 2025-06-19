@@ -40,7 +40,7 @@ abstract class AuthenticationClient {
 
   @protected
   void setError(String message) {
-    developer.log('AuthService error: $message');
+    developer.log('Error: $message', name: 'AuthenticationClient');
     _errorMessage = message;
     setStatus(AuthenticationStatus.error);
   }

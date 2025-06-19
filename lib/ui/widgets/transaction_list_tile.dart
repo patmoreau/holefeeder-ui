@@ -62,7 +62,7 @@ class TransactionListTile extends StatelessWidget {
             onTap: () {
               developer.log(
                 'TransactionListTile tapped: ${model.id}',
-                name: 'TransactionListTile.Tile.onTap',
+                name: 'TransactionListTile',
               );
               context.push(
                 '/modify-transaction',

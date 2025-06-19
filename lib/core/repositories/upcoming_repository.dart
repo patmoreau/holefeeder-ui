@@ -182,10 +182,14 @@ class UpcomingRepository
   }
 
   void _logError(String operation, dynamic error) {
-    developer.log('UpcomingRepository error when $operation: $error');
+    developer.log(
+      'Error when $operation',
+      name: 'UpcomingRepository',
+      error: error,
+    );
   }
 
   void _logInfo(String message) {
-    developer.log('UpcomingRepository: $message');
+    developer.log(message, name: 'UpcomingRepository');
   }
 }

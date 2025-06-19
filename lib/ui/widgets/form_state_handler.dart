@@ -19,14 +19,18 @@ class FormStateHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    developer.log('[FormStateHandler] Building with state: ${formState.state}');
+    developer.log(
+      'Building with state: ${formState.state}',
+      name: 'FormStateHandler',
+    );
     switch (formState.state) {
       case ViewFormState.loading:
-        developer.log('[FormStateHandler] Returning loading widget');
+        developer.log('Returning loading widget', name: 'FormStateHandler');
         return Center(child: loadingWidget ?? AdaptiveActivityIndicator());
       case ViewFormState.error:
         developer.log(
-          '[FormStateHandler] Returning error widget: ${formState.errorMessage}',
+          'Returning error widget: ${formState.errorMessage}',
+          name: 'FormStateHandler',
         );
         return Center(
           child: Column(
@@ -48,7 +52,10 @@ class FormStateHandler extends StatelessWidget {
         );
       case ViewFormState.initial:
       case ViewFormState.ready:
-        developer.log('[FormStateHandler] Returning content from builder');
+        developer.log(
+          'Returning content from builder',
+          name: 'FormStateHandler',
+        );
         return builder();
     }
   }

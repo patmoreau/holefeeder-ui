@@ -32,11 +32,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     developer.log(
-      '[PurchaseScreen] Building with account: ${widget.account?.name}',
+      'Building with account: ${widget.account?.name}',
+      name: 'PurchaseScreen',
     );
     return ViewModelProvider<PurchaseViewModel>(
       create: (ctx) {
-        developer.log('[PurchaseScreen] Creating PurchaseViewModel');
+        developer.log('Creating PurchaseViewModel', name: 'PurchaseScreen');
         return PurchaseViewModel(
           account: widget.account,
           transactionRepository: ctx.read<TransactionRepository>(),
@@ -48,7 +49,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       },
       builder: (model) {
         developer.log(
-          '[PurchaseScreen] Builder called with model state: ${model.formState.state}',
+          'Builder called with model state: ${model.formState.state}',
+          name: 'PurchaseScreen',
         );
         return AdaptiveScaffold(
           leading: AdaptiveNavigationBackButton(
@@ -73,22 +75,25 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   Widget _buildScreen(BuildContext context, PurchaseViewModel model) {
     developer.log(
-      '[PurchaseScreen] _buildScreen called with formState: ${model.formState.state}',
+      '_buildScreen called with formState: ${model.formState.state}',
+      name: 'PurchaseScreen',
     );
     return FormStateHandler(
       formState: model.formState,
       builder: () {
         developer.log(
-          '[PurchaseScreen] FormStateHandler builder called, rendering content',
+          'FormStateHandler builder called, rendering content',
+          name: 'PurchaseScreen',
         );
-        developer.log('[PurchaseScreen] About to build Column widget');
+        developer.log('About to build Column widget', name: 'PurchaseScreen');
         return Column(
           children: [
             AdaptiveSegmentedControl<ListType>(
               groupValue: _selectedSegment,
               onValueChanged: (ListType? value) {
                 developer.log(
-                  '[PurchaseScreen] SegmentedControl value changed to: $value',
+                  'SegmentedControl value changed to: $value',
+                  name: 'PurchaseScreen',
                 );
                 if (value != null) {
                   setState(() {
@@ -109,7 +114,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 child: SafeArea(
                   child: () {
                     developer.log(
-                      '[PurchaseScreen] About to render form, selectedSegment: $_selectedSegment',
+                      'About to render form, selectedSegment: $_selectedSegment',
+                      name: 'PurchaseScreen',
                     );
                     return _selectedSegment == ListType.purchase
                         ? PurchaseForm(model: model, formKey: _formKey)

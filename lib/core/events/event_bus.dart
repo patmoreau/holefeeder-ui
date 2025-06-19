@@ -18,7 +18,10 @@ class EventBus {
       _controller.stream.where((payload) => payload is T).cast<T>();
 
   void fire<T extends EventPayload>(T event) {
-    developer.log("EVENTBUS: Firing ${event.name} with payload: $event");
+    developer.log(
+      "Firing ${event.name} with payload: $event",
+      name: 'EventBus',
+    );
     _controller.add(event);
   }
 

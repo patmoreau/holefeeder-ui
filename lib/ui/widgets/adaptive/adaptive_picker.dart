@@ -26,7 +26,8 @@ class AdaptivePicker<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     developer.log(
-      '[AdaptivePicker] Building picker for ${items.length} items, platform: ${UniversalPlatform.isApple ? "Apple" : "Other"}',
+      'Building picker for ${items.length} items, platform: ${UniversalPlatform.isApple ? "Apple" : "Other"}',
+      name: 'AdaptivePicker',
     );
     return UniversalPlatform.isApple
         ? _buildCupertinoDropdown(context)

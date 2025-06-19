@@ -183,6 +183,10 @@ class CategoryRepository
   }
 
   void _logError(String operation, dynamic error) {
-    developer.log('CategoryRepository error when $operation: $error');
+    developer.log(
+      'Error when $operation',
+      name: 'CategoryRepository',
+      error: error,
+    );
   }
 }

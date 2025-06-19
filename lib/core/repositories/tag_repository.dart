@@ -146,10 +146,10 @@ class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
   }
 
   void _logError(String operation, dynamic error) {
-    developer.log('TagRepository error when $operation: $error');
+    developer.log('Error when $operation', name: 'TagRepository', error: error);
   }
 
   void _logInfo(String operation) {
-    developer.log('TagRepository: $operation');
+    developer.log(operation, name: 'TagRepository');
   }
 }

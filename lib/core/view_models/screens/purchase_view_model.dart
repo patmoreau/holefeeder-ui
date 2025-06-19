@@ -55,9 +55,16 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
             return _account != null ? [_account] : <Account>[];
           },
         );
-        developer.log('PurchaseViewModel: Loaded ${accounts.length} accounts');
+        developer.log(
+          'Loaded ${accounts.length} accounts',
+          name: 'PurchaseViewModel',
+        );
       } catch (e) {
-        developer.log('PurchaseViewModel: Failed to load accounts: $e');
+        developer.log(
+          'Failed to load accounts',
+          name: 'PurchaseViewModel',
+          error: e,
+        );
         accounts = _account != null ? [_account] : <Account>[];
       }
 
@@ -66,15 +73,23 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
         categories = await _categoryRepository.getAll().timeout(
           const Duration(seconds: 10),
           onTimeout: () {
-            developer.log('PurchaseViewModel: Category loading timed out');
+            developer.log(
+              'Category loading timed out',
+              name: 'PurchaseViewModel',
+            );
             return <Category>[];
           },
         );
         developer.log(
-          'PurchaseViewModel: Loaded ${categories.length} categories',
+          'Loaded ${categories.length} categories',
+          name: 'PurchaseViewModel',
         );
       } catch (e) {
-        developer.log('PurchaseViewModel: Failed to load categories: $e');
+        developer.log(
+          'Failed to load categories',
+          name: 'PurchaseViewModel',
+          error: e,
+        );
         categories = <Category>[];
       }
 
@@ -83,14 +98,21 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
         final tags = await _tagRepository.getAll().timeout(
           const Duration(seconds: 10),
           onTimeout: () {
-            developer.log('PurchaseViewModel: Tag loading timed out');
+            developer.log('Tag loading timed out', name: 'PurchaseViewModel');
             return <Tag>[];
           },
         );
         availableTags = tags.map((t) => t.tag).toList();
-        developer.log('PurchaseViewModel: Loaded ${availableTags.length} tags');
+        developer.log(
+          'Loaded ${availableTags.length} tags',
+          name: 'PurchaseViewModel',
+        );
       } catch (e) {
-        developer.log('PurchaseViewModel: Failed to load tags: $e');
+        developer.log(
+          'Failed to load tags',
+          name: 'PurchaseViewModel',
+          error: e,
+        );
         availableTags = <String>[];
       }
 
@@ -106,7 +128,7 @@ class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {
           state: ViewFormState.ready,
         ),
       );
-      developer.log('PurchaseViewModel: State updated successfully');
+      developer.log('State updated successfully', name: 'PurchaseViewModel');
     });
   }
 

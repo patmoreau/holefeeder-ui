@@ -17,10 +17,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
   @override
   Future<Box<T>> openBox<T>(String boxName) async {
     try {
-      developer.log(
-        'HiveStorageProviderImpl: Opening box $boxName',
-        name: 'HiveStorageProviderImpl',
-      );
+      developer.log('Opening box $boxName', name: 'HiveStorageProvider');
       if (Hive.isBoxOpen(boxName)) {
         // If there's a pending close timer for this box, cancel it
         _cancelBoxCloseTimer(boxName);
@@ -30,8 +27,8 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
       }
     } catch (e) {
       developer.log(
-        'HiveStorageProviderImpl: Error opening box $boxName: $e',
-        name: 'HiveStorageProviderImpl',
+        'Error opening box $boxName: $e',
+        name: 'HiveStorageProvider',
         error: e,
       );
       // Handle platform-specific errors
@@ -128,10 +125,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
 
   @override
   Future<void> closeBox<T>(String boxName) async {
-    developer.log(
-      'HiveStorageProviderImpl: Closing box $boxName',
-      name: 'HiveStorageProviderImpl',
-    );
+    developer.log('Closing box $boxName', name: 'HiveStorageProvider');
     _cancelBoxCloseTimer(boxName);
     if (Hive.isBoxOpen(boxName)) {
       final box = Hive.box<T>(boxName);
@@ -141,10 +135,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
 
   @override
   Future<void> resetBox<T>(String boxName) async {
-    developer.log(
-      'HiveStorageProviderImpl: Deleting box $boxName',
-      name: 'HiveStorageProviderImpl',
-    );
+    developer.log('Deleting box $boxName', name: 'HiveStorageProvider');
     _cancelBoxCloseTimer(boxName);
     if (Hive.isBoxOpen(boxName)) {
       final box = Hive.box<T>(boxName);
@@ -165,8 +156,8 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
       () async {
         if (Hive.isBoxOpen(boxName)) {
           developer.log(
-            'HiveStorageProviderImpl: Closing box $boxName after delay',
-            name: 'HiveStorageProviderImpl',
+            'Closing box $boxName after delay',
+            name: 'HiveStorageProvider',
           );
           try {
             // Use the correct box type by using a dynamic approach
@@ -175,8 +166,8 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
             await box.close();
           } catch (e) {
             developer.log(
-              'HiveStorageProviderImpl: Error closing box $boxName: $e',
-              name: 'HiveStorageProviderImpl',
+              'Error closing box $boxName: $e',
+              name: 'HiveStorageProvider',
               error: e,
             );
           }

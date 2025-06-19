@@ -24,15 +24,19 @@ class AccountPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     _buildCount++;
     developer.log(
-      '[AccountPicker] Building (count: $_buildCount) with ${accounts.length} accounts',
+      'Building (count: $_buildCount) with ${accounts.length} accounts',
+      name: 'AccountPicker',
     );
     // Don't render if we have no accounts to pick from
     if (accounts.isEmpty) {
-      developer.log('[AccountPicker] No accounts, returning empty widget');
+      developer.log(
+        'No accounts, returning empty widget',
+        name: 'AccountPicker',
+      );
       return const SizedBox.shrink();
     }
 
-    developer.log('[AccountPicker] Rendering adaptive picker');
+    developer.log('Rendering adaptive picker', name: 'AccountPicker');
     return AdaptivePicker<Account>(
       label: label ?? LocalizationService.current.fieldAccount,
       value: selectedAccount,

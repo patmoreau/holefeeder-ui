@@ -24,10 +24,12 @@ class PurchaseForm extends StatelessWidget {
   Widget build(BuildContext context) {
     _buildCount++;
     developer.log(
-      '[PurchaseForm] Building (count: $_buildCount) with ${model.accounts.length} accounts, ${model.categories.length} categories',
+      'Building (count: $_buildCount) with ${model.accounts.length} accounts, ${model.categories.length} categories',
+      name: 'PurchaseForm',
     );
     developer.log(
-      '[PurchaseForm] Model hasError: ${model.hasError}, error: ${model.error}',
+      'Model hasError: ${model.hasError}, error: ${model.error}',
+      name: 'PurchaseForm',
     );
     return Form(
       key: formKey,
@@ -61,7 +63,7 @@ class PurchaseForm extends StatelessWidget {
   }
 
   List<Widget> _buildFormSections() {
-    developer.log('[PurchaseForm] Building form sections');
+    developer.log('Building form sections', name: 'PurchaseForm');
     final sections = [
       AdaptiveFormSection(
         header: LocalizationService.current.purchaseBasicDetails,
@@ -78,12 +80,12 @@ class PurchaseForm extends StatelessWidget {
         children: _buildCashflowFields(),
       ),
     ];
-    developer.log('[PurchaseForm] Form sections built successfully');
+    developer.log('Form sections built successfully', name: 'PurchaseForm');
     return sections;
   }
 
   List<Widget> _buildBasicFields() {
-    developer.log('[PurchaseForm] Building basic fields');
+    developer.log('Building basic fields', name: 'PurchaseForm');
     final fields = [
       AmountField(
         initialValue: model.formState.amount,
@@ -105,7 +107,7 @@ class PurchaseForm extends StatelessWidget {
         onChanged: model.setSelectedCategory,
       ),
     ];
-    developer.log('[PurchaseForm] Basic fields built successfully');
+    developer.log('Basic fields built successfully', name: 'PurchaseForm');
     return fields;
   }
 

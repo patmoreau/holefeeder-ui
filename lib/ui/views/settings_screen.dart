@@ -67,7 +67,10 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                                   initialDateTime: DateTime.now(),
                                   mode: CupertinoCalendarMode.date,
                                   onDateTimeChanged: (DateTime dateTime) {
-                                    developer.log('Selected date: $dateTime');
+                                    developer.log(
+                                      'Selected date: $dateTime',
+                                      name: 'SettingsScreen',
+                                    );
                                   },
                                 ),
                               ],
@@ -161,15 +164,19 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                           onPressed: () {
                             developer.log(
                               'Section 1 Text: ${_section1TextController.text}',
+                              name: 'SettingsScreen',
                             );
                             developer.log(
                               'Section 1 Dropdown: $_section1DropdownValue',
+                              name: 'SettingsScreen',
                             );
                             developer.log(
                               'Section 2 Text: ${_section2TextController.text}',
+                              name: 'SettingsScreen',
                             );
                             developer.log(
                               'Section 2 Dropdown: $_section2DropdownValue',
+                              name: 'SettingsScreen',
                             );
                             GoRouter.of(context).go('/');
                           },

@@ -153,6 +153,10 @@ class UserSettingsRepository
 
   /// Consistent logging approach for the repository
   void _logError(String operation, dynamic error) {
-    developer.log('UserSettingsRepository error when $operation: $error');
+    developer.log(
+      'Error when $operation',
+      name: 'UserSettingsRepository',
+      error: error,
+    );
   }
 }

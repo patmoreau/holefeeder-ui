@@ -22,15 +22,19 @@ class CategoryPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     _buildCount++;
     developer.log(
-      '[CategoryPicker] Building (count: $_buildCount) with ${categories.length} categories',
+      'Building (count: $_buildCount) with ${categories.length} categories',
+      name: 'CategoryPicker',
     );
     // Don't render if we have no categories to pick from
     if (categories.isEmpty) {
-      developer.log('[CategoryPicker] No categories, returning empty widget');
+      developer.log(
+        'No categories, returning empty widget',
+        name: 'CategoryPicker',
+      );
       return const SizedBox.shrink();
     }
 
-    developer.log('[CategoryPicker] Rendering adaptive picker');
+    developer.log('Rendering adaptive picker', name: 'CategoryPicker');
     return AdaptivePicker<Category>(
       label: LocalizationService.current.fieldCategory,
       value: selectedCategory,

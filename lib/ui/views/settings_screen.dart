@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+import 'dart:developer' as developer;
 
 import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,7 +67,10 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                                   initialDateTime: DateTime.now(),
                                   mode: CupertinoCalendarMode.date,
                                   onDateTimeChanged: (DateTime dateTime) {
-                                    print('Selected date: $dateTime');
+                                    developer.log(
+                                      'Selected date: $dateTime',
+                                      name: 'SettingsScreen',
+                                    );
                                   },
                                 ),
                               ],
@@ -159,17 +162,21 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                         child: CupertinoButton.filled(
                           child: const Text('Submit'),
                           onPressed: () {
-                            print(
+                            developer.log(
                               'Section 1 Text: ${_section1TextController.text}',
+                              name: 'SettingsScreen',
                             );
-                            print(
+                            developer.log(
                               'Section 1 Dropdown: $_section1DropdownValue',
+                              name: 'SettingsScreen',
                             );
-                            print(
+                            developer.log(
                               'Section 2 Text: ${_section2TextController.text}',
+                              name: 'SettingsScreen',
                             );
-                            print(
+                            developer.log(
                               'Section 2 Dropdown: $_section2DropdownValue',
+                              name: 'SettingsScreen',
                             );
                             GoRouter.of(context).go('/');
                           },

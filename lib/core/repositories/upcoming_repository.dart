@@ -124,6 +124,17 @@ class UpcomingRepository
     await _hiveService.closeBox<Upcoming>(HiveConstants.upcomingsBoxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<Upcoming>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing upcoming data', e);
+      throw Exception('Failed to clear upcoming data: $e');
+    }
+  }
+
   Future<List<Upcoming>> getForAccount(String accountId) async {
     try {
       await ensureInitialized();
@@ -171,10 +182,14 @@ class UpcomingRepository
   }
 
   void _logError(String operation, dynamic error) {
-    developer.log('UpcomingRepository error when $operation: $error');
+    developer.log(
+      'Error when $operation',
+      name: 'UpcomingRepository',
+      error: error,
+    );
   }
 
   void _logInfo(String message) {
-    developer.log('UpcomingRepository: $message');
+    developer.log(message, name: 'UpcomingRepository');
   }
 }

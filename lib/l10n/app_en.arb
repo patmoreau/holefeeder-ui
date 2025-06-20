@@ -1,8 +1,8 @@
 {
   "@@locale": "en",
   "add": "Add",
-  "@addTitle": {
-    "description": "add"
+  "@add": {
+    "description": "A button to add a new item"
   },
   "appTitle": "Holefeeder",
   "@appTitle": {
@@ -35,6 +35,18 @@
   "categories": "Categories",
   "@categories": {
     "description": "The categories screen title"
+  },
+  "clearData": "Clear data",
+  "@clearData": {
+    "description": "A button to clear all data"
+  },
+  "clearDataMessage": "Are you sure you want to clear all data? This action cannot be undone.",
+  "@clearDataMessage": {
+    "description": "Confirmation message for clearing all data"
+  },
+  "clearDataTitle": "Clear data",
+  "@clearDataTitle": {
+    "description": "The title of the clear data dialog"
   },
   "dashboard": "Dashboard",
   "@dashboard": {

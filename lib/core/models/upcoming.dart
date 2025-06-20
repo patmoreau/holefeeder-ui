@@ -1,38 +1,27 @@
 import 'package:decimal/decimal.dart';
-import 'package:hive/hive.dart';
-import 'package:holefeeder/core/constants/hive_constants.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:holefeeder/core/models/account_info.dart';
 import 'package:holefeeder/core/models/category_info.dart';
 import 'package:intl/intl.dart';
 
 import 'hive_key.dart';
 
-part 'upcoming.g.dart';
-
-@HiveType(typeId: HiveConstants.upcomingTypeId)
-class Upcoming with HiveKey {
-  @HiveField(0)
+class Upcoming extends HiveObject with HiveKey {
   final String id;
 
-  @HiveField(1)
   final DateTime date;
 
-  @HiveField(2)
   final Decimal amount;
 
-  @HiveField(3)
   final String description;
 
-  @HiveField(4)
   final List<String> tags;
 
-  @HiveField(5)
   final CategoryInfo category;
 
-  @HiveField(6)
   final AccountInfo account;
 
-  const Upcoming({
+  Upcoming({
     required this.id,
     required this.date,
     required this.amount,

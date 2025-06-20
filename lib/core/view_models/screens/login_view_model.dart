@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:holefeeder/core/enums/authentication_status_enum.dart';
-import 'package:holefeeder/core/utils/authentication_client.dart';
+import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/utils/utils.dart';
 
 import '../base_form_state.dart';
 import '../base_view_model.dart';

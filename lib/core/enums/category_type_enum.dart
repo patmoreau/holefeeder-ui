@@ -1,17 +1,6 @@
 import 'package:decimal/decimal.dart';
-import 'package:hive/hive.dart';
-import 'package:holefeeder/core/constants/hive_constants.dart';
 
-part 'category_type_enum.g.dart';
-
-@HiveType(typeId: HiveConstants.categoryTypeEnumId)
-enum CategoryType {
-  @HiveField(0)
-  expense,
-
-  @HiveField(1)
-  gain,
-}
+enum CategoryType { expense, gain }
 
 extension CategoryTypeExtension on CategoryType {
   static CategoryType fromString(String type) {

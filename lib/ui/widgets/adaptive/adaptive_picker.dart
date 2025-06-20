@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_down_button/pull_down_button.dart';
@@ -23,6 +25,10 @@ class AdaptivePicker<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    developer.log(
+      'Building picker for ${items.length} items, platform: ${UniversalPlatform.isApple ? "Apple" : "Other"}',
+      name: 'AdaptivePicker',
+    );
     return UniversalPlatform.isApple
         ? _buildCupertinoDropdown(context)
         : _buildMaterialDropdown(context);
@@ -67,27 +73,30 @@ class AdaptivePicker<T> extends StatelessWidget {
   }
 
   Widget _buildMaterialDropdown(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: DropdownButtonFormField<T>(
-        value: value,
-        isExpanded: true,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
+    return Material(
+      type: MaterialType.transparency,
+      child: SizedBox(
+        width: double.infinity,
+        child: DropdownButtonFormField<T>(
+          value: value,
+          isExpanded: true,
+          decoration: InputDecoration(
+            labelText: label,
+            border: const OutlineInputBorder(),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
           ),
+          items:
+              items.map((T item) {
+                return DropdownMenuItem<T>(
+                  value: item,
+                  child: Text(displayStringFor(item)),
+                );
+              }).toList(),
+          onChanged: onChanged,
         ),
-        items:
-            items.map((T item) {
-              return DropdownMenuItem<T>(
-                value: item,
-                child: Text(displayStringFor(item)),
-              );
-            }).toList(),
-        onChanged: onChanged,
       ),
     );
   }

@@ -116,6 +116,17 @@ class UserSettingsRepository
     await _hiveService.closeBox<UserSettings>(boxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<UserSettings>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing user settings data', e);
+      throw Exception('Failed to clear user settings data: $e');
+    }
+  }
+
   Future<UserSettings> getDefault() async {
     try {
       await ensureInitialized();
@@ -142,6 +153,10 @@ class UserSettingsRepository
 
   /// Consistent logging approach for the repository
   void _logError(String operation, dynamic error) {
-    developer.log('UserSettingsRepository error when $operation: $error');
+    developer.log(
+      'Error when $operation',
+      name: 'UserSettingsRepository',
+      error: error,
+    );
   }
 }

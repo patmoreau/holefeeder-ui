@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class ProfileForm extends StatelessWidget {
   final ProfileViewModel model;
@@ -81,10 +83,108 @@ class ProfileForm extends StatelessWidget {
             onPressed: model.logout,
             child: Text(LocalizationService.current.logoutTitle),
           ),
+          const Spacer(),
+          AdaptiveButton(
+            onPressed: () {
+              showConfirmationDialog(
+                context,
+                title: LocalizationService.current.clearDataTitle,
+                message: LocalizationService.current.clearDataMessage,
+                action: () async {
+                  await model.clearData();
+                },
+              );
+            },
+            child: Text(LocalizationService.current.clearData),
+          ),
         ],
       ),
     );
   }
+
+  static Future<bool?> showConfirmationDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Future<void> Function() action,
+  }) =>
+      UniversalPlatform.isApple
+          ? _showCupertinoConfirmationDialog(
+            context,
+            title: title,
+            message: message,
+            action: action,
+          )
+          : _showMaterialConfirmationDialog(
+            context,
+            title: title,
+            message: message,
+            action: action,
+          );
+
+  static Future<bool?> _showCupertinoConfirmationDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Future<void> Function() action,
+  }) => showCupertinoDialog<bool>(
+    context: context,
+    builder:
+        (context) => CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text(LocalizationService.current.cancel),
+              onPressed: () => {Navigator.of(context).pop(false)},
+            ),
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              child: Text(LocalizationService.current.yes),
+              onPressed: () {
+                final navigatorContext = context;
+                action().then((_) {
+                  if (navigatorContext.mounted) {
+                    Navigator.of(navigatorContext).pop(true);
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+  );
+
+  static Future<bool?> _showMaterialConfirmationDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required Future<void> Function() action,
+  }) => showDialog<bool>(
+    context: context,
+    builder:
+        (context) => AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text(LocalizationService.current.cancel),
+              onPressed: () => {Navigator.of(context).pop(false)},
+            ),
+            TextButton(
+              child: Text(LocalizationService.current.yes),
+              onPressed: () {
+                final navigatorContext = context;
+                action().then((_) {
+                  if (navigatorContext.mounted) {
+                    Navigator.of(navigatorContext).pop(true);
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+  );
 
   Widget _buildInfoRow(BuildContext context, String label, String value) {
     return Row(

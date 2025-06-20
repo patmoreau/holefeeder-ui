@@ -1,24 +1,16 @@
-import 'package:hive/hive.dart';
-import 'package:holefeeder/core/constants/hive_constants.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:holefeeder/core/enums/category_type_enum.dart';
 
-part 'category_info.g.dart';
-
-@HiveType(typeId: HiveConstants.categoryInfoTypeId)
-class CategoryInfo {
-  @HiveField(0)
+class CategoryInfo extends HiveObject {
   final String id;
 
-  @HiveField(1)
   final String name;
 
-  @HiveField(2)
   final CategoryType type;
 
-  @HiveField(3)
   final String color;
 
-  const CategoryInfo({
+  CategoryInfo({
     required this.id,
     required this.name,
     required this.type,

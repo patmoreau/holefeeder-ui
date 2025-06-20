@@ -1,18 +1,36 @@
+import 'dart:async' as async;
+import 'dart:developer' as developer;
+
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/providers/hive_storage_provider.dart';
 
 class HiveStorageProviderImpl implements HiveStorageProvider {
+  // Map to track box usage timeouts
+  final Map<String, async.Timer> _boxTimers = {};
+
+  // Web box closure delay (milliseconds)
+  final int _webBoxCloseDelay =
+      5000; // 5 seconds delay before closing boxes on web
+
   @override
   Future<Box<T>> openBox<T>(String boxName) async {
     try {
+      developer.log('Opening box $boxName', name: 'HiveStorageProvider');
       if (Hive.isBoxOpen(boxName)) {
+        // If there's a pending close timer for this box, cancel it
+        _cancelBoxCloseTimer(boxName);
         return Hive.box<T>(boxName);
       } else {
         return await Hive.openBox<T>(boxName);
       }
     } catch (e) {
+      developer.log(
+        'Error opening box $boxName: $e',
+        name: 'HiveStorageProvider',
+        error: e,
+      );
       // Handle platform-specific errors
       if (kIsWeb) {
         // On web, we might need to clear the box if it's corrupted
@@ -36,7 +54,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
         await box.compact();
       }
     } finally {
-      closeWhenIsWeb(box);
+      scheduleBoxClose(box);
     }
   }
 
@@ -46,7 +64,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
     try {
       return box.get(key);
     } finally {
-      closeWhenIsWeb(box);
+      scheduleBoxClose(box);
     }
   }
 
@@ -59,7 +77,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
       }
       return box.values.toList();
     } finally {
-      closeWhenIsWeb(box);
+      scheduleBoxClose(box);
     }
   }
 
@@ -69,7 +87,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
     try {
       await box.delete(key);
     } finally {
-      closeWhenIsWeb(box);
+      scheduleBoxClose(box);
     }
   }
 
@@ -79,7 +97,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
     try {
       await box.clear();
     } finally {
-      closeWhenIsWeb(box);
+      scheduleBoxClose(box);
     }
   }
 
@@ -89,7 +107,7 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
     try {
       return box.containsKey(key);
     } finally {
-      closeWhenIsWeb(box);
+      scheduleBoxClose(box);
     }
   }
 
@@ -101,23 +119,74 @@ class HiveStorageProviderImpl implements HiveStorageProvider {
 
       return result;
     } finally {
-      closeWhenIsWeb(box);
+      scheduleBoxClose(box);
     }
   }
 
   @override
   Future<void> closeBox<T>(String boxName) async {
+    developer.log('Closing box $boxName', name: 'HiveStorageProvider');
+    _cancelBoxCloseTimer(boxName);
     if (Hive.isBoxOpen(boxName)) {
       final box = Hive.box<T>(boxName);
       await box.close();
     }
   }
 
-  Future<void> closeWhenIsWeb<T>(Box<T> box) async {
-    // On web, it's a good practice to close boxes after use
-    if (kIsWeb && box.isOpen) {
-      await box.compact();
+  @override
+  Future<void> resetBox<T>(String boxName) async {
+    developer.log('Deleting box $boxName', name: 'HiveStorageProvider');
+    _cancelBoxCloseTimer(boxName);
+    if (Hive.isBoxOpen(boxName)) {
+      final box = Hive.box<T>(boxName);
       await box.close();
     }
+    await Hive.deleteBoxFromDisk(boxName);
+  }
+
+  // Schedule box closure with a delay on web platform
+  void scheduleBoxClose<T>(Box<T> box) {
+    if (!kIsWeb) return;
+
+    final boxName = box.name;
+    _cancelBoxCloseTimer(boxName);
+
+    _boxTimers[boxName] = async.Timer(
+      Duration(milliseconds: _webBoxCloseDelay),
+      () async {
+        if (Hive.isBoxOpen(boxName)) {
+          developer.log(
+            'Closing box $boxName after delay',
+            name: 'HiveStorageProvider',
+          );
+          try {
+            // Use the correct box type by using a dynamic approach
+            // This avoids type casting errors
+            await box.compact();
+            await box.close();
+          } catch (e) {
+            developer.log(
+              'Error closing box $boxName: $e',
+              name: 'HiveStorageProvider',
+              error: e,
+            );
+          }
+        }
+        _boxTimers.remove(boxName);
+      },
+    );
+  }
+
+  // Cancel any pending box close timer
+  void _cancelBoxCloseTimer(String boxName) {
+    if (_boxTimers.containsKey(boxName)) {
+      _boxTimers[boxName]?.cancel();
+      _boxTimers.remove(boxName);
+    }
+  }
+
+  // This method is kept for backward compatibility but uses the new scheduling mechanism
+  Future<void> closeWhenIsWeb<T>(Box<T> box) async {
+    scheduleBoxClose(box);
   }
 }

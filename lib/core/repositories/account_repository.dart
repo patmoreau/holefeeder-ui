@@ -31,7 +31,10 @@ class AccountRepository
   }
 
   Future<void> _handleTransactionAdded(TransactionAddedEvent event) async {
-    developer.log('AccountRepository: Handling transaction added event');
+    developer.log(
+      'Handling transaction added event',
+      name: 'AccountRepository',
+    );
     final account = await refresh(event.accountId);
     EventBus().fire<AccountRefreshedEvent>(
       AccountRefreshedEvent(event.accountId, account),
@@ -39,7 +42,10 @@ class AccountRepository
   }
 
   Future<void> _handleTransactionDeleted(TransactionDeletedEvent event) async {
-    developer.log('AccountRepository: Handling transaction deleted event');
+    developer.log(
+      'Handling transaction deleted event',
+      name: 'AccountRepository',
+    );
     final account = await refresh(event.accountId);
     EventBus().fire<AccountRefreshedEvent>(
       AccountRefreshedEvent(event.accountId, account),
@@ -159,6 +165,17 @@ class AccountRepository
     await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<Account>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing account data', e);
+      throw Exception('Failed to clear account data: $e');
+    }
+  }
+
   List<Account> _sort(List<Account> items) {
     items.sort((a, b) {
       if (a.favorite != b.favorite) {
@@ -200,6 +217,10 @@ class AccountRepository
   }
 
   void _logError(String operation, dynamic error) {
-    developer.log('AccountRepository error when $operation: $error');
+    developer.log(
+      'Error when $operation: $error',
+      name: 'AccountRepository',
+      error: error,
+    );
   }
 }

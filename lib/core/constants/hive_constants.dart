@@ -12,18 +12,7 @@ class HiveConstants {
   static const String userSettingsKey = 'userSettings';
 
   /// Type IDs
-  static const int dateIntervalTypeId = 0;
-  static const int userSettingsTypeId = 1;
-  static const int accountTypeId = 2;
-  static const int accountTypeEnumId = 3;
-  static const int decimalTypeId = 4;
-  static const int categoryTypeEnumId = 5;
-  static const int categoryInfoTypeId = 6;
-  static const int accountInfoTypeId = 7;
-  static const int upcomingTypeId = 8;
-  static const int transactionTypeId = 9;
-  static const int categoryTypeId = 10;
-  static const int tagTypeId = 11;
+  static const int decimalTypeId = 100;
 
   // Platform-specific settings
   /// Maximum size (in bytes) to compact a box automatically (used mainly for web)

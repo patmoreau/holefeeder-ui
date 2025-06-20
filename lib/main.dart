@@ -2,24 +2,23 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/adapters/adapters.dart';
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/enums/enums.dart';
 import 'package:holefeeder/core/events/events.dart';
-import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
+import 'package:holefeeder/hive/hive_registrar.g.dart';
 import 'package:holefeeder/router.dart';
 import 'package:holefeeder/ui/services/notification_service.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:universal_platform/universal_platform.dart';
-
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'holefeeder_app.dart';
 
 const appScheme = 'https';
@@ -28,6 +27,7 @@ const appScheme = 'https';
 bool launchedFromQuickAction = false;
 
 Future<void> main() async {
+  usePathUrlStrategy();
   await dotenv.load(
     fileName: 'assets/env/.env.${kReleaseMode ? "production" : "development"}',
   );
@@ -36,7 +36,7 @@ Future<void> main() async {
   // Initialize Hive
   await _initHive();
 
-  final authenticationService = _createAuthenticationService();
+  final authenticationService = AuthenticationFactory.createClient();
   await authenticationService.init();
 
   // Check authentication status before proceeding
@@ -210,25 +210,10 @@ Future<void> _initHive() async {
   // Initialize Hive
   await Hive.initFlutter();
 
-  // Register adapters
-  Hive.registerAdapter(AccountAdapter());
-  Hive.registerAdapter(AccountInfoAdapter());
-  Hive.registerAdapter(AccountTypeAdapter());
-  Hive.registerAdapter(CategoryAdapter());
-  Hive.registerAdapter(CategoryInfoAdapter());
-  Hive.registerAdapter(CategoryTypeAdapter());
-  Hive.registerAdapter(DateIntervalTypeAdapter());
-  Hive.registerAdapter(DecimalAdapter());
-  Hive.registerAdapter(UpcomingAdapter());
-  Hive.registerAdapter(UserSettingsAdapter());
-  Hive.registerAdapter(TagAdapter());
-  Hive.registerAdapter(TransactionAdapter());
+  Hive
+    ..registerAdapter(DecimalAdapter())
+    ..registerAdapters();
 }
-
-AuthenticationClient _createAuthenticationService() =>
-    UniversalPlatform.isWeb
-        ? WebAuthenticationClient()
-        : MobileAuthenticationClient();
 
 Dio _createDio(BuildContext context) {
   final dio = Dio();
@@ -241,9 +226,19 @@ Dio _createDio(BuildContext context) {
 
         if (await authenticationClient.isTokenExpired()) {
           await authenticationClient.refreshToken();
+          if (authenticationClient.currentStatus ==
+              AuthenticationStatus.unauthenticated) {
+            router.go('/login');
+            return handler.reject(
+              DioException(
+                requestOptions: options,
+                error: 'Authentication required',
+              ),
+            );
+          }
         }
-        final status = await authenticationClient.statusStream.first;
-        if (status == AuthenticationStatus.authenticated) {
+        if (authenticationClient.currentStatus ==
+            AuthenticationStatus.authenticated) {
           final token = authenticationClient.credentials.accessToken;
           options.headers['Authorization'] = 'Bearer $token';
         }

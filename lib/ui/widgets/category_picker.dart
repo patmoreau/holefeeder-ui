@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/widgets.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/services/services.dart';
@@ -7,6 +9,7 @@ class CategoryPicker extends StatelessWidget {
   final List<Category> categories;
   final Category? selectedCategory;
   final ValueChanged<Category?> onChanged;
+  static int _buildCount = 0;
 
   const CategoryPicker({
     super.key,
@@ -17,6 +20,21 @@ class CategoryPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _buildCount++;
+    developer.log(
+      'Building (count: $_buildCount) with ${categories.length} categories',
+      name: 'CategoryPicker',
+    );
+    // Don't render if we have no categories to pick from
+    if (categories.isEmpty) {
+      developer.log(
+        'No categories, returning empty widget',
+        name: 'CategoryPicker',
+      );
+      return const SizedBox.shrink();
+    }
+
+    developer.log('Rendering adaptive picker', name: 'CategoryPicker');
     return AdaptivePicker<Category>(
       label: LocalizationService.current.fieldCategory,
       value: selectedCategory,

@@ -112,6 +112,17 @@ class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
     await _hiveService.closeBox<Tag>(boxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<Tag>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing tag data', e);
+      throw Exception('Failed to clear tag data: $e');
+    }
+  }
+
   List<Tag> _sortByCount(List<Tag> items) {
     items.sort((a, b) => b.count.compareTo(a.count));
     return items;
@@ -135,10 +146,10 @@ class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
   }
 
   void _logError(String operation, dynamic error) {
-    developer.log('TagRepository error when $operation: $error');
+    developer.log('Error when $operation', name: 'TagRepository', error: error);
   }
 
   void _logInfo(String operation) {
-    developer.log('TagRepository: $operation');
+    developer.log(operation, name: 'TagRepository');
   }
 }

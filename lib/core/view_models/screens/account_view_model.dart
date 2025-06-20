@@ -36,7 +36,7 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
   }
 
   Future<void> _handleAccountRefreshed(AccountRefreshedEvent event) async {
-    developer.log('AccountViewModel: Account refreshed, updating view');
+    developer.log('Account refreshed, updating view', name: 'AccountViewModel');
     updateState((s) => s.copyWith(isRefreshing: true));
     await loadData();
     updateState((s) => s.copyWith(isRefreshing: false));
@@ -94,10 +94,14 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
         accountId,
         force: formState.isRefreshing,
       );
-      developer.log('AccountViewModel: Got ${upcoming.length} upcoming items');
+      developer.log(
+        'Got ${upcoming.length} upcoming items',
+        name: 'AccountViewModel',
+      );
       updateState((s) {
         developer.log(
-          'AccountViewModel: Updating state with new upcoming items',
+          'Updating state with new upcoming items',
+          name: 'AccountViewModel',
         );
         return s.copyWith(
           account: account,
@@ -106,7 +110,7 @@ class AccountViewModel extends BaseViewModel<AccountFormState> {
           state: ViewFormState.ready,
         );
       });
-      developer.log('AccountViewModel: State updated');
+      developer.log('State updated', name: 'AccountViewModel');
     });
   }
 

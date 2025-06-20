@@ -98,7 +98,7 @@ abstract class AppLocalizations {
     Locale('fr'),
   ];
 
-  /// No description provided for @add.
+  /// A button to add a new item
   ///
   /// In en, this message translates to:
   /// **'Add'**
@@ -151,6 +151,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Categories'**
   String get categories;
+
+  /// A button to clear all data
+  ///
+  /// In en, this message translates to:
+  /// **'Clear data'**
+  String get clearData;
+
+  /// Confirmation message for clearing all data
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to clear all data? This action cannot be undone.'**
+  String get clearDataMessage;
+
+  /// The title of the clear data dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Clear data'**
+  String get clearDataTitle;
 
   /// The dashboard screen title
   ///

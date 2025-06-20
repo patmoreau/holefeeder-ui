@@ -31,5 +31,8 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "*.dart": "$(capture).*.dart",
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
   }
 }

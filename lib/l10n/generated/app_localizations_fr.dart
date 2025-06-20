@@ -37,6 +37,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get categories => 'Catégories';
 
   @override
+  String get clearData => 'Effacer les données';
+
+  @override
+  String get clearDataMessage =>
+      'Êtes-vous sûr de vouloir effacer toutes les données ? Cette action ne peut pas être annulée.';
+
+  @override
+  String get clearDataTitle => 'Effacer les données';
+
+  @override
   String get dashboard => 'Tableau de bord';
 
   @override

@@ -149,13 +149,21 @@ class TransactionRepository
     await _hiveService.closeBox<Transaction>(boxName);
   }
 
+  @override
+  Future<void> clearData() async {
+    try {
+      await _hiveService.resetBox<Transaction>(boxName);
+      await initialize();
+    } catch (e) {
+      _logError('clearing transaction data', e);
+      throw Exception('Failed to clear transaction data: $e');
+    }
+  }
+
   Future<void> makePurchase(MakePurchase value) async {
     try {
       await _dataProvider.makePurchase(value);
       await _getAllFromApi(value.accountId);
-      developer.log(
-        'TransactionRepository: Firing TransactionAddedEvent for accountId: ${value.accountId}',
-      );
       EventBus().fire(TransactionAddedEvent(value.accountId));
     } catch (e) {
       _logError('saving transaction purchase', e);
@@ -182,9 +190,6 @@ class TransactionRepository
     try {
       await _dataProvider.transfer(value);
       await _getAllFromApi(value.fromAccountId);
-      developer.log(
-        'TransactionRepository: Firing TransactionAddedEvent for accountId: ${value.fromAccountId}',
-      );
       EventBus().fire(TransactionAddedEvent(value.fromAccountId));
       EventBus().fire(TransactionAddedEvent(value.toAccountId));
     } catch (e) {
@@ -245,6 +250,10 @@ class TransactionRepository
   }
 
   void _logError(String operation, dynamic error) {
-    developer.log('TransactionRepository error when $operation: $error');
+    developer.log(
+      'Error when $operation',
+      name: 'TransactionRepository',
+      error: error,
+    );
   }
 }

@@ -115,7 +115,7 @@ class Cashflow extends HiveObject with HiveKey {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'date': DateFormat('yyyy-MM-dd').format(effectiveDate),
+      'effectiveDate': DateFormat('yyyy-MM-dd').format(effectiveDate),
       'intervalType': intervalType.toStringValue(),
       'frequency': frequency,
       'recurrence': recurrence,

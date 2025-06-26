@@ -121,7 +121,7 @@ class EditCashflowForm extends StatelessWidget {
       initialValue: model.formState.recurrence.toString(),
       keyboardType: TextInputType.number,
       onChanged: (value) => {},
-      validator: positiveValueValidator(),
+      validator: zeroOrPositiveValueValidator(),
       textAlign: TextAlign.right,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       readOnly: true,

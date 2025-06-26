@@ -9,6 +9,7 @@ part 'hive_adapters.g.dart';
   AdapterSpec<Account>(),
   AdapterSpec<AccountInfo>(),
   AdapterSpec<AccountType>(),
+  AdapterSpec<Cashflow>(),
   AdapterSpec<Category>(),
   AdapterSpec<CategoryInfo>(),
   AdapterSpec<CategoryType>(),

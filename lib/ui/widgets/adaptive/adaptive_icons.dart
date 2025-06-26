@@ -15,6 +15,9 @@ abstract final class AdaptiveIcons {
   static IconData cancel =
       UniversalPlatform.isApple ? CupertinoIcons.xmark_circle : Icons.cancel;
 
+  static IconData cashflow =
+      UniversalPlatform.isApple ? CupertinoIcons.money_dollar : Icons.money;
+
   static IconData category =
       UniversalPlatform.isApple
           ? CupertinoIcons.archivebox
@@ -38,4 +41,12 @@ abstract final class AdaptiveIcons {
 
   static IconData star =
       UniversalPlatform.isApple ? CupertinoIcons.star_fill : Icons.star;
+
+  static IconData weekly = Icons.calendar_view_week_outlined;
+
+  static IconData monthly = Icons.calendar_view_month_outlined;
+
+  static IconData yearly = Icons.calendar_today_outlined;
+
+  static IconData one_time = Icons.calendar_view_day_outlined;
 }

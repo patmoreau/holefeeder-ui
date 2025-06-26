@@ -7,22 +7,25 @@ import 'package:holefeeder/ui/widgets/adaptive/adaptive_picker.dart';
 class IntervalTypePickerField extends StatelessWidget {
   final DateIntervalType selectedIntervalType;
   final ValueChanged<DateIntervalType?> onValueChanged;
+  final bool enabled;
 
   const IntervalTypePickerField({
     super.key,
     required this.selectedIntervalType,
     required this.onValueChanged,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return AdaptivePicker<DateIntervalType>(
-      label: LocalizationService.current.fieldAccount,
+      label: LocalizationService.current.fieldIntervalType,
       value: selectedIntervalType,
       items: DateIntervalType.values,
       displayStringFor: _displayName,
       onChanged: onValueChanged,
       placeholder: LocalizationService.current.fieldIntervalType,
+      enabled: enabled,
     );
   }
 

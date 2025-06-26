@@ -3,7 +3,7 @@ import 'dart:developer' as developer show log;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/enums/category_type_enum.dart';
+import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
@@ -14,23 +14,23 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class TransactionListTile extends StatelessWidget {
-  final Transaction transaction;
+class CashflowListTile extends StatelessWidget {
+  final Cashflow cashflow;
 
-  const TransactionListTile({super.key, required this.transaction});
+  const CashflowListTile({super.key, required this.cashflow});
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<TransactionViewModel>(
+  Widget build(BuildContext context) => ViewModelProvider<CashflowViewModel>(
     create:
-        (ctx) => TransactionViewModel(
-          transaction: transaction,
-          repository: ctx.read<TransactionRepository>(),
+        (ctx) => CashflowViewModel(
+          cashflow: cashflow,
+          repository: ctx.read<CashflowRepository>(),
           notificationService: NotificationServiceProvider.of(ctx),
         ),
     builder: (model) => _buildSwipeableTile(context, model),
   );
 
-  Widget _buildSwipeableTile(BuildContext context, TransactionViewModel model) {
+  Widget _buildSwipeableTile(BuildContext context, CashflowViewModel model) {
     final trailingActions = [
       SwipeAction(
         label: LocalizationService.current.deleteCashflow,
@@ -55,20 +55,17 @@ class TransactionListTile extends StatelessWidget {
     );
   }
 
-  Widget _buildListTile(BuildContext context, TransactionViewModel model) =>
+  Widget _buildListTile(BuildContext context, CashflowViewModel model) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           AdaptivePressable(
             onTap: () {
               developer.log(
-                'TransactionListTile tapped: ${model.id}',
-                name: 'TransactionListTile',
+                'CashflowListTile tapped: ${model.id}',
+                name: 'CashflowListTile',
               );
-              context.push(
-                '/modify-transaction',
-                extra: model.formState.transaction,
-              );
+              context.push('/modify-cashflow', extra: model.formState.cashflow);
             },
             child: AdaptiveListTile(
               padding: const EdgeInsets.symmetric(
@@ -89,20 +86,32 @@ class TransactionListTile extends StatelessWidget {
         ],
       );
 
-  Widget _buildLeadingContainer(TransactionViewModel model) {
-    var color =
-        model.formState.transaction.category.type == CategoryType.expense
-            ? CupertinoColors.systemRed
-            : CupertinoColors.systemGreen;
-    return SizedBox(
-      child: AdaptiveIconButton(
-        onPressed: () {},
-        icon: Icon(AdaptiveIcons.purchase, size: 28.0, color: color),
+  Widget _buildLeadingContainer(CashflowViewModel model) => SizedBox(
+    child: AdaptiveIconButton(
+      onPressed: () {},
+      icon: _getDateIntervalIcon(
+        model.formState.cashflow.intervalType,
+        model.formState.cashflow.inactive,
       ),
-    );
+    ),
+  );
+
+  Icon _getDateIntervalIcon(DateIntervalType intervalType, bool isInactive) {
+    final color = isInactive ? Colors.grey : null;
+
+    switch (intervalType) {
+      case DateIntervalType.weekly:
+        return Icon(AdaptiveIcons.weekly, size: 28.0, color: color);
+      case DateIntervalType.monthly:
+        return Icon(AdaptiveIcons.monthly, size: 28.0, color: color);
+      case DateIntervalType.yearly:
+        return Icon(AdaptiveIcons.yearly, size: 28.0, color: color);
+      case DateIntervalType.oneTime:
+        return Icon(AdaptiveIcons.one_time, size: 28.0, color: color);
+    }
   }
 
-  Widget _buildTitle(TransactionViewModel model) => LayoutBuilder(
+  Widget _buildTitle(CashflowViewModel model) => LayoutBuilder(
     builder:
         (context, constraints) => Row(
           children: [
@@ -117,7 +126,7 @@ class TransactionListTile extends StatelessWidget {
         ),
   );
 
-  Widget _buildSubtitle(TransactionViewModel model) => LayoutBuilder(
+  Widget _buildSubtitle(CashflowViewModel model) => LayoutBuilder(
     builder:
         (context, constraints) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +145,7 @@ class TransactionListTile extends StatelessWidget {
         ),
   );
 
-  Widget _buildTrailing(TransactionViewModel model) => Row(
+  Widget _buildTrailing(CashflowViewModel model) => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
       CurrencyText(value: model.amount),

@@ -12,6 +12,7 @@ class AdaptivePicker<T> extends StatelessWidget {
   final String Function(T) displayStringFor;
   final ValueChanged<T?> onChanged;
   final String? placeholder;
+  final bool enabled;
 
   const AdaptivePicker({
     super.key,
@@ -21,6 +22,7 @@ class AdaptivePicker<T> extends StatelessWidget {
     required this.displayStringFor,
     required this.onChanged,
     this.placeholder,
+    this.enabled = true,
   });
 
   @override
@@ -46,14 +48,14 @@ class AdaptivePicker<T> extends StatelessWidget {
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
               onTap: () {
-                onChanged(item);
+                if (enabled) onChanged.call(item);
               },
             );
           }).toList();
         },
         buttonBuilder: (context, showMenu) {
           return CupertinoButton(
-            onPressed: showMenu,
+            onPressed: enabled ? showMenu : null,
             padding: EdgeInsets.zero,
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -95,7 +97,7 @@ class AdaptivePicker<T> extends StatelessWidget {
                   child: Text(displayStringFor(item)),
                 );
               }).toList(),
-          onChanged: onChanged,
+          onChanged: enabled ? onChanged : null,
         ),
       ),
     );

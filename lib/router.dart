@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/ui/views/account_screen.dart';
+import 'package:holefeeder/ui/views/edit_cashflow_screen.dart';
 import 'package:holefeeder/ui/views/edit_transaction_screen.dart';
 import 'package:holefeeder/ui/views/home_screen.dart';
 import 'package:holefeeder/ui/views/login_screen.dart';
@@ -49,7 +50,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => HomeScreen(initialIndex: 0),
     ),
     GoRoute(
-      path: '/cashflow',
+      path: '/cashflows',
       builder: (context, state) => HomeScreen(initialIndex: 1),
     ),
     GoRoute(
@@ -73,6 +74,15 @@ final GoRouter router = GoRouter(
           child: EditTransactionScreen(
             transaction: state.extra as Transaction?,
           ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/modify-cashflow',
+      pageBuilder: (context, state) {
+        return CupertinoPage(
+          fullscreenDialog: true,
+          child: EditCashflowScreen(cashflow: state.extra as Cashflow?),
         );
       },
     ),

@@ -5,7 +5,7 @@ import 'package:holefeeder/ui/views/dashboard_screen.dart';
 import 'package:holefeeder/ui/views/profile_screen.dart';
 import 'package:holefeeder/ui/widgets/adaptive/adaptive.dart';
 
-import 'categories_screen.dart';
+import 'cashflows_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final int initialIndex;
@@ -27,9 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
       label: LocalizationService.current.dashboard,
     ),
     AdaptiveNavigationItem(
-      icon: AdaptiveIcons.category,
-      activeIcon: AdaptiveIcons.category,
-      label: LocalizationService.current.categories,
+      icon: AdaptiveIcons.cashflow,
+      activeIcon: AdaptiveIcons.cashflow,
+      label: LocalizationService.current.cashflows,
     ),
     AdaptiveNavigationItem(
       icon: AdaptiveIcons.person,
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
-    pages = const [DashboardScreen(), CategoriesScreen(), ProfileScreen()];
+    pages = const [DashboardScreen(), CashflowsScreen(), ProfileScreen()];
   }
 
   @override

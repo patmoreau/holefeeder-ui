@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/adapters/adapters.dart';
 import 'package:holefeeder/core/constants/constants.dart';
@@ -18,7 +19,7 @@ import 'package:holefeeder/ui/services/notification_service.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
+
 import 'holefeeder_app.dart';
 
 const appScheme = 'https';
@@ -88,6 +89,21 @@ Future<void> main() async {
               (_, hiveService, dataProvider, factory, _) =>
                   factory.getRepository(
                     () => UserSettingsRepository(
+                      hiveService: hiveService,
+                      dataProvider: dataProvider,
+                    ),
+                  ),
+        ),
+        ProxyProvider3<
+          HiveStorageProvider,
+          DataProvider,
+          RepositoryFactory,
+          CashflowRepository
+        >(
+          update:
+              (_, hiveService, dataProvider, factory, _) =>
+                  factory.getRepository(
+                    () => CashflowRepository(
                       hiveService: hiveService,
                       dataProvider: dataProvider,
                     ),

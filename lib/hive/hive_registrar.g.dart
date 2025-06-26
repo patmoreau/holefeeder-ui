@@ -10,6 +10,7 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(AccountAdapter());
     registerAdapter(AccountInfoAdapter());
     registerAdapter(AccountTypeAdapter());
+    registerAdapter(CashflowAdapter());
     registerAdapter(CategoryAdapter());
     registerAdapter(CategoryInfoAdapter());
     registerAdapter(CategoryTypeAdapter());
@@ -26,6 +27,7 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(AccountAdapter());
     registerAdapter(AccountInfoAdapter());
     registerAdapter(AccountTypeAdapter());
+    registerAdapter(CashflowAdapter());
     registerAdapter(CategoryAdapter());
     registerAdapter(CategoryInfoAdapter());
     registerAdapter(CategoryTypeAdapter());

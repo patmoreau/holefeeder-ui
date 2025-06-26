@@ -19,7 +19,7 @@ String? Function(String?) positiveValueValidator() => (String? value) {
   }
   try {
     var intValue = int.parse(value);
-    if (intValue <= 0) {
+    if (intValue < 0) {
       return LocalizationService.current.validationPositiveNumber;
     }
     return null;

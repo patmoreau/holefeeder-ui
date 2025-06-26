@@ -34,6 +34,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelUpcomingTitle => 'Cancel upcoming cashflow';
 
   @override
+  String get cashflow => 'Cashflow';
+
+  @override
+  String get cashflows => 'Cashflows';
+
+  @override
   String get categories => 'Categories';
 
   @override
@@ -174,6 +180,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectCategoryError => 'A category must be selected';
+
+  @override
+  String get showInactive => 'Show inactive';
 
   @override
   String get transaction => 'Transaction';

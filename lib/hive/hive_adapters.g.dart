@@ -509,3 +509,67 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class CashflowAdapter extends TypeAdapter<Cashflow> {
+  @override
+  final typeId = 11;
+
+  @override
+  Cashflow read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Cashflow(
+      id: fields[0] as String,
+      effectiveDate: fields[1] as DateTime,
+      amount: fields[2] as Decimal,
+      intervalType: fields[3] as DateIntervalType,
+      frequency: (fields[4] as num).toInt(),
+      recurrence: (fields[5] as num).toInt(),
+      description: fields[6] as String,
+      inactive: fields[7] == null ? false : fields[7] as bool,
+      tags: (fields[8] as List).cast<String>(),
+      category: fields[9] as CategoryInfo,
+      account: fields[10] as AccountInfo,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Cashflow obj) {
+    writer
+      ..writeByte(11)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.effectiveDate)
+      ..writeByte(2)
+      ..write(obj.amount)
+      ..writeByte(3)
+      ..write(obj.intervalType)
+      ..writeByte(4)
+      ..write(obj.frequency)
+      ..writeByte(5)
+      ..write(obj.recurrence)
+      ..writeByte(6)
+      ..write(obj.description)
+      ..writeByte(7)
+      ..write(obj.inactive)
+      ..writeByte(8)
+      ..write(obj.tags)
+      ..writeByte(9)
+      ..write(obj.category)
+      ..writeByte(10)
+      ..write(obj.account);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CashflowAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

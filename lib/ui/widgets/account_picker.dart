@@ -10,6 +10,7 @@ class AccountPicker extends StatelessWidget {
   final List<Account> accounts;
   final Account? selectedAccount;
   final ValueChanged<Account?> onChanged;
+  final bool enabled;
   static int _buildCount = 0;
 
   const AccountPicker({
@@ -18,6 +19,7 @@ class AccountPicker extends StatelessWidget {
     required this.accounts,
     required this.selectedAccount,
     required this.onChanged,
+    this.enabled = true,
   });
 
   @override
@@ -44,6 +46,7 @@ class AccountPicker extends StatelessWidget {
       displayStringFor: (account) => account.name,
       onChanged: onChanged,
       placeholder: LocalizationService.current.fieldAccountPlaceHolder,
+      enabled: enabled,
     );
   }
 }

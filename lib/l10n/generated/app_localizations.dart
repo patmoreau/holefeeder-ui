@@ -146,6 +146,18 @@ abstract class AppLocalizations {
   /// **'Cancel upcoming cashflow'**
   String get cancelUpcomingTitle;
 
+  /// A single cashflow item
+  ///
+  /// In en, this message translates to:
+  /// **'Cashflow'**
+  String get cashflow;
+
+  /// A list cashflow items
+  ///
+  /// In en, this message translates to:
+  /// **'Cashflows'**
+  String get cashflows;
+
   /// The categories screen title
   ///
   /// In en, this message translates to:
@@ -421,6 +433,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A category must be selected'**
   String get selectCategoryError;
+
+  /// A button to show inactive items
+  ///
+  /// In en, this message translates to:
+  /// **'Show inactive'**
+  String get showInactive;
 
   /// A single transaction
   ///

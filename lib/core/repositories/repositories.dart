@@ -1,5 +1,6 @@
 export 'account_repository.dart';
 export 'base_repository.dart';
+export 'cashflow_repository.dart';
 export 'category_repository.dart';
 export 'repository_factory.dart';
 export 'tag_repository.dart';

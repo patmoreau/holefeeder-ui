@@ -32,6 +32,14 @@
   "@cancelUpcomingTitle": {
     "description": "The title of the cancel upcoming cashflow dialog"
   },
+  "cashflow": "Cashflow",
+  "@cashflow": {
+    "description": "A single cashflow item"
+  },
+  "cashflows": "Cashflows",
+  "@cashflows": {
+    "description": "A list cashflow items"
+  },
   "categories": "Categories",
   "@categories": {
     "description": "The categories screen title"
@@ -221,6 +229,10 @@
   "selectCategoryError": "A category must be selected",
   "@selectCategoryError": {
     "description": "An error prompt to select a category"
+  },
+  "showInactive": "Show inactive",
+  "@showInactive": {
+    "description": "A button to show inactive items"
   },
   "transaction": "Transaction",
   "@transaction": {

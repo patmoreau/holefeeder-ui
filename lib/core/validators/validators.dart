@@ -13,13 +13,13 @@ String? Function(String?) decimalValidator() => (String? value) {
   }
 };
 
-String? Function(String?) positiveValueValidator() => (String? value) {
+String? Function(String?) zeroOrPositiveValueValidator() => (String? value) {
   if (value == null || value.isEmpty) {
     return LocalizationService.current.validationPositiveNumber;
   }
   try {
     var intValue = int.parse(value);
-    if (intValue <= 0) {
+    if (intValue < 0) {
       return LocalizationService.current.validationPositiveNumber;
     }
     return null;

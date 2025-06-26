@@ -155,7 +155,7 @@ class PurchaseForm extends StatelessWidget {
         initialValue: model.formState.recurrence.toString(),
         keyboardType: TextInputType.number,
         onChanged: (value) => model.updateRecurrence(int.tryParse(value) ?? 0),
-        validator: positiveValueValidator(),
+        validator: zeroOrPositiveValueValidator(),
         textAlign: TextAlign.right,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       ),

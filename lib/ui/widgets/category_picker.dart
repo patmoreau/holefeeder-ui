@@ -9,6 +9,7 @@ class CategoryPicker extends StatelessWidget {
   final List<Category> categories;
   final Category? selectedCategory;
   final ValueChanged<Category?> onChanged;
+  final bool enabled;
   static int _buildCount = 0;
 
   const CategoryPicker({
@@ -16,6 +17,7 @@ class CategoryPicker extends StatelessWidget {
     required this.categories,
     required this.selectedCategory,
     required this.onChanged,
+    this.enabled = true,
   });
 
   @override
@@ -42,6 +44,7 @@ class CategoryPicker extends StatelessWidget {
       displayStringFor: (category) => category.name,
       onChanged: onChanged,
       placeholder: LocalizationService.current.fieldCategoryPlaceHolder,
+      enabled: enabled,
     );
   }
 }

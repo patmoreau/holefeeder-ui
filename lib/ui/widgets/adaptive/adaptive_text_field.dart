@@ -14,6 +14,8 @@ class AdaptiveTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextAlign textAlign;
   final List<TextInputFormatter>? inputFormatters;
+  final bool readOnly;
+  final bool enabled;
 
   const AdaptiveTextField({
     super.key,
@@ -27,6 +29,8 @@ class AdaptiveTextField extends StatelessWidget {
     this.keyboardType,
     this.textAlign = TextAlign.start,
     this.inputFormatters,
+    this.readOnly = false,
+    this.enabled = true,
   });
 
   @override
@@ -43,6 +47,8 @@ class AdaptiveTextField extends StatelessWidget {
           keyboardType: keyboardType,
           textAlign: textAlign,
           inputFormatters: inputFormatters,
+          readOnly: readOnly,
+          enabled: enabled,
         )
         : TextFormField(
           decoration: InputDecoration(labelText: labelText, filled: true),
@@ -55,6 +61,8 @@ class AdaptiveTextField extends StatelessWidget {
           keyboardType: keyboardType,
           textAlign: textAlign,
           inputFormatters: inputFormatters,
+          readOnly: readOnly,
+          enabled: enabled,
         );
   }
 }

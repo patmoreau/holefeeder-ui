@@ -18,6 +18,23 @@ abstract class RestClient {
   @GET('api/v2/accounts/{id}')
   Future<HttpResponse<Account>> getAccount(@Path('id') String id);
 
+  @GET('api/v2/cashflows/{id}')
+  Future<HttpResponse<Cashflow>> getCashflow(@Path('id') String id);
+
+  @GET('api/v2/cashflows')
+  Future<HttpResponse<List<Cashflow>>> getCashflows(
+    @Query('offset') int offset,
+    @Query('limit') int limit,
+    @Query('sort') List<String> sort,
+    @Query('filter') List<String> filter,
+  );
+
+  @DELETE('api/v2/cashflows/{id}')
+  Future<HttpResponse<void>> deleteCashflow(@Path('id') String id);
+
+  @POST('api/v2/cashflows/modify')
+  Future<HttpResponse<void>> modifyCashflow(@Body() ModifyCashflow command);
+
   @GET('api/v2/cashflows/get-upcoming')
   Future<HttpResponse<List<Upcoming>>> getUpcomingCashflows(
     @Query('from') DateTime from,

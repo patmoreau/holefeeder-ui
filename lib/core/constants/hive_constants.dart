@@ -3,6 +3,7 @@ class HiveConstants {
   /// Box names
   static const String userSettingsBoxName = 'userSettingsBox';
   static const String accountsBoxName = 'accountsBox';
+  static const String cashflowsBoxName = 'cashflowsBox';
   static const String categoriesBoxName = 'categoriesBox';
   static const String upcomingsBoxName = 'upcomingsBox';
   static const String transactionsBoxName = 'transactionsBox';

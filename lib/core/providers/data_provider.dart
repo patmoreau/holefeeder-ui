@@ -11,6 +11,14 @@ abstract class DataProvider {
   Future<Account> getAccount(String id);
 
   // Cashflows
+  Future<Cashflow> getCashflow(String id);
+
+  Future<List<Cashflow>> getCashflows();
+
+  Future<void> deleteCashflow(String id);
+
+  Future<void> modifyCashflow(ModifyCashflow item);
+
   Future<List<Upcoming>> getUpcomingCashflows(
     DateTime from,
     DateTime to,
@@ -89,6 +97,61 @@ class DataProviderImpl implements DataProvider {
   }
 
   // Cashflows
+
+  @override
+  Future<Cashflow> getCashflow(String id) async {
+    try {
+      final result = await _restClient.getCashflow(id);
+      if (result.response.statusCode == 200) {
+        return result.data;
+      }
+      if (result.response.statusCode == 404) {
+        throw Exception('Cashflow not found');
+      }
+      throw Exception('Could not get the cashflow');
+    } catch (e) {
+      throw Exception('Could not get the cashflow - $e');
+    }
+  }
+
+  @override
+  Future<List<Cashflow>> getCashflows() async {
+    try {
+      final result = await _restClient.getCashflows(0, 1000, [], []);
+      if (result.response.statusCode == 200) {
+        return result.data;
+      }
+      throw Exception('Could not get the cashflows');
+    } catch (e) {
+      throw Exception('Could not get the cashflows');
+    }
+  }
+
+  @override
+  Future<void> deleteCashflow(String id) async {
+    try {
+      final result = await _restClient.deleteCashflow(id);
+      if (result.response.statusCode != 204) {
+        throw Exception('Could not delete cashflow with id: $id');
+      }
+    } catch (e) {
+      throw Exception('Could not delete cashflow with id: $id - $e');
+    }
+  }
+
+  @override
+  Future<void> modifyCashflow(ModifyCashflow item) async {
+    try {
+      final result = await _restClient.modifyCashflow(item);
+      if (result.response.statusCode == 204) {
+        return;
+      }
+      throw Exception('Could not modify cashflow');
+    } catch (e) {
+      throw Exception('Could not modify cashflow - $e');
+    }
+  }
+
   @override
   Future<List<Upcoming>> getUpcomingCashflows(
     DateTime from,

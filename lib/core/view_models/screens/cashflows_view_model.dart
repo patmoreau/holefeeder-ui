@@ -57,7 +57,7 @@ class CashflowsViewModel extends BaseViewModel<CashflowsFormState> {
 
     await handleAsync(() async {
       updateState((s) => s.copyWith(isRefreshing: true));
-      final cashflows = await _repository.refreshAll();
+      await _repository.refreshAll();
       await loadData();
       updateState((s) => s.copyWith(isRefreshing: false));
     });

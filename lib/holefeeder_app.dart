@@ -7,6 +7,7 @@ import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/l10n/l10n.dart';
 import 'package:holefeeder/ui/services/services.dart';
+import 'package:holefeeder/ui/widgets/platform/platform_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -56,6 +57,18 @@ class _HolefeederAppState extends State<HolefeederApp>
   }
 
   @override
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    return NotificationServiceScope(
+      child: PlatformWidget(
+        cupertinoBuilder: _buildCupertinoApp,
+        materialBuilder: _buildMaterialApp,
+      ),
+    );
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -84,24 +97,19 @@ class _HolefeederAppState extends State<HolefeederApp>
     ]);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-    return NotificationServiceScope(
-      child: Builder(
-        builder:
-            (context) =>
-                UniversalPlatform.isApple
-                    ? _buildCupertinoApp(context)
-                    : _buildMaterialApp(context),
-      ),
-    );
-  }
-
   Widget _buildCupertinoApp(BuildContext context) => CupertinoApp.router(
     onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
     theme: holefeederCupertinoTheme,
+    routerConfig: router,
+    localizationsDelegates: _localizationsDelegates,
+    supportedLocales: _supportedLocales,
+    locale: _locale,
+    builder: _initializeApp,
+  );
+
+  Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
+    onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
+    theme: holefeederMaterialTheme,
     routerConfig: router,
     localizationsDelegates: _localizationsDelegates,
     supportedLocales: _supportedLocales,
@@ -144,14 +152,4 @@ class _HolefeederAppState extends State<HolefeederApp>
               ),
     );
   }
-
-  Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
-    onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
-    theme: holefeederMaterialTheme,
-    routerConfig: router,
-    localizationsDelegates: _localizationsDelegates,
-    supportedLocales: _supportedLocales,
-    locale: _locale,
-    builder: _initializeApp,
-  );
 }

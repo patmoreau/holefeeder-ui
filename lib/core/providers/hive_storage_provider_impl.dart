@@ -1,192 +1,120 @@
-import 'dart:async' as async;
-import 'dart:developer' as developer;
-
-import 'package:flutter/foundation.dart';
-import 'package:hive_ce/hive.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/providers/hive_storage_provider.dart';
+import 'package:holefeeder/hive/hive_registrar.g.dart';
+
+import '../adapters/decimal_adapter.dart';
 
 class HiveStorageProviderImpl implements HiveStorageProvider {
-  // Map to track box usage timeouts
-  final Map<String, async.Timer> _boxTimers = {};
+  static HiveStorageProviderImpl? _instance;
+  static bool _initialized = false;
+  static Future<void>? _initializationFuture;
 
-  // Web box closure delay (milliseconds)
-  final int _webBoxCloseDelay =
-      5000; // 5 seconds delay before closing boxes on web
+  HiveStorageProviderImpl._();
 
-  @override
-  Future<Box<T>> openBox<T>(String boxName) async {
-    try {
-      developer.log('Opening box $boxName', name: 'HiveStorageProvider');
-      if (Hive.isBoxOpen(boxName)) {
-        // If there's a pending close timer for this box, cancel it
-        _cancelBoxCloseTimer(boxName);
-        return Hive.box<T>(boxName);
-      } else {
-        return await Hive.openBox<T>(boxName);
-      }
-    } catch (e) {
-      developer.log(
-        'Error opening box $boxName: $e',
-        name: 'HiveStorageProvider',
-        error: e,
-      );
-      // Handle platform-specific errors
-      if (kIsWeb) {
-        // On web, we might need to clear the box if it's corrupted
-        await Hive.deleteBoxFromDisk(boxName);
-        return await Hive.openBox<T>(boxName);
-      } else {
-        // Re-throw for non-web platforms
-        rethrow;
-      }
+  static HiveStorageProvider get instance {
+    _instance ??= HiveStorageProviderImpl._();
+    return _instance!;
+  }
+
+  // Keep static init for easy setup
+  static Future<void> init() async {
+    if (_initialized) return;
+
+    // Prevent multiple concurrent initializations
+    if (_initializationFuture != null) {
+      return _initializationFuture;
+    }
+
+    _initializationFuture = _performInit();
+    await _initializationFuture;
+  }
+
+  static Future<void> _performInit() async {
+    await Hive.initFlutter();
+
+    Hive
+      ..registerAdapter(DecimalAdapter())
+      ..registerAdapters();
+
+    // Open boxes
+    await Hive.openBox(HiveConstants.kAccountsBoxName);
+    await Hive.openBox(HiveConstants.kCashflowsBoxName);
+    await Hive.openBox(HiveConstants.kCategoriesBoxName);
+    await Hive.openBox(HiveConstants.kPendingActionsBoxName);
+    await Hive.openBox(HiveConstants.kTagBoxName);
+    await Hive.openBox(HiveConstants.kTransactionsBoxName);
+    await Hive.openBox(HiveConstants.kUpcomingsBoxName);
+    await Hive.openBox(HiveConstants.kUserSettingsBoxName);
+
+    _initialized = true;
+  }
+
+  Future<void> _ensureInitialized() async {
+    if (!_initialized) {
+      await init();
     }
   }
 
   @override
   Future<void> save<T>(String boxName, String key, T value) async {
-    final box = await openBox<T>(boxName);
-    try {
-      await box.put(key, value);
-
-      if (kIsWeb &&
-          box.length * 100 > HiveConstants.webCompactionSizeThreshold) {
-        await box.compact();
-      }
-    } finally {
-      scheduleBoxClose(box);
-    }
+    await _ensureInitialized();
+    final box = Hive.box(boxName);
+    await box.put(key, value);
   }
 
   @override
   Future<T?> get<T>(String boxName, String key) async {
-    final box = await openBox<T>(boxName);
-    try {
-      return box.get(key);
-    } finally {
-      scheduleBoxClose(box);
-    }
+    await _ensureInitialized();
+    final box = Hive.box(boxName);
+    return box.get(key) as T?;
   }
 
   @override
   Future<List<T>> getAll<T>(String boxName) async {
-    final box = await openBox<T>(boxName);
-    try {
-      if (box.isEmpty) {
-        return [];
-      }
-      return box.values.toList();
-    } finally {
-      scheduleBoxClose(box);
+    await _ensureInitialized();
+    final box = Hive.box(boxName);
+    if (box.isEmpty) {
+      return [];
     }
+    return box.values.toList().cast<T>();
   }
 
   @override
   Future<void> delete<T>(String boxName, String key) async {
-    final box = await openBox<T>(boxName);
-    try {
-      await box.delete(key);
-    } finally {
-      scheduleBoxClose(box);
-    }
+    await _ensureInitialized();
+    final box = Hive.box(boxName);
+    await box.delete(key);
   }
 
   @override
   Future<void> clearall<T>(String boxName) async {
-    final box = await openBox<T>(boxName);
-    try {
-      await box.clear();
-    } finally {
-      scheduleBoxClose(box);
-    }
+    await _ensureInitialized();
+    final box = Hive.box(boxName);
+    await box.clear();
   }
 
   @override
   Future<bool> exists<T>(String boxName, String key) async {
-    final box = await openBox<T>(boxName);
-    try {
-      return box.containsKey(key);
-    } finally {
-      scheduleBoxClose(box);
-    }
+    await _ensureInitialized();
+    final box = Hive.box(boxName);
+    return box.containsKey(key);
   }
 
   @override
   Future<bool> empty<T>(String boxName) async {
-    final box = await openBox<T>(boxName);
-    try {
-      final result = box.isEmpty;
-
-      return result;
-    } finally {
-      scheduleBoxClose(box);
-    }
+    await _ensureInitialized();
+    final box = Hive.box(boxName);
+    return box.isEmpty;
   }
 
   @override
-  Future<void> closeBox<T>(String boxName) async {
-    developer.log('Closing box $boxName', name: 'HiveStorageProvider');
-    _cancelBoxCloseTimer(boxName);
-    if (Hive.isBoxOpen(boxName)) {
-      final box = Hive.box<T>(boxName);
-      await box.close();
+  Future<void> dispose() async {
+    if (_instance != null) {
+      await Hive.close();
+      _instance = null;
+      _initialized = false;
+      _initializationFuture = null;
     }
-  }
-
-  @override
-  Future<void> resetBox<T>(String boxName) async {
-    developer.log('Deleting box $boxName', name: 'HiveStorageProvider');
-    _cancelBoxCloseTimer(boxName);
-    if (Hive.isBoxOpen(boxName)) {
-      final box = Hive.box<T>(boxName);
-      await box.close();
-    }
-    await Hive.deleteBoxFromDisk(boxName);
-  }
-
-  // Schedule box closure with a delay on web platform
-  void scheduleBoxClose<T>(Box<T> box) {
-    if (!kIsWeb) return;
-
-    final boxName = box.name;
-    _cancelBoxCloseTimer(boxName);
-
-    _boxTimers[boxName] = async.Timer(
-      Duration(milliseconds: _webBoxCloseDelay),
-      () async {
-        if (Hive.isBoxOpen(boxName)) {
-          developer.log(
-            'Closing box $boxName after delay',
-            name: 'HiveStorageProvider',
-          );
-          try {
-            // Use the correct box type by using a dynamic approach
-            // This avoids type casting errors
-            await box.compact();
-            await box.close();
-          } catch (e) {
-            developer.log(
-              'Error closing box $boxName: $e',
-              name: 'HiveStorageProvider',
-              error: e,
-            );
-          }
-        }
-        _boxTimers.remove(boxName);
-      },
-    );
-  }
-
-  // Cancel any pending box close timer
-  void _cancelBoxCloseTimer(String boxName) {
-    if (_boxTimers.containsKey(boxName)) {
-      _boxTimers[boxName]?.cancel();
-      _boxTimers.remove(boxName);
-    }
-  }
-
-  // This method is kept for backward compatibility but uses the new scheduling mechanism
-  Future<void> closeWhenIsWeb<T>(Box<T> box) async {
-    scheduleBoxClose(box);
   }
 }

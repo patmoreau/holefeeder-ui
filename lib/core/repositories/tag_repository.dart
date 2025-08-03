@@ -8,7 +8,7 @@ import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 
 class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
-  final String boxName = HiveConstants.tagBoxName;
+  final String boxName = HiveConstants.kTagBoxName;
   final HiveStorageProvider _hiveService;
   final DataProvider _dataProvider;
   late final StreamSubscription _transactionAddedSubscription;
@@ -109,13 +109,12 @@ class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
   @override
   Future<void> dispose() async {
     await _transactionAddedSubscription.cancel();
-    await _hiveService.closeBox<Tag>(boxName);
   }
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<Tag>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing tag data', e);

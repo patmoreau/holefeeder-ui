@@ -27,7 +27,7 @@ class UserSettings extends HiveObject with HiveKey {
   @override
   String get key => createKey();
 
-  static String createKey() => HiveConstants.userSettingsKey;
+  static String createKey() => HiveConstants.kUserSettingsKey;
 
   @override
   bool operator ==(Object other) =>

@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:holefeeder/core/constants/themes.dart';
+import 'package:holefeeder/core/services/quick_actions_service.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/l10n/l10n.dart';
 import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/widgets/platform/platform_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_actions/quick_actions.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-import 'main.dart';
 import 'router.dart';
 
 class HolefeederApp extends StatefulWidget {
@@ -27,7 +26,6 @@ class HolefeederApp extends StatefulWidget {
 
 class _HolefeederAppState extends State<HolefeederApp>
     with WidgetsBindingObserver {
-  final _quickActions = const QuickActions();
   final _localizationsDelegates = const <LocalizationsDelegate<dynamic>>[
     AppLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
@@ -42,22 +40,13 @@ class _HolefeederAppState extends State<HolefeederApp>
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
-
-    if (UniversalPlatform.isMobile) {
-      _quickActions.initialize((String shortcutType) {
-        if (shortcutType == 'action_purchase') {
-          launchedFromQuickAction = true;
-          if (mounted) {
-            router.push('/purchase');
-          }
-        }
-      });
-      _setupQuickActions();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var quickActionsService = context.read<QuickActionsService>();
+    quickActionsService.initialize(router);
+
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return NotificationServiceScope(
@@ -85,16 +74,6 @@ class _HolefeederAppState extends State<HolefeederApp>
       );
       authenticationClient.verifyAuthenticationStatus();
     }
-  }
-
-  void _setupQuickActions() {
-    _quickActions.setShortcutItems([
-      const ShortcutItem(
-        type: 'action_purchase',
-        localizedTitle: 'New Purchase',
-        icon: 'add_chart',
-      ),
-    ]);
   }
 
   Widget _buildCupertinoApp(BuildContext context) => CupertinoApp.router(

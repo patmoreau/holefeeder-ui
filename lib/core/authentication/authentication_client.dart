@@ -18,6 +18,9 @@ abstract class AuthenticationClient {
 
   AuthenticationStatus get currentStatus => _currentStatus;
 
+  bool get isAuthenticated =>
+      _currentStatus == AuthenticationStatus.authenticated;
+
   Stream<AuthenticationStatus> get statusStream => _statusController.stream;
 
   Credentials get credentials => _credentials!;

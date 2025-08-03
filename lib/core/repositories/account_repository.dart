@@ -11,7 +11,7 @@ import 'package:holefeeder/core/repositories/base_repository.dart';
 class AccountRepository
     with RepositoryInitializer
     implements BaseRepository<Account> {
-  final String boxName = HiveConstants.accountsBoxName;
+  final String boxName = HiveConstants.kAccountsBoxName;
   final HiveStorageProvider _hiveService;
   final DataProvider _dataProvider;
   late final StreamSubscription _transactionAddedSubscription;
@@ -162,13 +162,12 @@ class AccountRepository
   Future<void> dispose() async {
     await _transactionAddedSubscription.cancel();
     await _transactionDeletedSubscription.cancel();
-    await _hiveService.closeBox<Account>(HiveConstants.accountsBoxName);
   }
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<Account>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing account data', e);

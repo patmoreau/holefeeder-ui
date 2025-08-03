@@ -8,7 +8,7 @@ import 'package:holefeeder/core/repositories/repositories.dart';
 class CategoryRepository
     with RepositoryInitializer
     implements BaseRepository<Category> {
-  final String boxName = HiveConstants.categoriesBoxName;
+  final String boxName = HiveConstants.kCategoriesBoxName;
   final HiveStorageProvider _hiveService;
   final DataProvider _dataProvider;
 
@@ -129,14 +129,12 @@ class CategoryRepository
   }
 
   @override
-  Future<void> dispose() async {
-    await _hiveService.closeBox<Category>(boxName);
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<Category>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing category data', e);

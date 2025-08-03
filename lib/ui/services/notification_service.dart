@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holefeeder/app/holefeeder_app.dart';
 import 'package:holefeeder/core/extensions/build_context_extensions.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:holefeeder/holefeeder_app.dart';
 
 class NotificationServiceImpl implements NotificationService {
   final BuildContext? context;

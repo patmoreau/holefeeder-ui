@@ -9,7 +9,7 @@ import 'package:holefeeder/core/repositories/repositories.dart';
 class TransactionRepository
     with RepositoryInitializer
     implements BaseRepository<Transaction> {
-  final String boxName = HiveConstants.transactionsBoxName;
+  final String boxName = HiveConstants.kTransactionsBoxName;
   final HiveStorageProvider _hiveService;
   final DataProvider _dataProvider;
 
@@ -145,14 +145,12 @@ class TransactionRepository
   }
 
   @override
-  Future<void> dispose() async {
-    await _hiveService.closeBox<Transaction>(boxName);
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<Transaction>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing transaction data', e);

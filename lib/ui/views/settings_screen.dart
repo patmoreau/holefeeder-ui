@@ -2,11 +2,11 @@ import 'dart:developer' as developer;
 
 import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show Theme;
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/constants/themes.dart';
 import 'package:holefeeder/core/services/localization_service.dart';
 import 'package:pull_down_button/pull_down_button.dart';
-import 'package:flutter/material.dart' show Theme;
-import 'package:holefeeder/core/constants/themes.dart';
 
 class CupertinoFormExample extends StatefulWidget {
   const CupertinoFormExample({super.key});
@@ -31,7 +31,7 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
             padding: EdgeInsetsDirectional.zero,
             leading: CupertinoNavigationBarBackButton(
               previousPageTitle: LocalizationService.current.back,
-              onPressed: () => GoRouter.of(context).go('/'),
+              onPressed: () => GoRouter.of(context).go('/dashboard'),
             ),
             trailing: CupertinoButton(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -178,7 +178,7 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                               'Section 2 Dropdown: $_section2DropdownValue',
                               name: 'SettingsScreen',
                             );
-                            GoRouter.of(context).go('/');
+                            GoRouter.of(context).go('/dashboard');
                           },
                         ),
                       ),

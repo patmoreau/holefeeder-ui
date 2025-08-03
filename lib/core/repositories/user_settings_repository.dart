@@ -9,8 +9,8 @@ import 'package:holefeeder/core/repositories/base_repository.dart';
 class UserSettingsRepository
     with RepositoryInitializer
     implements BaseRepository<UserSettings> {
-  final String boxName = HiveConstants.userSettingsBoxName;
-  final String key = HiveConstants.userSettingsKey;
+  final String boxName = HiveConstants.kUserSettingsBoxName;
+  final String key = HiveConstants.kUserSettingsKey;
   final HiveStorageProvider _hiveService;
   final DataProvider _dataProvider;
 
@@ -112,14 +112,12 @@ class UserSettingsRepository
   }
 
   @override
-  Future<void> dispose() async {
-    await _hiveService.closeBox<UserSettings>(boxName);
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<UserSettings>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing user settings data', e);

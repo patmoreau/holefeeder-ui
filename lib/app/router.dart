@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/models/models.dart';
@@ -11,39 +13,16 @@ import 'package:holefeeder/ui/views/purchase_screen.dart';
 import 'package:holefeeder/ui/views/upcoming_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'core/enums/authentication_status_enum.dart';
+import '../presentation/views/splash_screen.dart';
 import 'holefeeder_app.dart';
-import 'main.dart';
+
+const kTrueHome = '/dashboard';
 
 final GoRouter router = GoRouter(
   navigatorKey: HolefeederApp.navigatorKey,
+  initialLocation: '/splash',
   routes: [
-    GoRoute(
-      path: '/',
-      redirect: (context, state) async {
-        final authenticationClient = Provider.of<AuthenticationClient>(
-          context,
-          listen: false,
-        );
-
-        final status = await authenticationClient.statusStream.first;
-        if (status != AuthenticationStatus.authenticated) {
-          return '/login';
-        }
-
-        // Conditionally delay initial navigation
-        if (launchedFromQuickAction) {
-          launchedFromQuickAction = false; // Reset the flag
-          Future.delayed(Duration.zero, () {
-            return '/purchase';
-          });
-          return null; // Prevent immediate navigation
-        }
-
-        return null;
-      },
-      builder: (context, state) => HomeScreen(initialIndex: 0),
-    ),
+    GoRoute(path: '/splash', builder: (context, state) => SplashScreen()),
     GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
     GoRoute(
       path: '/dashboard',
@@ -102,4 +81,42 @@ final GoRouter router = GoRouter(
       },
     ),
   ],
+  redirect: (context, state) {
+    developer.log(
+      'Redirecting from ${state.matchedLocation}',
+      name: 'GoRouter',
+    );
+    final authenticationClient = context.read<AuthenticationClient>();
+    final isAuthenticated = authenticationClient.isAuthenticated;
+    final isLoginPage = state.matchedLocation == '/login';
+    final isSplashPage = state.matchedLocation == '/splash';
+
+    // Allow splash screen to handle initial navigation
+    if (isSplashPage) {
+      developer.log(
+        'Splash screen detected, allowing navigation',
+        name: 'GoRouter',
+      );
+      return null;
+    }
+
+    if (!isAuthenticated && !isLoginPage) {
+      developer.log(
+        'User not authenticated, redirecting to login',
+        name: 'GoRouter',
+      );
+      return '/login';
+    }
+
+    // Redirect to dashboard if authenticated and on login page
+    if (isAuthenticated && isLoginPage) {
+      developer.log(
+        'User authenticated, redirecting from login to dashboard',
+        name: 'GoRouter',
+      );
+      return '/dashboard';
+    }
+
+    return null;
+  },
 );

@@ -15,7 +15,7 @@ import 'package:universal_platform/universal_platform.dart';
 import '../core/authentication/authentication_providers.dart';
 import '../core/events/event_providers.dart';
 import '../core/network/network_providers.dart';
-import '../core/repositories/repositoryProviders.dart';
+import '../core/repositories/repository_providers.dart';
 import '../core/services/service_providers.dart';
 import 'router.dart';
 

@@ -1,1 +1,1 @@
-export './platforms.dart';
+export './platform_widget.dart';

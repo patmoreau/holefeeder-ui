@@ -2,7 +2,7 @@ PODS:
   - Auth0 (2.10.0):
     - JWTDecode (= 3.2.0)
     - SimpleKeychain (= 1.2.0)
-  - auth0_flutter (1.11.0):
+  - auth0_flutter (1.12.0):
     - Auth0 (= 2.10.0)
     - Flutter
     - FlutterMacOS
@@ -47,7 +47,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Auth0: 2876d0c36857422eda9cb580a6cc896c7d14cb36
-  auth0_flutter: 98b19f9c237bb5e508c512d6280d7db81bd76b9a
+  auth0_flutter: 202dad67dc7a50737fee230ae28fe5b0c770ca9b
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_secure_storage_darwin: ce237a8775b39723566dc72571190a3769d70468
   JWTDecode: 7dae24cb9bf9b608eae61e5081029ec169bb5527

@@ -7,14 +7,27 @@ import 'package:holefeeder/core/repositories/repositories.dart';
 
 import '../services/services.dart';
 
-class TransactionRepository
+abstract class TransactionRepository extends BaseRepository<Transaction> {
+  Future<void> makePurchase(MakePurchase value);
+
+  Future<void> modify(ModifyTransaction value);
+
+  Future<void> transfer(Transfer value);
+
+  Future<List<Transaction>> getForAccount(
+    String accountId, {
+    bool force = false,
+  });
+}
+
+class TransactionRepositoryImpl
     with RepositoryInitializer
-    implements BaseRepository<Transaction> {
+    implements TransactionRepository {
   final String boxName = HiveConstants.kTransactionsBoxName;
   final HiveService _hiveService;
   final ApiService _dataProvider;
 
-  TransactionRepository({
+  TransactionRepositoryImpl({
     required HiveService hiveService,
     required ApiService dataProvider,
   }) : _hiveService = hiveService,

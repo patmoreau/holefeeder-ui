@@ -172,6 +172,7 @@ class TransactionRepositoryImpl
     }
   }
 
+  @override
   Future<void> makePurchase(MakePurchase value) async {
     try {
       await _dataProvider.makePurchase(value);
@@ -183,6 +184,7 @@ class TransactionRepositoryImpl
     }
   }
 
+  @override
   Future<void> modify(ModifyTransaction value) async {
     try {
       await ensureInitialized();
@@ -198,6 +200,7 @@ class TransactionRepositoryImpl
     }
   }
 
+  @override
   Future<void> transfer(Transfer value) async {
     try {
       await _dataProvider.transfer(value);
@@ -210,6 +213,7 @@ class TransactionRepositoryImpl
     }
   }
 
+  @override
   Future<List<Transaction>> getForAccount(
     String accountId, {
     bool force = false,

@@ -4,7 +4,7 @@ class TransactionAddedEvent extends EventPayload {
   final String accountId;
 
   @override
-  final name = 'cashflowChangedEvent';
+  final name = 'transactionAddedEvent';
 
   TransactionAddedEvent(this.accountId);
 }

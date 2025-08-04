@@ -24,7 +24,7 @@ class DatePickerField extends StatelessWidget {
 
   Widget _buildCupertinoDatePicker(BuildContext context) {
     return CupertinoFormRow(
-      prefix: Text(LocalizationService.current.fieldDate),
+      prefix: Text(L10nService.current.fieldDate),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -54,7 +54,7 @@ class DatePickerField extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              LocalizationService.current.fieldDate,
+              L10nService.current.fieldDate,
               style: TextStyle(fontSize: 12, color: Colors.black54),
             ),
             const SizedBox(height: 4),

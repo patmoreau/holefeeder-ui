@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Theme;
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/constants/themes.dart';
-import 'package:holefeeder/core/services/localization_service.dart';
+import 'package:holefeeder/core/services/l10n_service.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 
 class CupertinoFormExample extends StatefulWidget {
@@ -30,7 +30,7 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
           CupertinoSliverNavigationBar(
             padding: EdgeInsetsDirectional.zero,
             leading: CupertinoNavigationBarBackButton(
-              previousPageTitle: LocalizationService.current.back,
+              previousPageTitle: L10nService.current.back,
               onPressed: () => GoRouter.of(context).go('/dashboard'),
             ),
             trailing: CupertinoButton(

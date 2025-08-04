@@ -6,6 +6,8 @@ class AccountRefreshedEvent extends EventPayload {
   final String accountId;
   final Account account;
 
-  AccountRefreshedEvent(this.accountId, this.account)
-    : super('accountRefreshedEvent');
+  @override
+  final name = 'accountRefreshedEvent';
+
+  AccountRefreshedEvent(this.accountId, this.account);
 }

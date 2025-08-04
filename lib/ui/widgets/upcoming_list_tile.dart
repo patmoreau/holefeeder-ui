@@ -19,20 +19,24 @@ class UpcomingListTile extends StatelessWidget {
   const UpcomingListTile({super.key, required this.upcoming});
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<UpcomingViewModel>(
-    create:
-        (ctx) => UpcomingViewModel(
-          upcoming: upcoming,
-          repository: ctx.read<UpcomingRepository>(),
-          notificationService: NotificationServiceProvider.of(ctx),
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider<UpcomingViewModel>(
+        create:
+            (context) => UpcomingViewModel(
+              upcoming: upcoming,
+              repository: context.read<UpcomingRepository>(),
+              notificationService: NotificationServiceProvider.of(context),
+            ),
+        child: Consumer<UpcomingViewModel>(
+          builder:
+              (context, model, child) => _buildSwipeableTile(context, model),
         ),
-    builder: (model) => _buildSwipeableTile(context, model),
-  );
+      );
 
   Widget _buildSwipeableTile(BuildContext context, UpcomingViewModel model) {
     final leadingActions = [
       SwipeAction(
-        label: LocalizationService.current.cancelUpcoming,
+        label: L10nService.current.cancelUpcoming,
         icon: AdaptiveIcons.cancel,
         color:
             UniversalPlatform.isApple
@@ -41,8 +45,8 @@ class UpcomingListTile extends StatelessWidget {
         onTap:
             () => SwipeActionDialogs.showConfirmationDialog(
               context,
-              title: LocalizationService.current.cancelUpcomingTitle,
-              message: LocalizationService.current.cancelUpcomingMessage,
+              title: L10nService.current.cancelUpcomingTitle,
+              message: L10nService.current.cancelUpcomingMessage,
               action: () => model.cancel(),
             ),
       ),
@@ -50,15 +54,15 @@ class UpcomingListTile extends StatelessWidget {
 
     final trailingActions = [
       SwipeAction(
-        label: LocalizationService.current.deleteCashflow,
+        label: L10nService.current.deleteCashflow,
         icon: AdaptiveIcons.delete,
         color:
             UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
         onTap:
             () => SwipeActionDialogs.showConfirmationDialog(
               context,
-              title: LocalizationService.current.deleteCashflowTitle,
-              message: LocalizationService.current.deleteCashflowMessage,
+              title: L10nService.current.deleteCashflowTitle,
+              message: L10nService.current.deleteCashflowMessage,
               action: () => model.delete(),
             ),
         isDestructive: true,
@@ -147,7 +151,7 @@ class UpcomingListTile extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               DateFormat.yMd(
-                LocalizationService.device.toLanguageTag(),
+                L10nService.device.toLanguageTag(),
               ).format(model.date),
               style: const TextStyle(
                 fontSize: 12,

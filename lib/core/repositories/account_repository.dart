@@ -4,22 +4,22 @@ import 'dart:developer' as developer;
 import 'package:holefeeder/core/constants/hive_constants.dart';
 import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/account.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/providers/hive_storage_provider.dart';
 import 'package:holefeeder/core/repositories/base_repository.dart';
+
+import '../services/services.dart';
 
 class AccountRepository
     with RepositoryInitializer
     implements BaseRepository<Account> {
   final String boxName = HiveConstants.kAccountsBoxName;
-  final HiveStorageProvider _hiveService;
-  final DataProvider _dataProvider;
+  final HiveService _hiveService;
+  final ApiService _dataProvider;
   late final StreamSubscription _transactionAddedSubscription;
   late final StreamSubscription _transactionDeletedSubscription;
 
   AccountRepository({
-    required HiveStorageProvider hiveService,
-    required DataProvider dataProvider,
+    required HiveService hiveService,
+    required ApiService dataProvider,
   }) : _hiveService = hiveService,
        _dataProvider = dataProvider {
     _transactionAddedSubscription = EventBus()

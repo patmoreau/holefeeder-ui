@@ -19,12 +19,12 @@ class IntervalTypePickerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptivePicker<DateIntervalType>(
-      label: LocalizationService.current.fieldIntervalType,
+      label: L10nService.current.fieldIntervalType,
       value: selectedIntervalType,
       items: DateIntervalType.values,
       displayStringFor: _displayName,
       onChanged: onValueChanged,
-      placeholder: LocalizationService.current.fieldIntervalType,
+      placeholder: L10nService.current.fieldIntervalType,
       enabled: enabled,
     );
   }
@@ -32,13 +32,13 @@ class IntervalTypePickerField extends StatelessWidget {
   String _displayName(DateIntervalType intervalType) {
     switch (intervalType) {
       case DateIntervalType.weekly:
-        return LocalizationService.current.intervalTypeWeekly;
+        return L10nService.current.intervalTypeWeekly;
       case DateIntervalType.monthly:
-        return LocalizationService.current.intervalTypeMonthly;
+        return L10nService.current.intervalTypeMonthly;
       case DateIntervalType.yearly:
-        return LocalizationService.current.intervalTypeYearly;
+        return L10nService.current.intervalTypeYearly;
       case DateIntervalType.oneTime:
-        return LocalizationService.current.intervalTypeOneTime;
+        return L10nService.current.intervalTypeOneTime;
     }
   }
 }

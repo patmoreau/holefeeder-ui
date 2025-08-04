@@ -4,64 +4,12 @@ import 'package:holefeeder/core/enums/enums.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 
-abstract class DataProvider {
-  // Accounts
-  Future<List<Account>> getAccounts();
+import 'api_service.dart';
 
-  Future<Account> getAccount(String id);
-
-  // Cashflows
-  Future<Cashflow> getCashflow(String id);
-
-  Future<List<Cashflow>> getCashflows();
-
-  Future<void> deleteCashflow(String id);
-
-  Future<void> modifyCashflow(ModifyCashflow item);
-
-  Future<List<Upcoming>> getUpcomingCashflows(
-    DateTime from,
-    DateTime to,
-    String? accountId,
-  );
-
-  // Categories
-  Future<List<Category>> getCategories();
-
-  Future<Category> getCategory(String id);
-
-  // User Settings
-  Future<UserSettings> getUserSettings();
-
-  Future<void> saveUserSettings(UserSettings settings);
-
-  Future<void> deleteUserSettings();
-
-  // Tags
-  Future<List<Tag>> getTags();
-
-  // Transactions
-  Future<List<Transaction>> getTransactionsForAccount(
-    int offset,
-    int limit,
-    String accountId,
-  );
-
-  Future<void> deleteTransaction(String id);
-
-  Future<String?> makePurchase(MakePurchase item);
-
-  Future<void> modifyTransaction(ModifyTransaction item);
-
-  Future<String?> transfer(Transfer item);
-
-  Future<String> payCashflow(PayCashflow item);
-}
-
-class DataProviderImpl implements DataProvider {
+class ApiServiceImpl implements ApiService {
   final RestClient _restClient;
 
-  const DataProviderImpl(this._restClient);
+  const ApiServiceImpl(this._restClient);
 
   // Accounts
   @override

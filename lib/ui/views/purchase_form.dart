@@ -41,7 +41,7 @@ class PurchaseForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
-                model.error ?? LocalizationService.current.errorGeneric,
+                model.error ?? L10nService.current.errorGeneric,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
@@ -66,17 +66,17 @@ class PurchaseForm extends StatelessWidget {
     developer.log('Building form sections', name: 'PurchaseForm');
     final sections = [
       AdaptiveFormSection(
-        header: LocalizationService.current.purchaseBasicDetails,
+        header: L10nService.current.purchaseBasicDetails,
         children: _buildBasicFields(),
       ),
       const SizedBox(height: 16),
       AdaptiveFormSection(
-        header: LocalizationService.current.purchaseAdditionalDetails,
+        header: L10nService.current.purchaseAdditionalDetails,
         children: _buildAdditionalFields(),
       ),
       const SizedBox(height: 16),
       AdaptiveFormSection(
-        header: LocalizationService.current.purchaseCashflowDetails,
+        header: L10nService.current.purchaseCashflowDetails,
         children: _buildCashflowFields(),
       ),
     ];
@@ -117,10 +117,10 @@ class PurchaseForm extends StatelessWidget {
       initialHashtags: model.formState.tags,
       onHashtagsChanged: model.updateTags,
       allowSpaces: true,
-      inputFieldHint: LocalizationService.current.fieldTagsPlaceHolder,
+      inputFieldHint: L10nService.current.fieldTagsPlaceHolder,
     ),
     AdaptiveTextField(
-      labelText: LocalizationService.current.note,
+      labelText: L10nService.current.note,
       initialValue: model.formState.note,
       onChanged: model.updateNote,
     ),
@@ -128,7 +128,7 @@ class PurchaseForm extends StatelessWidget {
 
   List<Widget> _buildCashflowFields() => [
     AdaptiveSwitch(
-      label: LocalizationService.current.fieldCashflow,
+      label: L10nService.current.fieldCashflow,
       value: model.formState.isCashflow,
       onChanged: model.updateIsCashflow,
     ),
@@ -142,7 +142,7 @@ class PurchaseForm extends StatelessWidget {
         onValueChanged: model.updateIntervalType,
       ),
       AdaptiveTextField(
-        labelText: LocalizationService.current.fieldFrequency,
+        labelText: L10nService.current.fieldFrequency,
         initialValue: model.formState.frequency.toString(),
         keyboardType: TextInputType.number,
         onChanged: (value) => model.updateFrequency(int.tryParse(value) ?? 1),
@@ -151,7 +151,7 @@ class PurchaseForm extends StatelessWidget {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       ),
       AdaptiveTextField(
-        labelText: LocalizationService.current.fieldRecurrence,
+        labelText: L10nService.current.fieldRecurrence,
         initialValue: model.formState.recurrence.toString(),
         keyboardType: TextInputType.number,
         onChanged: (value) => model.updateRecurrence(int.tryParse(value) ?? 0),

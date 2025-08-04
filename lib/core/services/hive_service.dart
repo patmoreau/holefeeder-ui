@@ -1,4 +1,4 @@
-abstract class HiveStorageProvider {
+abstract class HiveService {
   Future<void> save<T>(String boxName, String key, T value);
 
   Future<T?> get<T>(String boxName, String key);

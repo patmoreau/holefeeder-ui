@@ -28,7 +28,7 @@ class PurchaseTransferForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
-                model.error ?? LocalizationService.current.errorGeneric,
+                model.error ?? L10nService.current.errorGeneric,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
@@ -42,12 +42,12 @@ class PurchaseTransferForm extends StatelessWidget {
 
   List<Widget> _buildFormSections() => [
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseBasicDetails,
+      header: L10nService.current.purchaseBasicDetails,
       children: _buildBasicFields(),
     ),
     const SizedBox(height: 16),
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseAdditionalDetails,
+      header: L10nService.current.purchaseAdditionalDetails,
       children: _buildAdditionalFields(),
     ),
   ];
@@ -63,13 +63,13 @@ class PurchaseTransferForm extends StatelessWidget {
       onDateChanged: model.updateDate,
     ),
     AccountPicker(
-      label: LocalizationService.current.fieldAccountFrom,
+      label: L10nService.current.fieldAccountFrom,
       accounts: model.accounts,
       selectedAccount: model.formState.selectedFromAccount,
       onChanged: model.setSelectedFromAccount,
     ),
     AccountPicker(
-      label: LocalizationService.current.fieldAccountTo,
+      label: L10nService.current.fieldAccountTo,
       accounts: model.accounts,
       selectedAccount: model.formState.selectedToAccount,
       onChanged: model.setSelectedToAccount,
@@ -78,7 +78,7 @@ class PurchaseTransferForm extends StatelessWidget {
 
   List<Widget> _buildAdditionalFields() => [
     AdaptiveTextField(
-      labelText: LocalizationService.current.note,
+      labelText: L10nService.current.note,
       initialValue: model.formState.note,
       onChanged: model.updateNote,
     ),

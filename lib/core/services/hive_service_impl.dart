@@ -1,19 +1,19 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:holefeeder/core/constants/hive_constants.dart';
-import 'package:holefeeder/core/providers/hive_storage_provider.dart';
+import 'package:holefeeder/core/services/hive_service.dart';
 import 'package:holefeeder/hive/hive_registrar.g.dart';
 
 import '../adapters/decimal_adapter.dart';
 
-class HiveStorageProviderImpl implements HiveStorageProvider {
-  static HiveStorageProviderImpl? _instance;
+class HiveServiceImpl implements HiveService {
+  static HiveServiceImpl? _instance;
   static bool _initialized = false;
   static Future<void>? _initializationFuture;
 
-  HiveStorageProviderImpl._();
+  HiveServiceImpl._();
 
-  static HiveStorageProvider get instance {
-    _instance ??= HiveStorageProviderImpl._();
+  static HiveService get instance {
+    _instance ??= HiveServiceImpl._();
     return _instance!;
   }
 

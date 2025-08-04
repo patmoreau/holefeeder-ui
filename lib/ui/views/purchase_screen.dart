@@ -35,41 +35,43 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       'Building with account: ${widget.account?.name}',
       name: 'PurchaseScreen',
     );
-    return ViewModelProvider<PurchaseViewModel>(
-      create: (ctx) {
+    return ChangeNotifierProvider<PurchaseViewModel>(
+      create: (context) {
         developer.log('Creating PurchaseViewModel', name: 'PurchaseScreen');
         return PurchaseViewModel(
           account: widget.account,
-          transactionRepository: ctx.read<TransactionRepository>(),
-          accountRepository: ctx.read<AccountRepository>(),
-          categoryRepository: ctx.read<CategoryRepository>(),
-          tagRepository: ctx.read<TagRepository>(),
-          notificationService: NotificationServiceProvider.of(ctx),
+          transactionRepository: context.read<TransactionRepository>(),
+          accountRepository: context.read<AccountRepository>(),
+          categoryRepository: context.read<CategoryRepository>(),
+          tagRepository: context.read<TagRepository>(),
+          notificationService: NotificationServiceProvider.of(context),
         );
       },
-      builder: (model) {
-        developer.log(
-          'Builder called with model state: ${model.formState.state}',
-          name: 'PurchaseScreen',
-        );
-        return AdaptiveScaffold(
-          leading: AdaptiveNavigationBackButton(
-            onPressed: () => _cancel(model),
-            previousPageTitle:
-                (widget.account == null)
-                    ? LocalizationService.current.dashboard
-                    : LocalizationService.current.fieldAccount,
-          ),
-          title: LocalizationService.current.add,
-          actions: [
-            AdaptiveIconButton(
-              onPressed: () => _save(model),
-              icon: Icon(AdaptiveIcons.add_purchase),
+      child: Consumer<PurchaseViewModel>(
+        builder: (context, model, child) {
+          developer.log(
+            'Builder called with model state: ${model.formState.state}',
+            name: 'PurchaseScreen',
+          );
+          return AdaptiveScaffold(
+            leading: AdaptiveNavigationBackButton(
+              onPressed: () => _cancel(model),
+              previousPageTitle:
+                  (widget.account == null)
+                      ? L10nService.current.dashboard
+                      : L10nService.current.fieldAccount,
             ),
-          ],
-          child: _buildScreen(context, model),
-        );
-      },
+            title: L10nService.current.add,
+            actions: [
+              AdaptiveIconButton(
+                onPressed: () => _save(model),
+                icon: Icon(AdaptiveIcons.add_purchase),
+              ),
+            ],
+            child: _buildScreen(context, model),
+          );
+        },
+      ),
     );
   }
 
@@ -102,8 +104,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 }
               },
               children: <ListType, Widget>{
-                ListType.purchase: Text(LocalizationService.current.purchase),
-                ListType.transfer: Text(LocalizationService.current.transfer),
+                ListType.purchase: Text(L10nService.current.purchase),
+                ListType.transfer: Text(L10nService.current.transfer),
               },
             ),
             Expanded(

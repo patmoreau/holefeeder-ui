@@ -81,21 +81,21 @@ class ProfileForm extends StatelessWidget {
           const Spacer(),
           AdaptiveButton(
             onPressed: model.logout,
-            child: Text(LocalizationService.current.logoutTitle),
+            child: Text(L10nService.current.logoutTitle),
           ),
           const Spacer(),
           AdaptiveButton(
             onPressed: () {
               showConfirmationDialog(
                 context,
-                title: LocalizationService.current.clearDataTitle,
-                message: LocalizationService.current.clearDataMessage,
+                title: L10nService.current.clearDataTitle,
+                message: L10nService.current.clearDataMessage,
                 action: () async {
                   await model.clearData();
                 },
               );
             },
-            child: Text(LocalizationService.current.clearData),
+            child: Text(L10nService.current.clearData),
           ),
         ],
       ),
@@ -136,12 +136,12 @@ class ProfileForm extends StatelessWidget {
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
-              child: Text(LocalizationService.current.cancel),
+              child: Text(L10nService.current.cancel),
               onPressed: () => {Navigator.of(context).pop(false)},
             ),
             CupertinoDialogAction(
               isDestructiveAction: true,
-              child: Text(LocalizationService.current.yes),
+              child: Text(L10nService.current.yes),
               onPressed: () {
                 final navigatorContext = context;
                 action().then((_) {
@@ -168,11 +168,11 @@ class ProfileForm extends StatelessWidget {
           content: Text(message),
           actions: [
             TextButton(
-              child: Text(LocalizationService.current.cancel),
+              child: Text(L10nService.current.cancel),
               onPressed: () => {Navigator.of(context).pop(false)},
             ),
             TextButton(
-              child: Text(LocalizationService.current.yes),
+              child: Text(L10nService.current.yes),
               onPressed: () {
                 final navigatorContext = context;
                 action().then((_) {

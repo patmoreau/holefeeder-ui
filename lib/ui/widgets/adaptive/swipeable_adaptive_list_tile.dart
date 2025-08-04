@@ -130,12 +130,12 @@ class SwipeActionDialogs {
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
-              child: Text(LocalizationService.current.cancel),
+              child: Text(L10nService.current.cancel),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             CupertinoDialogAction(
               isDestructiveAction: true,
-              child: Text(LocalizationService.current.yes),
+              child: Text(L10nService.current.yes),
               onPressed: () {
                 final navigatorContext = context;
                 action().then((_) {
@@ -162,11 +162,11 @@ class SwipeActionDialogs {
           content: Text(message),
           actions: [
             TextButton(
-              child: Text(LocalizationService.current.cancel),
+              child: Text(L10nService.current.cancel),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             TextButton(
-              child: Text(LocalizationService.current.yes),
+              child: Text(L10nService.current.yes),
               onPressed: () {
                 final navigatorContext = context;
                 action().then((_) {
@@ -214,7 +214,7 @@ class SwipeActionDialogs {
     final List<Widget> actions = [
       CupertinoDialogAction(
         isDefaultAction: true,
-        child: Text(LocalizationService.current.cancel),
+        child: Text(L10nService.current.cancel),
         onPressed: () => Navigator.of(context).pop(false),
       ),
     ];
@@ -256,7 +256,7 @@ class SwipeActionDialogs {
   }) {
     final List<Widget> actions = [
       TextButton(
-        child: Text(LocalizationService.current.cancel),
+        child: Text(L10nService.current.cancel),
         onPressed: () => Navigator.of(context).pop(false),
       ),
     ];

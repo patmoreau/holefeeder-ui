@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:holefeeder/core/constants/themes.dart';
-import 'package:holefeeder/core/services/quick_actions_service.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/utils/utils.dart';
+import 'package:holefeeder/core/view_models/view_model_providers.dart';
 import 'package:holefeeder/l10n/l10n.dart';
 import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/widgets/platform/platform_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
+import '../core/authentication/authentication_providers.dart';
+import '../core/events/event_providers.dart';
+import '../core/network/network_providers.dart';
+import '../core/repositories/repositoryProviders.dart';
+import '../core/services/service_providers.dart';
 import 'router.dart';
 
 class HolefeederApp extends StatefulWidget {
@@ -44,16 +49,16 @@ class _HolefeederAppState extends State<HolefeederApp>
 
   @override
   Widget build(BuildContext context) {
-    var quickActionsService = context.read<QuickActionsService>();
-    quickActionsService.initialize(router);
-
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-    return NotificationServiceScope(
-      child: PlatformWidget(
-        cupertinoBuilder: _buildCupertinoApp,
-        materialBuilder: _buildMaterialApp,
-      ),
+    return MultiProvider(
+      providers: [
+        ...eventProviders,
+        ...authenticationProviders,
+        ...networkProviders,
+        ...serviceProviders,
+        ...repositoryProviders,
+        ...viewModelProviders,
+      ],
+      child: Builder(builder: _buildApp),
     );
   }
 
@@ -74,6 +79,20 @@ class _HolefeederAppState extends State<HolefeederApp>
       );
       authenticationClient.verifyAuthenticationStatus();
     }
+  }
+
+  Widget _buildApp(BuildContext context) {
+    var quickActionsService = context.read<QuickActionsService>();
+    quickActionsService.initialize(router);
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    return NotificationServiceScope(
+      child: PlatformWidget(
+        cupertinoBuilder: _buildCupertinoApp,
+        materialBuilder: _buildMaterialApp,
+      ),
+    );
   }
 
   Widget _buildCupertinoApp(BuildContext context) => CupertinoApp.router(
@@ -97,7 +116,7 @@ class _HolefeederAppState extends State<HolefeederApp>
   );
 
   Widget _initializeApp(BuildContext context, Widget? child) {
-    LocalizationService.initialize(context);
+    L10nService.initialize(context);
     return NotificationServiceProvider(
       child:
           UniversalPlatform.isApple

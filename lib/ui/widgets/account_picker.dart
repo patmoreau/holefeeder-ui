@@ -40,12 +40,12 @@ class AccountPicker extends StatelessWidget {
 
     developer.log('Rendering adaptive picker', name: 'AccountPicker');
     return AdaptivePicker<Account>(
-      label: label ?? LocalizationService.current.fieldAccount,
+      label: label ?? L10nService.current.fieldAccount,
       value: selectedAccount,
       items: accounts,
       displayStringFor: (account) => account.name,
       onChanged: onChanged,
-      placeholder: LocalizationService.current.fieldAccountPlaceHolder,
+      placeholder: L10nService.current.fieldAccountPlaceHolder,
       enabled: enabled,
     );
   }

@@ -17,17 +17,20 @@ class AccountListTile extends StatelessWidget {
   const AccountListTile({super.key, required this.account});
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<AccountViewModel>(
-    create:
-        (ctx) => AccountViewModel(
-          accountId: account.id,
-          accountRepository: ctx.read<AccountRepository>(),
-          upcomingRepository: ctx.read<UpcomingRepository>(),
-          transactionRepository: ctx.read<TransactionRepository>(),
-          notificationService: NotificationServiceProvider.of(ctx),
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider<AccountViewModel>(
+        create:
+            (context) => AccountViewModel(
+              accountId: account.id,
+              accountRepository: context.read<AccountRepository>(),
+              upcomingRepository: context.read<UpcomingRepository>(),
+              transactionRepository: context.read<TransactionRepository>(),
+              notificationService: NotificationServiceProvider.of(context),
+            ),
+        child: Consumer<AccountViewModel>(
+          builder: (context, model, child) => _buildListTile(context, model),
         ),
-    builder: (model) => _buildListTile(context, model),
-  );
+      );
 
   Widget _buildListTile(BuildContext context, AccountViewModel model) => Column(
     mainAxisSize: MainAxisSize.min,
@@ -107,7 +110,7 @@ class AccountListTile extends StatelessWidget {
             CurrencyText(value: account.balance),
             const SizedBox(height: 2),
             Text(
-              '${LocalizationService.current.lastUpdated}: ${DateFormat.yMd(LocalizationService.device.toLanguageTag()).format(model.account.updated)}',
+              '${L10nService.current.lastUpdated}: ${DateFormat.yMd(L10nService.device.toLanguageTag()).format(model.account.updated)}',
               style: TextStyle(
                 fontSize: 12,
                 color:

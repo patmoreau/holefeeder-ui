@@ -3,19 +3,20 @@ import 'dart:developer' as developer;
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
+
+import '../services/services.dart';
 
 class TransactionRepository
     with RepositoryInitializer
     implements BaseRepository<Transaction> {
   final String boxName = HiveConstants.kTransactionsBoxName;
-  final HiveStorageProvider _hiveService;
-  final DataProvider _dataProvider;
+  final HiveService _hiveService;
+  final ApiService _dataProvider;
 
   TransactionRepository({
-    required HiveStorageProvider hiveService,
-    required DataProvider dataProvider,
+    required HiveService hiveService,
+    required ApiService dataProvider,
   }) : _hiveService = hiveService,
        _dataProvider = dataProvider;
 

@@ -1,6 +1,6 @@
 import 'package:holefeeder/core/constants/constants.dart';
 
-import '../providers/hive_storage_provider.dart';
+import 'hive_service.dart';
 
 abstract class PendingActionsService {
   Future<void> setPendingAction(String action);
@@ -13,9 +13,9 @@ abstract class PendingActionsService {
 }
 
 class PendingActionsServiceImpl implements PendingActionsService {
-  final HiveStorageProvider _hiveService;
+  final HiveService _hiveService;
 
-  PendingActionsServiceImpl({required HiveStorageProvider hiveService})
+  PendingActionsServiceImpl({required HiveService hiveService})
     : _hiveService = hiveService;
 
   @override

@@ -20,28 +20,32 @@ class CashflowListTile extends StatelessWidget {
   const CashflowListTile({super.key, required this.cashflow});
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<CashflowViewModel>(
-    create:
-        (ctx) => CashflowViewModel(
-          cashflow: cashflow,
-          repository: ctx.read<CashflowRepository>(),
-          notificationService: NotificationServiceProvider.of(ctx),
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider<CashflowViewModel>(
+        create:
+            (context) => CashflowViewModel(
+              cashflow: cashflow,
+              repository: context.read<CashflowRepository>(),
+              notificationService: NotificationServiceProvider.of(context),
+            ),
+        child: Consumer<CashflowViewModel>(
+          builder:
+              (context, model, child) => _buildSwipeableTile(context, model),
         ),
-    builder: (model) => _buildSwipeableTile(context, model),
-  );
+      );
 
   Widget _buildSwipeableTile(BuildContext context, CashflowViewModel model) {
     final trailingActions = [
       SwipeAction(
-        label: LocalizationService.current.deleteCashflow,
+        label: L10nService.current.deleteCashflow,
         icon: AdaptiveIcons.delete,
         color:
             UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
         onTap:
             () => SwipeActionDialogs.showConfirmationDialog(
               context,
-              title: LocalizationService.current.deleteCashflowTitle,
-              message: LocalizationService.current.deleteCashflowMessage,
+              title: L10nService.current.deleteCashflowTitle,
+              message: L10nService.current.deleteCashflowMessage,
               action: () => model.delete(),
             ),
         isDestructive: true,
@@ -134,7 +138,7 @@ class CashflowListTile extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               DateFormat.yMd(
-                LocalizationService.device.toLanguageTag(),
+                L10nService.device.toLanguageTag(),
               ).format(model.date),
               style: const TextStyle(
                 fontSize: 12,

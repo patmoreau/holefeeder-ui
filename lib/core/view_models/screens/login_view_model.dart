@@ -63,7 +63,7 @@ class LoginViewModel extends BaseViewModel<SimpleFormState> {
 
   void _handleAuthenticated() {
     updateState((s) => s.copyWith(state: ViewFormState.ready));
-    _navigationController.add('/');
+    _navigationController.add('/splash');
   }
 
   void _handleError() {

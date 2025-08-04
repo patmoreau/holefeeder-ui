@@ -3,19 +3,20 @@ import 'dart:developer' as developer;
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
+
+import '../services/services.dart';
 
 class TransactionRepository
     with RepositoryInitializer
     implements BaseRepository<Transaction> {
-  final String boxName = HiveConstants.transactionsBoxName;
-  final HiveStorageProvider _hiveService;
-  final DataProvider _dataProvider;
+  final String boxName = HiveConstants.kTransactionsBoxName;
+  final HiveService _hiveService;
+  final ApiService _dataProvider;
 
   TransactionRepository({
-    required HiveStorageProvider hiveService,
-    required DataProvider dataProvider,
+    required HiveService hiveService,
+    required ApiService dataProvider,
   }) : _hiveService = hiveService,
        _dataProvider = dataProvider;
 
@@ -145,14 +146,12 @@ class TransactionRepository
   }
 
   @override
-  Future<void> dispose() async {
-    await _hiveService.closeBox<Transaction>(boxName);
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<Transaction>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing transaction data', e);

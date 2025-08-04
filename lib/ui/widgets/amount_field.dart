@@ -45,7 +45,7 @@ class _AmountFieldState extends State<AmountField> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveTextField(
-      labelText: LocalizationService.current.fieldAmount,
+      labelText: L10nService.current.fieldAmount,
       controller: _controller,
       focusNode: _focusNode,
       autofocus: widget.autofocus,

@@ -30,7 +30,7 @@ class EditTransactionForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
-                model.error ?? LocalizationService.current.errorGeneric,
+                model.error ?? L10nService.current.errorGeneric,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
@@ -44,12 +44,12 @@ class EditTransactionForm extends StatelessWidget {
 
   List<Widget> _buildFormSections() => [
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseBasicDetails,
+      header: L10nService.current.purchaseBasicDetails,
       children: _buildBasicFields(),
     ),
     const SizedBox(height: 16),
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseAdditionalDetails,
+      header: L10nService.current.purchaseAdditionalDetails,
       children: _buildAdditionalFields(),
     ),
   ];
@@ -79,10 +79,10 @@ class EditTransactionForm extends StatelessWidget {
       initialHashtags: model.tags,
       onHashtagsChanged: model.updateTags,
       allowSpaces: true,
-      inputFieldHint: LocalizationService.current.fieldTagsPlaceHolder,
+      inputFieldHint: L10nService.current.fieldTagsPlaceHolder,
     ),
     AdaptiveTextField(
-      labelText: LocalizationService.current.note,
+      labelText: L10nService.current.note,
       initialValue: model.note,
       onChanged: model.updateNote,
     ),

@@ -23,51 +23,55 @@ class _AccountScreenState extends State<AccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<AccountViewModel>(
+  Widget build(
+    BuildContext context,
+  ) => ChangeNotifierProvider<AccountViewModel>(
     create:
-        (ctx) => AccountViewModel(
+        (context) => AccountViewModel(
           accountId: widget.account.id,
-          accountRepository: ctx.read<AccountRepository>(),
-          upcomingRepository: ctx.read<UpcomingRepository>(),
-          transactionRepository: ctx.read<TransactionRepository>(),
-          notificationService: NotificationServiceProvider.of(ctx),
+          accountRepository: context.read<AccountRepository>(),
+          upcomingRepository: context.read<UpcomingRepository>(),
+          transactionRepository: context.read<TransactionRepository>(),
+          notificationService: NotificationServiceProvider.of(context),
         ),
-    builder:
-        (model) => AdaptiveScaffold(
-          leading: AdaptiveNavigationBackButton(
-            onPressed: () => context.pop(),
-            previousPageTitle: LocalizationService.current.dashboard,
-          ),
-          actions: [],
-          bottomBar: SizedBox(
-            height: 28.0,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Center(
-                  child: Text(
-                    '${LocalizationService.current.lastUpdated}: ${DateFormat.yMd(LocalizationService.device.toLanguageTag()).format(model.account.updated)}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: CupertinoColors.systemGrey,
-                      fontStyle: FontStyle.italic,
+    child: Consumer<AccountViewModel>(
+      builder:
+          (context, model, child) => AdaptiveScaffold(
+            leading: AdaptiveNavigationBackButton(
+              onPressed: () => context.pop(),
+              previousPageTitle: L10nService.current.dashboard,
+            ),
+            actions: [],
+            bottomBar: SizedBox(
+              height: 28.0,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      '${L10nService.current.lastUpdated}: ${DateFormat.yMd(L10nService.device.toLanguageTag()).format(model.account.updated)}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: CupertinoColors.systemGrey,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: AdaptiveIconButton(
-                    padding: EdgeInsets.only(right: 16.0),
-                    onPressed:
-                        () => context.push('/purchase', extra: model.account),
-                    icon: Icon(AdaptiveIcons.purchase, size: 28.0),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: AdaptiveIconButton(
+                      padding: EdgeInsets.only(right: 16.0),
+                      onPressed:
+                          () => context.push('/purchase', extra: model.account),
+                      icon: Icon(AdaptiveIcons.purchase, size: 28.0),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            child: _buildScreen(context, model),
           ),
-          child: _buildScreen(context, model),
-        ),
+    ),
   );
 
   Widget _buildScreen(BuildContext context, AccountViewModel model) {

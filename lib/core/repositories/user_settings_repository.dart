@@ -1,22 +1,25 @@
 import 'dart:developer' as developer;
 
 import 'package:holefeeder/core/constants/hive_constants.dart';
+import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/user_settings.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-import 'package:holefeeder/core/providers/hive_storage_provider.dart';
 import 'package:holefeeder/core/repositories/base_repository.dart';
+
+import '../services/services.dart';
 
 class UserSettingsRepository
     with RepositoryInitializer
     implements BaseRepository<UserSettings> {
-  final String boxName = HiveConstants.userSettingsBoxName;
-  final String key = HiveConstants.userSettingsKey;
-  final HiveStorageProvider _hiveService;
-  final DataProvider _dataProvider;
+  final String boxName = HiveConstants.kUserSettingsBoxName;
+  final String key = HiveConstants.kUserSettingsKey;
+  final EventBus eventBus;
+  final HiveService _hiveService;
+  final ApiService _dataProvider;
 
   UserSettingsRepository({
-    required HiveStorageProvider hiveService,
-    required DataProvider dataProvider,
+    required this.eventBus,
+    required HiveService hiveService,
+    required ApiService dataProvider,
   }) : _hiveService = hiveService,
        _dataProvider = dataProvider;
 
@@ -112,14 +115,12 @@ class UserSettingsRepository
   }
 
   @override
-  Future<void> dispose() async {
-    await _hiveService.closeBox<UserSettings>(boxName);
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<UserSettings>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing user settings data', e);
@@ -143,6 +144,10 @@ class UserSettingsRepository
 
       await _hiveService.clearall<UserSettings>(boxName);
       await _hiveService.save<UserSettings>(boxName, key, apiData);
+
+      eventBus.fire<UserSettingsChangedEvent>(
+        UserSettingsChangedEvent(apiData),
+      );
 
       return apiData;
     } catch (e) {

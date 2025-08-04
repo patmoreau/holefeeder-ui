@@ -32,10 +32,8 @@ class _AccountFormState extends State<AccountForm> {
                 }
               },
               children: <ListType, Widget>{
-                ListType.upcoming: Text(LocalizationService.current.upcoming),
-                ListType.transactions: Text(
-                  LocalizationService.current.transactions,
-                ),
+                ListType.upcoming: Text(L10nService.current.upcoming),
+                ListType.transactions: Text(L10nService.current.transactions),
               },
             ),
             SizedBox(height: 16),
@@ -117,7 +115,7 @@ class _AccountFormState extends State<AccountForm> {
       return Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Text(LocalizationService.current.upcomingEmpty),
+          child: Text(L10nService.current.upcomingEmpty),
         ),
       );
     }
@@ -142,7 +140,7 @@ class _AccountFormState extends State<AccountForm> {
       return Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Text(LocalizationService.current.transactionsEmpty),
+          child: Text(L10nService.current.transactionsEmpty),
         ),
       );
     }

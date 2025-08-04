@@ -34,7 +34,7 @@ class EditCashflowForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
-                model.error ?? LocalizationService.current.errorGeneric,
+                model.error ?? L10nService.current.errorGeneric,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
@@ -48,17 +48,17 @@ class EditCashflowForm extends StatelessWidget {
 
   List<Widget> _buildFormSections() => [
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseBasicDetails,
+      header: L10nService.current.purchaseBasicDetails,
       children: _buildBasicFields(),
     ),
     const SizedBox(height: 16),
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseAdditionalDetails,
+      header: L10nService.current.purchaseAdditionalDetails,
       children: _buildAdditionalFields(),
     ),
     const SizedBox(height: 16),
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseCashflowDetails,
+      header: L10nService.current.purchaseCashflowDetails,
       children: _buildCashflowFields(),
     ),
   ];
@@ -90,10 +90,10 @@ class EditCashflowForm extends StatelessWidget {
       initialHashtags: model.tags,
       onHashtagsChanged: model.updateTags,
       allowSpaces: true,
-      inputFieldHint: LocalizationService.current.fieldTagsPlaceHolder,
+      inputFieldHint: L10nService.current.fieldTagsPlaceHolder,
     ),
     AdaptiveTextField(
-      labelText: LocalizationService.current.note,
+      labelText: L10nService.current.note,
       initialValue: model.note,
       onChanged: model.updateNote,
     ),
@@ -106,7 +106,7 @@ class EditCashflowForm extends StatelessWidget {
       enabled: false,
     ),
     AdaptiveTextField(
-      labelText: LocalizationService.current.fieldFrequency,
+      labelText: L10nService.current.fieldFrequency,
       initialValue: model.formState.frequency.toString(),
       keyboardType: TextInputType.number,
       onChanged: (value) => {},
@@ -117,7 +117,7 @@ class EditCashflowForm extends StatelessWidget {
       enabled: false,
     ),
     AdaptiveTextField(
-      labelText: LocalizationService.current.fieldRecurrence,
+      labelText: L10nService.current.fieldRecurrence,
       initialValue: model.formState.recurrence.toString(),
       keyboardType: TextInputType.number,
       onChanged: (value) => {},

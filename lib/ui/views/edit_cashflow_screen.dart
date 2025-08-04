@@ -25,31 +25,33 @@ class _EditCashflowScreenState extends State<EditCashflowScreen> {
 
   @override
   Widget build(BuildContext context) =>
-      ViewModelProvider<EditCashflowViewModel>(
+      ChangeNotifierProvider<EditCashflowViewModel>(
         create:
-            (ctx) => EditCashflowViewModel(
+            (context) => EditCashflowViewModel(
               cashflow: widget.cashflow,
-              cashflowRepository: ctx.read<CashflowRepository>(),
-              accountRepository: ctx.read<AccountRepository>(),
-              categoryRepository: ctx.read<CategoryRepository>(),
-              tagRepository: ctx.read<TagRepository>(),
-              notificationService: NotificationServiceProvider.of(ctx),
+              cashflowRepository: context.read<CashflowRepository>(),
+              accountRepository: context.read<AccountRepository>(),
+              categoryRepository: context.read<CategoryRepository>(),
+              tagRepository: context.read<TagRepository>(),
+              notificationService: NotificationServiceProvider.of(context),
             ),
-        builder:
-            (model) => AdaptiveScaffold(
-              leading: AdaptiveNavigationBackButton(
-                onPressed: () => _cancel(model),
-                previousPageTitle: LocalizationService.current.cashflows,
-              ),
-              title: LocalizationService.current.cashflow,
-              actions: [
-                AdaptiveIconButton(
-                  onPressed: () => _save(model),
-                  icon: Icon(AdaptiveIcons.add_purchase),
+        child: Consumer<EditCashflowViewModel>(
+          builder:
+              (context, model, child) => AdaptiveScaffold(
+                leading: AdaptiveNavigationBackButton(
+                  onPressed: () => _cancel(model),
+                  previousPageTitle: L10nService.current.cashflows,
                 ),
-              ],
-              child: _buildScreen(context, model),
-            ),
+                title: L10nService.current.cashflow,
+                actions: [
+                  AdaptiveIconButton(
+                    onPressed: () => _save(model),
+                    icon: Icon(AdaptiveIcons.add_purchase),
+                  ),
+                ],
+                child: _buildScreen(context, model),
+              ),
+        ),
       );
 
   Widget _buildScreen(BuildContext context, EditCashflowViewModel model) {

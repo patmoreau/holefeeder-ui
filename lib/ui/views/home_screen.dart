@@ -24,17 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
     AdaptiveNavigationItem(
       icon: AdaptiveIcons.home_outlined,
       activeIcon: AdaptiveIcons.home,
-      label: LocalizationService.current.dashboard,
+      label: L10nService.current.dashboard,
     ),
     AdaptiveNavigationItem(
       icon: AdaptiveIcons.cashflow,
       activeIcon: AdaptiveIcons.cashflow,
-      label: LocalizationService.current.cashflows,
+      label: L10nService.current.cashflows,
     ),
     AdaptiveNavigationItem(
       icon: AdaptiveIcons.person,
       activeIcon: AdaptiveIcons.person,
-      label: LocalizationService.current.profile,
+      label: L10nService.current.profile,
     ),
   ];
 

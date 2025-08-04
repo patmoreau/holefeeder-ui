@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:holefeeder/l10n/generated/app_localizations.dart';
 
-class LocalizationService {
+class L10nService {
   static AppLocalizations? _localizations;
   static Locale? _deviceLocale;
-  static final LocalizationService _instance = LocalizationService._internal();
+  static final L10nService _instance = L10nService._internal();
 
-  factory LocalizationService() {
+  factory L10nService() {
     return _instance;
   }
 
-  LocalizationService._internal();
+  L10nService._internal();
 
   static void initialize(BuildContext context) {
     _localizations = AppLocalizations.of(context);

@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
+import 'package:holefeeder/core/services/l10n_service.dart';
 import 'package:holefeeder/core/view_models/base_form_state.dart';
 
 import 'adaptive/adaptive.dart';
@@ -9,12 +10,14 @@ class FormStateHandler extends StatelessWidget {
   final BaseFormState formState;
   final Widget Function() builder;
   final Widget? loadingWidget;
+  final VoidCallback? onRetry;
 
   const FormStateHandler({
     super.key,
     required this.formState,
     required this.builder,
     this.loadingWidget,
+    this.onRetry,
   });
 
   @override
@@ -47,6 +50,13 @@ class FormStateHandler extends StatelessWidget {
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
                 textAlign: TextAlign.center,
               ),
+              if (onRetry != null) ...[
+                const SizedBox(height: 24),
+                AdaptiveButton(
+                  onPressed: onRetry!,
+                  child: Text(L10nService.current.retry),
+                ),
+              ],
             ],
           ),
         );

@@ -23,7 +23,7 @@ class UpcomingForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
-                model.error ?? LocalizationService.current.errorGeneric,
+                model.error ?? L10nService.current.errorGeneric,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
@@ -37,7 +37,7 @@ class UpcomingForm extends StatelessWidget {
 
   List<Widget> _buildFormSections() => [
     AdaptiveFormSection(
-      header: LocalizationService.current.purchaseBasicDetails,
+      header: L10nService.current.purchaseBasicDetails,
       children: _buildBasicFields(),
     ),
   ];

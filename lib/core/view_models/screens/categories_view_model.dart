@@ -1,15 +1,14 @@
-import 'package:holefeeder/core/models/category.dart';
-import 'package:holefeeder/core/providers/data_provider.dart';
-
+import '../../models/models.dart';
+import '../../services/services.dart';
 import '../base_form_state.dart';
 import '../base_view_model.dart';
 import 'categories_form_state.dart';
 
 class CategoriesViewModel extends BaseViewModel<CategoriesFormState> {
-  final DataProvider _dataProvider;
+  final ApiService _dataProvider;
 
   CategoriesViewModel({
-    required DataProvider dataProvider,
+    required ApiService dataProvider,
     required super.notificationService,
   }) : _dataProvider = dataProvider,
        super(formState: const CategoriesFormState()) {

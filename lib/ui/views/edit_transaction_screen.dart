@@ -25,31 +25,33 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
   @override
   Widget build(BuildContext context) =>
-      ViewModelProvider<EditTransactionViewModel>(
+      ChangeNotifierProvider<EditTransactionViewModel>(
         create:
-            (ctx) => EditTransactionViewModel(
+            (context) => EditTransactionViewModel(
               transaction: widget.transaction,
-              transactionRepository: ctx.read<TransactionRepository>(),
-              accountRepository: ctx.read<AccountRepository>(),
-              categoryRepository: ctx.read<CategoryRepository>(),
-              tagRepository: ctx.read<TagRepository>(),
-              notificationService: NotificationServiceProvider.of(ctx),
+              transactionRepository: context.read<TransactionRepository>(),
+              accountRepository: context.read<AccountRepository>(),
+              categoryRepository: context.read<CategoryRepository>(),
+              tagRepository: context.read<TagRepository>(),
+              notificationService: NotificationServiceProvider.of(context),
             ),
-        builder:
-            (model) => AdaptiveScaffold(
-              leading: AdaptiveNavigationBackButton(
-                onPressed: () => _cancel(model),
-                previousPageTitle: LocalizationService.current.fieldAccount,
-              ),
-              title: LocalizationService.current.transaction,
-              actions: [
-                AdaptiveIconButton(
-                  onPressed: () => _save(model),
-                  icon: Icon(AdaptiveIcons.add_purchase),
+        child: Consumer<EditTransactionViewModel>(
+          builder:
+              (context, model, child) => AdaptiveScaffold(
+                leading: AdaptiveNavigationBackButton(
+                  onPressed: () => _cancel(model),
+                  previousPageTitle: L10nService.current.fieldAccount,
                 ),
-              ],
-              child: _buildScreen(context, model),
-            ),
+                title: L10nService.current.transaction,
+                actions: [
+                  AdaptiveIconButton(
+                    onPressed: () => _save(model),
+                    icon: Icon(AdaptiveIcons.add_purchase),
+                  ),
+                ],
+                child: _buildScreen(context, model),
+              ),
+        ),
       );
 
   Widget _buildScreen(BuildContext context, EditTransactionViewModel model) {

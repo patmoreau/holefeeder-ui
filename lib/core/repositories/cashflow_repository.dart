@@ -3,19 +3,20 @@ import 'dart:developer' as developer;
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
+
+import '../services/services.dart';
 
 class CashflowRepository
     with RepositoryInitializer
     implements BaseRepository<Cashflow> {
-  final String boxName = HiveConstants.cashflowsBoxName;
-  final HiveStorageProvider _hiveService;
-  final DataProvider _dataProvider;
+  final String boxName = HiveConstants.kCashflowsBoxName;
+  final HiveService _hiveService;
+  final ApiService _dataProvider;
 
   CashflowRepository({
-    required HiveStorageProvider hiveService,
-    required DataProvider dataProvider,
+    required HiveService hiveService,
+    required ApiService dataProvider,
   }) : _hiveService = hiveService,
        _dataProvider = dataProvider;
 
@@ -138,14 +139,12 @@ class CashflowRepository
   }
 
   @override
-  Future<void> dispose() async {
-    await _hiveService.closeBox<Cashflow>(boxName);
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<Cashflow>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing cashflow data', e);

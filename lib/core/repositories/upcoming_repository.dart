@@ -3,22 +3,21 @@ import 'dart:developer' as developer;
 import 'package:holefeeder/core/constants/constants.dart';
 import 'package:holefeeder/core/events/events.dart';
 import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/providers/providers.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 
 class UpcomingRepository
     with RepositoryInitializer
     implements BaseRepository<Upcoming> {
-  final String boxName = HiveConstants.upcomingsBoxName;
+  final String boxName = HiveConstants.kUpcomingsBoxName;
   final PeriodService _periodService;
-  final HiveStorageProvider _hiveService;
-  final DataProvider _dataProvider;
+  final HiveService _hiveService;
+  final ApiService _dataProvider;
 
   UpcomingRepository({
     required PeriodService periodService,
-    required HiveStorageProvider hiveService,
-    required DataProvider dataProvider,
+    required HiveService hiveService,
+    required ApiService dataProvider,
   }) : _periodService = periodService,
        _hiveService = hiveService,
        _dataProvider = dataProvider;
@@ -120,14 +119,12 @@ class UpcomingRepository
   }
 
   @override
-  Future<void> dispose() async {
-    await _hiveService.closeBox<Upcoming>(HiveConstants.upcomingsBoxName);
-  }
+  Future<void> dispose() async {}
 
   @override
   Future<void> clearData() async {
     try {
-      await _hiveService.resetBox<Upcoming>(boxName);
+      await _hiveService.clearall(boxName);
       await initialize();
     } catch (e) {
       _logError('clearing upcoming data', e);

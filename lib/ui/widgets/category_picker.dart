@@ -38,12 +38,12 @@ class CategoryPicker extends StatelessWidget {
 
     developer.log('Rendering adaptive picker', name: 'CategoryPicker');
     return AdaptivePicker<Category>(
-      label: LocalizationService.current.fieldCategory,
+      label: L10nService.current.fieldCategory,
       value: selectedCategory,
       items: categories,
       displayStringFor: (category) => category.name,
       onChanged: onChanged,
-      placeholder: LocalizationService.current.fieldCategoryPlaceHolder,
+      placeholder: L10nService.current.fieldCategoryPlaceHolder,
       enabled: enabled,
     );
   }

@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/utils/utils.dart';
 import 'package:holefeeder/core/view_models/view_models.dart';
 import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/views/profile_form.dart';
-import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
-
-import 'package:holefeeder/core/repositories/repositories.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -29,29 +27,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ViewModelProvider<ProfileViewModel>(
-      create:
-          (ctx) => ProfileViewModel(
-            authenticationClient: ctx.read<AuthenticationClient>(),
-            accountRepository: ctx.read<AccountRepository>(),
-            categoryRepository: ctx.read<CategoryRepository>(),
-            tagRepository: ctx.read<TagRepository>(),
-            transactionRepository: ctx.read<TransactionRepository>(),
-            upcomingRepository: ctx.read<UpcomingRepository>(),
-            userSettingsRepository: ctx.read<UserSettingsRepository>(),
-            notificationService: NotificationServiceProvider.of(ctx),
-          ),
-      builder: (model) {
-        _navigationSubscription ??= model.navigationStream.listen((route) {
-          if (mounted) {
-            // ignore: use_build_context_synchronously
-            context.go(route);
-          }
-        });
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider<ProfileViewModel>(
+        create:
+            (context) => ProfileViewModel(
+              authenticationClient: context.read<AuthenticationClient>(),
+              accountRepository: context.read<AccountRepository>(),
+              categoryRepository: context.read<CategoryRepository>(),
+              tagRepository: context.read<TagRepository>(),
+              transactionRepository: context.read<TransactionRepository>(),
+              upcomingRepository: context.read<UpcomingRepository>(),
+              userSettingsRepository: context.read<UserSettingsRepository>(),
+              notificationService: NotificationServiceProvider.of(context),
+            ),
+        child: Consumer<ProfileViewModel>(
+          builder: (context, model, child) {
+            _navigationSubscription ??= model.navigationStream.listen((route) {
+              if (mounted) {
+                // ignore: use_build_context_synchronously
+                context.go(route);
+              }
+            });
 
-        return ProfileForm(model: model);
-      },
-    );
-  }
+            return ProfileForm(model: model);
+          },
+        ),
+      );
 }

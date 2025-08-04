@@ -21,40 +21,43 @@ class _LoginScreenState extends State<LoginScreen> {
   StreamSubscription<String>? _navigationSubscription;
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<LoginViewModel>(
+  Widget build(BuildContext context) => ChangeNotifierProvider<LoginViewModel>(
     create:
-        (ctx) => LoginViewModel(
-          authenticationProvider: ctx.read<AuthenticationClient>(),
-          notificationService: NotificationServiceProvider.of(ctx),
+        (context) => LoginViewModel(
+          authenticationProvider: context.read<AuthenticationClient>(),
+          notificationService: NotificationServiceProvider.of(context),
         ),
-    builder: (model) {
-      // Set up the navigation listener only once when the model is first provided
-      _navigationSubscription ??= model.navigationStream.listen((route) {
-        if (mounted) {
-          // ignore: use_build_context_synchronously
-          context.go(route);
-        }
-      });
+    child: Consumer<LoginViewModel>(
+      builder: (context, model, child) {
+        // Set up the navigation listener only once when the model is first provided
+        _navigationSubscription ??= model.navigationStream.listen((route) {
+          if (mounted) {
+            // ignore: use_build_context_synchronously
+            context.go(route);
+          }
+        });
 
-      return AdaptiveScaffold(
-        title: LocalizationService.current.loginTitle,
-        child: FormStateHandler(
-          formState: model.formState,
-          builder:
-              () => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AdaptiveButton(
-                      onPressed: model.login,
-                      child: Text(LocalizationService.current.loginTitle),
-                    ),
-                  ],
+        return AdaptiveScaffold(
+          title: L10nService.current.loginTitle,
+          child: FormStateHandler(
+            formState: model.formState,
+            onRetry: model.login,
+            builder:
+                () => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AdaptiveButton(
+                        onPressed: model.login,
+                        child: Text(L10nService.current.loginTitle),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-        ),
-      );
-    },
+          ),
+        );
+      },
+    ),
   );
 
   @override

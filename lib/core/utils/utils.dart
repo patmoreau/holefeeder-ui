@@ -1,3 +1,3 @@
-export 'authentication_client.dart';
-export 'authentication_factory.dart';
-export 'rest_client.dart';
+export '../authentication/authentication_client.dart';
+export '../authentication/authentication_client_factory.dart';
+export '../network/rest_client.dart';

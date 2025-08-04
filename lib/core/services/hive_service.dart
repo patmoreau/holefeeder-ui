@@ -1,8 +1,4 @@
-import 'package:hive_ce/hive.dart';
-
-abstract class HiveStorageProvider {
-  Future<Box<T>> openBox<T>(String boxName);
-
+abstract class HiveService {
   Future<void> save<T>(String boxName, String key, T value);
 
   Future<T?> get<T>(String boxName, String key);
@@ -17,7 +13,5 @@ abstract class HiveStorageProvider {
 
   Future<bool> empty<T>(String boxName);
 
-  Future<void> closeBox<T>(String boxName);
-
-  Future<void> resetBox<T>(String boxName);
+  Future<void> dispose();
 }

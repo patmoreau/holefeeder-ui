@@ -5,13 +5,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:holefeeder/core/constants/themes.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:holefeeder/core/utils/utils.dart';
+import 'package:holefeeder/core/view_models/view_model_providers.dart';
 import 'package:holefeeder/l10n/l10n.dart';
 import 'package:holefeeder/ui/services/services.dart';
+import 'package:holefeeder/ui/widgets/platform/platform_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_actions/quick_actions.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-import 'main.dart';
+import '../core/authentication/authentication_providers.dart';
+import '../core/events/event_providers.dart';
+import '../core/network/network_providers.dart';
+import '../core/repositories/repository_providers.dart';
+import '../core/services/service_providers.dart';
 import 'router.dart';
 
 class HolefeederApp extends StatefulWidget {
@@ -26,7 +31,6 @@ class HolefeederApp extends StatefulWidget {
 
 class _HolefeederAppState extends State<HolefeederApp>
     with WidgetsBindingObserver {
-  final _quickActions = const QuickActions();
   final _localizationsDelegates = const <LocalizationsDelegate<dynamic>>[
     AppLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
@@ -41,18 +45,21 @@ class _HolefeederAppState extends State<HolefeederApp>
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
+  }
 
-    if (UniversalPlatform.isMobile) {
-      _quickActions.initialize((String shortcutType) {
-        if (shortcutType == 'action_purchase') {
-          launchedFromQuickAction = true;
-          if (mounted) {
-            router.push('/purchase');
-          }
-        }
-      });
-      _setupQuickActions();
-    }
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ...eventProviders,
+        ...authenticationProviders,
+        ...networkProviders,
+        ...serviceProviders,
+        ...repositoryProviders,
+        ...viewModelProviders,
+      ],
+      child: Builder(builder: _buildApp),
+    );
   }
 
   @override
@@ -74,27 +81,16 @@ class _HolefeederAppState extends State<HolefeederApp>
     }
   }
 
-  void _setupQuickActions() {
-    _quickActions.setShortcutItems([
-      const ShortcutItem(
-        type: 'action_purchase',
-        localizedTitle: 'New Purchase',
-        icon: 'add_chart',
-      ),
-    ]);
-  }
+  Widget _buildApp(BuildContext context) {
+    var quickActionsService = context.read<QuickActionsService>();
+    quickActionsService.initialize(router);
 
-  @override
-  Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return NotificationServiceScope(
-      child: Builder(
-        builder:
-            (context) =>
-                UniversalPlatform.isApple
-                    ? _buildCupertinoApp(context)
-                    : _buildMaterialApp(context),
+      child: PlatformWidget(
+        cupertinoBuilder: _buildCupertinoApp,
+        materialBuilder: _buildMaterialApp,
       ),
     );
   }
@@ -109,8 +105,18 @@ class _HolefeederAppState extends State<HolefeederApp>
     builder: _initializeApp,
   );
 
+  Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
+    onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
+    theme: holefeederMaterialTheme,
+    routerConfig: router,
+    localizationsDelegates: _localizationsDelegates,
+    supportedLocales: _supportedLocales,
+    locale: _locale,
+    builder: _initializeApp,
+  );
+
   Widget _initializeApp(BuildContext context, Widget? child) {
-    LocalizationService.initialize(context);
+    L10nService.initialize(context);
     return NotificationServiceProvider(
       child:
           UniversalPlatform.isApple
@@ -144,14 +150,4 @@ class _HolefeederAppState extends State<HolefeederApp>
               ),
     );
   }
-
-  Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
-    onGenerateTitle: (context) => AppLocalizations.of(context).holefeederTitle,
-    theme: holefeederMaterialTheme,
-    routerConfig: router,
-    localizationsDelegates: _localizationsDelegates,
-    supportedLocales: _supportedLocales,
-    locale: _locale,
-    builder: _initializeApp,
-  );
 }

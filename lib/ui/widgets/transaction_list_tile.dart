@@ -20,28 +20,32 @@ class TransactionListTile extends StatelessWidget {
   const TransactionListTile({super.key, required this.transaction});
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider<TransactionViewModel>(
-    create:
-        (ctx) => TransactionViewModel(
-          transaction: transaction,
-          repository: ctx.read<TransactionRepository>(),
-          notificationService: NotificationServiceProvider.of(ctx),
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider<TransactionViewModel>(
+        create:
+            (context) => TransactionViewModel(
+              transaction: transaction,
+              repository: context.read<TransactionRepository>(),
+              notificationService: NotificationServiceProvider.of(context),
+            ),
+        child: Consumer<TransactionViewModel>(
+          builder:
+              (context, model, child) => _buildSwipeableTile(context, model),
         ),
-    builder: (model) => _buildSwipeableTile(context, model),
-  );
+      );
 
   Widget _buildSwipeableTile(BuildContext context, TransactionViewModel model) {
     final trailingActions = [
       SwipeAction(
-        label: LocalizationService.current.deleteCashflow,
+        label: L10nService.current.deleteCashflow,
         icon: AdaptiveIcons.delete,
         color:
             UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
         onTap:
             () => SwipeActionDialogs.showConfirmationDialog(
               context,
-              title: LocalizationService.current.deleteCashflowTitle,
-              message: LocalizationService.current.deleteCashflowMessage,
+              title: L10nService.current.deleteCashflowTitle,
+              message: L10nService.current.deleteCashflowMessage,
               action: () => model.delete(),
             ),
         isDestructive: true,
@@ -125,7 +129,7 @@ class TransactionListTile extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               DateFormat.yMd(
-                LocalizationService.device.toLanguageTag(),
+                L10nService.device.toLanguageTag(),
               ).format(model.date),
               style: const TextStyle(
                 fontSize: 12,

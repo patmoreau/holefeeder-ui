@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holefeeder/app/holefeeder_app.dart';
 import 'package:holefeeder/core/extensions/build_context_extensions.dart';
 import 'package:holefeeder/core/services/services.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:holefeeder/holefeeder_app.dart';
 
 class NotificationServiceImpl implements NotificationService {
   final BuildContext? context;
@@ -42,21 +42,21 @@ class NotificationServiceImpl implements NotificationService {
       showNotification(message, isError: true);
 
   Future<void> _showAppleNotification(String message, bool isError) async {
-    final ctx = _getContext();
+    final context = _getContext();
 
     await showCupertinoDialog(
-      context: ctx,
+      context: context,
       builder:
           (dialogContext) => CupertinoAlertDialog(
             title: Text(
               isError
-                  ? LocalizationService.current.notificationServiceErrorTitle
-                  : LocalizationService.current.notificationServiceSuccessTitle,
+                  ? L10nService.current.notificationServiceErrorTitle
+                  : L10nService.current.notificationServiceSuccessTitle,
             ),
             content: Text(message),
             actions: [
               CupertinoDialogAction(
-                child: Text(LocalizationService.current.buttonOk),
+                child: Text(L10nService.current.buttonOk),
                 onPressed: () {
                   dialogContext.popOrGoHome();
                 },
@@ -67,10 +67,10 @@ class NotificationServiceImpl implements NotificationService {
   }
 
   Future<void> _showMaterialNotification(String message) async {
-    final ctx = _getContext();
+    final context = _getContext();
 
     await ScaffoldMessenger.of(
-      ctx,
+      context,
     ).showSnackBar(SnackBar(content: Text(message))).closed;
   }
 }

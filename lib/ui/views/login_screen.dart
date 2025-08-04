@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           title: L10nService.current.loginTitle,
           child: FormStateHandler(
             formState: model.formState,
+            onRetry: model.login,
             builder:
                 () => Center(
                   child: Column(

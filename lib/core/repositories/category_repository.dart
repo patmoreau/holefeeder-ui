@@ -6,14 +6,18 @@ import 'package:holefeeder/core/repositories/repositories.dart';
 
 import '../services/services.dart';
 
-class CategoryRepository
+abstract class CategoryRepository extends BaseRepository<Category> {
+  Future<List<Category>> getFavoriteCategories();
+}
+
+class CategoryRepositoryImpl
     with RepositoryInitializer
-    implements BaseRepository<Category> {
+    implements CategoryRepository {
   final String boxName = HiveConstants.kCategoriesBoxName;
   final HiveService _hiveService;
   final ApiService _dataProvider;
 
-  CategoryRepository({
+  CategoryRepositoryImpl({
     required HiveService hiveService,
     required ApiService dataProvider,
   }) : _hiveService = hiveService,
@@ -160,6 +164,7 @@ class CategoryRepository
     return allCategories.where(predicate).toList();
   }
 
+  @override
   Future<List<Category>> getFavoriteCategories() async {
     return _getFilteredAccounts((category) => category.favorite);
   }

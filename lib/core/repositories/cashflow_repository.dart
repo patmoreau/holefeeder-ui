@@ -7,14 +7,18 @@ import 'package:holefeeder/core/repositories/repositories.dart';
 
 import '../services/services.dart';
 
-class CashflowRepository
+abstract class CashflowRepository extends BaseRepository<Cashflow> {
+  Future<void> modify(ModifyCashflow item);
+}
+
+class CashflowRepositoryImpl
     with RepositoryInitializer
-    implements BaseRepository<Cashflow> {
+    implements CashflowRepository {
   final String boxName = HiveConstants.kCashflowsBoxName;
   final HiveService _hiveService;
   final ApiService _dataProvider;
 
-  CashflowRepository({
+  CashflowRepositoryImpl({
     required HiveService hiveService,
     required ApiService dataProvider,
   }) : _hiveService = hiveService,
@@ -152,6 +156,7 @@ class CashflowRepository
     }
   }
 
+  @override
   Future<void> modify(ModifyCashflow item) async {
     try {
       await ensureInitialized();

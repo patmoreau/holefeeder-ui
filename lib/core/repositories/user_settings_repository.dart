@@ -7,16 +7,20 @@ import 'package:holefeeder/core/repositories/base_repository.dart';
 
 import '../services/services.dart';
 
-class UserSettingsRepository
+abstract class UserSettingsRepository extends BaseRepository<UserSettings> {
+  Future<UserSettings> getDefault();
+}
+
+class UserSettingsRepositoryImpl
     with RepositoryInitializer
-    implements BaseRepository<UserSettings> {
+    implements UserSettingsRepository {
   final String boxName = HiveConstants.kUserSettingsBoxName;
   final String key = HiveConstants.kUserSettingsKey;
   final EventBus eventBus;
   final HiveService _hiveService;
   final ApiService _dataProvider;
 
-  UserSettingsRepository({
+  UserSettingsRepositoryImpl({
     required this.eventBus,
     required HiveService hiveService,
     required ApiService dataProvider,
@@ -128,6 +132,7 @@ class UserSettingsRepository
     }
   }
 
+  @override
   Future<UserSettings> getDefault() async {
     try {
       await ensureInitialized();

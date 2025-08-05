@@ -6,15 +6,19 @@ import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
 
-class UpcomingRepository
+abstract class UpcomingRepository extends BaseRepository<Upcoming> {
+  Future<List<Upcoming>> getForAccount(String accountId);
+}
+
+class UpcomingRepositoryImpl
     with RepositoryInitializer
-    implements BaseRepository<Upcoming> {
+    implements UpcomingRepository {
   final String boxName = HiveConstants.kUpcomingsBoxName;
   final PeriodService _periodService;
   final HiveService _hiveService;
   final ApiService _dataProvider;
 
-  UpcomingRepository({
+  UpcomingRepositoryImpl({
     required PeriodService periodService,
     required HiveService hiveService,
     required ApiService dataProvider,
@@ -132,6 +136,7 @@ class UpcomingRepository
     }
   }
 
+  @override
   Future<List<Upcoming>> getForAccount(String accountId) async {
     try {
       await ensureInitialized();

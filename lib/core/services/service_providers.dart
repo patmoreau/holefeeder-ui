@@ -5,15 +5,11 @@ import '../../ui/services/services.dart';
 import '../authentication/authentication.dart';
 import '../network/network.dart';
 import 'api_service.dart';
-import 'api_service_impl.dart';
 import 'hive_service.dart';
-import 'hive_service_impl.dart';
 import 'notification_service.dart';
 import 'pending_actions_service.dart';
 import 'period_service.dart';
-import 'period_service_impl.dart';
 import 'quick_actions_service.dart';
-import 'quick_actions_service_impl.dart';
 
 final serviceProviders = [
   Provider<ApiService>(

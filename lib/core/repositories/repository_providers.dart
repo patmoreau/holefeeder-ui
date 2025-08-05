@@ -26,7 +26,7 @@ final repositoryProviders = [
     update:
         (_, eventBus, hiveService, dataProvider, factory, _) =>
             factory.getRepository(
-              () => UserSettingsRepository(
+              () => UserSettingsRepositoryImpl(
                 eventBus: eventBus,
                 hiveService: hiveService,
                 dataProvider: dataProvider,
@@ -41,7 +41,7 @@ final repositoryProviders = [
   >(
     update:
         (_, hiveService, dataProvider, factory, _) => factory.getRepository(
-          () => CashflowRepository(
+          () => CashflowRepositoryImpl(
             hiveService: hiveService,
             dataProvider: dataProvider,
           ),
@@ -50,7 +50,7 @@ final repositoryProviders = [
   ProxyProvider3<HiveService, ApiService, RepositoryFactory, AccountRepository>(
     update:
         (_, hiveService, dataProvider, factory, _) => factory.getRepository(
-          () => AccountRepository(
+          () => AccountRepositoryImpl(
             hiveService: hiveService,
             dataProvider: dataProvider,
           ),
@@ -64,7 +64,7 @@ final repositoryProviders = [
   >(
     update:
         (_, hiveService, dataProvider, factory, _) => factory.getRepository(
-          () => CategoryRepository(
+          () => CategoryRepositoryImpl(
             hiveService: hiveService,
             dataProvider: dataProvider,
           ),
@@ -80,7 +80,7 @@ final repositoryProviders = [
     update:
         (_, periodService, hiveService, dataProvider, factory, _) =>
             factory.getRepository(
-              () => UpcomingRepository(
+              () => UpcomingRepositoryImpl(
                 periodService: periodService,
                 hiveService: hiveService,
                 dataProvider: dataProvider,
@@ -90,7 +90,7 @@ final repositoryProviders = [
   ProxyProvider3<HiveService, ApiService, RepositoryFactory, TagRepository>(
     update:
         (_, hiveService, dataProvider, factory, _) => factory.getRepository(
-          () => TagRepository(
+          () => TagRepositoryImpl(
             hiveService: hiveService,
             dataProvider: dataProvider,
           ),
@@ -104,7 +104,7 @@ final repositoryProviders = [
   >(
     update:
         (_, hiveService, dataProvider, factory, _) => factory.getRepository(
-          () => TransactionRepository(
+          () => TransactionRepositoryImpl(
             hiveService: hiveService,
             dataProvider: dataProvider,
           ),

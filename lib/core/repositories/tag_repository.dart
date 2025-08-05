@@ -8,13 +8,15 @@ import 'package:holefeeder/core/repositories/repositories.dart';
 
 import '../services/services.dart';
 
-class TagRepository with RepositoryInitializer implements BaseRepository<Tag> {
+abstract class TagRepository extends BaseRepository<Tag> {}
+
+class TagRepositoryImpl with RepositoryInitializer implements TagRepository {
   final String boxName = HiveConstants.kTagBoxName;
   final HiveService _hiveService;
   final ApiService _dataProvider;
   late final StreamSubscription _transactionAddedSubscription;
 
-  TagRepository({
+  TagRepositoryImpl({
     required HiveService hiveService,
     required ApiService dataProvider,
   }) : _hiveService = hiveService,

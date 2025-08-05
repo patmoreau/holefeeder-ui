@@ -8,16 +8,22 @@ import 'package:holefeeder/core/repositories/base_repository.dart';
 
 import '../services/services.dart';
 
-class AccountRepository
+abstract class AccountRepository extends BaseRepository<Account> {
+  Future<List<Account>> getActiveAccounts();
+
+  Future<List<Account>> getFavoriteAccounts();
+}
+
+class AccountRepositoryImpl
     with RepositoryInitializer
-    implements BaseRepository<Account> {
+    implements AccountRepository {
   final String boxName = HiveConstants.kAccountsBoxName;
   final HiveService _hiveService;
   final ApiService _dataProvider;
   late final StreamSubscription _transactionAddedSubscription;
   late final StreamSubscription _transactionDeletedSubscription;
 
-  AccountRepository({
+  AccountRepositoryImpl({
     required HiveService hiveService,
     required ApiService dataProvider,
   }) : _hiveService = hiveService,
@@ -192,10 +198,12 @@ class AccountRepository
     return allAccounts.where(predicate).toList();
   }
 
+  @override
   Future<List<Account>> getActiveAccounts() async {
     return _getFilteredAccounts((account) => !account.inactive);
   }
 
+  @override
   Future<List<Account>> getFavoriteAccounts() async {
     return _getFilteredAccounts((account) => account.favorite);
   }

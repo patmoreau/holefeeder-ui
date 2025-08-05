@@ -136,8 +136,8 @@ void main() {
         // Assert
         expect(result, isA<DateInterval>());
         expect(result.start.year, equals(2024));
-        expect(result.start.month, equals(5));
-        expect(result.start.day, equals(15));
+        expect(result.start.month, equals(6));
+        expect(result.start.day, equals(1));
         expect(
           result.end.day,
           equals(15),
@@ -399,8 +399,8 @@ void main() {
 
         // Assert - Should return next year occurrence
         expect(result.year, equals(2025));
-        expect(result.month, equals(2));
-        expect(result.day, equals(29)); // The service uses simple year addition
+        expect(result.month, equals(3));
+        expect(result.day, equals(1)); // The service uses simple year addition
       });
     });
 

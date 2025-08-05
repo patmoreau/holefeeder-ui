@@ -38,6 +38,6 @@ class PendingActionsServiceImpl implements PendingActionsService {
   @override
   Future<bool> hasPendingAction() async {
     final action = await getPendingAction();
-    return action != null && action.isNotEmpty;
+    return action != null && action.trim().isNotEmpty;
   }
 }

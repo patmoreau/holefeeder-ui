@@ -1,4 +1,5 @@
 export 'hive_constants.dart';
-export 'project_colors.dart';
 export 'strings.dart';
+export 'theme_data_cupertino.dart';
+export 'theme_data_material.dart';
 export 'themes.dart';

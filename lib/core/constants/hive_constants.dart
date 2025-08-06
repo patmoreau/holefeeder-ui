@@ -12,7 +12,7 @@ class HiveConstants {
 
   /// Constant key names
   static const String kPendingActionKey = 'pending_action';
-  static const String kUserSettingsKey = 'userSettings';
+  static const String kUserSettingsKey = 'user_settings';
 
   /// Type IDs
   static const int decimalTypeId = 100;

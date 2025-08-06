@@ -30,6 +30,7 @@ class AdaptiveListTile extends StatelessWidget {
             title: title,
             subtitle: subtitle,
             trailing: trailing,
+            backgroundColor: CupertinoTheme.of(context).scaffoldBackgroundColor,
           )
           : ListTile(
             contentPadding: padding,

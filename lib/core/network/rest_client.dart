@@ -48,6 +48,12 @@ abstract class RestClient {
   @GET('api/v2/categories/{id}')
   Future<HttpResponse<Category>> getCategory(@Path('id') String id);
 
+  @GET('api/v2/periods')
+  Future<HttpResponse<DateInterval>> computePeriod(
+    @Query('asOfDate') DateTime asOfDate,
+    @Query('iteration') int iteration,
+  );
+
   @GET('api/v2/store-items')
   Future<HttpResponse<List<StoreItem>>> getStoreItems(
     @Query('filter') List<String> filter,

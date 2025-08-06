@@ -30,6 +30,8 @@ abstract class ApiService {
 
   Future<Category> getCategory(String id);
 
+  Future<DateInterval> computePeriod(DateTime asOfDate, int iteration);
+
   // User Settings
   Future<UserSettings> getUserSettings();
 
@@ -200,6 +202,19 @@ class ApiServiceImpl implements ApiService {
       throw Exception('Could not get the category');
     } catch (e) {
       throw Exception('Could not get the category');
+    }
+  }
+
+  @override
+  Future<DateInterval> computePeriod(DateTime asOfDate, int iteration) async {
+    try {
+      final result = await _restClient.computePeriod(asOfDate, iteration);
+      if (result.response.statusCode == 200) {
+        return result.data;
+      }
+      throw Exception('Could not compute the period');
+    } catch (e) {
+      throw Exception('Could not compute the period');
     }
   }
 

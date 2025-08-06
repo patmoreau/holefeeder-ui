@@ -1,4 +1,3 @@
-import 'package:holefeeder/core/events/events.dart';
 import 'package:provider/provider.dart';
 
 import '../../ui/services/services.dart';
@@ -26,8 +25,8 @@ final serviceProviders = [
         (context, hiveService, _) =>
             PendingActionsServiceImpl(hiveService: hiveService),
   ),
-  ProxyProvider<EventBus, PeriodService>(
-    update: (_, eventBus, _) => PeriodServiceImpl(eventBus: eventBus),
+  ProxyProvider<ApiService, PeriodService>(
+    update: (_, apiService, _) => PeriodServiceImpl(apiService: apiService),
   ),
   Provider<QuickActionsService>(
     create:

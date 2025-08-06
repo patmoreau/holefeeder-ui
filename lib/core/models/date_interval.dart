@@ -20,4 +20,13 @@ class DateInterval {
   String toString() {
     return 'DateInterval(start: $start, end: $end)';
   }
+
+  factory DateInterval.fromJson(Map<String, dynamic> json) => DateInterval(
+    DateTime.parse(json['start'] as String),
+    DateTime.parse(json['end'] as String),
+  );
+
+  Map<String, dynamic> toJson() {
+    return {'start': start.toIso8601String(), 'end': end.toIso8601String()};
+  }
 }

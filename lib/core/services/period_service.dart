@@ -11,7 +11,7 @@ abstract class PeriodService {
 class PeriodServiceImpl extends PeriodService {
   final ApiService apiService;
 
-  PeriodServiceImpl({required this.apiService}) {}
+  PeriodServiceImpl({required this.apiService});
 
   @override
   Future<DateInterval> getCurrentPeriod() async {

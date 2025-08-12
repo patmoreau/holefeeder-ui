@@ -1,8 +1,8 @@
 import 'dart:developer' as developer show log;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/constants/themes.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
@@ -12,7 +12,6 @@ import 'package:holefeeder/ui/services/services.dart';
 import 'package:holefeeder/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_platform/universal_platform.dart';
 
 class CashflowListTile extends StatelessWidget {
   final Cashflow cashflow;
@@ -39,8 +38,7 @@ class CashflowListTile extends StatelessWidget {
       SwipeAction(
         label: L10nService.current.deleteCashflow,
         icon: AdaptiveIcons.delete,
-        color:
-            UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
+        color: AppThemes.getDestructiveColor(context),
         onTap:
             () => SwipeActionDialogs.showConfirmationDialog(
               context,
@@ -122,7 +120,7 @@ class CashflowListTile extends StatelessWidget {
             Expanded(
               child: Text(
                 model.description,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: AppThemes.getTitleTextStyle(context),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -140,10 +138,7 @@ class CashflowListTile extends StatelessWidget {
               DateFormat.yMd(
                 L10nService.device.toLanguageTag(),
               ).format(model.date),
-              style: const TextStyle(
-                fontSize: 12,
-                color: CupertinoColors.systemGrey,
-              ),
+              style: AppThemes.getSubtitleTextStyle(context),
             ),
           ],
         ),

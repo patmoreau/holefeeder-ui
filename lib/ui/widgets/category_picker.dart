@@ -3,7 +3,8 @@ import 'dart:developer' as developer;
 import 'package:flutter/widgets.dart';
 import 'package:holefeeder/core/models/category.dart';
 import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/ui/widgets/adaptive/adaptive_picker.dart';
+import 'package:holefeeder/ui/widgets/adaptive/adaptive_form_row.dart';
+import 'package:holefeeder/ui/widgets/adaptive/adaptive_picker_field.dart';
 
 class CategoryPicker extends StatelessWidget {
   final List<Category> categories;
@@ -37,14 +38,16 @@ class CategoryPicker extends StatelessWidget {
     }
 
     developer.log('Rendering adaptive picker', name: 'CategoryPicker');
-    return AdaptivePicker<Category>(
-      label: L10nService.current.fieldCategory,
-      value: selectedCategory,
-      items: categories,
-      displayStringFor: (category) => category.name,
-      onChanged: onChanged,
-      placeholder: L10nService.current.fieldCategoryPlaceHolder,
-      enabled: enabled,
+    return AdaptiveFormRow(
+      prefix: Text(L10nService.current.fieldCategory),
+      child: AdaptivePickerField<Category>(
+        value: selectedCategory,
+        items: categories,
+        displayStringFor: (category) => category.name,
+        onChanged: onChanged,
+        placeholder: L10nService.current.fieldCategoryPlaceHolder,
+        enabled: enabled,
+      ),
     );
   }
 }

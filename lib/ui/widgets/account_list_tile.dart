@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/constants/themes.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
@@ -36,123 +37,94 @@ class AccountListTile extends StatelessWidget {
     mainAxisSize: MainAxisSize.min,
     children: [
       AdaptiveListTile(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         onTap: () => context.push('/account', extra: model.account),
-        leading: _buildLeadingContainer(model),
-        title: _buildTitle(model),
-        subtitle: _buildSubtitle(model),
+        leading: _buildLeadingContainer(context, model),
+        title: _buildTitle(context, model),
+        subtitle: _buildSubtitle(context, model),
         trailing: _buildTrailing(model),
       ),
-      const Padding(
-        padding: EdgeInsets.only(left: 52.0),
-        child: Divider(height: 1),
+      Padding(
+        padding: const EdgeInsets.only(left: 60.0),
+        child: Divider(
+          height: 1,
+          thickness: UniversalPlatform.isApple ? 0.5 : null,
+        ),
       ),
     ],
   );
 
-  Widget _buildLeadingContainer(AccountViewModel model) => Container(
-    width: 28,
-    height: 28,
-    decoration: BoxDecoration(
-      color:
-          UniversalPlatform.isApple
-              ? _cupertinoColor(model)
-              : _materialColor(model),
-      shape: BoxShape.circle,
-    ),
-    child: Center(
-      child: Text(
-        model.upcomingCashflowsCount.toString(),
-        style: TextStyle(
-          color:
-              UniversalPlatform.isApple ? CupertinoColors.white : Colors.white,
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          height: 1.0,
+  Widget _buildLeadingContainer(BuildContext context, AccountViewModel model) =>
+      Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          color: _getContainerColor(context, model),
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Text(
+            model.upcomingCashflowsCount.toString(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              height: 1.0,
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildTitle(BuildContext context, AccountViewModel model) => Row(
+    children: [
+      Expanded(
+        child: Text(
+          model.account.name,
+          style: AppThemes.getTitleTextStyle(context),
+          overflow: TextOverflow.ellipsis,
         ),
       ),
-    ),
-  );
-
-  Widget _buildTitle(AccountViewModel model) => LayoutBuilder(
-    builder:
-        (context, constraints) => Row(
-          children: [
-            Expanded(
-              child: Text(
-                model.account.name,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (model.account.favorite) ...[
-              const SizedBox(width: 4),
-              Icon(
-                UniversalPlatform.isApple
-                    ? CupertinoIcons.star_fill
-                    : Icons.star,
-                color:
-                    UniversalPlatform.isApple
-                        ? CupertinoColors.systemYellow
-                        : Colors.amber,
-                size: 16,
-              ),
-            ],
-          ],
+      if (model.account.favorite) ...[
+        const SizedBox(width: 6),
+        Icon(
+          UniversalPlatform.isApple ? CupertinoIcons.star_fill : Icons.star,
+          color: AppThemes.getWarningColor(context),
+          size: 18,
         ),
+      ],
+    ],
   );
 
-  Widget _buildSubtitle(AccountViewModel model) => LayoutBuilder(
-    builder:
-        (context, constraints) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CurrencyText(value: account.balance),
-            const SizedBox(height: 2),
-            Text(
-              '${L10nService.current.lastUpdated}: ${DateFormat.yMd(L10nService.device.toLanguageTag()).format(model.account.updated)}',
-              style: TextStyle(
-                fontSize: 12,
-                color:
-                    UniversalPlatform.isApple
-                        ? CupertinoColors.systemGrey
-                        : Colors.grey.shade600,
-                fontStyle: FontStyle.italic,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
+  Widget _buildSubtitle(BuildContext context, AccountViewModel model) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const SizedBox(height: 4),
+      CurrencyText(value: account.balance),
+      const SizedBox(height: 4),
+      Text(
+        '${L10nService.current.lastUpdated}: ${DateFormat.yMd(L10nService.device.toLanguageTag()).format(model.account.updated)}',
+        style: AppThemes.getSubtitleTextStyle(
+          context,
+        ).copyWith(fontStyle: FontStyle.italic),
+        overflow: TextOverflow.ellipsis,
+      ),
+    ],
   );
 
-  Widget _buildTrailing(AccountViewModel model) => Row(
-    mainAxisSize: MainAxisSize.min,
+  Widget _buildTrailing(AccountViewModel model) => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.end,
     children: [
       CurrencyText(value: model.projection),
-      const SizedBox(width: 8),
+      const SizedBox(height: 4),
       const AdaptiveListTileChevron(),
     ],
   );
 
-  CupertinoDynamicColor _cupertinoColor(AccountViewModel model) {
-    final projectionType = model.projectionType;
-    if (projectionType == 0) {
-      return CupertinoColors.systemGrey;
-    } else if (projectionType > 0) {
-      return CupertinoColors.systemGreen;
-    } else {
-      return CupertinoColors.systemRed;
-    }
-  }
-
-  MaterialColor _materialColor(AccountViewModel model) {
-    final projectionType = model.projectionType;
-    if (projectionType == 0) {
-      return Colors.grey;
-    } else if (projectionType > 0) {
-      return Colors.green;
-    } else {
-      return Colors.red;
-    }
+  Color _getContainerColor(BuildContext context, AccountViewModel model) {
+    return AppThemes.getProjectionColor(
+      context,
+      model.projectionType.toDouble(),
+    );
   }
 }

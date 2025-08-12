@@ -56,88 +56,107 @@ class ErrorDialog extends StatelessWidget {
   }
 
   Widget _buildCupertinoDialog(BuildContext context) {
-    final theme =
-        Theme.of(context).extension<ErrorDialogTheme>() ??
-        const ErrorDialogTheme();
-
     return CupertinoAlertDialog(
       title: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             CupertinoIcons.exclamationmark_triangle_fill,
-            color: theme.iconColor,
+            color: AppThemes.getErrorIconColor(context),
             size: 20,
             semanticLabel: 'Error icon',
           ),
           const SizedBox(width: 8),
           Flexible(
-            child: Text('Error', style: TextStyle(color: theme.textColor)),
+            child: Text(
+              'Error',
+              style: AppThemes.getErrorTitleTextStyle(context),
+            ),
           ),
         ],
       ),
-      content: Text(message, style: TextStyle(color: theme.textColor)),
-      actions:
-          actions.isEmpty && autoDismiss > Duration.zero
-              ? []
-              : actions.isEmpty
-              ? [
-                CupertinoDialogAction(
-                  onPressed: () {
-                    final router = GoRouter.of(context);
-                    if (router.canPop()) {
-                      router.pop();
-                    }
-                  },
-                  child: const Text('OK'),
-                ),
-              ]
-              : actions
-                  .map(
-                    (action) => CupertinoDialogAction(
-                      onPressed: action.onPressed,
-                      child: Text(action.label),
-                    ),
-                  )
-                  .toList(),
+      content: Text(
+        message,
+        style: AppThemes.getErrorContentTextStyle(context),
+      ),
+      actions: _buildDialogActions(context),
     );
   }
 
   Widget _buildMaterialDialog(BuildContext context) {
-    final theme =
-        Theme.of(context).extension<ErrorDialogTheme>() ??
-        const ErrorDialogTheme();
-
     return AlertDialog(
+      backgroundColor: AppThemes.getCardColor(context),
+      surfaceTintColor: AppThemes.getCardColor(context),
       icon: Icon(
         Icons.error_outline,
-        color: theme.iconColor,
+        color: AppThemes.getErrorIconColor(context),
+        size: 24,
         semanticLabel: 'Error icon',
       ),
-      title: const Text('Error'),
-      content: Text(message),
-      actions:
-          actions.isEmpty && autoDismiss > Duration.zero
-              ? []
-              : actions.isEmpty
-              ? [
-                TextButton(
-                  onPressed: () {
-                    final router = GoRouter.of(context);
-                    if (router.canPop()) {
-                      router.pop();
-                    }
-                  },
-                  child: const Text('OK'),
-                ),
-              ]
-              : actions
-                  .map(
-                    (action) => TextButton(
-                      onPressed: action.onPressed,
-                      child: Text(action.label),
-                    ),
-                  )
-                  .toList(),
+      title: Text('Error', style: AppThemes.getErrorTitleTextStyle(context)),
+      content: Text(
+        message,
+        style: AppThemes.getErrorContentTextStyle(context),
+      ),
+      actions: _buildDialogActions(context),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
+  }
+
+  List<Widget> _buildDialogActions(BuildContext context) {
+    if (actions.isEmpty && autoDismiss > Duration.zero) {
+      return [];
+    }
+
+    if (actions.isEmpty) {
+      return [
+        if (UniversalPlatform.isApple)
+          CupertinoDialogAction(
+            onPressed: () {
+              final router = GoRouter.of(context);
+              if (router.canPop()) {
+                router.pop();
+              }
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: AppThemes.getPrimaryColor(context)),
+            ),
+          )
+        else
+          TextButton(
+            onPressed: () {
+              final router = GoRouter.of(context);
+              if (router.canPop()) {
+                router.pop();
+              }
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: AppThemes.getPrimaryColor(context),
+            ),
+            child: const Text('OK'),
+          ),
+      ];
+    }
+
+    return actions.map((action) {
+      if (UniversalPlatform.isApple) {
+        return CupertinoDialogAction(
+          onPressed: action.onPressed,
+          child: Text(
+            action.label,
+            style: TextStyle(color: AppThemes.getPrimaryColor(context)),
+          ),
+        );
+      } else {
+        return TextButton(
+          onPressed: action.onPressed,
+          style: TextButton.styleFrom(
+            foregroundColor: AppThemes.getPrimaryColor(context),
+          ),
+          child: Text(action.label),
+        );
+      }
+    }).toList();
   }
 }

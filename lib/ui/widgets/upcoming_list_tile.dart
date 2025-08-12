@@ -1,8 +1,8 @@
 import 'dart:developer' as developper show log;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core/constants/themes.dart';
 import 'package:holefeeder/core/models/models.dart';
 import 'package:holefeeder/core/repositories/repositories.dart';
 import 'package:holefeeder/core/services/services.dart';
@@ -38,10 +38,7 @@ class UpcomingListTile extends StatelessWidget {
       SwipeAction(
         label: L10nService.current.cancelUpcoming,
         icon: AdaptiveIcons.cancel,
-        color:
-            UniversalPlatform.isApple
-                ? CupertinoColors.systemBlue
-                : Colors.blue,
+        color: AppThemes.getSystemBlueColor(context),
         onTap:
             () => SwipeActionDialogs.showConfirmationDialog(
               context,
@@ -56,8 +53,7 @@ class UpcomingListTile extends StatelessWidget {
       SwipeAction(
         label: L10nService.current.deleteCashflow,
         icon: AdaptiveIcons.delete,
-        color:
-            UniversalPlatform.isApple ? CupertinoColors.systemRed : Colors.red,
+        color: AppThemes.getDestructiveColor(context),
         onTap:
             () => SwipeActionDialogs.showConfirmationDialog(
               context,
@@ -94,20 +90,26 @@ class UpcomingListTile extends StatelessWidget {
                 horizontal: 8.0,
                 vertical: 8.0,
               ),
-              leading: _buildLeadingContainer(model),
+              leading: _buildLeadingContainer(context, model),
               title: _buildTitle(model),
               subtitle: _buildSubtitle(model),
               trailing: _buildTrailing(model),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 52.0),
-            child: Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.only(left: 52.0),
+            child: Divider(
+              height: 1,
+              thickness: UniversalPlatform.isApple ? 0.5 : 1.0,
+            ),
           ),
         ],
       );
 
-  Widget _buildLeadingContainer(UpcomingViewModel model) => GestureDetector(
+  Widget _buildLeadingContainer(
+    BuildContext context,
+    UpcomingViewModel model,
+  ) => GestureDetector(
     onTap: () async {
       developper.log(
         'Leading Container onTap: ${model.formState.upcoming.id}',
@@ -123,7 +125,7 @@ class UpcomingListTile extends StatelessWidget {
       child: Icon(
         AdaptiveIcons.purchase,
         size: 28.0,
-        color: CupertinoColors.systemBlue,
+        color: AppThemes.getPrimaryColor(context),
       ),
     ),
   );
@@ -135,7 +137,7 @@ class UpcomingListTile extends StatelessWidget {
             Expanded(
               child: Text(
                 model.description,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: AppThemes.getTitleTextStyle(context),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -153,10 +155,7 @@ class UpcomingListTile extends StatelessWidget {
               DateFormat.yMd(
                 L10nService.device.toLanguageTag(),
               ).format(model.date),
-              style: const TextStyle(
-                fontSize: 12,
-                color: CupertinoColors.systemGrey,
-              ),
+              style: AppThemes.getSubtitleTextStyle(context),
             ),
           ],
         ),

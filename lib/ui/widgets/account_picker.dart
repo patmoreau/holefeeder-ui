@@ -3,7 +3,9 @@ import 'dart:developer' as developer;
 import 'package:flutter/widgets.dart';
 import 'package:holefeeder/core/models/account.dart';
 import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/ui/widgets/adaptive/adaptive_picker.dart';
+
+import 'adaptive/adaptive_form_row.dart';
+import 'adaptive/adaptive_picker_field.dart';
 
 class AccountPicker extends StatelessWidget {
   final String? label;
@@ -39,14 +41,16 @@ class AccountPicker extends StatelessWidget {
     }
 
     developer.log('Rendering adaptive picker', name: 'AccountPicker');
-    return AdaptivePicker<Account>(
-      label: label ?? L10nService.current.fieldAccount,
-      value: selectedAccount,
-      items: accounts,
-      displayStringFor: (account) => account.name,
-      onChanged: onChanged,
-      placeholder: L10nService.current.fieldAccountPlaceHolder,
-      enabled: enabled,
+    return AdaptiveFormRow(
+      prefix: Text(label ?? L10nService.current.fieldAccount),
+      child: AdaptivePickerField<Account>(
+        value: selectedAccount,
+        items: accounts,
+        displayStringFor: (account) => account.name,
+        onChanged: onChanged,
+        placeholder: L10nService.current.fieldAccountPlaceHolder,
+        enabled: enabled,
+      ),
     );
   }
 }

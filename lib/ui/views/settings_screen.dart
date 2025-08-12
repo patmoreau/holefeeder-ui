@@ -2,7 +2,6 @@ import 'dart:developer' as developer;
 
 import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Theme;
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core/constants/themes.dart';
 import 'package:holefeeder/core/services/l10n_service.dart';
@@ -23,7 +22,6 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
 
   @override
   Widget build(BuildContext context) {
-    final formTheme = Theme.of(context).extension<FormThemeExtension>();
     return CupertinoPageScaffold(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -53,11 +51,11 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                             controller: _section1TextController,
                             placeholder: 'Enter text',
                             prefix: const Text('Text:'),
-                            padding: formTheme?.rowPadding,
+                            padding: AppThemes.getFormRowPadding(context),
                           ),
                           CupertinoFormRow(
                             prefix: const Text('Date'),
-                            padding: formTheme?.rowPadding,
+                            padding: AppThemes.getFormRowPadding(context),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -78,7 +76,7 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                           ),
                           CupertinoFormRow(
                             prefix: const Text('Menu'),
-                            padding: formTheme?.rowPadding,
+                            padding: AppThemes.getFormRowPadding(context),
                             child: PullDownButton(
                               itemBuilder:
                                   (context) => [
@@ -117,7 +115,7 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                               });
                             },
                             prefix: const Text('Select:'),
-                            padding: formTheme?.rowPadding,
+                            padding: AppThemes.getFormRowPadding(context),
                             children: const <Widget>[
                               Text('Option 1'),
                               Text('Option 2'),
@@ -126,7 +124,9 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                           ),
                         ],
                       ),
-                      SizedBox(height: formTheme?.sectionSpacing ?? 24.0),
+                      SizedBox(
+                        height: AppThemes.getFormSectionSpacing(context),
+                      ),
                       CupertinoFormSection.insetGrouped(
                         header: const Text('Section 2'),
                         children: <Widget>[
@@ -134,7 +134,7 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                             controller: _section2TextController,
                             placeholder: 'Enter more text',
                             prefix: const Text('Text:'),
-                            padding: formTheme?.rowPadding,
+                            padding: AppThemes.getFormRowPadding(context),
                           ),
                           CupertinoPickerRow(
                             selectedValue: _section2DropdownValue,
@@ -145,7 +145,7 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                               });
                             },
                             prefix: const Text('Select:'),
-                            padding: formTheme?.rowPadding,
+                            padding: AppThemes.getFormRowPadding(context),
                             children: const <Widget>[
                               Text('Choice A'),
                               Text('Choice B'),
@@ -154,11 +154,11 @@ class _CupertinoFormExampleState extends State<CupertinoFormExample> {
                           ),
                         ],
                       ),
-                      SizedBox(height: formTheme?.sectionSpacing ?? 24.0),
+                      SizedBox(
+                        height: AppThemes.getFormSectionSpacing(context),
+                      ),
                       Padding(
-                        padding:
-                            formTheme?.rowPadding ??
-                            const EdgeInsets.symmetric(horizontal: 16),
+                        padding: AppThemes.getFormRowPadding(context),
                         child: CupertinoButton.filled(
                           child: const Text('Submit'),
                           onPressed: () {
@@ -212,10 +212,9 @@ class CupertinoPickerRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formTheme = Theme.of(context).extension<FormThemeExtension>();
     return CupertinoFormRow(
       prefix: prefix,
-      padding: padding ?? formTheme?.rowPadding,
+      padding: padding ?? AppThemes.getFormRowPadding(context),
       child: GestureDetector(
         onTap: () {
           showCupertinoModalPopup(

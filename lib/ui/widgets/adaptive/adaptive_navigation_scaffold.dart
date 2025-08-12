@@ -1,7 +1,9 @@
 import 'dart:developer' as developer;
 import 'dart:math' as math;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:holefeeder/core/constants/themes.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'adaptive_navigation_item.dart';
@@ -49,7 +51,7 @@ class AdaptiveNavigationScaffold extends StatelessWidget
         'Using NavigationRail for adaptive navigation',
         name: 'AdaptiveNavigationScaffold',
       );
-      return _buildNavigationRailScaffold();
+      return _buildNavigationRailScaffold(context);
     } else {
       developer.log(
         'Using BottomNavigationBar for adaptive navigation',
@@ -60,7 +62,7 @@ class AdaptiveNavigationScaffold extends StatelessWidget
     return isCupertino ? _buildCupertinoScaffold() : _buildMaterialScaffold();
   }
 
-  Widget _buildNavigationRailScaffold() {
+  Widget _buildNavigationRailScaffold(BuildContext context) {
     if (isCupertino) {
       return buildCupertinoPageScaffold();
     }
@@ -70,7 +72,7 @@ class AdaptiveNavigationScaffold extends StatelessWidget
       body: Row(
         children: [
           NavigationRail(
-            backgroundColor: Colors.grey[50],
+            backgroundColor: Theme.of(context).colorScheme.surface,
             selectedIndex: currentIndex,
             onDestinationSelected: onNavigationChanged,
             labelType: NavigationRailLabelType.all,
@@ -78,8 +80,14 @@ class AdaptiveNavigationScaffold extends StatelessWidget
                 navigationItems
                     .map(
                       (item) => NavigationRailDestination(
-                        icon: Icon(item.icon),
-                        selectedIcon: Icon(item.activeIcon ?? item.icon),
+                        icon: Icon(
+                          item.icon,
+                          size: 24,
+                        ), // Standard Material icon size
+                        selectedIcon: Icon(
+                          item.activeIcon ?? item.icon,
+                          size: 24,
+                        ),
                         label: Text(item.label),
                       ),
                     )
@@ -109,6 +117,7 @@ class AdaptiveNavigationScaffold extends StatelessWidget
     tabBar: CupertinoTabBar(
       currentIndex: currentIndex,
       onTap: onNavigationChanged,
+      iconSize: 20, // iOS standard tab bar icon size
       items:
           navigationItems
               .map(
@@ -143,6 +152,8 @@ class AdaptiveNavigationScaffold extends StatelessWidget
             : BottomNavigationBar(
               currentIndex: currentIndex,
               onTap: onNavigationChanged,
+              iconSize: 24,
+              // Material standard bottom nav icon size
               type:
                   navigationItems.length > 3
                       ? BottomNavigationBarType.shifting
@@ -181,7 +192,7 @@ class AdaptiveNavigationScaffold extends StatelessWidget
           textPainter.text = TextSpan(
             text: item.label,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 15, // Slightly smaller for navigation rail
               fontWeight:
                   FontWeight.w600, // Use the bold weight for measurement
             ),
@@ -190,15 +201,15 @@ class AdaptiveNavigationScaffold extends StatelessWidget
           maxTextWidth = math.max(maxTextWidth, textPainter.width);
         }
 
-        // Calculate total width: icon (22) + spacing (12) + text + horizontal padding (32) + margins (16) + extra for bold (8)
-        final optimalWidth = 22 + 12 + maxTextWidth + 32 + 16 + 8;
+        // Calculate total width: icon (20) + spacing (12) + text + horizontal padding (32) + margins (16) + extra for bold (8)
+        final optimalWidth = 20 + 12 + maxTextWidth + 32 + 16 + 8;
         // Set minimum width to ensure it doesn't get too narrow
         final railWidth = math.max(optimalWidth, 150.0).toDouble();
 
         return Container(
           width: railWidth,
           decoration: BoxDecoration(
-            color: CupertinoColors.systemBackground.resolveFrom(context),
+            color: CupertinoTheme.of(context).scaffoldBackgroundColor,
             border: Border(
               right: BorderSide(
                 color: CupertinoColors.separator.resolveFrom(context),
@@ -241,13 +252,11 @@ class AdaptiveNavigationScaffold extends StatelessWidget
                           isSelected ? item.activeIcon ?? item.icon : item.icon,
                           color:
                               isSelected
-                                  ? CupertinoColors.activeBlue.resolveFrom(
-                                    context,
-                                  )
+                                  ? AppThemes.getPrimaryColor(context)
                                   : CupertinoColors.secondaryLabel.resolveFrom(
                                     context,
                                   ),
-                          size: 22,
+                          size: 20, // iOS standard navigation rail icon size
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -256,13 +265,12 @@ class AdaptiveNavigationScaffold extends StatelessWidget
                             style: TextStyle(
                               color:
                                   isSelected
-                                      ? CupertinoColors.activeBlue.resolveFrom(
-                                        context,
-                                      )
+                                      ? AppThemes.getPrimaryColor(context)
                                       : CupertinoColors.label.resolveFrom(
                                         context,
                                       ),
-                              fontSize: 16,
+                              fontSize:
+                                  15, // Slightly smaller for navigation rail
                               fontWeight:
                                   isSelected
                                       ? FontWeight.w600

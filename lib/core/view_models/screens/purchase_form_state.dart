@@ -1,8 +1,7 @@
 import 'package:decimal/decimal.dart';
-import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/models/models.dart';
-
-import '../base_form_state.dart';
+import 'package:holefeeder/core/enums.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
 
 class PurchaseFormState extends BaseFormState {
   final Decimal amount;

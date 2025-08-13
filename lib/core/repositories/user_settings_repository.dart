@@ -1,11 +1,11 @@
 import 'dart:developer' as developer;
 
-import 'package:holefeeder/core/constants/hive_constants.dart';
-import 'package:holefeeder/core/events/events.dart';
-import 'package:holefeeder/core/models/user_settings.dart';
-import 'package:holefeeder/core/repositories/base_repository.dart';
+import 'package:holefeeder/core/constants.dart';
+import 'package:holefeeder/core/events.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/services.dart';
 
-import '../services/services.dart';
+import 'base_repository.dart';
 
 abstract class UserSettingsRepository extends BaseRepository<UserSettings> {
   Future<UserSettings> getDefault();

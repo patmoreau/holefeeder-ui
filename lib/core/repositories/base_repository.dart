@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:holefeeder/core/models/hive_key.dart';
+import 'package:holefeeder/core/models.dart';
 
 mixin RepositoryInitializer {
   bool _isInitialized = false;

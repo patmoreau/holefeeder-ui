@@ -1,8 +1,8 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/widgets.dart';
+import 'package:holefeeder/core/services.dart';
 
-import '../services/notification_service.dart';
 import 'base_form_state.dart';
 
 abstract class BaseViewModel<T extends BaseFormState> extends ChangeNotifier {

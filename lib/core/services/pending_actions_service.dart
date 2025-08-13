@@ -1,4 +1,4 @@
-import 'package:holefeeder/core/constants/constants.dart';
+import 'package:holefeeder/core/constants.dart';
 
 import 'hive_service.dart';
 

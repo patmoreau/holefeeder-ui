@@ -1,11 +1,11 @@
 import 'dart:developer' as developer;
 
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/services/pending_actions_service.dart';
+import 'package:holefeeder/core/authentication.dart';
+import 'package:holefeeder/platform.dart';
 import 'package:quick_actions/quick_actions.dart';
-import 'package:universal_platform/universal_platform.dart';
 
-import '../authentication/authentication_client.dart';
+import 'pending_actions_service.dart';
 
 abstract class QuickActionsService {
   void initialize(GoRouter router);
@@ -38,7 +38,7 @@ class QuickActionsServiceImpl implements QuickActionsService {
       name: 'QuickActionsService',
     );
 
-    if (!UniversalPlatform.isMobile) {
+    if (!Platform.isMobile) {
       developer.log(
         'Quick actions are only supported on mobile platforms.',
         name: 'QuickActionsService',

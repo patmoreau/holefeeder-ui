@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 
-import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/models.dart';
 
 import 'api_service.dart';
 

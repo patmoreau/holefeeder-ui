@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/models.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';

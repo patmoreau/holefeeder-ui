@@ -1,6 +1,5 @@
-import 'package:holefeeder/core/models/models.dart';
-
-import '../base_form_state.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
 
 class DashboardFormState extends BaseFormState {
   final List<Account> accounts;

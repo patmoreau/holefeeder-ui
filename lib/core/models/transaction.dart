@@ -1,9 +1,9 @@
 import 'package:decimal/decimal.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:holefeeder/core/models/account_info.dart';
-import 'package:holefeeder/core/models/category_info.dart';
 import 'package:intl/intl.dart';
 
+import 'account_info.dart';
+import 'category_info.dart';
 import 'hive_key.dart';
 
 class Transaction extends HiveObject with HiveKey {

@@ -1,7 +1,8 @@
-import '../../models/models.dart';
-import '../../services/services.dart';
-import '../base_form_state.dart';
-import '../base_view_model.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/services.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
+import 'package:holefeeder/core/view_models/base_view_model.dart';
+
 import 'categories_form_state.dart';
 
 class CategoriesViewModel extends BaseViewModel<CategoriesFormState> {

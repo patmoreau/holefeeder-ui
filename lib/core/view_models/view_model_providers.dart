@@ -1,7 +1,7 @@
+import 'package:holefeeder/core/repositories.dart';
+import 'package:holefeeder/core/services.dart';
 import 'package:provider/provider.dart';
 
-import '../repositories/repositories.dart';
-import '../services/services.dart';
 import 'user_settings_view_model.dart';
 
 final viewModelProviders = [

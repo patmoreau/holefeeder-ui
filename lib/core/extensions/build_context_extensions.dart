@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/app/router.dart';
+import 'package:holefeeder/app.dart';
 
 extension NavigationExtensions on BuildContext {
   /// Pops the current route if possible, otherwise navigates to the home route.

@@ -1,7 +1,7 @@
-import 'package:holefeeder/core/events/event_bus.dart';
+import 'package:holefeeder/core/events.dart';
+import 'package:holefeeder/core/services.dart';
 import 'package:provider/provider.dart';
 
-import '../services/services.dart';
 import 'account_repository.dart';
 import 'cashflow_repository.dart';
 import 'category_repository.dart';

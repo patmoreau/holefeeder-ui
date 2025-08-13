@@ -1,4 +1,4 @@
-import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/models.dart';
 
 import 'event_payload.dart';
 

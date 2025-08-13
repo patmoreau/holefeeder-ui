@@ -2,12 +2,11 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:decimal/decimal.dart';
-import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/events/events.dart';
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/repositories/repositories.dart';
-
-import '../view_models.dart';
+import 'package:holefeeder/core/enums.dart';
+import 'package:holefeeder/core/events.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/repositories.dart';
+import 'package:holefeeder/core/view_models.dart';
 
 class AccountViewModel extends BaseViewModel<AccountFormState> {
   final AccountRepository _accountRepository;

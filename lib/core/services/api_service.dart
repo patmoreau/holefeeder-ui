@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/utils/utils.dart';
+import 'package:holefeeder/core/enums.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/network.dart';
 
 abstract class ApiService {
   // Accounts

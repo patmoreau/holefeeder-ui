@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:universal_platform/universal_platform.dart';
+import 'package:holefeeder/core/enums.dart';
+import 'package:holefeeder/platform.dart';
 
-import '../enums/category_type_enum.dart';
 import 'theme_data_cupertino.dart';
 import 'theme_data_material.dart';
 
@@ -14,20 +14,16 @@ class AppThemes {
   static const Color primaryBrandColor = Colors.orange;
 
   /// Get the appropriate theme data based on platform
-  static ThemeData getMaterialTheme({bool isDark = false}) {
-    return isDark
-        ? buildDarkMaterialThemeData()
-        : buildLightMaterialThemeData();
-  }
+  static ThemeData getMaterialTheme({bool isDark = false}) =>
+      isDark ? buildDarkMaterialThemeData() : buildLightMaterialThemeData();
 
   /// Get Cupertino theme data
-  static CupertinoThemeData getCupertinoTheme(BuildContext context) {
-    return buildCupertinoThemeData(context);
-  }
+  static CupertinoThemeData getCupertinoTheme(BuildContext context) =>
+      buildCupertinoThemeData(context);
 
   /// Get platform-appropriate primary color
   static Color getPrimaryColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(context).primaryColor;
     } else {
       return Theme.of(context).colorScheme.primary;
@@ -36,16 +32,16 @@ class AppThemes {
 
   /// Get platform-appropriate background color
   static Color getBackgroundColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(context).scaffoldBackgroundColor;
     } else {
-      return Theme.of(context).colorScheme.background;
+      return Theme.of(context).colorScheme.surface;
     }
   }
 
   /// Get platform-appropriate card/container color
   static Color getCardColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.secondarySystemBackground.resolveFrom(context);
     } else {
       return Theme.of(context).cardColor;
@@ -54,7 +50,7 @@ class AppThemes {
 
   /// Get platform-appropriate text color
   static Color getTextColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.label.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.onSurface;
@@ -63,7 +59,7 @@ class AppThemes {
 
   /// Get platform-appropriate secondary text color
   static Color getSecondaryTextColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.secondaryLabel.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.onSurfaceVariant;
@@ -72,7 +68,7 @@ class AppThemes {
 
   /// Get platform-appropriate placeholder text color
   static Color getPlaceholderTextColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.placeholderText.resolveFrom(context);
     } else {
       return Theme.of(context).hintColor;
@@ -81,7 +77,7 @@ class AppThemes {
 
   /// Get platform-appropriate surface color
   static Color getSurfaceColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(context).scaffoldBackgroundColor;
     } else {
       return Theme.of(context).colorScheme.surface;
@@ -90,7 +86,7 @@ class AppThemes {
 
   /// Get platform-appropriate divider color
   static Color getDividerColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.separator.resolveFrom(context);
     } else {
       return Theme.of(context).dividerColor;
@@ -99,7 +95,7 @@ class AppThemes {
 
   /// Get platform-appropriate border color
   static Color getBorderColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.separator.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.outline;
@@ -108,7 +104,7 @@ class AppThemes {
 
   /// Get platform-appropriate disabled color
   static Color getDisabledColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.systemGrey3.resolveFrom(context);
     } else {
       return Theme.of(context).disabledColor;
@@ -117,7 +113,7 @@ class AppThemes {
 
   /// Get platform-appropriate text style for titles
   static TextStyle getTitleTextStyle(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(context).textTheme.navTitleTextStyle;
     } else {
       return Theme.of(
@@ -129,7 +125,7 @@ class AppThemes {
 
   /// Get platform-appropriate text style for subtitles
   static TextStyle getSubtitleTextStyle(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(context).textTheme.textStyle.copyWith(
         fontSize: 13,
         color: CupertinoColors.secondaryLabel.resolveFrom(context),
@@ -147,7 +143,7 @@ class AppThemes {
 
   /// Get platform-appropriate expense color (red variants)
   static Color getExpenseColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.systemRed.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.error;
@@ -156,7 +152,7 @@ class AppThemes {
 
   /// Get platform-appropriate income color (green variants)
   static Color getIncomeColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.systemGreen.resolveFrom(context);
     } else {
       // Use a semantic green that works well with Material themes
@@ -166,7 +162,7 @@ class AppThemes {
 
   /// Get platform-appropriate neutral/grey color
   static Color getNeutralColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.systemGrey.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.outline;
@@ -175,7 +171,7 @@ class AppThemes {
 
   /// Get platform-appropriate warning color (yellow/amber variants)
   static Color getWarningColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.systemYellow.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.secondary;
@@ -184,7 +180,7 @@ class AppThemes {
 
   /// Get platform-appropriate destructive color (red variants)
   static Color getDestructiveColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.systemRed.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.error;
@@ -193,7 +189,7 @@ class AppThemes {
 
   /// Get platform-appropriate system blue color
   static Color getSystemBlueColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.systemBlue.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.primary;
@@ -234,7 +230,7 @@ class AppThemes {
 
   /// Get platform-appropriate error text color
   static Color getErrorTextColor(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoColors.label.resolveFrom(context);
     } else {
       return Theme.of(context).colorScheme.onSurface;
@@ -243,7 +239,7 @@ class AppThemes {
 
   /// Get platform-appropriate error title text style
   static TextStyle getErrorTitleTextStyle(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(
         context,
       ).textTheme.navTitleTextStyle.copyWith(color: getErrorTextColor(context));
@@ -261,7 +257,7 @@ class AppThemes {
 
   /// Get platform-appropriate error content text style
   static TextStyle getErrorContentTextStyle(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(
         context,
       ).textTheme.textStyle.copyWith(color: getErrorTextColor(context));
@@ -275,7 +271,7 @@ class AppThemes {
 
   /// Get platform-appropriate form row padding
   static EdgeInsetsGeometry getFormRowPadding(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
     } else {
       return const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
@@ -284,7 +280,7 @@ class AppThemes {
 
   /// Get platform-appropriate form section spacing
   static double getFormSectionSpacing(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return 24.0;
     } else {
       return 16.0;
@@ -293,7 +289,7 @@ class AppThemes {
 
   /// Get platform-appropriate form field text style
   static TextStyle getFormFieldTextStyle(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(context).textTheme.textStyle;
     } else {
       return Theme.of(context).textTheme.bodyLarge ??
@@ -303,7 +299,7 @@ class AppThemes {
 
   /// Get platform-appropriate form label text style
   static TextStyle getFormLabelTextStyle(BuildContext context) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return CupertinoTheme.of(
         context,
       ).textTheme.textStyle.copyWith(fontWeight: FontWeight.w500);
@@ -326,7 +322,7 @@ class AppThemes {
     bool enabled = true,
     EdgeInsetsGeometry? contentPadding,
   }) {
-    if (UniversalPlatform.isApple) {
+    if (Platform.isCupertino) {
       return Container(
         decoration: BoxDecoration(
           color: getCardColor(context),

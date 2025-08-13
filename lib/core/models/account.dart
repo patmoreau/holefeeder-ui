@@ -1,6 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core/enums.dart';
 
 import 'hive_key.dart';
 

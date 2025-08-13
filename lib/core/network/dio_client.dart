@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:holefeeder/app.dart';
+import 'package:holefeeder/core/authentication.dart';
+import 'package:holefeeder/core/enums.dart';
 import 'package:intl/intl.dart';
-
-import '../../app/router.dart';
-import '../authentication/authentication_client.dart';
-import '../enums/authentication_status_enum.dart';
 
 class DioClient {
   static Dio? _instance;

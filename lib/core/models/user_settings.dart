@@ -1,6 +1,6 @@
 import 'package:hive_ce/hive.dart';
-import 'package:holefeeder/core/constants/hive_constants.dart';
-import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
+import 'package:holefeeder/core/constants.dart';
+import 'package:holefeeder/core/enums.dart';
 import 'package:intl/intl.dart';
 
 import 'hive_key.dart';

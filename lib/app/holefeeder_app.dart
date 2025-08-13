@@ -2,21 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:holefeeder/core/services/services.dart';
-import 'package:holefeeder/core/utils/utils.dart';
-import 'package:holefeeder/core/view_models/view_model_providers.dart';
-import 'package:holefeeder/l10n/l10n.dart';
-import 'package:holefeeder/ui/services/services.dart';
-import 'package:holefeeder/ui/widgets/platform/platform_widget.dart';
+import 'package:holefeeder/core.dart';
+import 'package:holefeeder/core/core_providers.dart';
+import 'package:holefeeder/l10n.dart';
+import 'package:holefeeder/presentation.dart';
+import 'package:holefeeder/presentation/widgets/platform/platform_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../core/authentication/authentication_providers.dart';
-import '../core/constants/theme_data_cupertino.dart';
-import '../core/constants/theme_data_material.dart';
-import '../core/events/event_providers.dart';
-import '../core/network/network_providers.dart';
-import '../core/repositories/repository_providers.dart';
-import '../core/services/service_providers.dart';
 import 'router.dart';
 
 class HolefeederApp extends StatefulWidget {

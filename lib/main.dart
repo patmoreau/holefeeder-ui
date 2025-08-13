@@ -2,8 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-
-import 'app/holefeeder_app.dart';
+import 'package:holefeeder/app.dart';
 
 const appScheme = 'https';
 

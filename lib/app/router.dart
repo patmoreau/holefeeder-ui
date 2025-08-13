@@ -2,18 +2,10 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/utils/utils.dart';
-import 'package:holefeeder/ui/views/account_screen.dart';
-import 'package:holefeeder/ui/views/edit_cashflow_screen.dart';
-import 'package:holefeeder/ui/views/edit_transaction_screen.dart';
-import 'package:holefeeder/ui/views/home_screen.dart';
-import 'package:holefeeder/ui/views/login_screen.dart';
-import 'package:holefeeder/ui/views/purchase_screen.dart';
-import 'package:holefeeder/ui/views/upcoming_screen.dart';
+import 'package:holefeeder/core.dart';
+import 'package:holefeeder/presentation.dart';
 import 'package:provider/provider.dart';
 
-import '../presentation/views/splash_screen.dart';
 import 'holefeeder_app.dart';
 
 const kTrueHome = '/dashboard';

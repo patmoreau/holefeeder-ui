@@ -117,7 +117,6 @@ class AdaptiveNavigationScaffold extends StatelessWidget
     tabBar: CupertinoTabBar(
       currentIndex: currentIndex,
       onTap: onNavigationChanged,
-      iconSize: 20, // iOS standard tab bar icon size
       items:
           navigationItems
               .map(

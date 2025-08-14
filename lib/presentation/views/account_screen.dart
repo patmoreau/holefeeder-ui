@@ -59,7 +59,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: AdaptiveIconButton(
-                      padding: EdgeInsets.only(right: 16.0),
+                      padding: EdgeInsets.only(right: 24.0),
                       onPressed:
                           () => context.push('/purchase', extra: model.account),
                       icon: Icon(AdaptiveIcons.purchase, size: 28.0),

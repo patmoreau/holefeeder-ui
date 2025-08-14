@@ -67,20 +67,20 @@ class _AccountFormState extends State<AccountForm> {
             height: 58,
             child: Row(
               children: [
+                if (model.account.favorite) ...[
+                  const Icon(
+                    CupertinoIcons.star_fill,
+                    color: CupertinoColors.systemYellow,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 6),
+                ],
                 Text(
                   model.account.name,
                   style: titleStyle,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                 ),
-                if (model.account.favorite) ...[
-                  const SizedBox(width: 4),
-                  const Icon(
-                    CupertinoIcons.star_fill,
-                    color: CupertinoColors.systemYellow,
-                    size: 16,
-                  ),
-                ],
               ],
             ),
           ),

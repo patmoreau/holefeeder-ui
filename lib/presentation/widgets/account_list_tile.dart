@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:holefeeder/core.dart';
@@ -49,8 +48,8 @@ class AccountListTile extends StatelessWidget {
 
   Widget _buildLeadingContainer(BuildContext context, AccountViewModel model) =>
       Container(
-        width: 32,
-        height: 32,
+        width: 52,
+        height: 52,
         decoration: BoxDecoration(
           color: _getContainerColor(context, model),
           shape: BoxShape.circle,
@@ -60,7 +59,7 @@ class AccountListTile extends StatelessWidget {
             model.upcomingCashflowsCount.toString(),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               height: 1.0,
             ),
@@ -68,48 +67,57 @@ class AccountListTile extends StatelessWidget {
         ),
       );
 
-  Widget _buildTitle(BuildContext context, AccountViewModel model) => Row(
-    children: [
-      Expanded(
-        child: Text(
-          model.account.name,
-          style: AppThemes.getTitleTextStyle(context),
-          overflow: TextOverflow.ellipsis,
+  Widget _buildTitle(BuildContext context, AccountViewModel model) =>
+      LayoutBuilder(
+        builder:
+            (context, constraints) => Row(
+              children: [
+                if (model.account.favorite) ...[
+                  Icon(
+                    AdaptiveIcons.star,
+                    color: AppThemes.getWarningColor(context),
+                    size: 18,
+                  ),
+                  const SizedBox(width: 6),
+                ],
+                Expanded(
+                  child: Text(
+                    model.account.name,
+                    style: AppThemes.getTitleTextStyle(context),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+      );
+
+  Widget _buildSubtitle(
+    BuildContext context,
+    AccountViewModel model,
+  ) => LayoutBuilder(
+    builder:
+        (context, constraints) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 2),
+            CurrencyText(value: account.balance),
+            const SizedBox(height: 2),
+            Text(
+              '${L10nService.current.lastUpdated}: ${DateFormat.yMd(L10nService.device.toLanguageTag()).format(model.account.updated)}',
+              style: AppThemes.getSubtitleTextStyle(
+                context,
+              ).copyWith(fontStyle: FontStyle.italic),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
-      ),
-      if (model.account.favorite) ...[
-        const SizedBox(width: 6),
-        Icon(
-          Platform.isCupertino ? CupertinoIcons.star_fill : Icons.star,
-          color: AppThemes.getWarningColor(context),
-          size: 18,
-        ),
-      ],
-    ],
   );
 
-  Widget _buildSubtitle(BuildContext context, AccountViewModel model) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const SizedBox(height: 4),
-      CurrencyText(value: account.balance),
-      const SizedBox(height: 4),
-      Text(
-        '${L10nService.current.lastUpdated}: ${DateFormat.yMd(L10nService.device.toLanguageTag()).format(model.account.updated)}',
-        style: AppThemes.getSubtitleTextStyle(
-          context,
-        ).copyWith(fontStyle: FontStyle.italic),
-        overflow: TextOverflow.ellipsis,
-      ),
-    ],
-  );
-
-  Widget _buildTrailing(AccountViewModel model) => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.end,
+  Widget _buildTrailing(AccountViewModel model) => Row(
+    mainAxisSize: MainAxisSize.min,
     children: [
       CurrencyText(value: model.projection),
-      const SizedBox(height: 4),
+      const SizedBox(width: 8),
       const AdaptiveListTileChevron(),
     ],
   );

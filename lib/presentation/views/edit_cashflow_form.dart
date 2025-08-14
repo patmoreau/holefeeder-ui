@@ -15,42 +15,49 @@ class EditCashflowForm extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: ListView(
-        primary: true, // Use the PrimaryScrollController
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          if (model.hasError)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Text(
-                model.error ?? L10nService.current.errorGeneric,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
+  Widget build(BuildContext context) => Form(
+    key: formKey,
+    child: ListView(
+      primary: true, // Use the PrimaryScrollController
+      padding: const EdgeInsets.all(16.0),
+      children: [
+        if (model.hasError)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Text(
+              model.error ?? L10nService.current.errorGeneric,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
-          ..._buildFormSections(),
-          // Add some bottom padding to ensure the last item is visible
-          const SizedBox(height: 32),
-        ],
-      ),
-    );
-  }
+          ),
+        ..._buildFormSections(context),
+        // Add some bottom padding to ensure the last item is visible
+        const SizedBox(height: 32),
+      ],
+    ),
+  );
 
-  List<Widget> _buildFormSections() => [
+  List<Widget> _buildFormSections(BuildContext context) => [
     AdaptiveFormSection(
-      header: L10nService.current.purchaseBasicDetails,
+      header: Text(
+        L10nService.current.purchaseBasicDetails,
+        style: AppThemes.getFormSectionHeaderTextStyle(context),
+      ),
       children: _buildBasicFields(),
     ),
     const SizedBox(height: 16),
     AdaptiveFormSection(
-      header: L10nService.current.purchaseAdditionalDetails,
+      header: Text(
+        L10nService.current.purchaseAdditionalDetails,
+        style: AppThemes.getFormSectionHeaderTextStyle(context),
+      ),
       children: _buildAdditionalFields(),
     ),
     const SizedBox(height: 16),
     AdaptiveFormSection(
-      header: L10nService.current.purchaseCashflowDetails,
+      header: Text(
+        L10nService.current.purchaseCashflowDetails,
+        style: AppThemes.getFormSectionHeaderTextStyle(context),
+      ),
       children: _buildCashflowFields(),
     ),
   ];

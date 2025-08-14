@@ -29,7 +29,7 @@ class EditTransactionForm extends StatelessWidget {
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
-          ..._buildFormSections(),
+          ..._buildFormSections(context),
           // Add some bottom padding to ensure the last item is visible
           const SizedBox(height: 32),
         ],
@@ -37,14 +37,20 @@ class EditTransactionForm extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildFormSections() => [
+  List<Widget> _buildFormSections(BuildContext context) => [
     AdaptiveFormSection(
-      header: L10nService.current.purchaseBasicDetails,
+      header: Text(
+        L10nService.current.purchaseBasicDetails,
+        style: AppThemes.getFormSectionHeaderTextStyle(context),
+      ),
       children: _buildBasicFields(),
     ),
     const SizedBox(height: 16),
     AdaptiveFormSection(
-      header: L10nService.current.purchaseAdditionalDetails,
+      header: Text(
+        L10nService.current.purchaseAdditionalDetails,
+        style: AppThemes.getFormSectionHeaderTextStyle(context),
+      ),
       children: _buildAdditionalFields(),
     ),
   ];

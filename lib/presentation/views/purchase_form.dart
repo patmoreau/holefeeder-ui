@@ -40,7 +40,7 @@ class PurchaseForm extends StatelessWidget {
             ),
           // Only render the form if we have the basic data loaded
           if (model.accounts.isNotEmpty || model.categories.isNotEmpty)
-            ..._buildFormSections()
+            ..._buildFormSections(context)
           else
             const Center(
               child: Padding(
@@ -55,21 +55,30 @@ class PurchaseForm extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildFormSections() {
+  List<Widget> _buildFormSections(BuildContext context) {
     developer.log('Building form sections', name: 'PurchaseForm');
     final sections = [
       AdaptiveFormSection(
-        header: L10nService.current.purchaseBasicDetails,
+        header: Text(
+          L10nService.current.purchaseBasicDetails,
+          style: AppThemes.getFormSectionHeaderTextStyle(context),
+        ),
         children: _buildBasicFields(),
       ),
       const SizedBox(height: 16),
       AdaptiveFormSection(
-        header: L10nService.current.purchaseAdditionalDetails,
+        header: Text(
+          L10nService.current.purchaseAdditionalDetails,
+          style: AppThemes.getFormSectionHeaderTextStyle(context),
+        ),
         children: _buildAdditionalFields(),
       ),
       const SizedBox(height: 16),
       AdaptiveFormSection(
-        header: L10nService.current.purchaseCashflowDetails,
+        header: Text(
+          L10nService.current.purchaseCashflowDetails,
+          style: AppThemes.getFormSectionHeaderTextStyle(context),
+        ),
         children: _buildCashflowFields(),
       ),
     ];

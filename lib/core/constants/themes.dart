@@ -287,6 +287,27 @@ class AppThemes {
     }
   }
 
+  /// Get platform-appropriate form section header text style
+  static TextStyle getFormSectionHeaderTextStyle(BuildContext context) {
+    if (Platform.isCupertino) {
+      return CupertinoTheme.of(context).textTheme.textStyle.copyWith(
+        fontSize: 13,
+        fontWeight: FontWeight.w500,
+        color: getSecondaryTextColor(context),
+      );
+    } else {
+      return Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: getSecondaryTextColor(context),
+          ) ??
+          TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: getSecondaryTextColor(context),
+          );
+    }
+  }
+
   /// Get platform-appropriate form field text style
   static TextStyle getFormFieldTextStyle(BuildContext context) {
     if (Platform.isCupertino) {

@@ -1,5 +1,5 @@
 import 'package:decimal/decimal.dart';
-import 'package:holefeeder/core/services/services.dart';
+import 'package:holefeeder/l10n.dart';
 
 String? Function(String?) decimalValidator() => (String? value) {
   if (value == null || value.isEmpty) {

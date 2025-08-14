@@ -1,7 +1,6 @@
 import 'package:decimal/decimal.dart';
+import 'package:holefeeder/core/enums.dart';
 import 'package:intl/intl.dart';
-
-import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
 
 class MakePurchase {
   final DateTime date;

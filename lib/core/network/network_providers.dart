@@ -1,7 +1,7 @@
+import 'package:holefeeder/core/authentication.dart';
+import 'package:holefeeder/core/constants.dart';
 import 'package:provider/provider.dart';
 
-import '../authentication/authentication_client.dart';
-import '../constants/constants.dart';
 import 'dio_client.dart';
 import 'rest_client.dart';
 

@@ -1,5 +1,5 @@
 import 'package:hive_ce/hive.dart';
-import 'package:holefeeder/core/enums/category_type_enum.dart';
+import 'package:holefeeder/core/enums.dart';
 
 class CategoryInfo extends HiveObject {
   final String id;

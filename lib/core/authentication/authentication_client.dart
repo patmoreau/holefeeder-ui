@@ -3,7 +3,7 @@ import 'dart:developer' as developer;
 
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:holefeeder/core/enums/authentication_status_enum.dart';
+import 'package:holefeeder/core.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class AuthenticationClient {

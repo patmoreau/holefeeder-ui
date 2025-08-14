@@ -1,4 +1,4 @@
-import 'repositories.dart';
+import 'base_repository.dart';
 
 class RepositoryFactory {
   final Map<Type, BaseRepository> _repositories = {};

@@ -2,10 +2,8 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:holefeeder/core.dart';
 import 'package:provider/provider.dart';
-
-import '../../core/authentication/authentication.dart';
-import '../../core/services/services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

@@ -1,7 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core.dart';
 
 part 'hive_adapters.g.dart';
 

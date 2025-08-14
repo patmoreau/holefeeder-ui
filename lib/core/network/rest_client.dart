@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:holefeeder/core/models/models.dart';
+import 'package:holefeeder/core/models.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';
@@ -47,6 +47,12 @@ abstract class RestClient {
 
   @GET('api/v2/categories/{id}')
   Future<HttpResponse<Category>> getCategory(@Path('id') String id);
+
+  @GET('api/v2/periods')
+  Future<HttpResponse<DateInterval>> computePeriod(
+    @Query('asOfDate') DateTime asOfDate,
+    @Query('iteration') int iteration,
+  );
 
   @GET('api/v2/store-items')
   Future<HttpResponse<List<StoreItem>>> getStoreItems(

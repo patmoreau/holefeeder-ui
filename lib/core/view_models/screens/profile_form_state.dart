@@ -1,4 +1,4 @@
-import '../base_form_state.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
 
 class ProfileFormState extends BaseFormState {
   final String name;

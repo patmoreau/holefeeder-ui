@@ -1,6 +1,6 @@
-import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/enums.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/repositories.dart';
 
 import 'base_form_state.dart';
 import 'base_view_model.dart';

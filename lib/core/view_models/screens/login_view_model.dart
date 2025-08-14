@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/utils/utils.dart';
-
-import '../base_form_state.dart';
-import '../base_view_model.dart';
+import 'package:holefeeder/core/authentication.dart';
+import 'package:holefeeder/core/enums.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
+import 'package:holefeeder/core/view_models/base_view_model.dart';
 
 class LoginViewModel extends BaseViewModel<SimpleFormState> {
   final AuthenticationClient _authenticationProvider;

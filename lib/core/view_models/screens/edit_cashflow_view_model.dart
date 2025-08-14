@@ -1,11 +1,6 @@
 import 'package:decimal/decimal.dart';
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/repositories/repositories.dart';
-import 'package:holefeeder/core/services/services.dart';
-
-import '../base_form_state.dart';
-import '../base_view_model.dart';
-import 'edit_cashflow_form_state.dart';
+import 'package:holefeeder/core.dart';
+import 'package:holefeeder/l10n.dart';
 
 class EditCashflowViewModel extends BaseViewModel<EditCashflowFormState> {
   final CashflowRepository _cashflowRepository;

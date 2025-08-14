@@ -1,9 +1,8 @@
-import 'package:holefeeder/core/events/events.dart';
+import 'package:holefeeder/core/authentication.dart';
+import 'package:holefeeder/core/network.dart';
+import 'package:holefeeder/presentation.dart';
 import 'package:provider/provider.dart';
 
-import '../../ui/services/services.dart';
-import '../authentication/authentication.dart';
-import '../network/network.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
 import 'notification_service.dart';
@@ -26,8 +25,8 @@ final serviceProviders = [
         (context, hiveService, _) =>
             PendingActionsServiceImpl(hiveService: hiveService),
   ),
-  ProxyProvider<EventBus, PeriodService>(
-    update: (_, eventBus, _) => PeriodServiceImpl(eventBus: eventBus),
+  ProxyProvider<ApiService, PeriodService>(
+    update: (_, apiService, _) => PeriodServiceImpl(apiService: apiService),
   ),
   Provider<QuickActionsService>(
     create:

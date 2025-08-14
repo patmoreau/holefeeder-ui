@@ -1,8 +1,7 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:holefeeder/core/constants/hive_constants.dart';
+import 'package:holefeeder/core/adapters.dart';
+import 'package:holefeeder/core/constants.dart';
 import 'package:holefeeder/hive/hive_registrar.g.dart';
-
-import '../adapters/decimal_adapter.dart';
 
 abstract class HiveService {
   Future<void> save<T>(String boxName, String key, T value);

@@ -1,8 +1,8 @@
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/repositories.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
+import 'package:holefeeder/core/view_models/base_view_model.dart';
 
-import '../base_form_state.dart';
-import '../base_view_model.dart';
 import 'dashboard_form_state.dart';
 
 class DashboardViewModel extends BaseViewModel<DashboardFormState> {

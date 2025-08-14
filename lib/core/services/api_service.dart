@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:holefeeder/core/enums/enums.dart';
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/utils/utils.dart';
+import 'package:holefeeder/core/enums.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/network.dart';
 
 abstract class ApiService {
   // Accounts
@@ -29,6 +29,8 @@ abstract class ApiService {
   Future<List<Category>> getCategories();
 
   Future<Category> getCategory(String id);
+
+  Future<DateInterval> computePeriod(DateTime asOfDate, int iteration);
 
   // User Settings
   Future<UserSettings> getUserSettings();
@@ -200,6 +202,19 @@ class ApiServiceImpl implements ApiService {
       throw Exception('Could not get the category');
     } catch (e) {
       throw Exception('Could not get the category');
+    }
+  }
+
+  @override
+  Future<DateInterval> computePeriod(DateTime asOfDate, int iteration) async {
+    try {
+      final result = await _restClient.computePeriod(asOfDate, iteration);
+      if (result.response.statusCode == 200) {
+        return result.data;
+      }
+      throw Exception('Could not compute the period');
+    } catch (e) {
+      throw Exception('Could not compute the period');
     }
   }
 

@@ -2,12 +2,12 @@ import 'dart:developer' as developer;
 
 import 'package:decimal/decimal.dart';
 import 'package:holefeeder/core/enums/date_interval_type_enum.dart';
-import 'package:holefeeder/core/events/events.dart';
-import 'package:holefeeder/core/models/models.dart';
-import 'package:holefeeder/core/repositories/repositories.dart';
+import 'package:holefeeder/core/events.dart';
+import 'package:holefeeder/core/models.dart';
+import 'package:holefeeder/core/repositories.dart';
+import 'package:holefeeder/core/view_models/base_form_state.dart';
+import 'package:holefeeder/core/view_models/base_view_model.dart';
 
-import '../base_form_state.dart';
-import '../base_view_model.dart';
 import 'purchase_form_state.dart';
 
 class PurchaseViewModel extends BaseViewModel<PurchaseFormState> {

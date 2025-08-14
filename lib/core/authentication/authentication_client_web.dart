@@ -1,9 +1,6 @@
 import 'package:auth0_flutter/auth0_flutter_web.dart';
-import 'package:holefeeder/core/constants/constants.dart';
-import 'package:holefeeder/core/enums/enums.dart';
+import 'package:holefeeder/core.dart';
 import 'package:web/web.dart';
-
-import 'authentication_client.dart';
 
 class AuthenticationClientImpl extends AuthenticationClient {
   late Auth0Web _auth0;

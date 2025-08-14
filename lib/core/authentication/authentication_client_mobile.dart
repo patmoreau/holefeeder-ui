@@ -2,10 +2,7 @@
 import 'dart:io';
 
 import 'package:auth0_flutter/auth0_flutter.dart';
-import 'package:holefeeder/core/constants/constants.dart';
-import 'package:holefeeder/core/enums/enums.dart';
-
-import 'authentication_client.dart';
+import 'package:holefeeder/core.dart';
 
 class AuthenticationClientImpl extends AuthenticationClient {
   final Auth0 _auth0 = Auth0(kAuth0Domain, kAuth0ClientId);

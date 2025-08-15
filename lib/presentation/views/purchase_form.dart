@@ -59,22 +59,23 @@ class PurchaseForm extends StatelessWidget {
     developer.log('Building form sections', name: 'PurchaseForm');
     final sections = [
       AdaptiveFormSection(
+        margin: EdgeInsets.zero,
         header: Text(
           L10nService.current.purchaseBasicDetails,
           style: AppThemes.getFormSectionHeaderTextStyle(context),
         ),
         children: _buildBasicFields(),
       ),
-      const SizedBox(height: 16),
       AdaptiveFormSection(
+        margin: EdgeInsets.zero,
         header: Text(
           L10nService.current.purchaseAdditionalDetails,
           style: AppThemes.getFormSectionHeaderTextStyle(context),
         ),
         children: _buildAdditionalFields(),
       ),
-      const SizedBox(height: 16),
       AdaptiveFormSection(
+        margin: EdgeInsets.zero,
         header: Text(
           L10nService.current.purchaseCashflowDetails,
           style: AppThemes.getFormSectionHeaderTextStyle(context),

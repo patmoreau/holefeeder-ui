@@ -45,7 +45,6 @@ class EditTransactionForm extends StatelessWidget {
       ),
       children: _buildBasicFields(),
     ),
-    const SizedBox(height: 16),
     AdaptiveFormSection(
       header: Text(
         L10nService.current.purchaseAdditionalDetails,

@@ -1,20 +1,25 @@
 import 'package:decimal/decimal.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:holefeeder/core.dart';
 import 'package:holefeeder/l10n.dart';
 
 import 'adaptive/adaptive_text_field.dart';
 
 class AmountField extends StatefulWidget {
-  final Decimal initialValue;
-  final ValueChanged<Decimal> onChanged;
+  final Decimal? initialValue;
+  final Function(Decimal)? onChanged;
+  final String? labelText;
+  final String? hintText;
+  final TextStyle? textStyle;
   final bool autofocus;
 
   const AmountField({
     super.key,
-    required this.initialValue,
-    required this.onChanged,
+    this.initialValue,
+    this.onChanged,
+    this.labelText,
+    this.hintText,
+    this.textStyle,
     this.autofocus = false,
   });
 
@@ -24,44 +29,17 @@ class AmountField extends StatefulWidget {
 
 class _AmountFieldState extends State<AmountField> {
   late TextEditingController _controller;
-  final FocusNode _focusNode = FocusNode();
+  late FocusNode _focusNode;
+  Decimal _currentValue = Decimal.zero;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialValue.toString());
+    _currentValue = widget.initialValue ?? Decimal.zero;
+    _controller = TextEditingController(text: _formatAmount(_currentValue));
+    _focusNode = FocusNode();
+
     _focusNode.addListener(_handleFocusChange);
-
-    if (widget.autofocus) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _focusNode.requestFocus();
-        _controller.selection = TextSelection(
-          baseOffset: 0,
-          extentOffset: _controller.text.length,
-        );
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AdaptiveTextField(
-      labelText: L10nService.current.fieldAmount,
-      controller: _controller,
-      focusNode: _focusNode,
-      autofocus: widget.autofocus,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      textAlign: TextAlign.right,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
-      ],
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          widget.onChanged(Decimal.parse(value));
-        }
-      },
-      validator: decimalValidator(),
-    );
   }
 
   @override
@@ -71,19 +49,66 @@ class _AmountFieldState extends State<AmountField> {
     super.dispose();
   }
 
+  String _formatAmount(Decimal amount) {
+    return amount.toStringAsFixed(2);
+  }
+
+  Decimal _parseInput(String input) {
+    // Remove any non-digit characters
+    String digits = input.replaceAll(RegExp(r'[^\d]'), '');
+
+    if (digits.isEmpty) return Decimal.zero;
+
+    // Convert to decimal by dividing by 100 (last 2 digits become decimal places)
+    Decimal numValue = Decimal.parse(digits);
+    return (numValue / Decimal.fromInt(100)).toDecimal();
+  }
+
   void _handleFocusChange() {
-    if (!_focusNode.hasFocus) {
-      final currentValue = _controller.text;
-      if (currentValue.isEmpty) {
-        _controller.text = '0.00';
-      } else if (!currentValue.contains('.')) {
-        _controller.text = '$currentValue.00';
-      } else {
-        final parts = currentValue.split('.');
-        if (parts[1].length < 2) {
-          _controller.text = '${parts[0]}.${parts[1].padRight(2, '0')}';
-        }
-      }
+    if (_focusNode.hasFocus) {
+      // Select all text when gaining focus
+      _controller.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: _controller.text.length,
+      );
+    } else {
+      // Format the value when losing focus
+      setState(() {
+        _controller.text = _formatAmount(_currentValue);
+      });
     }
   }
+
+  void _onTextChanged(String value) {
+    Decimal newValue = _parseInput(value);
+    String formattedValue = _formatAmount(newValue);
+
+    setState(() {
+      _currentValue = newValue;
+      // Update display in real-time to show formatted amount
+      if (_controller.text != formattedValue) {
+        _controller.value = TextEditingValue(
+          text: formattedValue,
+          selection: TextSelection.collapsed(offset: formattedValue.length),
+        );
+      }
+    });
+
+    // Notify parent widget of the change
+    if (widget.onChanged != null) {
+      widget.onChanged!(newValue);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => AdaptiveTextField(
+    labelText: L10nService.current.fieldAmount,
+    controller: _controller,
+    focusNode: _focusNode,
+    autofocus: widget.autofocus,
+    keyboardType: TextInputType.number,
+    textAlign: TextAlign.right,
+    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+    onChanged: _onTextChanged,
+  );
 }

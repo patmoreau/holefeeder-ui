@@ -44,7 +44,7 @@ SPEC CHECKSUMS:
   Auth0: 2876d0c36857422eda9cb580a6cc896c7d14cb36
   auth0_flutter: 202dad67dc7a50737fee230ae28fe5b0c770ca9b
   flutter_secure_storage_darwin: ce237a8775b39723566dc72571190a3769d70468
-  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
   JWTDecode: 7dae24cb9bf9b608eae61e5081029ec169bb5527
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   SimpleKeychain: 768cf43ae778b1c21816e94dddf01bb8ee96a075

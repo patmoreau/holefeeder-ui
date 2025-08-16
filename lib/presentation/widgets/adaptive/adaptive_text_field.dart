@@ -51,7 +51,6 @@ class AdaptiveTextField extends StatelessWidget {
           enabled: enabled,
         )
         : TextFormField(
-          decoration: InputDecoration(labelText: labelText, filled: true),
           initialValue: initialValue,
           controller: controller,
           focusNode: focusNode,
@@ -63,6 +62,13 @@ class AdaptiveTextField extends StatelessWidget {
           inputFormatters: inputFormatters,
           readOnly: readOnly,
           enabled: enabled,
+          decoration: InputDecoration(
+            labelText: labelText,
+            border: const OutlineInputBorder(),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 2),
+            ),
+          ),
         );
   }
 }

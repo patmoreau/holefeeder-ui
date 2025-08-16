@@ -51,22 +51,22 @@ class QuickActionsServiceImpl implements QuickActionsService {
       ShortcutItem(
         type: kActionPurchase,
         localizedTitle: 'New Purchase',
-        icon: 'purchase_icon',
+        icon: 'cart-plus',
       ),
       ShortcutItem(
         type: kActionProfile,
         localizedTitle: 'View Profile',
-        icon: 'contact',
+        icon: 'person-circle',
       ),
       ShortcutItem(
         type: kActionSettings,
         localizedTitle: 'Settings',
-        icon: 'confirmation',
+        icon: 'gear',
       ),
       ShortcutItem(
         type: kActionDashboard,
         localizedTitle: 'Dashboard',
-        icon: 'home',
+        icon: 'speedometer',
       ),
     ]);
 

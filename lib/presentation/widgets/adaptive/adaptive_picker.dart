@@ -121,7 +121,7 @@ class AdaptivePicker<T> extends StatelessWidget {
 
   Widget _buildMaterialPicker(BuildContext context) {
     return DropdownButtonFormField<T>(
-      value: value,
+      initialValue: value,
       isExpanded: isExpanded,
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),

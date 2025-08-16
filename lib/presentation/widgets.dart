@@ -12,4 +12,3 @@ export 'widgets/hashtag_selector.dart';
 export 'widgets/interval_type_picker_field.dart';
 export 'widgets/transaction_list_tile.dart';
 export 'widgets/upcoming_list_tile.dart';
-export 'widgets/widgets.dart';

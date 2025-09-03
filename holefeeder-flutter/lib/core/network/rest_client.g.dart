@@ -643,4 +643,4 @@ class _RestClient implements RestClient {
   }
 }
 
-// dart format on
+// dart format: on

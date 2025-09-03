@@ -2,7 +2,7 @@
 
 part of 'rest_client.dart';
 
-// dart format off
+// dart format: off
 
 // **************************************************************************
 // RetrofitGenerator

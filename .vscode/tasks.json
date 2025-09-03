@@ -5,6 +5,9 @@
       "label": "Build Generated Files",
       "type": "shell",
       "command": "dart",
+      "options": {
+        "cwd": "${workspaceFolder}/holefeeder-flutter" // Sets CWD to a subfolder
+      },
       "args": [
         "run",
         "build_runner",
@@ -22,8 +25,30 @@
       "label": "Build l10n Files",
       "type": "shell",
       "command": "flutter",
+      "options": {
+        "cwd": "${workspaceFolder}/holefeeder-flutter" // Sets CWD to a subfolder
+      },
       "args": [
         "gen-l10n",
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build iOS Release",
+      "type": "shell",
+      "command": "flutter",
+      "options": {
+        "cwd": "${workspaceFolder}/holefeeder-flutter" // Sets CWD to a subfolder
+      },
+      "args": [
+        "build",
+        "ios",
+        "--release"
       ],
       "group": "build",
       "presentation": {

@@ -1,0 +1,49 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done"
+  },
+  "auth": {
+    "loginTitle": "Welcome",
+    "loginSubtitle": "Please login to continue",
+    "loggingIn": "Logging in...",
+    "loginError": "Login Error",
+    "loginErrorMessage": "Failed to login. Please try again.",
+    "logoutSuccess": "Logged out successfully"
+  },
+  "home": {
+    "title": "Welcome Home!",
+    "step1Title": "Step 1: Try it",
+    "step1Description": "Edit app/(tabs)/index.tsx to see changes. Press {{shortcut}} to open developer tools.",
+    "step2Title": "Step 2: Explore",
+    "step2Description": "Tap the Explore tab to learn more about what's included in this starter app.",
+    "step3Title": "Step 3: Get a fresh start",
+    "step3Description": "When you're ready, run npm run reset-project to get a fresh app directory. This will move the current app to app-example.",
+    "authTitle": "Authentication",
+    "authDescription": "Your app now includes Auth0 authentication with token persistence. Login to access protected features and make authenticated API calls.",
+    "apiTitle": "Authenticated API Calls",
+    "apiDescription": "Once authenticated, you can make secure API calls with automatic token management.",
+    "setupTitle": "Setup Instructions",
+    "setupDescription": "To configure Auth0, add these environment variables to your .env file:"
+  },
+  "tabs": {
+    "home": "Home",
+    "explore": "Explore",
+    "profile": "Profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "parameters": "Parameters",
+    "language": "Language",
+    "selectLanguage": "Select Language"
+  }
+}

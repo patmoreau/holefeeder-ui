@@ -7,6 +7,7 @@
         {
             "name": "holefeeder-ui",
             "request": "launch",
+            "cwd": "${workspaceFolder}/holefeeder-flutter",
             "type": "dart",
             "args": [
                 "--web-port",
@@ -16,6 +17,7 @@
         {
             "name": "holefeeder-ui (profile mode)",
             "request": "launch",
+            "cwd": "${workspaceFolder}/holefeeder-flutter",
             "type": "dart",
             "flutterMode": "profile",
             "args": [
@@ -26,6 +28,7 @@
         {
             "name": "holefeeder-ui (release mode)",
             "request": "launch",
+            "cwd": "${workspaceFolder}/holefeeder-flutter",
             "type": "dart",
             "flutterMode": "release",
             "args": [

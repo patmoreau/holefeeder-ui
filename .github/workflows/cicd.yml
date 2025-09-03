@@ -25,6 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+        working-directory: ./holefeeder-flutter
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting
@@ -32,6 +33,8 @@ jobs:
 
       - name: Analyze project source
         run: flutter analyze
+        working-directory: ./holefeeder-flutter
 
       - name: Run tests
         run: flutter test
+        working-directory: ./holefeeder-flutter

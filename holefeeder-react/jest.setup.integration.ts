@@ -1,6 +1,17 @@
 // Integration test setup - common mocks and configurations
 import 'react-native-gesture-handler/jestSetup';
 
+jest.mock('expo/src/winter/ImportMetaRegistry', () => ({
+  ImportMetaRegistry: {
+    get url() {
+      return null;
+    },
+  },
+}));
+
+// Mock structuredClone global function
+global.structuredClone = jest.fn((obj) => JSON.parse(JSON.stringify(obj)));
+
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {
   const Reanimated = require('react-native-reanimated/mock');

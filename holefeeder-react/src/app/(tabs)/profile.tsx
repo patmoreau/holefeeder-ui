@@ -7,6 +7,7 @@ import {
   ParallaxScrollView,
   ThemedText,
   ThemedView,
+  UserProfile,
 } from '@/components';
 
 export default function ProfileScreen() {
@@ -34,6 +35,8 @@ export default function ProfileScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">{t('settings.title')}</ThemedText>
       </ThemedView>
+
+      <UserProfile />
 
       <ThemedView style={styles.content}>
         <ThemedView style={styles.section}>

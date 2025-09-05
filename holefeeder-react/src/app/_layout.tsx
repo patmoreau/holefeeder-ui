@@ -1,34 +1,77 @@
 import {
   DarkTheme,
   DefaultTheme,
-  ThemeProvider,
+  ThemeProvider as ReactNavigationThemeProvider,
 } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks';
-import { LanguageProvider } from '@/contexts';
+import { LanguageProvider, ThemeProvider } from '@/contexts';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import LoginScreen from '@/app/login';
+import { Auth0Provider, useAuth0 } from 'react-native-auth0';
+import { auth0Config } from '@/config';
 
 export const unstable_settings = {
   anchor: '(tabs)',
 };
 
+function AppContent() {
+  const { user, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+    );
+  }
+
+  if (!user) {
+    return <LoginScreen />;
+  }
+
+  return (
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="modal"
+        options={{ presentation: 'modal', title: 'Modal' }}
+      />
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+}
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <LanguageProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: 'modal', title: 'Modal' }}
-          />
-        </Stack>
-        <StatusBar style="auto" />
+    <ReactNavigationThemeProvider
+      value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+    >
+      <ThemeProvider>
+        <LanguageProvider>
+          <Auth0Provider
+            domain={auth0Config.domain}
+            clientId={auth0Config.clientId}
+          >
+            <AppContent />
+            <StatusBar style="auto" />
+          </Auth0Provider>
+        </LanguageProvider>
       </ThemeProvider>
-    </LanguageProvider>
+    </ReactNavigationThemeProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+});

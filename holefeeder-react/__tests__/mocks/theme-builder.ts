@@ -1,5 +1,4 @@
-import { Theme, lightTheme } from '@/src/types';
-import { ViewStyle, TextStyle } from 'react-native';
+import { Theme, lightTheme } from '@/types';
 
 // Type for Theme Context
 export interface ThemeContextType {

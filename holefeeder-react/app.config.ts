@@ -50,6 +50,14 @@ export default {
           backgroundColor: '#ffffff',
         },
       ],
+      [
+        'react-native-auth0',
+        {
+          domain:
+            process.env.EXPO_PUBLIC_AUTH0_DOMAIN || 'your-domain.auth0.com',
+          customScheme: 'holefeeder',
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,

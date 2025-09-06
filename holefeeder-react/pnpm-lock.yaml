@@ -50,6 +50,9 @@ importers:
       expo-localization:
         specifier: ^16.1.6
         version: 16.1.6(expo@54.0.0-preview.14)(react@19.1.0)
+      expo-quick-actions:
+        specifier: ^5.0.0
+        version: 5.0.0(expo@54.0.0-preview.14)
       expo-router:
         specifier: ~6.0.0-preview.14
         version: 6.0.0-preview.14(ff12874e62f53ae8c3c09bd4654a6867)
@@ -789,6 +792,9 @@ packages:
   '@expo/fingerprint@0.14.6':
     resolution: {integrity: sha512-ElNTIc+bmJZaN8fLpaEqS5uLWyvF2zxw016ZHQeO+64pNjLUd8B9y8J2csjsLgAuWSnln8QvOSjTLDRgZUQFzA==}
     hasBin: true
+
+  '@expo/image-utils@0.7.6':
+    resolution: {integrity: sha512-GKnMqC79+mo/1AFrmAcUcGfbsXXTRqOMNS1umebuevl3aaw+ztsYEFEiuNhHZW7PQ3Xs3URNT513ZxKhznDscw==}
 
   '@expo/image-utils@0.8.6':
     resolution: {integrity: sha512-8DMA76Sakq6dMLyJyoeWcxWpjcQUrr0V6jjsJ+Z3ZnEVKpWlxXO5SOc6mib1HOUDMtMqg4cwAhyKHZ98LmDj8Q==}
@@ -2925,6 +2931,11 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  expo-quick-actions@5.0.0:
+    resolution: {integrity: sha512-NSsDhfbal11gXsHkJbvYVw7x0QUCKrEth2kBBKZUv03dX4J7ZPADSV89LyEpOVYXCkrw6LuanlEtKavg/BFaRA==}
+    peerDependencies:
+      expo: '*'
 
   expo-router@6.0.0-preview.14:
     resolution: {integrity: sha512-11/s1TbDxDFfvjTQBllo1JoE7fWjpH0v236y5d94CM2jRMqPRSxCf6J0T1/NC51YlYPPjF5t8O6BbzaCJCLEZw==}
@@ -6537,6 +6548,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@expo/image-utils@0.7.6':
+    dependencies:
+      '@expo/spawn-async': 1.7.2
+      chalk: 4.1.2
+      getenv: 2.0.0
+      jimp-compact: 0.16.1
+      parse-png: 2.1.0
+      resolve-from: 5.0.0
+      semver: 7.7.2
+      temp-dir: 2.0.0
+      unique-string: 2.0.0
+
   '@expo/image-utils@0.8.6':
     dependencies:
       '@expo/spawn-async': 1.7.2
@@ -9270,6 +9293,13 @@ snapshots:
       invariant: 2.2.4
       react: 19.1.0
       react-native: 0.81.1(@babel/core@7.28.3)(@react-native-community/cli@20.0.1(typescript@5.9.2))(@react-native/metro-config@0.81.1(@babel/core@7.28.3))(@types/react@19.1.12)(react@19.1.0)
+
+  expo-quick-actions@5.0.0(expo@54.0.0-preview.14):
+    dependencies:
+      '@expo/image-utils': 0.7.6
+      expo: 54.0.0-preview.14(@babel/core@7.28.3)(@expo/metro-runtime@6.1.1)(expo-router@6.0.0-preview.14)(react-native@0.81.1(@babel/core@7.28.3)(@react-native-community/cli@20.0.1(typescript@5.9.2))(@react-native/metro-config@0.81.1(@babel/core@7.28.3))(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
+      schema-utils: 4.3.2
+      sf-symbols-typescript: 2.1.0
 
   expo-router@6.0.0-preview.14(ff12874e62f53ae8c3c09bd4654a6867):
     dependencies:

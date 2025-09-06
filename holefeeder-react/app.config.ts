@@ -22,7 +22,7 @@ export default {
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
-      package: 'com.drifterapps.holefeeder-react',
+      package: 'com.drifterapps.holefeeder_react',
     },
     web: {
       output: 'static',
@@ -50,14 +50,14 @@ export default {
           backgroundColor: '#ffffff',
         },
       ],
-      [
-        'react-native-auth0',
-        {
-          domain:
-            process.env.EXPO_PUBLIC_AUTH0_DOMAIN || 'your-domain.auth0.com',
-          customScheme: 'holefeeder',
-        },
-      ],
+      // [
+      //   'react-native-auth0',
+      //   {
+      //     domain:
+      //       process.env.EXPO_PUBLIC_AUTH0_DOMAIN || 'your-domain.auth0.com',
+      //     customScheme: 'holefeeder',
+      //   },
+      // ],
     ],
     experiments: {
       typedRoutes: true,

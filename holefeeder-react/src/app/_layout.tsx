@@ -9,10 +9,13 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks';
 import { LanguageProvider, ThemeProvider } from '@/contexts';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, Platform } from 'react-native';
 import LoginScreen from '@/app/login';
 import { Auth0Provider, useAuth0 } from 'react-native-auth0';
 import { auth0Config } from '@/config';
+import { useEffect } from 'react';
+import * as QuickActions from 'expo-quick-actions';
+import { useQuickActionRouting } from 'expo-quick-actions/router';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -20,6 +23,22 @@ export const unstable_settings = {
 
 function AppContent() {
   const { user, isLoading } = useAuth0();
+  useQuickActionRouting();
+
+  useEffect(() => {
+    QuickActions.setItems([
+      {
+        title: "Wait! Don't delete me!",
+        subtitle: "We're here to help",
+        icon:
+          Platform.OS === 'ios'
+            ? 'symbol:person.crop.circle.badge.questionmark'
+            : undefined,
+        id: '0',
+        params: { href: '/help' },
+      },
+    ]);
+  }, []);
 
   if (isLoading) {
     return (

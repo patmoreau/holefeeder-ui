@@ -38,7 +38,9 @@
   "tabs": {
     "home": "Home",
     "explore": "Explore",
-    "profile": "Profile"
+    "profile": "Profile",
+    "settings": "Settings",
+    "test": "Test"
   },
   "settings": {
     "title": "Settings",

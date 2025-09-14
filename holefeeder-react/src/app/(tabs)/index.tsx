@@ -15,6 +15,7 @@ export default function HomeScreen() {
 
   return (
     <ParallaxScrollView
+      style={styles.content}
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
@@ -101,6 +102,12 @@ const styles = StyleSheet.create({
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+  },
+  content: {
+    flex: 1,
+    padding: 32,
+    gap: 16,
+    overflow: 'hidden',
   },
   reactLogo: {
     height: 178,

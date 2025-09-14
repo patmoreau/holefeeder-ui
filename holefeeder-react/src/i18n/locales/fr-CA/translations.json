@@ -38,7 +38,9 @@
   "tabs": {
     "home": "Accueil",
     "explore": "Explorer",
-    "profile": "Profil"
+    "profile": "Profil",
+    "settings": "Configuration",
+    "test": "Examen"
   },
   "settings": {
     "title": "Profil",

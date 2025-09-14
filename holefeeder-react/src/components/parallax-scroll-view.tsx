@@ -1,5 +1,5 @@
 import type { PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, View, type ViewProps } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -10,18 +10,19 @@ import Animated, {
 import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
+import { Stack } from 'expo-router';
 
 const HEADER_HEIGHT = 250;
 
-type Props = PropsWithChildren<{
+type Props = ViewProps & {
   headerImage: ReactElement;
   headerBackgroundColor: { dark: string; light: string };
-}>;
+};
 
 export function ParallaxScrollView({
-  children,
   headerImage,
   headerBackgroundColor,
+  ...otherProps
 }: Props) {
   const backgroundColor = useThemeColor({}, 'background');
   const colorScheme = useColorScheme() ?? 'light';
@@ -49,22 +50,34 @@ export function ParallaxScrollView({
   });
 
   return (
-    <Animated.ScrollView
-      ref={scrollRef}
-      style={{ backgroundColor, flex: 1 }}
-      scrollEventThrottle={16}
-    >
-      <Animated.View
-        style={[
-          styles.header,
-          { backgroundColor: headerBackgroundColor[colorScheme] },
-          headerAnimatedStyle,
-        ]}
+    <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTransparent: true,
+          headerLeft: () => <Text>Back</Text>,
+          headerBackground: () => (
+            <Animated.View style={[styles.header, headerAnimatedStyle]} />
+          ),
+        }}
+      />
+
+      <Animated.ScrollView
+        ref={scrollRef}
+        style={{ backgroundColor, flex: 1 }}
+        scrollEventThrottle={16}
       >
-        {headerImage}
-      </Animated.View>
-      <ThemedView style={styles.content}>{children}</ThemedView>
-    </Animated.ScrollView>
+        <Animated.View
+          style={[
+            styles.header,
+            { backgroundColor: headerBackgroundColor[colorScheme] },
+            headerAnimatedStyle,
+          ]}
+        >
+          {headerImage}
+        </Animated.View>
+        <ThemedView style={styles.content} {...otherProps}></ThemedView>
+      </Animated.ScrollView>
+    </View>
   );
 }
 
@@ -77,9 +90,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   content: {
-    flex: 1,
-    padding: 32,
-    gap: 16,
-    overflow: 'hidden',
+    minHeight: '100%',
   },
 });

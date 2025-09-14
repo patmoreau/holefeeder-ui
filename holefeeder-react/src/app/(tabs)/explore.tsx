@@ -14,6 +14,7 @@ import {
 export default function TabTwoScreen() {
   return (
     <ParallaxScrollView
+      style={styles.content}
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={
         <IconSymbol
@@ -115,6 +116,12 @@ export default function TabTwoScreen() {
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    padding: 32,
+    gap: 16,
+    overflow: 'hidden',
+  },
   headerImage: {
     color: '#808080',
     bottom: -90,
@@ -123,6 +130,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
 });

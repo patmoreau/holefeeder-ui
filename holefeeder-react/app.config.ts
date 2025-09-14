@@ -32,7 +32,12 @@ export default {
       'expo-font',
       'expo-localization',
       'expo-web-browser',
-      'expo-router',
+      [
+        'expo-router',
+        {
+          root: './src/app',
+        },
+      ],
       [
         'expo-build-properties',
         {

@@ -1,51 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useLanguage } from '@/contexts';
 import {
+  HelloWave,
+  IconSymbol,
   ParallaxScrollView,
   ThemedText,
   ThemedView,
-  UserProfile,
 } from '@/components';
-import { useAuth0 } from 'react-native-auth0';
-import { Image } from 'expo-image';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { Switch } from '@expo/ui/swift-ui';
+import NativeForm from '@/components/ui/native-form';
+import NativeSection from '@/components/ui/native-section';
 
 export default function ProfileScreen() {
   const { t } = useLanguage();
-  const { user } = useAuth0();
-
-  const avatarUri =
-    user?.picture ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || user?.email || 'User')}&size=120&background=007AFF&color=fff`;
-
+  const [showLanguageSwitcher, setShowLanguageSwitcher] = useState(false);
+  const [switchValue, setSwitchValue] = useState<boolean>(true);
   return (
     <ParallaxScrollView
       style={styles.container}
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={
-        <Image
-          source={{ uri: avatarUri }}
-          contentFit="cover"
+        <IconSymbol
+          size={310}
+          color="#808080"
+          name="gear.circle"
           style={styles.headerImage}
         />
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">{t('settings.title')}</ThemedText>
+        <ThemedText type="title">{t('home.title')}</ThemedText>
+        <HelloWave />
       </ThemedView>
 
-      <UserProfile />
+      <NativeForm>
+        <NativeSection title={t('settings.parameters')}>
+          <Switch
+            value={switchValue}
+            label="This is a switch"
+            onValueChange={setSwitchValue}
+          />
+          <LanguageSwitcher
+            visible={showLanguageSwitcher}
+            onClose={() => setShowLanguageSwitcher(false)}
+          />
+        </NativeSection>
+      </NativeForm>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 32,
-    gap: 16,
-    overflow: 'hidden',
-  },
   headerImage: {
     color: '#808080',
     bottom: -90,
@@ -55,11 +62,21 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 16,
+    padding: 32,
+    backgroundColor: '#ECEDEE',
+  },
+  container: {
+    flex: 1,
+    minHeight: '100%',
   },
   header: {
     padding: 20,
     paddingTop: 60,
+  },
+  content: {
+    flex: 1,
+    padding: 20,
   },
   userInfo: {
     backgroundColor: 'rgba(0, 122, 255, 0.1)',

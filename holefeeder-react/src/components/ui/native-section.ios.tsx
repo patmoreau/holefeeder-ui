@@ -1,10 +1,14 @@
 import { Section } from '@expo/ui/swift-ui';
-import { type PropsWithChildren, type ReactElement, useState } from 'react';
+import { type NativeSectionProps } from './native-section.types';
 
-type Props = PropsWithChildren<{
-  title: string;
-}>;
-
-export default function NativeSection({ children, title }: Props) {
-  return <Section title={title}>{children}</Section>;
+export default function NativeSection({
+  children,
+  title,
+  ...sectionProps
+}: NativeSectionProps) {
+  return (
+    <Section testID="section-title" title={title} {...sectionProps}>
+      {children}
+    </Section>
+  );
 }

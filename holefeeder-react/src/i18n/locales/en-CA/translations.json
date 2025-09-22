@@ -15,6 +15,8 @@
   "auth": {
     "loginTitle": "Welcome",
     "loginSubtitle": "Please login to continue",
+    "loginButton": "Login",
+    "logoutButton": "Logout",
     "loggingIn": "Logging in...",
     "loginError": "Login Error",
     "loginErrorMessage": "Failed to login. Please try again.",
@@ -35,10 +37,25 @@
     "setupTitle": "Setup Instructions",
     "setupDescription": "To configure Auth0, add these environment variables to your .env file:"
   },
+  "language-section": {
+    "title": "Language",
+    "select": "Select"
+  },
+  "profile-section": {
+    "title": "User Profile",
+    "access-token": "Access Token",
+    "no-access-token": "No Access Token",
+    "expires-at": "Expires At",
+    "no-expires-at": "No Expiry Information"
+  },
+  "quick-actions": {
+    "help-title": "Wait! Don't delete me!",
+    "help-subtitle": "We're here to help",
+    "purchase-title": "Purchase"
+  },
   "tabs": {
-    "home": "Home",
-    "explore": "Explore",
-    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "accounts": "Accounts",
     "settings": "Settings",
     "test": "Test"
   },

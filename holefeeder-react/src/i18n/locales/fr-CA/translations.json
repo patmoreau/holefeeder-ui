@@ -15,6 +15,8 @@
   "auth": {
     "loginTitle": "Bienvenue",
     "loginSubtitle": "Veuillez vous connecter pour continuer",
+    "loginButton": "Connexion",
+    "logoutButton": "Déconnexion",
     "loggingIn": "Connexion en cours...",
     "loginError": "Erreur de connexion",
     "loginErrorMessage": "Échec de la connexion. Veuillez réessayer.",
@@ -35,15 +37,31 @@
     "setupTitle": "Instructions de configuration",
     "setupDescription": "Pour configurer Auth0, ajoutez ces variables d'environnement à votre fichier .env :"
   },
+  "language-section": {
+    "title": "Langue",
+    "select": "Sélectionner"
+  },
+  "profile-section": {
+    "title": "Profil utilisateur",
+    "access-token": "Jeton d'accès",
+    "no-access-token": "Pas de jeton d'accès",
+    "expires-at": "Expire le",
+    "no-expires-at": "Pas d'information d'expiration"
+
+  },
+  "quick-actions": {
+    "help-title": "Attendez ! Ne me supprimez pas !",
+    "help-subtitle": "Nous sommes là pour vous aider",
+    "purchase-title": "Acheter"
+  },
   "tabs": {
-    "home": "Accueil",
-    "explore": "Explorer",
-    "profile": "Profil",
+    "dashboard": "Tableau de bord",
+    "accounts": "Comptes",
     "settings": "Configuration",
     "test": "Examen"
   },
   "settings": {
-    "title": "Profil",
+    "title": "Paramètres",
     "parameters": "Paramètres",
     "language": "Langue",
     "selectLanguage": "Sélectionner la langue"

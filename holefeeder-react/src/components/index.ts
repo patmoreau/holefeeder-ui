@@ -7,4 +7,3 @@ export * from './parallax-scroll';
 export * from './parallax-scroll-view';
 export * from './themed-text';
 export * from './themed-view';
-export * from './user-profile';

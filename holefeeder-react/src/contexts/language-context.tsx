@@ -8,9 +8,8 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { initI18n, getI18nInstance } from '@/i18n';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { STORAGE_KEYS } from '@/constants';
+import { initI18n } from '@/i18n';
+import { useAppContext } from '@/contexts/app-context';
 
 type Language = 'en' | 'fr';
 
@@ -31,97 +30,38 @@ const availableLanguages = [
   { code: 'fr' as Language, name: 'Français' },
 ];
 
-// Component to handle i18n initialization
-function I18nInitializer({ children }: { children: ReactNode }) {
-  const [isI18nReady, setIsI18nReady] = useState(false);
-
-  useEffect(() => {
-    const initialize = async () => {
-      try {
-        await initI18n();
-        setIsI18nReady(true);
-      } catch (error) {
-        console.error('Error initializing i18n:', error);
-        setIsI18nReady(true); // Still mark as ready to avoid blocking the app
-      }
-    };
-
-    initialize().catch((error) => {
-      console.error('Unhandled error in initialize:', error);
-    });
-  }, []);
-
-  if (!isI18nReady) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator testID="loading" size="large" color="#007AFF" />
-      </View>
-    );
-  }
-
-  return <>{children}</>;
-}
-
 // Internal component that uses useTranslation after i18n is initialized
 function LanguageProviderInternal({ children }: { children: ReactNode }) {
   const { t, i18n } = useTranslation();
+  const { updateSettings } = useAppContext();
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [isLanguageReady, setIsLanguageReady] = useState(false);
 
   const changeLanguage = useCallback(
     async (language: Language) => {
       try {
         await i18n.changeLanguage(language);
         setCurrentLanguage(language);
-        await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE_KEY, language);
+        await updateSettings({ language });
       } catch (error) {
         console.error('Error changing language:', error);
       }
     },
-    [i18n]
+    [i18n, updateSettings]
   );
 
-  // Load saved language and initialize properly
+  // Sync current language with i18n state
   useEffect(() => {
-    const initializeLanguage = async () => {
-      try {
-        const savedLanguage = await AsyncStorage.getItem(
-          STORAGE_KEYS.LANGUAGE_KEY
-        );
-        const languageToUse =
-          (savedLanguage as Language) || (i18n.language as Language) || 'en';
-
-        if (savedLanguage && savedLanguage !== i18n.language) {
-          await i18n.changeLanguage(savedLanguage);
-        }
-
-        setCurrentLanguage(languageToUse);
-        setIsLanguageReady(true);
-      } catch (error) {
-        console.error('Error loading saved language:', error);
-        setCurrentLanguage((i18n.language as Language) || 'en');
-        setIsLanguageReady(true);
-      }
-    };
-
-    initializeLanguage();
-  }, [i18n, t]);
+    const currentLang = (i18n.language as Language) || 'en';
+    setCurrentLanguage(currentLang);
+  }, [i18n.language]);
 
   const value: LanguageContextType = {
     currentLanguage,
     changeLanguage,
     t,
     availableLanguages,
-    isInitialized: isLanguageReady,
+    isInitialized: true,
   };
-
-  if (!isLanguageReady) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator testID="loading" size="large" color="#007AFF" />
-      </View>
-    );
-  }
 
   return (
     <LanguageContext.Provider value={value}>
@@ -131,11 +71,35 @@ function LanguageProviderInternal({ children }: { children: ReactNode }) {
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  return (
-    <I18nInitializer>
-      <LanguageProviderInternal>{children}</LanguageProviderInternal>
-    </I18nInitializer>
-  );
+  const { settings, isSettingsLoaded } = useAppContext();
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    const initialize = async () => {
+      // Only initialize once settings are loaded from storage
+      if (!isSettingsLoaded) return;
+
+      try {
+        await initI18n(settings.language);
+        setIsInitialized(true);
+      } catch (error) {
+        console.error('Error initializing language:', error);
+        setIsInitialized(true);
+      }
+    };
+
+    initialize();
+  }, [settings.language, isSettingsLoaded]);
+
+  if (!isSettingsLoaded || !isInitialized) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator testID="loading" size="large" color="#007AFF" />
+      </View>
+    );
+  }
+
+  return <LanguageProviderInternal>{children}</LanguageProviderInternal>;
 }
 
 export function useLanguage(): LanguageContextType {

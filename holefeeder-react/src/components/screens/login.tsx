@@ -1,20 +1,20 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useLanguage } from '@/contexts';
 import { AuthButton } from '@/components';
+import { Button, Form, Host, Section, Text, VStack } from '@expo/ui/swift-ui';
 
 export default function LoginScreen() {
   const { t } = useLanguage();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>{t('auth.loginTitle')}</Text>
-        <Text style={styles.subtitle}>{t('auth.loginSubtitle')}</Text>
-
+    <Host style={{ flex: 1 }}>
+      <VStack spacing={12} alignment={'center'}>
+        <Text size={32}>{t('auth.loginTitle')}</Text>
+        <Text size={16}>{t('auth.loginSubtitle')}</Text>
         <AuthButton />
-      </View>
-    </View>
+      </VStack>
+    </Host>
   );
 }
 
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#333',
+    alignContent: 'center',
   },
   subtitle: {
     fontSize: 16,

@@ -2,14 +2,11 @@ import { Picker } from '@expo/ui/jetpack-compose';
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts';
 
-interface LanguageSwitcherProps {
-  visible: boolean;
-  onClose: () => void;
-}
-
-export function LanguageSwitcher({ visible, onClose }: LanguageSwitcherProps) {
-  const { changeLanguage, availableLanguages } = useLanguage();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+export function LanguageSwitcher() {
+  const { changeLanguage, availableLanguages, currentLanguage } = useLanguage();
+  const [selectedIndex, setSelectedIndex] = useState(
+    availableLanguages.findIndex((lang) => lang.code === currentLanguage)
+  );
 
   const handleLanguageChange = async (languageCode: 'en' | 'fr') => {
     await changeLanguage(languageCode);
@@ -20,7 +17,9 @@ export function LanguageSwitcher({ visible, onClose }: LanguageSwitcherProps) {
       options={availableLanguages.map((language) => language.name)}
       selectedIndex={selectedIndex}
       onOptionSelected={({ nativeEvent: { index } }) => {
-        setSelectedIndex(index);
+        handleLanguageChange(availableLanguages[index].code).finally(() =>
+          setSelectedIndex(index)
+        );
       }}
       variant="segmented"
     />

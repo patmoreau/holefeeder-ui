@@ -1,16 +1,21 @@
-import React, { type PropsWithChildren } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { ThemedText, ThemedView } from '@/components';
+import { type NativeSectionProps } from './native-section.types';
 
-type Props = PropsWithChildren<{
-  title: string;
-}>;
-
-export default function NativeSection({ children, title }: Props) {
+export default function NativeSection({
+  children,
+  title,
+  ...rest
+}: NativeSectionProps) {
   return (
     <ScrollView style={styles.container}>
       <ThemedView style={styles.infoSection}>
-        <ThemedText type="subtitle" style={styles.sectionTitle}>
+        <ThemedText
+          testID="section-title"
+          type="subtitle"
+          style={styles.sectionTitle}
+        >
           {title}
         </ThemedText>
         {children}

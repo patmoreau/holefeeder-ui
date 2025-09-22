@@ -6,39 +6,18 @@ import {
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks';
-import { LanguageProvider, ThemeProvider } from '@/contexts';
-import { ActivityIndicator, View, StyleSheet, Platform } from 'react-native';
-import LoginScreen from '@/app/login';
-import { Auth0Provider, useAuth0 } from 'react-native-auth0';
+import { useAuth, useColorScheme, useQuickActions } from '@/hooks';
+import { AppProvider, LanguageProvider, ThemeProvider } from '@/contexts';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { Auth0Provider } from 'react-native-auth0';
 import { auth0Config } from '@/config';
-import { useEffect } from 'react';
-import * as QuickActions from 'expo-quick-actions';
 import { useQuickActionRouting } from 'expo-quick-actions/router';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
 function AppContent() {
-  const { user, isLoading } = useAuth0();
-  useQuickActionRouting();
+  const { user, isLoading } = useAuth();
 
-  useEffect(() => {
-    QuickActions.setItems([
-      {
-        title: "Wait! Don't delete me!",
-        subtitle: "We're here to help",
-        icon:
-          Platform.OS === 'ios'
-            ? 'symbol:person.crop.circle.badge.questionmark'
-            : undefined,
-        id: '0',
-        params: { href: '/help' },
-      },
-    ]);
-  }, []);
+  useQuickActionRouting();
+  useQuickActions();
 
   if (isLoading) {
     return (
@@ -48,18 +27,16 @@ function AppContent() {
     );
   }
 
-  if (!user) {
-    return <LoginScreen />;
-  }
-
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="modal"
-        options={{ presentation: 'modal', title: 'Modal' }}
-      />
-      <Stack.Screen name="+not-found" />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={!!user}>
+        <Stack.Screen name="(app)" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!user}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
+      <Stack.Screen name="+not-found" options={{ headerShown: true }} />
     </Stack>
   );
 }
@@ -68,21 +45,20 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <ReactNavigationThemeProvider
-      value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-    >
-      <ThemeProvider>
+    <Auth0Provider domain={auth0Config.domain} clientId={auth0Config.clientId}>
+      <AppProvider>
         <LanguageProvider>
-          <Auth0Provider
-            domain={auth0Config.domain}
-            clientId={auth0Config.clientId}
+          <ReactNavigationThemeProvider
+            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
           >
-            <AppContent />
-            <StatusBar style="auto" />
-          </Auth0Provider>
+            <ThemeProvider>
+              <AppContent />
+              <StatusBar style="auto" />
+            </ThemeProvider>
+          </ReactNavigationThemeProvider>
         </LanguageProvider>
-      </ThemeProvider>
-    </ReactNavigationThemeProvider>
+      </AppProvider>
+    </Auth0Provider>
   );
 }
 

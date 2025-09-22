@@ -19,29 +19,41 @@ const resources = {
 
 let isInitialized = false;
 
-export const initI18n = async (): Promise<void> => {
+export const initI18n = async (savedLanguage?: string): Promise<void> => {
   if (isInitialized) {
     return;
   }
 
   try {
-    // Try to get saved language preference
-    let savedLanguage: string | null = await AsyncStorage.getItem(
-      STORAGE_KEYS.LANGUAGE_KEY
-    );
+    // If no saved language provided, try AsyncStorage then device locale
+    let languageToUse = savedLanguage;
 
-    // If no saved language, use device locale or fallback to English
-    if (!savedLanguage) {
+    if (!languageToUse) {
+      try {
+        const storedSettings = await AsyncStorage.getItem(
+          STORAGE_KEYS.APP_SETTINGS
+        );
+        if (storedSettings) {
+          const settings = JSON.parse(storedSettings);
+          languageToUse = settings.language;
+        }
+      } catch (error) {
+        console.log('Could not load language from storage:', error);
+      }
+    }
+
+    // If still no language, use device locale or fallback to English
+    if (!languageToUse) {
       const deviceLanguage = Localization.getLocales()[0].languageCode ?? '';
       const supportedLanguages = ['en', 'fr'];
-      savedLanguage = supportedLanguages.includes(deviceLanguage)
+      languageToUse = supportedLanguages.includes(deviceLanguage)
         ? deviceLanguage
         : 'en';
     }
 
     await i18n.use(initReactI18next).init({
       resources,
-      lng: savedLanguage,
+      lng: languageToUse,
       fallbackLng: {
         'en-*': ['en'],
         'fr-*': ['fr', 'en'],
@@ -78,5 +90,3 @@ export const getI18nInstance = () => {
   }
   return i18n;
 };
-
-export default i18n;

@@ -1,31 +1,43 @@
-import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { router, Stack } from 'expo-router';
+import { Text } from 'react-native';
 
-import { ThemedText, ThemedView } from '@/components';
+import { ThemedView } from '@/components';
+import { useContainerStyles, useLanguage, useTextStyles } from '@/hooks';
+import { Button, Host } from '@expo/ui/swift-ui';
+import { GlobalStyles } from '@/constants/global-styles';
 
 export default function NotFoundScreen() {
+  const { t } = useLanguage();
+  const containerStyles = useContainerStyles();
+  const textStyles = useTextStyles();
+
   return (
     <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">This screen does not exist.</ThemedText>
-        <Link href="/" style={styles.link}>
-          <ThemedText type="link">Go to home screen!</ThemedText>
-        </Link>
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: t('not-found.title'),
+          headerTitleStyle: { ...textStyles.subtitle },
+          headerTransparent: true,
+          headerBackButtonMenuEnabled: false,
+          headerBackButtonDisplayMode: 'minimal',
+        }}
+      />
+      <ThemedView style={containerStyles.centered}>
+        <Text style={[textStyles.heading, GlobalStyles.py16]}>
+          {t('not-found.description')}
+        </Text>
+        <Host style={containerStyles.host}>
+          <Button
+            variant="link"
+            onPress={() => {
+              router.push({ pathname: '/' });
+            }}
+          >
+            {t('not-found.go-back')}
+          </Button>
+        </Host>
       </ThemedView>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-});

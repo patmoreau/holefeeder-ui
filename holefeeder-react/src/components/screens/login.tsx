@@ -1,62 +1,42 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { AuthButton } from '@/components';
-import { Host, Text, VStack } from '@expo/ui/swift-ui';
-import { useLanguage } from '@/hooks';
+import {
+  useLanguage,
+  useStyles,
+  useContainerStyles,
+  useTextStyles,
+} from '@/hooks';
+import { GlobalStyles } from '@/constants/global-styles';
+import { Host } from '@expo/ui/swift-ui';
 
 export default function LoginScreen() {
   const { t } = useLanguage();
+  const containerStyles = useContainerStyles();
+  const textStyles = useTextStyles();
+
+  const styles = useStyles((theme, global) => ({
+    content: {
+      width: '80%',
+      maxWidth: 300,
+      ...global.column,
+      ...global.roundedLg,
+      ...global.p24,
+      ...global.alignCenter,
+    },
+    subtitle: {
+      ...textStyles.subtitle,
+      ...global.mb32,
+    },
+  }));
 
   return (
-    <Host style={{ flex: 1 }}>
-      <VStack spacing={12} alignment={'center'}>
-        <Text size={32}>{t('auth.loginTitle')}</Text>
-        <Text size={16}>{t('auth.loginSubtitle')}</Text>
+    <View style={containerStyles.centered}>
+      <View style={styles.content}>
+        <Text style={textStyles.heading}>{t('auth.loginTitle')}</Text>
+        <Text style={styles.subtitle}>{t('auth.loginSubtitle')}</Text>
         <AuthButton />
-      </VStack>
-    </Host>
+      </View>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  content: {
-    width: '80%',
-    maxWidth: 300,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#333',
-    alignContent: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 40,
-    textAlign: 'center',
-  },
-  loginButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    width: '100%',
-    alignItems: 'center',
-  },
-  disabledButton: {
-    backgroundColor: '#999',
-  },
-  loginButtonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-});

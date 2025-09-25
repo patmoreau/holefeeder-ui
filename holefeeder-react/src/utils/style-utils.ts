@@ -68,3 +68,35 @@ export const getLayoutStyle = (
 ): ViewStyle => {
   return theme.styles.layouts[variant];
 };
+
+// Theme-aware shadow utility
+export const getThemedShadow = (
+  theme: Theme,
+  size: keyof Theme['shadows']
+): ViewStyle => {
+  return {
+    ...theme.shadows[size],
+    shadowColor: getColor(theme, 'label'),
+  };
+};
+
+// Responsive spacing utility
+export const getResponsiveSpacing = (
+  theme: Theme,
+  baseSize: keyof Theme['spacing'],
+  multiplier: number = 1
+): number => {
+  return theme.spacing[baseSize] * multiplier;
+};
+
+// Typography helper with theme colors
+export const getThemedTypography = (
+  theme: Theme,
+  variant: keyof Theme['typography'],
+  colorKey?: keyof Theme['colors']
+): TextStyle => {
+  return {
+    ...theme.typography[variant],
+    ...(colorKey && { color: getColor(theme, colorKey) }),
+  };
+};

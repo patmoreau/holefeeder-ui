@@ -7,7 +7,11 @@ import {
 } from '@/components';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { ProfileSection, DisplaySection } from '@/components/sections';
+import {
+  ProfileSection,
+  DisplaySection,
+  TestSection,
+} from '@/components/sections';
 import { useLanguage } from '@/hooks';
 
 function ScreenContent() {
@@ -37,6 +41,7 @@ function ScreenContent() {
         <Form>
           <ProfileSection />
           <DisplaySection />
+          {__DEV__ && <TestSection />}
         </Form>
       </Host>
     </ParallaxScrollView>

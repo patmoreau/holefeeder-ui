@@ -1,10 +1,13 @@
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { ThemedText, ThemedView } from '@/components';
+import { useContainerStyles } from '@/hooks';
 
 export default function ModalScreen() {
+  const containerStyles = useContainerStyles();
+
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={containerStyles.centered}>
       <ThemedText type="title">This is a modal</ThemedText>
       <Link href="/" dismissTo style={styles.link}>
         <ThemedText type="link">Go to home screen</ThemedText>

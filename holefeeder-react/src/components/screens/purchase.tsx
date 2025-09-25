@@ -3,7 +3,11 @@ import { router } from 'expo-router';
 
 export default function PurchaseScreen() {
   const handleCancel = () => {
-    router.push('/(tabs)');
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.push('/');
+    }
   };
 
   const handleSave = async () => {
@@ -12,7 +16,11 @@ export default function PurchaseScreen() {
       await savePurchase();
 
       // Navigate to home after successful save
-      router.push('/(tabs)');
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        router.push('/');
+      }
     } catch (error) {
       console.error('Purchase save failed:', error);
     }

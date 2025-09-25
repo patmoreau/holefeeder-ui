@@ -47,16 +47,8 @@ export default function RootLayout() {
   return (
     <Auth0Provider domain={auth0Config.domain} clientId={auth0Config.clientId}>
       <AppProvider>
-        <LanguageProvider>
-          <ReactNavigationThemeProvider
-            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-          >
-            <ThemeProvider>
-              <AppContent />
-              <StatusBar style="auto" />
-            </ThemeProvider>
-          </ReactNavigationThemeProvider>
-        </LanguageProvider>
+        <AppContent />
+        <StatusBar style="auto" />
       </AppProvider>
     </Auth0Provider>
   );

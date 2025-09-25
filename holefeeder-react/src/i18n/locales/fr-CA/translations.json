@@ -1,4 +1,14 @@
 {
+  "auth": {
+    "loginTitle": "Bienvenue",
+    "loginSubtitle": "Veuillez vous connecter pour continuer",
+    "loginButton": "Connexion",
+    "logoutButton": "Déconnexion",
+    "loggingIn": "Connexion en cours...",
+    "loginError": "Erreur de connexion",
+    "loginErrorMessage": "Échec de la connexion. Veuillez réessayer.",
+    "logoutSuccess": "Déconnexion réussie"
+  },
   "common": {
     "welcome": "Bienvenue",
     "login": "Connexion",
@@ -12,15 +22,9 @@
     "edit": "Modifier",
     "done": "Terminé"
   },
-  "auth": {
-    "loginTitle": "Bienvenue",
-    "loginSubtitle": "Veuillez vous connecter pour continuer",
-    "loginButton": "Connexion",
-    "logoutButton": "Déconnexion",
-    "loggingIn": "Connexion en cours...",
-    "loginError": "Erreur de connexion",
-    "loginErrorMessage": "Échec de la connexion. Veuillez réessayer.",
-    "logoutSuccess": "Déconnexion réussie"
+  "display-section": {
+    "language": "Langue",
+    "theme": "Thème"
   },
   "home": {
     "title": "Bienvenue !",
@@ -37,10 +41,6 @@
     "setupTitle": "Instructions de configuration",
     "setupDescription": "Pour configurer Auth0, ajoutez ces variables d'environnement à votre fichier .env :"
   },
-  "language-section": {
-    "title": "Langue",
-    "select": "Sélectionner"
-  },
   "profile-section": {
     "title": "Profil utilisateur",
     "access-token": "Jeton d'accès",
@@ -54,16 +54,19 @@
     "help-subtitle": "Nous sommes là pour vous aider",
     "purchase-title": "Acheter"
   },
+  "settings": {
+    "title": "Paramètres",
+    "parameters": "Paramètres"
+  },
   "tabs": {
     "dashboard": "Tableau de bord",
     "accounts": "Comptes",
     "settings": "Configuration",
     "test": "Examen"
   },
-  "settings": {
-    "title": "Paramètres",
-    "parameters": "Paramètres",
-    "language": "Langue",
-    "selectLanguage": "Sélectionner la langue"
+  "theme-switcher": {
+    "system": "Automatique",
+    "light": "Clair",
+    "dark": "Sombre"
   }
 }

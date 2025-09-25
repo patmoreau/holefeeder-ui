@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useLanguage } from '@/contexts';
+import { StyleSheet } from 'react-native';
 import { AuthButton } from '@/components';
-import { Button, Form, Host, Section, Text, VStack } from '@expo/ui/swift-ui';
+import { Host, Text, VStack } from '@expo/ui/swift-ui';
+import { useLanguage } from '@/hooks';
 
 export default function LoginScreen() {
   const { t } = useLanguage();

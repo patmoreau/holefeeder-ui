@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import * as QuickActions from 'expo-quick-actions';
 import { RouterAction } from 'expo-quick-actions/router';
-import { useLanguage } from '@/contexts/language-context';
+import { useLanguage } from '@/hooks/use-language';
 
 export function useQuickActions() {
   const { t } = useLanguage();

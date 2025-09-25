@@ -1,2 +1,2 @@
-export * from './language-section';
+export * from './display-section';
 export * from './profile-section';

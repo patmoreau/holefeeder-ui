@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { useTheme, useLanguage } from '@/contexts';
 import { combineStyles, createStyles } from '@/utils';
 import { Colors } from '@/constants';
 import { Button } from '@expo/ui/swift-ui';
 import { useAuth } from '@/hooks/use-auth';
+import { useLanguage, useTheme } from '@/hooks';
 
 export const AuthButton: React.FC = () => {
   const { user, isLoading, login, logout } = useAuth();

@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Icon, NativeTabs, Label } from 'expo-router/unstable-native-tabs';
-import { useLanguage } from '@/contexts';
+import { useLanguage } from '@/hooks';
 
 export default function TabLayout() {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
 
   return (
-    <NativeTabs>
+    <NativeTabs key={currentLanguage}>
       <NativeTabs.Trigger name="index">
         <Icon sf="rectangle.3.group.fill" />
         <Label>{t('tabs.dashboard')}</Label>

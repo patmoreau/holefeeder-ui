@@ -1,16 +1,42 @@
+import i18n from 'i18next';
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
 } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AppSettings, AppState, UserProfile } from '@/types';
+import {
+  AppSettings,
+  AppState,
+  darkTheme,
+  initialSettings,
+  lightTheme,
+  ThemeMode,
+  UserProfile,
+} from '@/types';
 import { useAuth } from '@/hooks/use-auth';
-import { STORAGE_KEYS } from '@/constants';
+import { ActivityIndicator, Appearance, StyleSheet, View } from 'react-native';
+import { initI18n } from '@/i18n';
+import { useTranslation } from 'react-i18next';
+import * as SystemUI from 'expo-system-ui';
+import { Storage } from '@/utils';
+
+type Language = 'en' | 'fr';
 
 export const AppContext = createContext<AppState | null>(null);
+
+const availableThemeModes = [
+  { code: 'system' as ThemeMode, langId: 'system' },
+  { code: 'light' as ThemeMode, langId: 'light' },
+  { code: 'dark' as ThemeMode, langId: 'dark' },
+];
+
+const availableLanguages = [
+  { code: 'en' as Language, name: 'English' },
+  { code: 'fr' as Language, name: 'Français' },
+];
 
 export const initialProfile: UserProfile = {
   name: '',
@@ -19,58 +45,33 @@ export const initialProfile: UserProfile = {
   avatar: 'person.fill',
 };
 
-export const initialSettings: AppSettings = {
-  notifications: true,
-  autoSave: true,
-  theme: 'auto',
-  language: 'en',
-};
-
-// Functions to handle AsyncStorage persistence
-const loadSettingsFromStorage = async (): Promise<AppSettings> => {
-  try {
-    const storedSettings = await AsyncStorage.getItem(
-      STORAGE_KEYS.APP_SETTINGS
-    );
-
-    if (storedSettings) {
-      const parsedSettings = JSON.parse(storedSettings);
-      // Merge with initial settings to ensure all properties exist
-      return { ...initialSettings, ...parsedSettings };
-    }
-  } catch (error) {
-    console.error('Failed to load settings from storage:', error);
-  }
-  return initialSettings;
-};
-
-const saveSettingsToStorage = async (settings: AppSettings): Promise<void> => {
-  try {
-    await AsyncStorage.setItem(
-      STORAGE_KEYS.APP_SETTINGS,
-      JSON.stringify(settings)
-    );
-  } catch (error) {
-    console.error('Failed to save settings to storage:', error);
-  }
-};
-
-export function AppProvider({ children }: { children: ReactNode }) {
+function AppProviderContent({
+  children,
+  loadedSettings,
+}: {
+  children: ReactNode;
+  loadedSettings: AppSettings;
+}) {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
-  const [settings, setSettings] = useState<AppSettings>(initialSettings);
-  const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
+  const [settings, setSettings] = useState<AppSettings>(loadedSettings);
+  const [systemColorScheme, setSystemColorScheme] = useState(
+    Appearance.getColorScheme()
+  );
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(
+    (i18n.language as Language) || 'en'
+  );
 
-  // Load settings from AsyncStorage on component mount
+  // Listen for system appearance changes
   useEffect(() => {
-    const loadSettings = async () => {
-      const loadedSettings = await loadSettingsFromStorage();
-      setSettings(loadedSettings);
-      setIsSettingsLoaded(true);
-    };
-    loadSettings();
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      setSystemColorScheme(colorScheme);
+    });
+    return () => subscription?.remove();
   }, []);
 
+  // Update profile when a user changes
   useEffect(() => {
     if (user) {
       setProfile({
@@ -84,25 +85,129 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [user]);
 
-  const updateProfile = (updates: Partial<UserProfile>) => {
-    setProfile((prev) => ({ ...prev, ...updates }));
-  };
+  const getCurrentTheme = useCallback(() => {
+    if (settings.themeMode === 'system') {
+      return systemColorScheme === 'dark' ? darkTheme : lightTheme;
+    }
+    return settings.themeMode === 'dark' ? darkTheme : lightTheme;
+  }, [settings.themeMode, systemColorScheme]);
 
-  const updateSettings = async (updates: Partial<AppSettings>) => {
-    const newSettings = { ...settings, ...updates };
-    setSettings(newSettings);
-    await saveSettingsToStorage(newSettings);
-  };
+  // Update system UI when theme changes
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(
+      getCurrentTheme().colors.systemBackground
+    ).then((_) => {});
+  }, [settings.themeMode, systemColorScheme, getCurrentTheme]);
+
+  const updateSettings = useCallback(
+    async (updates: Partial<AppSettings>) => {
+      const newSettings = { ...settings, ...updates };
+      setSettings(newSettings);
+      await Storage().saveSettings(newSettings);
+    },
+    [settings]
+  );
+
+  const changeThemeMode = useCallback(
+    async (themeMode: ThemeMode) => {
+      try {
+        Appearance.setColorScheme(
+          themeMode === 'system' ? undefined : themeMode
+        );
+        await updateSettings({ themeMode });
+      } catch (error) {
+        console.error('Error changing theme:', error);
+      }
+    },
+    [updateSettings]
+  );
+
+  const changeLanguage = useCallback(
+    async (language: Language) => {
+      try {
+        await i18n.changeLanguage(language);
+        setCurrentLanguage(language);
+        await updateSettings({ language });
+      } catch (error) {
+        console.error('Error changing language:', error);
+      }
+    },
+    [updateSettings]
+  );
 
   const value: AppState = {
+    // Original app state
     profile,
-    updateProfile,
+    updateProfile: (updates: Partial<UserProfile>) => {
+      setProfile((prev) => ({ ...prev, ...updates }));
+    },
     settings,
     updateSettings,
-    isSettingsLoaded,
+    isSettingsLoaded: true,
+
+    // Theme
+    theme: getCurrentTheme(),
+    isDark: getCurrentTheme() === darkTheme,
+    changeThemeMode,
+    availableThemeModes,
+    themeMode: settings.themeMode,
+
+    // Language
+    currentLanguage,
+    changeLanguage,
+    t,
+    availableLanguages,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+}
+
+export function AppProvider({ children }: { children: ReactNode }) {
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [loadedSettings, setLoadedSettings] =
+    useState<AppSettings>(initialSettings);
+
+  // Initialize everything at once
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        // Load settings
+        const loadedSettings = await Storage().loadSettings();
+
+        // Initialize i18n
+        await initI18n(loadedSettings.language);
+
+        // Set theme
+        Appearance.setColorScheme(
+          loadedSettings.themeMode === 'system'
+            ? undefined
+            : loadedSettings.themeMode
+        );
+
+        setLoadedSettings(loadedSettings);
+        setIsInitialized(true);
+      } catch (error) {
+        console.error('Failed to initialize app:', error);
+        setIsInitialized(true);
+      }
+    };
+
+    initialize().then((_) => {});
+  }, []);
+
+  if (!isInitialized) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator testID="loading" size="large" color="#007AFF" />
+      </View>
+    );
+  }
+
+  return (
+    <AppProviderContent loadedSettings={loadedSettings}>
+      {children}
+    </AppProviderContent>
+  );
 }
 
 export function useAppContext(): AppState {
@@ -112,3 +217,12 @@ export function useAppContext(): AppState {
   }
   return context;
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+});

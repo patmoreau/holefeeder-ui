@@ -1,6 +1,6 @@
 import { Picker } from '@expo/ui/jetpack-compose';
 import React, { useState } from 'react';
-import { useLanguage } from '@/contexts';
+import { useLanguage } from '@/hooks';
 
 export function LanguageSwitcher() {
   const { changeLanguage, availableLanguages, currentLanguage } = useLanguage();

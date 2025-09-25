@@ -1,5 +1,7 @@
 import { ViewStyle, TextStyle, Platform } from 'react-native';
 
+export type ThemeMode = 'light' | 'dark' | 'system';
+
 export interface Theme {
   colors: {
     // System Colors

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
-import { useAppContext, useLanguage } from '@/contexts';
+import { useAppContext } from '@/contexts';
 import {
   HStack,
   Section,
@@ -17,7 +17,7 @@ import {
   padding,
 } from '@expo/ui/swift-ui/modifiers';
 import { AuthButton } from '@/components/auth-button';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth, useLanguage } from '@/hooks';
 
 export function ProfileSection() {
   const { profile } = useAppContext();

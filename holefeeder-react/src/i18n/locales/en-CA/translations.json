@@ -1,4 +1,14 @@
 {
+  "auth": {
+    "loginTitle": "Welcome",
+    "loginSubtitle": "Please login to continue",
+    "loginButton": "Login",
+    "logoutButton": "Logout",
+    "loggingIn": "Logging in...",
+    "loginError": "Login Error",
+    "loginErrorMessage": "Failed to login. Please try again.",
+    "logoutSuccess": "Logged out successfully"
+  },
   "common": {
     "welcome": "Welcome",
     "login": "Login",
@@ -12,15 +22,10 @@
     "edit": "Edit",
     "done": "Done"
   },
-  "auth": {
-    "loginTitle": "Welcome",
-    "loginSubtitle": "Please login to continue",
-    "loginButton": "Login",
-    "logoutButton": "Logout",
-    "loggingIn": "Logging in...",
-    "loginError": "Login Error",
-    "loginErrorMessage": "Failed to login. Please try again.",
-    "logoutSuccess": "Logged out successfully"
+  "display-section": {
+    "title": "Display",
+    "language": "Language",
+    "theme": "Theme"
   },
   "home": {
     "title": "Welcome Home!",
@@ -37,10 +42,6 @@
     "setupTitle": "Setup Instructions",
     "setupDescription": "To configure Auth0, add these environment variables to your .env file:"
   },
-  "language-section": {
-    "title": "Language",
-    "select": "Select"
-  },
   "profile-section": {
     "title": "User Profile",
     "access-token": "Access Token",
@@ -53,16 +54,19 @@
     "help-subtitle": "We're here to help",
     "purchase-title": "Purchase"
   },
+  "settings": {
+    "title": "Settings",
+    "parameters": "Parameters"
+  },
   "tabs": {
     "dashboard": "Dashboard",
     "accounts": "Accounts",
     "settings": "Settings",
     "test": "Test"
   },
-  "settings": {
-    "title": "Settings",
-    "parameters": "Parameters",
-    "language": "Language",
-    "selectLanguage": "Select Language"
+  "theme-switcher": {
+    "system": "Automatic",
+    "light": "Light",
+    "dark": "Dark"
   }
 }

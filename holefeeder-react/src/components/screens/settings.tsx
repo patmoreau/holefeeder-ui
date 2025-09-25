@@ -6,9 +6,9 @@ import {
   ThemedView,
 } from '@/components';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useLanguage } from '@/contexts';
-import { ProfileSection, LanguageSection } from '@/components/sections';
+import { StyleSheet } from 'react-native';
+import { ProfileSection, DisplaySection } from '@/components/sections';
+import { useLanguage } from '@/hooks';
 
 function ScreenContent() {
   const { t } = useLanguage();
@@ -36,7 +36,7 @@ function ScreenContent() {
       <Host matchContents={{ vertical: true }} style={{ flex: 1 }}>
         <Form>
           <ProfileSection />
-          <LanguageSection />
+          <DisplaySection />
         </Form>
       </Host>
     </ParallaxScrollView>

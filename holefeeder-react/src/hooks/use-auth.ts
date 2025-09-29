@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Credentials, useAuth0 } from 'react-native-auth0';
 import { TokenInfo } from '@/types';
-import { auth0Config } from '@/config';
+import { config } from '@/config';
 
 export function useAuth() {
   const {
@@ -12,6 +11,7 @@ export function useAuth() {
     authorize,
     clearSession,
   } = useAuth0();
+
   const [tokenInfo, setTokenInfo] = useState<TokenInfo>({
     accessToken: null,
     expiresAt: null,
@@ -22,25 +22,25 @@ export function useAuth() {
 
   const memoizedUser = useMemo(() => user, [user?.sub]);
 
-  const updateTokenInfo = (credentials: Credentials) => {
+  const updateTokenInfo = useCallback((credentials: Credentials) => {
     setTokenInfo({
-      accessToken: `${credentials.accessToken.substring(0, 20)}...`,
+      accessToken: credentials.accessToken,
       expiresAt: new Date(credentials.expiresAt * 1000).toLocaleString(),
       issuedAt: credentials.issuedAt
         ? new Date(credentials.issuedAt * 1000).toLocaleString()
         : null,
       refreshToken: true,
     });
-  };
+  }, []);
 
-  const resetTokenInfo = (error: string | null = null) => {
+  const resetTokenInfo = useCallback((error: string | null = null) => {
     setTokenInfo({
       accessToken: error,
       expiresAt: null,
       issuedAt: null,
       refreshToken: false,
     });
-  };
+  }, []);
 
   useEffect(() => {
     const fetchTokenInfo = async () => {
@@ -48,11 +48,13 @@ export function useAuth() {
         setIsLoading(true);
         return;
       }
+
       if (!memoizedUser) {
         resetTokenInfo();
         setIsLoading(false);
         return;
       }
+
       setIsLoading(true);
       try {
         const credentials = await getCredentials();
@@ -67,29 +69,26 @@ export function useAuth() {
         setIsLoading(false);
       }
     };
+
     fetchTokenInfo();
-  }, [memoizedUser, authLoading, getCredentials]);
+  }, [memoizedUser, authLoading]); // Remove getCredentials from deps
 
-  const login = async () => {
+  const login = useCallback(async () => {
     await authorize({
-      scope: auth0Config.scope,
-      audience: auth0Config.audience,
-      redirectUrl: auth0Config.redirectUri,
+      scope: config.auth0.scope,
+      audience: config.auth0.audience,
+      redirectUrl: config.auth0.redirectUri,
     });
-  };
+  }, [authorize]);
 
-  const logout = async () => {
-    await clearSession(
-      {
-        returnToUrl: auth0Config.logoutRedirectUri,
-      },
-      {}
-    );
-  };
+  const logout = useCallback(async () => {
+    await clearSession({ returnToUrl: config.auth0.logoutRedirectUri }, {});
+  }, [clearSession]);
 
   return {
     tokenInfo,
     isLoading,
+    isReady: !isLoading && !!tokenInfo.accessToken,
     user: memoizedUser,
     login,
     logout,

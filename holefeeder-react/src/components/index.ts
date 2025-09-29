@@ -1,5 +1,6 @@
 export * from './ui';
 export * from './auth-button';
+export * from './category-picker';
 export * from './external-link';
 export * from './haptic-tab';
 export * from './hello-wave';

@@ -72,7 +72,8 @@
   "test-section": {
     "title": "Test",
     "not-found-page": "Page not found",
-    "go-to": "Go to"
+    "go-to": "Go to",
+    "component": "Component"
   },
   "theme-switcher": {
     "system": "Automatic",

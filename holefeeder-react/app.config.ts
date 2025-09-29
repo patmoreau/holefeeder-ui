@@ -1,5 +1,12 @@
 import 'dotenv/config';
 
+const environment = process.env.APP_ENV || 'development';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require('dotenv').config({
+  path: `.env.${environment}`,
+});
+
 export default {
   expo: {
     name: 'Holefeeder',
@@ -55,14 +62,6 @@ export default {
           backgroundColor: '#ffffff',
         },
       ],
-      // [
-      //   'react-native-auth0',
-      //   {
-      //     domain:
-      //       process.env.EXPO_PUBLIC_AUTH0_DOMAIN || 'your-domain.auth0.com',
-      //     customScheme: 'holefeeder',
-      //   },
-      // ],
     ],
     experiments: {
       typedRoutes: true,

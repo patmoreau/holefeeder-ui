@@ -1,1 +1,5 @@
+ignoredBuiltDependencies:
+  - react-native-mmkv
+  - react-native-nitro-modules
+
 nodeLinker: hoisted

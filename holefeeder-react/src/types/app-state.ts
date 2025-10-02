@@ -1,6 +1,8 @@
 import { UserProfile } from './user-profile';
 import { AppSettings } from '@/types/app-settings';
-import { ThemeMode } from '@/types/theme';
+import { lightTheme, darkTheme, ThemeMode } from '@/types';
+
+export type LanguageType = 'en' | 'fr';
 
 export interface ThemeState {
   theme: typeof lightTheme | typeof darkTheme;
@@ -11,10 +13,10 @@ export interface ThemeState {
 }
 
 export interface LanguageState {
-  currentLanguage: Language;
-  changeLanguage: (language: Language) => Promise<void>;
+  currentLanguage: LanguageType;
+  changeLanguage: (language: LanguageType) => Promise<void>;
   t: (key: string, options?: any) => string;
-  availableLanguages: { code: Language; name: string }[];
+  availableLanguages: { code: LanguageType; name: string }[];
 }
 
 export interface AppState extends ThemeState, LanguageState {

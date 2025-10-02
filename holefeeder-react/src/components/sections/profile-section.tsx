@@ -60,7 +60,7 @@ export function ProfileSection() {
           </HStack>
           <LabeledContent label={t('profile-section.access-token')}>
             <Text>
-              {tokenInfo.accessToken ?? t('profile-section.no-access-token')}
+              {tokenInfo.accessToken ? `${tokenInfo.accessToken?.substring(0, 20)}...` : t('profile-section.no-access-token')}
             </Text>
           </LabeledContent>
           <LabeledContent label={t('profile-section.expires-at')}>

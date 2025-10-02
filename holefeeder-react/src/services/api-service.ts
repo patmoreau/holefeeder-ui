@@ -47,11 +47,18 @@ export const apiService = (token: string | null) => {
     );
   }
 
+  const getWithAuth = <T>(url: string): Promise<AxiosResponse<T>> =>
+    api.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+  const getCategories = () => getWithAuth<Category[]>('/api/v2/categories');
+
+  const getCategory = (id: string) =>
+    getWithAuth<Category>(`/api/v2/categories/${id}`);
+
   return {
-    getCategories: (): Promise<AxiosResponse<Category[]>> => {
-      return api.get('/api/v2/categories', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    },
+    getCategories,
+    getCategory,
   };
 };

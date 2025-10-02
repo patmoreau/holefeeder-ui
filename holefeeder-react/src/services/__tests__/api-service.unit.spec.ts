@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { apiService } from '../api-service';
+import { apiService } from '@/services';
 import { config } from '@/config';
 
 // Mock the config
@@ -80,12 +80,7 @@ describe('apiService', () => {
 
       const service = apiService('test-token');
 
-      try {
-        await service.getCategories();
-      } catch (error) {
-        // Expected to throw
-      }
-
+      await expect(service.getCategories()).rejects.toThrow();
       expect(consoleSpy).toHaveBeenCalledWith(
         'Error Response:',
         expect.objectContaining({
@@ -100,12 +95,7 @@ describe('apiService', () => {
 
       const service = apiService('test-token');
 
-      try {
-        await service.getCategories();
-      } catch (error) {
-        // Expected to throw
-      }
-
+      await expect(service.getCategories()).rejects.toThrow();
       expect(consoleSpy).toHaveBeenCalledWith('Error:', 'Network Error');
     });
   });
@@ -151,6 +141,47 @@ describe('apiService', () => {
       const service = apiService('test-token');
 
       await expect(service.getCategories()).rejects.toThrow();
+    });
+  });
+
+  describe('getCategory', () => {
+    it('should make GET request to categories endpoint with auth header and id', async () => {
+      const mockData = { id: 1, name: 'Category 1' };
+
+      mockAxios.onGet('/api/v2/categories/1').reply(200, mockData);
+
+      const service = apiService('test-token');
+      const response = await service.getCategory('1');
+
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual(mockData);
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe(
+        'Bearer test-token'
+      );
+    });
+
+    it('should handle null token', async () => {
+      const mockData = { id: 1, name: 'Category 1' };
+
+      mockAxios.onGet('/api/v2/categories/1').reply(200, mockData);
+
+      const service = apiService(null);
+      const response = await service.getCategory('1');
+
+      expect(response.status).toBe(200);
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe(
+        'Bearer null'
+      );
+    });
+
+    it('should handle API errors', async () => {
+      mockAxios
+        .onGet('/api/v2/categories/1')
+        .reply(500, { error: 'Server error' });
+
+      const service = apiService('test-token');
+
+      await expect(service.getCategory('1')).rejects.toThrow();
     });
   });
 });

@@ -12,6 +12,7 @@ import {
   AppState,
   darkTheme,
   initialSettings,
+  LanguageType,
   lightTheme,
   ThemeMode,
   UserProfile,
@@ -23,8 +24,6 @@ import { useTranslation } from 'react-i18next';
 import * as SystemUI from 'expo-system-ui';
 import { Storage } from '@/utils';
 
-type Language = 'en' | 'fr';
-
 export const AppContext = createContext<AppState | null>(null);
 
 const availableThemeModes = [
@@ -34,8 +33,8 @@ const availableThemeModes = [
 ];
 
 const availableLanguages = [
-  { code: 'en' as Language, name: 'English' },
-  { code: 'fr' as Language, name: 'Français' },
+  { code: 'en' as LanguageType, name: 'English' },
+  { code: 'fr' as LanguageType, name: 'Français' },
 ];
 
 export const initialProfile: UserProfile = {
@@ -59,8 +58,8 @@ function AppProviderContent({
   const [systemColorScheme, setSystemColorScheme] = useState(
     Appearance.getColorScheme()
   );
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(
-    (i18n.language as Language) || 'en'
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageType>(
+    (i18n.language as LanguageType) || 'en'
   );
 
   // Listen for system appearance changes
@@ -123,7 +122,7 @@ function AppProviderContent({
   );
 
   const changeLanguage = useCallback(
-    async (language: Language) => {
+    async (language: LanguageType) => {
       try {
         await i18n.changeLanguage(language);
         setCurrentLanguage(language);

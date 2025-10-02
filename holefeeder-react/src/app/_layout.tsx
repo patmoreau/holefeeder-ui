@@ -7,6 +7,7 @@ import { Auth0Provider } from 'react-native-auth0';
 import { config } from '@/config';
 import { useQuickActionRouting } from 'expo-quick-actions/router';
 import { LoadingIndicator } from '@/components';
+import { QueryProvider } from '@/contexts/query-provider';
 
 function AppContent() {
   const { user, isLoading } = useAuth();
@@ -43,9 +44,11 @@ export default function RootLayout() {
       domain={config.auth0.domain}
       clientId={config.auth0.clientId}
     >
-      <AppProvider>
-        <AppContent />
-      </AppProvider>
+      <QueryProvider>
+        <AppProvider>
+          <AppContent />
+        </AppProvider>
+      </QueryProvider>
     </Auth0Provider>
   );
 }

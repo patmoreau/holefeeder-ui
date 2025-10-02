@@ -1,41 +1,19 @@
 import { Section, LabeledContent, Button } from '@expo/ui/swift-ui';
-import React, { useEffect, useState } from 'react';
-import { useLanguage } from '@/hooks';
+import React, { useState } from 'react';
+import { useCategories, useLanguage } from '@/hooks';
 import { router } from 'expo-router';
 import { CategoryPicker } from '@/components/category-picker';
-import { useApi } from '@/hooks/use-api';
 import { Category } from '@/types';
 
 export function TestSection() {
   const { t } = useLanguage();
-  const { getCategories, isReady, isLoading } = useApi();
-  const [categories, setCategories] = useState<Category[] | null>(null);
+  const { data: categories } = useCategories();
   const [error, setError] = useState<string | null>(null);
 
   // Form state
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );
-
-  useEffect(() => {
-    if (!isReady) {
-      return;
-    }
-
-    setError(null);
-
-    const fetchData = async () => {
-      const [categoriesResult] = await Promise.all([getCategories()]);
-
-      if (categoriesResult.isFailure) {
-        setError(categoriesResult.error);
-      } else {
-        setCategories(categoriesResult.value);
-      }
-    };
-
-    fetchData().then();
-  }, [isReady, getCategories]);
 
   const handleSubmit = () => {
     if (!selectedCategory) {
@@ -65,7 +43,7 @@ export function TestSection() {
       <LabeledContent label={t('test-section.component')}>
         <CategoryPicker
           categories={categories || []}
-          selectedCategory={selectedCategory}
+          selectedCategory={selectedCategory || categories?.[0] || null}
           onSelectCategory={setSelectedCategory}
         />
       </LabeledContent>

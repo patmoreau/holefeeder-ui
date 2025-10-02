@@ -2,8 +2,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as Localization from 'expo-localization';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { STORAGE_KEYS } from '@/constants';
 
 // Import translation files
 import en from './locales/en-CA/translations.json';
@@ -28,20 +26,6 @@ export const initI18n = async (savedLanguage?: string): Promise<void> => {
   try {
     // If no saved language provided, try AsyncStorage then device locale
     let languageToUse = savedLanguage;
-
-    if (!languageToUse) {
-      try {
-        const storedSettings = await AsyncStorage.getItem(
-          STORAGE_KEYS.APP_SETTINGS
-        );
-        if (storedSettings) {
-          const settings = JSON.parse(storedSettings);
-          languageToUse = settings.language;
-        }
-      } catch (error) {
-        console.log('Could not load language from storage:', error);
-      }
-    }
 
     // If still no language, use device locale or fallback to English
     if (!languageToUse) {

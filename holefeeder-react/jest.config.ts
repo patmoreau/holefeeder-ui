@@ -12,7 +12,7 @@ const config: Config = {
         '.*\\.integration\\.(test|spec)\\.(js|jsx|ts|tsx)$',
       ],
       transformIgnorePatterns: [
-        'node_modules/(?!((.pnpm/)?(@?react-native|@react-native-community|@react-navigation|expo|@expo|react-native-safe-area-context|react-native-screens|react-native-gesture-handler|react-native-reanimated|react-native-svg|react-native-vector-icons)))',
+        'node_modules/(?!((.pnpm/)?(@?react-native|@react-native-community|@react-navigation|expo|@expo|react-native-safe-area-context|react-native-screens|react-native-gesture-handler|react-native-reanimated|react-native-svg|react-native-vector-icons|@faker-js)))',
       ],
       setupFilesAfterEnv: ['<rootDir>/jest.setup.unit.ts'],
       collectCoverageFrom: [
@@ -32,6 +32,9 @@ const config: Config = {
         '\\.integration\\.',
       ],
       coverageDirectory: 'coverage/unit',
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+      },
     },
     {
       displayName: 'integration',
@@ -62,6 +65,9 @@ const config: Config = {
         '\\.integration\\.',
       ],
       coverageDirectory: 'coverage/integration',
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+      },
     },
   ],
   coverageReporters: ['text', 'lcov', 'html', 'json'],

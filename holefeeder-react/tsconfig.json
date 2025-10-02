@@ -15,7 +15,7 @@
       "@/i18n/*": ["./src/i18n/*"],
       "@/services/*": ["./src/services/*"],
       "@/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/utils/*"]
+      "@/utils/*": ["./src/utils/*"],
     }
   },
   "include": [

@@ -1,33 +1,15 @@
 import { router, Stack } from 'expo-router';
-import { Text, Pressable, Platform } from 'react-native';
+import { Text } from 'react-native';
 
 import { ThemedView } from '@/components';
-import { useContainerStyles, useLanguage, useTextStyles, useStyles } from '@/hooks';
+import { useContainerStyles, useLanguage, useTextStyles } from '@/hooks';
+import { Button, Host } from '@expo/ui/swift-ui';
 import { GlobalStyles } from '@/constants/global-styles';
-import { getThemedTypography } from '@/utils/style-utils';
 
 export default function NotFoundScreen() {
   const { t } = useLanguage();
   const containerStyles = useContainerStyles();
   const textStyles = useTextStyles();
-
-  const styles = useStyles((theme) => ({
-    button: {
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      borderRadius: 8,
-      ...(Platform.OS === 'web' && {
-        cursor: 'pointer',
-        ':hover': {
-          opacity: 0.8,
-        },
-      }),
-    },
-    buttonText: {
-      ...getThemedTypography(theme, 'body', 'systemBlue'),
-      textDecorationLine: 'underline',
-    },
-  }));
 
   return (
     <>
@@ -49,13 +31,16 @@ export default function NotFoundScreen() {
         <Text style={[textStyles.heading, GlobalStyles.py16]}>
           {t('not-found.description')}
         </Text>
-        <Pressable
-          style={styles.button}
-          onPress={() => router.push({ pathname: '/' })}
-          role="link"
-        >
-          <Text style={styles.buttonText}>{t('not-found.go-back')}</Text>
-        </Pressable>
+        <Host style={containerStyles.host}>
+          <Button
+            variant="link"
+            onPress={() => {
+              router.push({ pathname: '/' });
+            }}
+          >
+            {t('not-found.go-back')}
+          </Button>
+        </Host>
       </ThemedView>
     </>
   );

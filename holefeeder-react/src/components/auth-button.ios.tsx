@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
+import { Host, Button } from '@expo/ui/swift-ui';
 import { useAuth } from '@/hooks/use-auth';
 import {
   useLanguage,
   useStyles,
   useContainerStyles,
+  useTextStyles,
 } from '@/hooks';
 import { getColor, getThemedTypography } from '@/utils/style-utils';
 
@@ -12,30 +14,12 @@ export const AuthButton: React.FC = () => {
   const { user, isLoading, login, logout } = useAuth();
   const { t } = useLanguage();
   const containerStyles = useContainerStyles();
+  const textStyles = useTextStyles();
 
   const styles = useStyles((theme, global) => ({
     container: {
       ...global.center,
       ...global.p20,
-    },
-    button: {
-      backgroundColor: getColor(theme, 'systemBackground'),
-      borderRadius: 8,
-      padding: 12,
-      minWidth: 120,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 1,
-      borderColor: getColor(theme, 'separator'),
-    },
-    buttonText: {
-      ...getThemedTypography(theme, 'body', 'label'),
-    },
-    destructiveButton: {
-      backgroundColor: getColor(theme, 'systemRed'),
-    },
-    destructiveText: {
-      color: getColor(theme, 'systemBackground'),
     },
     loadingText: {
       ...getThemedTypography(theme, 'callout', 'secondaryLabel'),
@@ -71,24 +55,19 @@ export const AuthButton: React.FC = () => {
 
   if (user) {
     return (
-      <View style={containerStyles.primary}>
-        <Pressable
-          style={[styles.button, styles.destructiveButton]}
-          onPress={logout}
-        >
-          <Text style={[styles.buttonText, styles.destructiveText]}>
-            {t('auth.logoutButton')}
-          </Text>
-        </Pressable>
-      </View>
+      <Host style={containerStyles.host}>
+        <Button variant="glassProminent" role="destructive" onPress={logout}>
+          {t('auth.logoutButton')}
+        </Button>
+      </Host>
     );
   }
 
   return (
-    <View style={containerStyles.primary}>
-      <Pressable style={styles.button} onPress={login}>
-        <Text style={styles.buttonText}>{t('auth.loginButton')}</Text>
-      </Pressable>
-    </View>
+    <Host style={containerStyles.host}>
+      <Button variant="glassProminent" onPress={login}>
+        {t('auth.loginButton')}
+      </Button>
+    </Host>
   );
 };

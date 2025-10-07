@@ -1,14 +1,15 @@
-import { Host, Image } from '@expo/ui/swift-ui';
 import * as React from 'react';
+import { Pressable } from 'react-native';
 import { router } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function PurchaseButton() {
   return (
-    <Host style={{ width: 35, height: 35 }}>
-      <Image
-        systemName="cart.badge.plus"
-        onPress={() => router.push('/(app)/purchase')}
-      />
-    </Host>
+    <Pressable
+      style={{ width: 35, height: 35, justifyContent: 'center', alignItems: 'center' }}
+      onPress={() => router.push('/(app)/purchase')}
+    >
+      <MaterialIcons name="add-shopping-cart" size={24} color="currentColor" />
+    </Pressable>
   );
 }

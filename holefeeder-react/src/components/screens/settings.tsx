@@ -6,7 +6,7 @@ import {
   ThemedView,
 } from '@/components';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
   ProfileSection,
   DisplaySection,
@@ -37,13 +37,17 @@ function ScreenContent() {
         <ThemedText type="title">{t('settings.title')}</ThemedText>
       </ThemedView>
 
-      <Host matchContents={{ vertical: true }} style={{ flex: 1 }}>
-        <Form>
-          <ProfileSection />
-          <DisplaySection />
-          {__DEV__ && <TestSection />}
-        </Form>
-      </Host>
+      {Platform.select({
+        ios: (
+          <Host matchContents={{ vertical: true }} style={{ flex: 1 }}>
+            <Form>
+              <ProfileSection />
+              <DisplaySection />
+              {__DEV__ && <TestSection />}
+            </Form>
+          </Host>
+        ),
+      })}
     </ParallaxScrollView>
   );
 }

@@ -7,8 +7,6 @@ import {
   useContainerStyles,
   useTextStyles,
 } from '@/hooks';
-import { GlobalStyles } from '@/constants/global-styles';
-import { Host } from '@expo/ui/swift-ui';
 
 export default function LoginScreen() {
   const { t } = useLanguage();

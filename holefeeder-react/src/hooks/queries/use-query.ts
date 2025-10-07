@@ -1,4 +1,4 @@
-import { useAuth } from '@/hooks';
+import { useAuth } from '@/hooks/use-auth';
 import { useQuery } from '@tanstack/react-query';
 
 type ListQueryKeys<P> = {

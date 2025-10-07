@@ -23,6 +23,9 @@ importers:
       '@react-native-async-storage/async-storage':
         specifier: ^2.2.0
         version: 2.2.0(react-native@0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.2.0)(react@19.1.0))
+      '@react-native-picker/picker':
+        specifier: ^2.11.2
+        version: 2.11.2(react-native@0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.2.0)(react@19.1.0))(react@19.1.0)
       '@tanstack/query-async-storage-persister':
         specifier: ^5.90.2
         version: 5.90.2
@@ -150,6 +153,9 @@ importers:
       '@types/react':
         specifier: ^19.2.0
         version: 19.2.0
+      '@types/react-native-web':
+        specifier: ^0.19.2
+        version: 0.19.2(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(react@19.1.0)
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.45.0
         version: 8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.36.0)(typescript@5.9.3))(eslint@9.36.0)(typescript@5.9.3)
@@ -1374,6 +1380,12 @@ packages:
     engines: {node: '>=20.19.4'}
     hasBin: true
 
+  '@react-native-picker/picker@2.11.2':
+    resolution: {integrity: sha512-2zyFdW4jgHjF+NeuDZ4nl3hJ+8suey69bI3yljqhNyowfklW2NwNrdDUaJ2iwtPCpk2pt7834aPF8TI6iyZRhA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
   '@react-native/assets-registry@0.81.4':
     resolution: {integrity: sha512-AMcDadefBIjD10BRqkWw+W/VdvXEomR6aEZ0fhQRAv7igrBzb4PTn4vHKYg+sUK0e3wa74kcMy2DLc/HtnGcMA==}
     engines: {node: '>= 20.19.4'}
@@ -1643,6 +1655,9 @@ packages:
 
   '@types/node@24.6.2':
     resolution: {integrity: sha512-d2L25Y4j+W3ZlNAeMKcy7yDsK425ibcAOO2t7aPTz6gNMH0z2GThtwENCDc0d/Pw9wgyRqE5Px1wkV7naz8ang==}
+
+  '@types/react-native-web@0.19.2':
+    resolution: {integrity: sha512-TAgyUi1XcYYUM5j3IwBDufPUD0NaOJiz8ftld6oJPtuIT5lc+uRZZmTcTdflpsVzCtiZ6AjSyLFZ/xD0OtCfJA==}
 
   '@types/react@19.2.0':
     resolution: {integrity: sha512-1LOH8xovvsKsCBq1wnT4ntDUdCJKmnEakhsuoUSy6ExlHCkGP2hqnatagYTgFk6oeL0VU31u7SNjunPN+GchtA==}
@@ -7500,6 +7515,11 @@ snapshots:
       - typescript
       - utf-8-validate
 
+  '@react-native-picker/picker@2.11.2(react-native@0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.2.0)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.2.0)(react@19.1.0)
+
   '@react-native/assets-registry@0.81.4': {}
 
   '@react-native/babel-plugin-codegen@0.81.1(@babel/core@7.28.4)':
@@ -7924,6 +7944,19 @@ snapshots:
   '@types/node@24.6.2':
     dependencies:
       undici-types: 7.13.0
+
+  '@types/react-native-web@0.19.2(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(react@19.1.0)':
+    dependencies:
+      '@types/react': 19.2.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.2.0)(react@19.1.0)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@react-native-community/cli'
+      - '@react-native/metro-config'
+      - bufferutil
+      - react
+      - supports-color
+      - utf-8-validate
 
   '@types/react@19.2.0':
     dependencies:

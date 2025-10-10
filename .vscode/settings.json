@@ -33,6 +33,8 @@
     "*.dart": "$(capture).*.dart",
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit",
+    "source.sortMembers": "explicit"
   }
 }

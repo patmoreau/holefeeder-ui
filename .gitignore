@@ -2,6 +2,12 @@
 **/.env*
 !**/.env.template
 
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
 # Miscellaneous
 **/.DS_Store
 

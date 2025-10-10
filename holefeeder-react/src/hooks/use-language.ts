@@ -5,7 +5,7 @@ export function useLanguage(): LanguageState {
   const context = useAppContext();
   return {
     currentLanguage: context.currentLanguage,
-    changeLanguage: context.changeLanguage,
+    setUserLanguage: context.setUserLanguage,
     t: context.t,
     availableLanguages: context.availableLanguages,
   };

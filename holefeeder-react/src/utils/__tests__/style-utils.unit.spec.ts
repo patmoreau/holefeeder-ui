@@ -1,15 +1,5 @@
-import {
-  createStyles,
-  getSpacing,
-  getColor,
-  combineStyles,
-  getThemeStyle,
-  getButtonStyle,
-  getContainerStyle,
-  getTextStyle,
-  getLayoutStyle,
-} from '@/utils';
 import { Theme } from '@/types/theme';
+import { createStyles, getSpacing, getColor, combineStyles, getThemeStyle, getButtonStyle, getContainerStyle, getTextStyle, getLayoutStyle } from '@/utils';
 
 // Mock theme for testing - matching your actual Theme interface
 const mockTheme: Theme = {
@@ -491,11 +481,7 @@ describe('Theme Style Utilities', () => {
       const nonExistentVariant = 'nonexistent';
 
       // Act
-      const result = getThemeStyle(
-        mockTheme,
-        styleCategory,
-        nonExistentVariant
-      );
+      const result = getThemeStyle(mockTheme, styleCategory, nonExistentVariant);
 
       // Assert
       expect(result).toEqual({});
@@ -722,8 +708,6 @@ describe('Edge Cases', () => {
     // Act & Assert
     expect(() => getSpacing(incompleteTheme, 'md' as any)).not.toThrow();
     expect(() => getColor(incompleteTheme, 'secondary' as any)).not.toThrow();
-    expect(() =>
-      getButtonStyle(incompleteTheme, 'primary' as any)
-    ).not.toThrow();
+    expect(() => getButtonStyle(incompleteTheme, 'primary' as any)).not.toThrow();
   });
 });

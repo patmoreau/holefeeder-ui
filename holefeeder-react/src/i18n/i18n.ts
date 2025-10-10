@@ -1,9 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
+import * as Localization from 'expo-localization';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import * as Localization from 'expo-localization';
-
-// Import translation files
 import en from './locales/en-CA/translations.json';
 import fr from './locales/fr-CA/translations.json';
 
@@ -31,9 +29,7 @@ export const initI18n = async (savedLanguage?: string): Promise<void> => {
     if (!languageToUse) {
       const deviceLanguage = Localization.getLocales()[0].languageCode ?? '';
       const supportedLanguages = ['en', 'fr'];
-      languageToUse = supportedLanguages.includes(deviceLanguage)
-        ? deviceLanguage
-        : 'en';
+      languageToUse = supportedLanguages.includes(deviceLanguage) ? deviceLanguage : 'en';
     }
 
     await i18n.use(initReactI18next).init({

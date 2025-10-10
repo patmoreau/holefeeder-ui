@@ -1,8 +1,8 @@
 import { waitFor } from '@testing-library/react-native';
-import { useAuth } from '@/hooks';
 import { anEmptyTokenInfo, aTokenInfo } from '@/__tests__';
-import { mockQueryClient, renderQueryHook } from './mocks/mock-query-client';
+import { useAuth } from '@/hooks';
 import { createMutationHook } from '@/hooks/queries/use-mutation';
+import { mockQueryClient, renderQueryHook } from './mocks/mock-query-client';
 
 jest.mock('@/hooks/use-auth');
 
@@ -33,11 +33,7 @@ describe('createMutationHook', () => {
     it('should handle command error', async () => {
       mockCommand.mockRejectedValue(new Error('Command failed'));
 
-      const { useCommand } = createMutationHook<TestItem>(
-        'test-resource',
-        mockCommand,
-        false
-      );
+      const { useCommand } = createMutationHook<TestItem>('test-resource', mockCommand, false);
       const { result } = renderQueryHook(() => useCommand());
 
       result.current.mutate(mockItem);
@@ -60,12 +56,9 @@ describe('createMutationHook', () => {
         result.current.mutate(mockItem);
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
-        expect(mockCommand).toHaveBeenCalledWith(
-          mockItem,
-          mockTokenInfo.accessToken
-        );
+        expect(mockCommand).toHaveBeenCalledWith(mockItem, mockTokenInfo.accessToken);
         expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
-          queryKey: ['test-resource', 'list']
+          queryKey: ['test-resource', 'list'],
         });
       });
 
@@ -92,11 +85,7 @@ describe('createMutationHook', () => {
       });
 
       it('should be invoked when token is not available', async () => {
-        const { useCommand } = createMutationHook<TestItem>(
-          'test-resource',
-          mockCommand,
-          false
-        );
+        const { useCommand } = createMutationHook<TestItem>('test-resource', mockCommand, false);
         const { result } = renderQueryHook(() => useCommand());
 
         result.current.mutate(mockItem);

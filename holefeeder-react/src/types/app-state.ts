@@ -1,6 +1,6 @@
-import { UserProfile } from './user-profile';
-import { AppSettings } from '@/types/app-settings';
 import { lightTheme, darkTheme, ThemeMode } from '@/types';
+import { AppSettings } from '@/types/app-settings';
+import { UserProfile } from './user-profile';
 
 export type LanguageType = 'en' | 'fr';
 
@@ -14,7 +14,7 @@ export interface ThemeState {
 
 export interface LanguageState {
   currentLanguage: LanguageType;
-  changeLanguage: (language: LanguageType) => Promise<void>;
+  setUserLanguage: (language: LanguageType) => Promise<void>;
   t: (key: string, options?: any) => string;
   availableLanguages: { code: LanguageType; name: string }[];
 }

@@ -1,8 +1,7 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
-import { TagList } from '../taglist';
-import { ThemeProvider } from '@/contexts/theme-context';
+import React from 'react';
 import { useColorScheme } from 'react-native';
+import { TagList } from '../taglist';
 
 // Mock react-native's useColorScheme
 jest.mock('react-native', () => ({
@@ -16,9 +15,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
 }));
 
-const mockUseColorScheme = useColorScheme as jest.MockedFunction<
-  typeof useColorScheme
->;
+const mockUseColorScheme = useColorScheme as jest.MockedFunction<typeof useColorScheme>;
 
 const TestTagListWithTheme: React.FC<{
   tags: string[];
@@ -26,11 +23,7 @@ const TestTagListWithTheme: React.FC<{
 }> = ({ tags, colorScheme = 'light' }) => {
   mockUseColorScheme.mockReturnValue(colorScheme);
 
-  return (
-    <ThemeProvider>
-      <TagList tags={tags} />
-    </ThemeProvider>
-  );
+  return <TagList tags={tags} />;
 };
 
 describe('TagList Component', () => {
@@ -72,9 +65,7 @@ describe('TagList Component', () => {
 
   it('handles duplicate tags', () => {
     const tags = ['Duplicate', 'Duplicate', 'Unique'];
-    const { getAllByText, getByText } = render(
-      <TestTagListWithTheme tags={tags} />
-    );
+    const { getAllByText, getByText } = render(<TestTagListWithTheme tags={tags} />);
 
     // Should render both duplicate tags
     expect(getAllByText('Duplicate')).toHaveLength(2);
@@ -114,15 +105,11 @@ describe('TagList Component', () => {
     const tags = ['Theme Test'];
 
     // Test light theme
-    const { getByText: getLightText } = render(
-      <TestTagListWithTheme tags={tags} colorScheme="light" />
-    );
+    const { getByText: getLightText } = render(<TestTagListWithTheme tags={tags} colorScheme="light" />);
     expect(getLightText('Theme Test')).toBeTruthy();
 
     // Test dark theme
-    const { getByText: getDarkText } = render(
-      <TestTagListWithTheme tags={tags} colorScheme="dark" />
-    );
+    const { getByText: getDarkText } = render(<TestTagListWithTheme tags={tags} colorScheme="dark" />);
     expect(getDarkText('Theme Test')).toBeTruthy();
   });
 
@@ -146,8 +133,7 @@ describe('TagList Component', () => {
   });
 
   it('handles very long individual tag names', () => {
-    const longTagName =
-      'This is a very long tag name that might cause layout issues if not handled properly';
+    const longTagName = 'This is a very long tag name that might cause layout issues if not handled properly';
     const tags = [longTagName, 'Short'];
     const { getByText } = render(<TestTagListWithTheme tags={tags} />);
 

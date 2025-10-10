@@ -1,32 +1,16 @@
 import { Section, LabeledContent, Button } from '@expo/ui/swift-ui';
-import React, { useState } from 'react';
-import { useCategories, useLanguage } from '@/hooks';
 import { router } from 'expo-router';
+import React, { useState } from 'react';
 import { CategoryPicker } from '@/components/category-picker';
+import { useCategories, useLanguage } from '@/hooks';
 import { Category } from '@/types';
 
 export function TestSection() {
   const { t } = useLanguage();
   const { data: categories } = useCategories();
-  const [error, setError] = useState<string | null>(null);
 
   // Form state
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null
-  );
-
-  const handleSubmit = () => {
-    if (!selectedCategory) {
-      alert('Please select a category and account');
-      return;
-    }
-
-    // Submit form with selected values
-    console.log({
-      categoryId: selectedCategory.id,
-    });
-  };
-
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   return (
     <Section title={t('test-section.title')}>
       <LabeledContent label={t('test-section.not-found-page')}>
@@ -41,11 +25,7 @@ export function TestSection() {
         </Button>
       </LabeledContent>
       <LabeledContent label={t('test-section.component')}>
-        <CategoryPicker
-          categories={categories || []}
-          selectedCategory={selectedCategory || categories?.[0] || null}
-          onSelectCategory={setSelectedCategory}
-        />
+        <CategoryPicker categories={categories || []} selectedCategory={selectedCategory || categories?.[0] || null} onSelectCategory={setSelectedCategory} />
       </LabeledContent>
     </Section>
   );

@@ -1,12 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { AuthButton } from '@/components';
-import {
-  useLanguage,
-  useStyles,
-  useContainerStyles,
-  useTextStyles,
-} from '@/hooks';
+import { useLanguage, useStyles, useContainerStyles, useTextStyles } from '@/hooks';
 
 export default function LoginScreen() {
   const { t } = useLanguage();

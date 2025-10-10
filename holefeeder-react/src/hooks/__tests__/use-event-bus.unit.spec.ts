@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
-import { eventBus } from '@/services';
 import { useEventBusEmitter, useEventBusListener } from '@/hooks/use-event-bus';
+import { eventBus } from '@/services';
 
 const notification = 'test-notification';
 describe('useEventBus', () => {
@@ -70,9 +70,7 @@ describe('useEventBus', () => {
 
     beforeEach(() => {
       jest.clearAllMocks();
-      renderHookResult = renderHook(() =>
-        useEventBusListener(notification, eventCallbackSpy)
-      );
+      renderHookResult = renderHook(() => useEventBusListener(notification, eventCallbackSpy));
     });
 
     afterEach(() => {
@@ -90,9 +88,7 @@ describe('useEventBus', () => {
     it('should unregister event listener on unmount', () => {
       const offSpy = jest.spyOn(eventBus, 'off');
 
-      const { unmount } = renderHook(() =>
-        useEventBusListener(notification, eventCallbackSpy)
-      );
+      const { unmount } = renderHook(() => useEventBusListener(notification, eventCallbackSpy));
 
       unmount();
 
@@ -111,11 +107,7 @@ describe('useEventBus', () => {
       const initialCallback = jest.fn();
       const newCallback = jest.fn();
 
-      const { rerender } = renderHook(
-        (props: { callback: jest.Mock }) =>
-          useEventBusListener(notification, props.callback),
-        { initialProps: { callback: initialCallback } }
-      );
+      const { rerender } = renderHook((props: { callback: jest.Mock }) => useEventBusListener(notification, props.callback), { initialProps: { callback: initialCallback } });
 
       rerender({ callback: newCallback });
 

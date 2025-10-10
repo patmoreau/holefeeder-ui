@@ -1,13 +1,13 @@
+import { useQuickActionRouting } from 'expo-quick-actions/router';
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
-import { useAuth, useContainerStyles, useQuickActions } from '@/hooks';
-import { AppProvider } from '@/contexts';
 import { View } from 'react-native';
 import { Auth0Provider } from 'react-native-auth0';
-import { config } from '@/config';
-import { useQuickActionRouting } from 'expo-quick-actions/router';
 import { LoadingIndicator } from '@/components';
+import { config } from '@/config';
+import { AppProvider } from '@/contexts';
 import { QueryProvider } from '@/contexts/query-provider';
+import { useAuth, useContainerStyles, useQuickActions } from '@/hooks';
 
 function AppContent() {
   const { user, isLoading } = useAuth();
@@ -40,10 +40,7 @@ function AppContent() {
 
 export default function RootLayout() {
   return (
-    <Auth0Provider
-      domain={config.auth0.domain}
-      clientId={config.auth0.clientId}
-    >
+    <Auth0Provider domain={config.auth0.domain} clientId={config.auth0.clientId}>
       <QueryProvider>
         <AppProvider>
           <AppContent />

@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from 'react';
 import { Picker } from '@expo/ui/swift-ui';
-import { ThemeMode } from '@/types';
+import React, { useEffect, useState } from 'react';
 import { useLanguage, useTheme } from '@/hooks';
+import { ThemeMode } from '@/types';
 
 export function ThemeSwitcher() {
   const { t } = useLanguage();
   const { changeThemeMode, availableThemeModes, themeMode } = useTheme();
-  const [selectedIndex, setSelectedIndex] = useState(
-    availableThemeModes.findIndex((mode) => mode.code === themeMode)
-  );
+  const [selectedIndex, setSelectedIndex] = useState(availableThemeModes.findIndex((mode) => mode.code === themeMode));
   const handleLanguageChange = (theme: ThemeMode) => changeThemeMode(theme);
 
   useEffect(() => {
-    setSelectedIndex(
-      availableThemeModes.findIndex((mode) => mode.code === themeMode)
-    );
+    setSelectedIndex(availableThemeModes.findIndex((mode) => mode.code === themeMode));
   }, [themeMode, availableThemeModes]);
 
   return (
     <Picker
       modifiers={[]}
-      options={availableThemeModes.map((mode) =>
-        t(`theme-switcher.${mode.langId}`)
-      )}
+      options={availableThemeModes.map((mode) => t(`theme-switcher.${mode.langId}`))}
       selectedIndex={selectedIndex}
       onOptionSelected={({ nativeEvent: { index } }) => {
-        handleLanguageChange(availableThemeModes[index].code).finally(() =>
-          setSelectedIndex(index)
-        );
+        handleLanguageChange(availableThemeModes[index].code).finally(() => setSelectedIndex(index));
       }}
       variant="menu"
     />

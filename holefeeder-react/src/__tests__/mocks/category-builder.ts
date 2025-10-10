@@ -1,6 +1,6 @@
 import { Category } from '@/types';
 
-const defaultData = () : Category => ({
+const defaultData = (): Category => ({
   id: '1',
   name: 'Test',
   color: '#000000',

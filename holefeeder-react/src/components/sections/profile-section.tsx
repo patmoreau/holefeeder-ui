@@ -1,22 +1,10 @@
+import { HStack, Section, VStack, Text, LabeledContent, Spacer } from '@expo/ui/swift-ui';
+import { cornerRadius, foregroundStyle, frame, padding } from '@expo/ui/swift-ui/modifiers';
+import { Image as ExpoImage } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Image as ExpoImage } from 'expo-image';
-import { useAppContext } from '@/contexts';
-import {
-  HStack,
-  Section,
-  VStack,
-  Text,
-  LabeledContent,
-  Spacer,
-} from '@expo/ui/swift-ui';
-import {
-  cornerRadius,
-  foregroundStyle,
-  frame,
-  padding,
-} from '@expo/ui/swift-ui/modifiers';
 import { AuthButton } from '@/components/auth-button';
+import { useAppContext } from '@/contexts';
 import { useAuth, useLanguage } from '@/hooks';
 
 export function ProfileSection() {
@@ -24,32 +12,18 @@ export function ProfileSection() {
   const { tokenInfo } = useAuth();
   const { t } = useLanguage();
 
-  const avatarUri =
-    profile.avatar ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || profile.email || 'User')}&size=120&background=007AFF&color=fff`;
+  const avatarUri = profile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || profile.email || 'User')}&size=120&background=007AFF&color=fff`;
 
   return (
     <>
       <Section title={t('profile-section.title')}>
         <VStack spacing={16} alignment={'center'}>
           <HStack spacing={16}>
-            <HStack
-              modifiers={[
-                frame({ width: 120, height: 120 }),
-                cornerRadius(100),
-              ]}
-            >
-              <ExpoImage
-                source={{ uri: avatarUri }}
-                style={styles.avatar}
-                contentFit="cover"
-              />
+            <HStack modifiers={[frame({ width: 120, height: 120 }), cornerRadius(100)]}>
+              <ExpoImage source={{ uri: avatarUri }} style={styles.avatar} contentFit="cover" />
             </HStack>
 
-            <VStack
-              alignment="leading"
-              modifiers={[padding({ top: 16, bottom: 16 })]}
-            >
+            <VStack alignment="leading" modifiers={[padding({ top: 16, bottom: 16 })]}>
               <Text size={18} weight="bold">
                 {profile.name}
               </Text>
@@ -59,14 +33,10 @@ export function ProfileSection() {
             </VStack>
           </HStack>
           <LabeledContent label={t('profile-section.access-token')}>
-            <Text>
-              {tokenInfo.accessToken ? `${tokenInfo.accessToken?.substring(0, 20)}...` : t('profile-section.no-access-token')}
-            </Text>
+            <Text>{tokenInfo.accessToken ? `${tokenInfo.accessToken?.substring(0, 20)}...` : t('profile-section.no-access-token')}</Text>
           </LabeledContent>
           <LabeledContent label={t('profile-section.expires-at')}>
-            <Text>
-              {tokenInfo.expiresAt ?? t('profile-section.no-expires-at')}
-            </Text>
+            <Text>{tokenInfo.expiresAt ?? t('profile-section.no-expires-at')}</Text>
           </LabeledContent>
         </VStack>
       </Section>

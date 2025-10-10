@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
-import { Category } from '@/types';
+import axios, { type AxiosResponse } from 'axios';
 import { config } from '@/config';
+import { Category } from '@/types';
 
 export const apiService = (token: string | null) => {
   const api = axios.create({
@@ -54,8 +54,7 @@ export const apiService = (token: string | null) => {
 
   const getCategories = () => getWithAuth<Category[]>('/api/v2/categories');
 
-  const getCategory = (id: string) =>
-    getWithAuth<Category>(`/api/v2/categories/${id}`);
+  const getCategory = (id: string) => getWithAuth<Category>(`/api/v2/categories/${id}`);
 
   return {
     getCategories,

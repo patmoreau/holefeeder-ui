@@ -1,11 +1,8 @@
 import { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
-import { useTheme } from '@/contexts';
+import { useTheme } from '@/hooks/use-theme';
 import { Theme } from '@/types/theme';
 
-export const useComponentStyles = <T extends Record<string, any>>(
-  createStyles: (theme: Theme) => T
-) => {
+export const useComponentStyles = <T extends Record<string, any>>(createStyles: (theme: Theme) => T) => {
   const { theme } = useTheme();
 
   return useMemo(() => createStyles(theme), [theme, createStyles]);

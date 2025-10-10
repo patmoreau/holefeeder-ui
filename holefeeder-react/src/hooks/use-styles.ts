@@ -1,27 +1,17 @@
 // src/hooks/use-styles.ts
 import { useMemo } from 'react';
 import { ViewStyle, TextStyle } from 'react-native';
-import { useTheme } from '@/hooks/use-theme';
 import { GlobalStyles } from '@/constants/global-styles';
-import {
-  getContainerStyle,
-  getTextStyle,
-  combineStyles,
-  getColor,
-} from '@/utils/style-utils';
+import { useTheme } from '@/hooks/use-theme';
 import { Theme } from '@/types/theme';
+import { getContainerStyle, combineStyles, getColor } from '@/utils/style-utils';
 
 type StyleFunction<T> = (theme: Theme, globalStyles: typeof GlobalStyles) => T;
 
-export const useStyles = <T extends Record<string, ViewStyle | TextStyle>>(
-  stylesFn: StyleFunction<T>
-): T => {
+export const useStyles = <T extends Record<string, ViewStyle | TextStyle>>(stylesFn: StyleFunction<T>): T => {
   const themeState = useTheme();
 
-  return useMemo(
-    () => stylesFn(themeState.theme, GlobalStyles),
-    [stylesFn, themeState.theme]
-  );
+  return useMemo(() => stylesFn(themeState.theme, GlobalStyles), [stylesFn, themeState.theme]);
 };
 
 // Helper functions for common patterns

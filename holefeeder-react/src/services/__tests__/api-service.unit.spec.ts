@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { apiService } from '@/services';
 import { config } from '@/config';
+import { apiService } from '@/services';
 
 // Mock the config
 jest.mock('@/config', () => ({
@@ -114,9 +114,7 @@ describe('apiService', () => {
 
       expect(response.status).toBe(200);
       expect(response.data).toEqual(mockData);
-      expect(mockAxios.history.get[0].headers?.Authorization).toBe(
-        'Bearer test-token'
-      );
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe('Bearer test-token');
     });
 
     it('should handle null token', async () => {
@@ -128,15 +126,11 @@ describe('apiService', () => {
       const response = await service.getCategories();
 
       expect(response.status).toBe(200);
-      expect(mockAxios.history.get[0].headers?.Authorization).toBe(
-        'Bearer null'
-      );
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe('Bearer null');
     });
 
     it('should handle API errors', async () => {
-      mockAxios
-        .onGet('/api/v2/categories')
-        .reply(500, { error: 'Server error' });
+      mockAxios.onGet('/api/v2/categories').reply(500, { error: 'Server error' });
 
       const service = apiService('test-token');
 
@@ -155,9 +149,7 @@ describe('apiService', () => {
 
       expect(response.status).toBe(200);
       expect(response.data).toEqual(mockData);
-      expect(mockAxios.history.get[0].headers?.Authorization).toBe(
-        'Bearer test-token'
-      );
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe('Bearer test-token');
     });
 
     it('should handle null token', async () => {
@@ -169,15 +161,11 @@ describe('apiService', () => {
       const response = await service.getCategory('1');
 
       expect(response.status).toBe(200);
-      expect(mockAxios.history.get[0].headers?.Authorization).toBe(
-        'Bearer null'
-      );
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe('Bearer null');
     });
 
     it('should handle API errors', async () => {
-      mockAxios
-        .onGet('/api/v2/categories/1')
-        .reply(500, { error: 'Server error' });
+      mockAxios.onGet('/api/v2/categories/1').reply(500, { error: 'Server error' });
 
       const service = apiService('test-token');
 

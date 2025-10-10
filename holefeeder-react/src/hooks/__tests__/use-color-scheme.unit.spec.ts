@@ -7,9 +7,7 @@ jest.mock('react-native', () => ({
   useColorScheme: jest.fn(),
 }));
 
-const mockUseRNColorScheme = useRNColorScheme as jest.MockedFunction<
-  typeof useRNColorScheme
->;
+const mockUseRNColorScheme = useRNColorScheme as jest.MockedFunction<typeof useRNColorScheme>;
 
 describe('useColorScheme', () => {
   afterEach(() => {
@@ -21,7 +19,7 @@ describe('useColorScheme', () => {
     mockUseRNColorScheme.mockReturnValue('light');
 
     // Act
-    const { result, rerender } = renderHook(() => useColorScheme());
+    const { rerender } = renderHook(() => useColorScheme());
 
     // Wait for useEffect to run
     await act(async () => {

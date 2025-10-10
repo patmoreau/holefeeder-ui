@@ -1,12 +1,10 @@
-import { AppSettings, initialSettings } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '@/constants';
+import { AppSettings, initialSettings } from '@/types';
 
 const loadSettings = async (): Promise<AppSettings> => {
   try {
-    const storedSettings = await AsyncStorage.getItem(
-      STORAGE_KEYS.APP_SETTINGS
-    );
+    const storedSettings = await AsyncStorage.getItem(STORAGE_KEYS.APP_SETTINGS);
 
     if (storedSettings) {
       const parsedSettings = JSON.parse(storedSettings);
@@ -20,10 +18,7 @@ const loadSettings = async (): Promise<AppSettings> => {
 
 const saveSettings = async (settings: AppSettings): Promise<void> => {
   try {
-    await AsyncStorage.setItem(
-      STORAGE_KEYS.APP_SETTINGS,
-      JSON.stringify(settings)
-    );
+    await AsyncStorage.setItem(STORAGE_KEYS.APP_SETTINGS, JSON.stringify(settings));
   } catch (error) {
     console.error('Failed to save settings to storage:', error);
   }

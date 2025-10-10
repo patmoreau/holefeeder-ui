@@ -1,6 +1,9 @@
 // Integration test setup - common mocks and configurations
 import 'react-native-gesture-handler/jestSetup';
 
+import generated from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+// import Reanimated from 'react-native-reanimated/mock';
+
 jest.mock('expo/src/winter/ImportMetaRegistry', () => ({
   ImportMetaRegistry: {
     get url() {
@@ -13,16 +16,13 @@ jest.mock('expo/src/winter/ImportMetaRegistry', () => ({
 global.structuredClone = jest.fn((obj) => JSON.parse(JSON.stringify(obj)));
 
 // Mock react-native-reanimated
-jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
-  Reanimated.default.call = () => {};
-  return Reanimated;
-});
+// jest.mock('react-native-reanimated', () => {
+//   Reanimated.default.call = () => {};
+//   return Reanimated;
+// });
 
 // Mock @react-native-async-storage/async-storage
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
-);
+jest.mock('@react-native-async-storage/async-storage', () => generated);
 
 // Mock expo-localization
 jest.mock('expo-localization', () => ({
@@ -86,11 +86,7 @@ jest.setTimeout(10000);
 if (!process.env.DEBUG_TESTS) {
   const originalWarn = console.warn;
   console.warn = (...args) => {
-    if (
-      args[0] &&
-      typeof args[0] === 'string' &&
-      args[0].includes('componentWillReceiveProps')
-    ) {
+    if (args[0] && typeof args[0] === 'string' && args[0].includes('componentWillReceiveProps')) {
       return;
     }
     originalWarn(...args);

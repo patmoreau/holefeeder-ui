@@ -1,10 +1,9 @@
+import { Button, Host } from '@expo/ui/swift-ui';
 import { router, Stack } from 'expo-router';
 import { Text } from 'react-native';
-
 import { ThemedView } from '@/components';
-import { useContainerStyles, useLanguage, useTextStyles } from '@/hooks';
-import { Button, Host } from '@expo/ui/swift-ui';
 import { GlobalStyles } from '@/constants/global-styles';
+import { useContainerStyles, useLanguage, useTextStyles } from '@/hooks';
 
 export default function NotFoundScreen() {
   const { t } = useLanguage();
@@ -28,9 +27,7 @@ export default function NotFoundScreen() {
         }}
       />
       <ThemedView style={containerStyles.centered}>
-        <Text style={[textStyles.heading, GlobalStyles.py16]}>
-          {t('not-found.description')}
-        </Text>
+        <Text style={[textStyles.heading, GlobalStyles.py16]}>{t('not-found.description')}</Text>
         <Host style={containerStyles.host}>
           <Button
             variant="link"

@@ -20,7 +20,4 @@ export const mockRoute = {
 };
 
 // Font loading mock with proper return type
-export const mockUseFonts = jest.fn<
-  [boolean, Error | null],
-  [Record<string, any>]
->();
+export const mockUseFonts = jest.fn<[boolean, Error | null], [Record<string, any>]>();

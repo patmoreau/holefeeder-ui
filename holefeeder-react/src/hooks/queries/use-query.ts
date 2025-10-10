@@ -1,5 +1,5 @@
-import { useAuth } from '@/hooks/use-auth';
 import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/use-auth';
 
 type ListQueryKeys<P> = {
   all: readonly [string];
@@ -11,18 +11,10 @@ type DetailQueryKeys = {
   detail: (id: string) => readonly [string, 'detail', string];
 };
 
-export const createListQueryHook = <
-  T extends { id: string | number },
-  P = void,
->(
-  resourceName: string,
-  getList: (authToken: string | null, queryParams: P | null) => Promise<T[]>,
-  withAuth: boolean = true
-) => {
+export const createListQueryHook = <T extends { id: string | number }, P = void>(resourceName: string, getList: (authToken: string | null, queryParams: P | null) => Promise<T[]>, withAuth: boolean = true) => {
   const keys: ListQueryKeys<P> = {
     all: [resourceName] as const,
-    list: (queryParams: P | null) =>
-      [...keys.all, 'list', queryParams] as const,
+    list: (queryParams: P | null) => [...keys.all, 'list', queryParams] as const,
   };
 
   const useList = (queryParams: P | null = null) => {
@@ -39,15 +31,10 @@ export const createListQueryHook = <
   return { useList, keys };
 };
 
-export const createOneQueryHook = <T extends { id: string | number }>(
-  resourceName: string,
-  getOne: (id: string | number, authToken: string | null) => Promise<T>,
-  withAuth: boolean = true
-) => {
+export const createOneQueryHook = <T extends { id: string | number }>(resourceName: string, getOne: (id: string | number, authToken: string | null) => Promise<T>, withAuth: boolean = true) => {
   const keys: DetailQueryKeys = {
     all: [resourceName] as const,
-    detail: (id: string) =>
-      [...keys.all, 'detail', id] as const,
+    detail: (id: string) => [...keys.all, 'detail', id] as const,
   };
 
   const useOne = (id: string) => {

@@ -1,11 +1,7 @@
-import { useAuth } from '@/hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '@/hooks';
 
-export const createMutationHook = <T>(
-  resourceName: string,
-  commandHandler: (data: T, authToken: string | null) => Promise<T | void>,
-  withAuth: boolean = true
-) => {
+export const createMutationHook = <T>(resourceName: string, commandHandler: (data: T, authToken: string | null) => Promise<T | void>, withAuth: boolean = true) => {
   const useCommand = () => {
     const { tokenInfo } = useAuth();
     const queryClient = useQueryClient();
@@ -16,7 +12,6 @@ export const createMutationHook = <T>(
         if (withAuth && !tokenInfo?.accessToken) {
           throw new Error('Authentication token required but not available');
         }
-        const token = withAuth ? tokenInfo?.accessToken : null;
         return commandHandler(data, token);
       },
       onSuccess: () =>

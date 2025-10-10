@@ -1,8 +1,7 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
-import { Tag } from '../tag';
-import { ThemeProvider } from '@/contexts/theme-context';
+import React from 'react';
 import { useColorScheme } from 'react-native';
+import { Tag } from '../tag';
 
 // Mock react-native's useColorScheme
 jest.mock('react-native', () => ({
@@ -16,9 +15,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
 }));
 
-const mockUseColorScheme = useColorScheme as jest.MockedFunction<
-  typeof useColorScheme
->;
+const mockUseColorScheme = useColorScheme as jest.MockedFunction<typeof useColorScheme>;
 
 const TestTagWithTheme: React.FC<{
   label: string;
@@ -26,11 +23,7 @@ const TestTagWithTheme: React.FC<{
 }> = ({ label, colorScheme = 'light' }) => {
   mockUseColorScheme.mockReturnValue(colorScheme);
 
-  return (
-    <ThemeProvider>
-      <Tag label={label} />
-    </ThemeProvider>
-  );
+  return <Tag label={label} />;
 };
 
 describe('Tag Component', () => {
@@ -45,9 +38,7 @@ describe('Tag Component', () => {
   });
 
   it('renders with light theme colors', () => {
-    const { getByText } = render(
-      <TestTagWithTheme label="Light Tag" colorScheme="light" />
-    );
+    const { getByText } = render(<TestTagWithTheme label="Light Tag" colorScheme="light" />);
 
     const tagText = getByText('Light Tag');
     expect(tagText).toBeTruthy();
@@ -58,9 +49,7 @@ describe('Tag Component', () => {
   });
 
   it('renders with dark theme colors', () => {
-    const { getByText } = render(
-      <TestTagWithTheme label="Dark Tag" colorScheme="dark" />
-    );
+    const { getByText } = render(<TestTagWithTheme label="Dark Tag" colorScheme="dark" />);
 
     const tagText = getByText('Dark Tag');
     expect(tagText).toBeTruthy();
@@ -84,8 +73,7 @@ describe('Tag Component', () => {
   });
 
   it('handles long text labels', () => {
-    const longLabel =
-      'This is a very long tag label that might wrap or overflow';
+    const longLabel = 'This is a very long tag label that might wrap or overflow';
     const { getByText } = render(<TestTagWithTheme label={longLabel} />);
 
     expect(getByText(longLabel)).toBeTruthy();
@@ -105,9 +93,7 @@ describe('Tag Component', () => {
   });
 
   it('switches theme when colorScheme changes', () => {
-    const { getByText, rerender } = render(
-      <TestTagWithTheme label="Theme Switch" colorScheme="light" />
-    );
+    const { getByText, rerender } = render(<TestTagWithTheme label="Theme Switch" colorScheme="light" />);
 
     expect(getByText('Theme Switch')).toBeTruthy();
 

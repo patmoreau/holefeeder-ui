@@ -1,4 +1,4 @@
-import { AxiosResponse, AxiosResponseHeaders, InternalAxiosRequestConfig, RawAxiosResponseHeaders } from 'axios';
+import type { AxiosResponse } from 'axios';
 
 const defaultData = {
   data: '',
@@ -7,7 +7,7 @@ const defaultData = {
   headers: {},
   config: {} as any,
   request: null,
-}
+};
 
 export const anAxiosResponse = <T>(data: T, overrides: Partial<AxiosResponse<T>> = {}): AxiosResponse<T> => ({
   ...defaultData,

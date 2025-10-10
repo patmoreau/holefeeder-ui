@@ -3,3 +3,7 @@ ignoredBuiltDependencies:
   - react-native-nitro-modules
 
 nodeLinker: hoisted
+
+onlyBuiltDependencies:
+  - browser-tabs-lock
+  - unrs-resolver

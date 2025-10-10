@@ -1,5 +1,5 @@
-import { TokenInfo } from '../../types';
 import { faker } from '@faker-js/faker';
+import { TokenInfo } from '../../types';
 
 const defaultData = (): TokenInfo => ({
   accessToken: faker.internet.jwt(),
@@ -20,6 +20,4 @@ export const aTokenInfo = (overrides?: Partial<TokenInfo>): TokenInfo => ({
   ...overrides,
 });
 
-export const anEmptyTokenInfo = (
-  overrides?: Partial<TokenInfo>
-): TokenInfo => ({ ...emptyData, ...overrides });
+export const anEmptyTokenInfo = (overrides?: Partial<TokenInfo>): TokenInfo => ({ ...emptyData, ...overrides });

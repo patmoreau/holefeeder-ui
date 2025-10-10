@@ -1,17 +1,14 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
 import type { ReactNode } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export interface TestWrapperProps {
   children: ReactNode;
   initialRouteName?: string;
 }
 
-export const TestWrapper: React.FC<TestWrapperProps> = ({
-  children,
-  initialRouteName,
-}) => {
+export const TestWrapper: React.FC<TestWrapperProps> = ({ children, initialRouteName }) => {
   return (
     <SafeAreaProvider
       initialMetrics={{

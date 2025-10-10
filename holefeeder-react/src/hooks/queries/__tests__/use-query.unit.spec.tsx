@@ -1,10 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
-import { useAuth } from '@/hooks';
 import { anEmptyTokenInfo, aTokenInfo } from '@/__tests__';
-import {
-  createListQueryHook,
-  createOneQueryHook,
-} from '@/hooks/queries/use-query';
+import { useAuth } from '@/hooks';
+import { createListQueryHook, createOneQueryHook } from '@/hooks/queries/use-query';
 import { renderQueryHook } from './mocks/mock-query-client';
 
 jest.mock('@/hooks/use-auth');
@@ -43,18 +40,12 @@ describe('Query Hook Creators', () => {
         mockedUseAuth.mockReturnValue({
           tokenInfo: anEmptyTokenInfo(),
         } as any);
-        const { useList } = createListQueryHook<TestItem>(
-          'test-resource',
-          mockGetList
-        );
+        const { useList } = createListQueryHook<TestItem>('test-resource', mockGetList);
 
         const { result } = renderQueryHook(() => useList());
 
         await waitFor(() => expect(result.current.isPending).toBe(true));
-        expect(mockGetList).not.toHaveBeenCalledWith(
-          '1',
-          mockTokenInfo.accessToken
-        );
+        expect(mockGetList).not.toHaveBeenCalledWith('1', mockTokenInfo.accessToken);
       });
 
       it('should call api when token is available', async () => {
@@ -62,10 +53,7 @@ describe('Query Hook Creators', () => {
         mockedUseAuth.mockReturnValue({
           tokenInfo,
         } as any);
-        const { useList } = createListQueryHook<TestItem>(
-          'test-resource',
-          mockGetList
-        );
+        const { useList } = createListQueryHook<TestItem>('test-resource', mockGetList);
 
         const { result } = renderQueryHook(() => useList());
 
@@ -75,11 +63,7 @@ describe('Query Hook Creators', () => {
     });
 
     describe('without authentication', () => {
-      const { useList } = createListQueryHook<TestItem>(
-        'test-resource',
-        mockGetList,
-        false
-      );
+      const { useList } = createListQueryHook<TestItem>('test-resource', mockGetList, false);
 
       it('should call api when token is not available', async () => {
         mockedUseAuth.mockReturnValue({
@@ -106,10 +90,7 @@ describe('Query Hook Creators', () => {
     });
 
     it('should create a working list query hook', async () => {
-      const { useList } = createListQueryHook<TestItem>(
-        'test-resource',
-        mockGetList
-      );
+      const { useList } = createListQueryHook<TestItem>('test-resource', mockGetList);
 
       const { result } = renderQueryHook(() => useList());
 
@@ -130,19 +111,13 @@ describe('Query Hook Creators', () => {
       }
 
       const mockGetListWithParams = jest.fn().mockResolvedValue(mockItems);
-      const { useList } = createListQueryHook<TestItem, QueryParams>(
-        'test-resource',
-        mockGetListWithParams
-      );
+      const { useList } = createListQueryHook<TestItem, QueryParams>('test-resource', mockGetListWithParams);
 
       const queryParams = { filter: 'test' };
       const { result } = renderQueryHook(() => useList(queryParams));
 
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mockGetListWithParams).toHaveBeenCalledWith(
-        mockTokenInfo.accessToken,
-        queryParams
-      );
+      expect(mockGetListWithParams).toHaveBeenCalledWith(mockTokenInfo.accessToken, queryParams);
     });
   });
 
@@ -160,18 +135,12 @@ describe('Query Hook Creators', () => {
         mockedUseAuth.mockReturnValue({
           tokenInfo: anEmptyTokenInfo(),
         } as any);
-        const { useOne } = createOneQueryHook<TestItem>(
-          'test-resource',
-          mockGetOne
-        );
+        const { useOne } = createOneQueryHook<TestItem>('test-resource', mockGetOne);
 
         const { result } = renderQueryHook(() => useOne('1'));
 
         await waitFor(() => expect(result.current.isPending).toBe(true));
-        expect(mockGetOne).not.toHaveBeenCalledWith(
-          '1',
-          mockTokenInfo.accessToken
-        );
+        expect(mockGetOne).not.toHaveBeenCalledWith('1', mockTokenInfo.accessToken);
       });
 
       it('should call api when token is available', async () => {
@@ -179,10 +148,7 @@ describe('Query Hook Creators', () => {
         mockedUseAuth.mockReturnValue({
           tokenInfo: tokenInfo,
         } as any);
-        const { useOne } = createOneQueryHook<TestItem>(
-          'test-resource',
-          mockGetOne
-        );
+        const { useOne } = createOneQueryHook<TestItem>('test-resource', mockGetOne);
 
         const { result } = renderQueryHook(() => useOne('1'));
 
@@ -192,11 +158,7 @@ describe('Query Hook Creators', () => {
     });
 
     describe('without authentication', () => {
-      const { useOne } = createOneQueryHook<TestItem>(
-        'test-resource',
-        mockGetOne,
-        false
-      );
+      const { useOne } = createOneQueryHook<TestItem>('test-resource', mockGetOne, false);
 
       it('should call api when token is not available', async () => {
         mockedUseAuth.mockReturnValue({
@@ -223,10 +185,7 @@ describe('Query Hook Creators', () => {
     });
 
     it('should create a working detail query hook', async () => {
-      const { useOne } = createOneQueryHook<TestItem>(
-        'test-resource',
-        mockGetOne
-      );
+      const { useOne } = createOneQueryHook<TestItem>('test-resource', mockGetOne);
 
       const { result } = renderQueryHook(() => useOne('1'));
 
@@ -239,10 +198,7 @@ describe('Query Hook Creators', () => {
     });
 
     it('should not fetch when id is missing', () => {
-      const { useOne } = createOneQueryHook<TestItem>(
-        'test-resource',
-        mockGetOne
-      );
+      const { useOne } = createOneQueryHook<TestItem>('test-resource', mockGetOne);
 
       const { result } = renderQueryHook(() => useOne(''));
 

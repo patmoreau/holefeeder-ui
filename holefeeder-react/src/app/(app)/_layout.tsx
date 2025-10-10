@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import PurchaseButton from '@/components/ui/purchase-button';
+import { PurchaseButton } from '@/components/ui/purchase-button';
 
 export default function AppLayout() {
   return (

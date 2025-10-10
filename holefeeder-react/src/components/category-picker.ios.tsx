@@ -8,11 +8,7 @@ type Props = {
   onSelectCategory: (category: Category) => void;
 };
 
-export function CategoryPicker({
-  categories,
-  selectedCategory,
-  onSelectCategory,
-}: Props) {
+export function CategoryPicker({ categories, selectedCategory, onSelectCategory }: Props) {
   if (!categories) {
     return <LoadingIndicator size="small" />;
   }
@@ -20,9 +16,7 @@ export function CategoryPicker({
   return (
     <Picker
       options={categories.map((category) => category.name)}
-      selectedIndex={categories.findIndex(
-        (category) => category.id === selectedCategory?.id
-      )}
+      selectedIndex={categories.findIndex((category) => category.id === selectedCategory?.id)}
       onOptionSelected={({ nativeEvent: { index } }) => {
         onSelectCategory(categories[index]);
       }}

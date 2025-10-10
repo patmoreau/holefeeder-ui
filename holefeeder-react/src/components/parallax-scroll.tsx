@@ -1,13 +1,7 @@
 import { Stack } from 'expo-router';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import Animated, {
-  interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollViewOffset,
-} from 'react-native-reanimated';
-import { ParallaxScrollView } from '@/components/parallax-scroll-view';
 import type { PropsWithChildren, ReactElement } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 const IMG_HEIGHT = 300;
@@ -17,11 +11,7 @@ type Props = PropsWithChildren<{
   headerBackgroundColor: { dark: string; light: string };
 }>;
 
-export const ParallaxScroll = ({
-  children,
-  headerImage,
-  headerBackgroundColor,
-}: Props) => {
+export const ParallaxScroll = ({ children, headerImage, headerBackgroundColor }: Props) => {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
 
@@ -29,18 +19,10 @@ export const ParallaxScroll = ({
     return {
       transform: [
         {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-IMG_HEIGHT, 0, IMG_HEIGHT],
-            [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
-          ),
+          translateY: interpolate(scrollOffset.value, [-IMG_HEIGHT, 0, IMG_HEIGHT], [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]),
         },
         {
-          scale: interpolate(
-            scrollOffset.value,
-            [-IMG_HEIGHT, 0, IMG_HEIGHT],
-            [2, 1, 1]
-          ),
+          scale: interpolate(scrollOffset.value, [-IMG_HEIGHT, 0, IMG_HEIGHT], [2, 1, 1]),
         },
       ],
     };
@@ -58,9 +40,7 @@ export const ParallaxScroll = ({
         options={{
           headerTransparent: true,
           headerLeft: () => <Text>Back</Text>,
-          headerBackground: () => (
-            <Animated.View style={[styles.header, headerAnimatedStyle]} />
-          ),
+          headerBackground: () => <Animated.View style={[styles.header, headerAnimatedStyle]} />,
         }}
       />
       <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>

@@ -1,16 +1,10 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Credentials, useAuth0 } from 'react-native-auth0';
-import { TokenInfo } from '@/types';
 import { config } from '@/config';
+import { TokenInfo } from '@/types';
 
 export function useAuth() {
-  const {
-    user,
-    getCredentials,
-    isLoading: authLoading,
-    authorize,
-    clearSession,
-  } = useAuth0();
+  const { user, getCredentials, isLoading: authLoading, authorize, clearSession } = useAuth0();
 
   const [tokenInfo, setTokenInfo] = useState<TokenInfo>({
     accessToken: null,
@@ -20,15 +14,13 @@ export function useAuth() {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  const memoizedUser = useMemo(() => user, [user?.sub]);
+  const memoizedUser = useMemo(() => user, [user]);
 
   const updateTokenInfo = useCallback((credentials: Credentials) => {
     setTokenInfo({
       accessToken: credentials.accessToken,
       expiresAt: new Date(credentials.expiresAt * 1000).toLocaleString(),
-      issuedAt: credentials.issuedAt
-        ? new Date(credentials.issuedAt * 1000).toLocaleString()
-        : null,
+      issuedAt: credentials.issuedAt ? new Date(credentials.issuedAt * 1000).toLocaleString() : null,
       refreshToken: true,
     });
   }, []);
@@ -71,7 +63,7 @@ export function useAuth() {
     };
 
     fetchTokenInfo();
-  }, [memoizedUser, authLoading]); // Remove getCredentials from deps
+  }, [memoizedUser, authLoading, resetTokenInfo, getCredentials, updateTokenInfo]); // Remove getCredentials from deps
 
   const login = useCallback(async () => {
     await authorize({

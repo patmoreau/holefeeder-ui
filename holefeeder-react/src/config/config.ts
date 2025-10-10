@@ -7,23 +7,17 @@ export const config = {
     audience: process.env.EXPO_PUBLIC_AUTH0_AUDIENCE || '',
     redirectUri:
       Platform.OS === 'web'
-        ? process.env.EXPO_PUBLIC_AUTH0_WEB_REDIRECT_URI ||
-          'http://localhost:19006'
+        ? process.env.EXPO_PUBLIC_AUTH0_WEB_REDIRECT_URI || 'http://localhost:19006'
         : Platform.OS === 'android'
-          ? process.env.EXPO_PUBLIC_AUTH0_ANDROID_REDIRECT_URI ||
-            'com.drifterapps.holefeeder_react://auth'
-          : process.env.EXPO_PUBLIC_AUTH0_IOS_REDIRECT_URI ||
-            'holefeeder://auth',
+          ? process.env.EXPO_PUBLIC_AUTH0_ANDROID_REDIRECT_URI || 'com.drifterapps.holefeeder_react://auth'
+          : process.env.EXPO_PUBLIC_AUTH0_IOS_REDIRECT_URI || 'holefeeder://auth',
     logoutRedirectUri:
       Platform.OS === 'web'
-        ? process.env.EXPO_PUBLIC_AUTH0_WEB_LOGOUT_REDIRECT_URI ||
-          'http://localhost:19006'
+        ? process.env.EXPO_PUBLIC_AUTH0_WEB_LOGOUT_REDIRECT_URI || 'http://localhost:19006'
         : Platform.OS === 'android'
-          ? process.env.EXPO_PUBLIC_AUTH0_ANDROID_LOGOUT_REDIRECT_URI ||
-            'com.drifterapps.holefeeder_react://auth'
-          : process.env.EXPO_PUBLIC_AUTH0_IOS_LOGOUT_REDIRECT_URI ||
-            'holefeeder://auth',
-    scope: 'openid profile email offline_access',
+          ? process.env.EXPO_PUBLIC_AUTH0_ANDROID_LOGOUT_REDIRECT_URI || 'com.drifterapps.holefeeder_react://auth'
+          : process.env.EXPO_PUBLIC_AUTH0_IOS_LOGOUT_REDIRECT_URI || 'holefeeder://auth',
+    scope: process.env.EXPO_PUBLIC_AUTH0_SCOPE || 'openid profile email offline_access',
   },
   api: {
     baseUrl: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3000',

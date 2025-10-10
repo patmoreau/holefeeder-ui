@@ -1,15 +1,9 @@
-import { renderHook, waitFor } from '@testing-library/react-native';
-import { apiService } from '@/services';
-import { useAuth, useCategories, useCategory } from '@/hooks';
+import { waitFor } from '@testing-library/react-native';
 import { aCategory, aTokenInfo } from '@/__tests__';
-import {
-  createListQueryHook,
-  createOneQueryHook,
-} from '@/hooks/queries/use-query';
-import {
-  renderQueryHook,
-} from './mocks/mock-query-client';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response';
+import { useAuth, useCategories, useCategory } from '@/hooks';
+import { apiService } from '@/services';
+import { renderQueryHook } from './mocks/mock-query-client';
 
 jest.mock('@/services/api-service');
 jest.mock('@/hooks/use-auth');

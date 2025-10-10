@@ -1,14 +1,11 @@
 import { Host, Image } from '@expo/ui/swift-ui';
-import * as React from 'react';
 import { router } from 'expo-router';
+import * as React from 'react';
 
-export default function PurchaseButtonIos() {
+export const PurchaseButton = () => {
   return (
     <Host style={{ width: 35, height: 35 }}>
-      <Image
-        systemName="cart.badge.plus"
-        onPress={() => router.push('/(app)/purchase')}
-      />
+      <Image systemName="cart.badge.plus" onPress={() => router.push('/(app)/purchase')} />
     </Host>
   );
-}
+};

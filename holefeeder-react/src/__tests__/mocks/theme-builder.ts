@@ -13,11 +13,7 @@ export interface ThemeContextType {
 const deepMerge = (target: any, source: any): any => {
   const result = { ...target };
   for (const key in source) {
-    if (
-      source[key] &&
-      typeof source[key] === 'object' &&
-      !Array.isArray(source[key])
-    ) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
       result[key] = deepMerge(result[key] || {}, source[key]);
     } else {
       result[key] = source[key];
@@ -91,8 +87,7 @@ export class ThemeBuilder {
   }
 }
 
-export const aTheme = (overrides: Partial<Theme> = {}) =>
-  new ThemeBuilder(overrides);
+export const aTheme = (overrides: Partial<Theme> = {}) => new ThemeBuilder(overrides);
 
 export class ThemeContextTypeBuilder {
   private readonly value: ThemeContextType;
@@ -143,18 +138,14 @@ export class ThemeContextTypeBuilder {
   }
 }
 
-export const aThemeContext = (overrides: Partial<ThemeContextType> = {}) =>
-  new ThemeContextTypeBuilder(overrides);
+export const aThemeContext = (overrides: Partial<ThemeContextType> = {}) => new ThemeContextTypeBuilder(overrides);
 
 // Convenient preset builders for common test scenarios
-export const aLightThemeContext = () =>
-  new ThemeContextTypeBuilder().withLightMode();
+export const aLightThemeContext = () => new ThemeContextTypeBuilder().withLightMode();
 
-export const aDarkThemeContext = () =>
-  new ThemeContextTypeBuilder().withDarkMode();
+export const aDarkThemeContext = () => new ThemeContextTypeBuilder().withDarkMode();
 
-export const aSystemThemeContext = () =>
-  new ThemeContextTypeBuilder().withSystemMode();
+export const aSystemThemeContext = () => new ThemeContextTypeBuilder().withSystemMode();
 
 // Common theme variations for testing
 export const aTestTheme = () =>

@@ -7,9 +7,7 @@ export function Page({ children }: PropsWithChildren) {
   return <View style={styles.page}>{children}</View>;
 }
 
-const ScrollPage = ({ children }: PropsWithChildren) => (
-  <ScrollView style={[styles.page, styles.scrollPage]}>{children}</ScrollView>
-);
+const ScrollPage = ({ children }: PropsWithChildren) => <ScrollView style={[styles.page, styles.scrollPage]}>{children}</ScrollView>;
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -20,9 +18,7 @@ type SectionProps = PropsWithChildren<{
 const Section = ({ title, children, row, gap }: SectionProps) => (
   <View style={styles.section}>
     <H4 style={styles.sectionHeader}>{title}</H4>
-    <View style={{ flexDirection: row ? 'row' : 'column', gap }}>
-      {children}
-    </View>
+    <View style={{ flexDirection: row ? 'row' : 'column', gap }}>{children}</View>
   </View>
 );
 

@@ -1,27 +1,11 @@
-import i18n from 'i18next';
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  AppSettings,
-  AppState,
-  darkTheme,
-  initialSettings,
-  LanguageType,
-  lightTheme,
-  ThemeMode,
-  UserProfile,
-} from '@/types';
-import { useAuth } from '@/hooks/use-auth';
-import { ActivityIndicator, Appearance, StyleSheet, View } from 'react-native';
-import { initI18n } from '@/i18n';
-import { useTranslation } from 'react-i18next';
 import * as SystemUI from 'expo-system-ui';
+import i18n, { changeLanguage } from 'i18next';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, Appearance, StyleSheet, View } from 'react-native';
+import { useAuth } from '@/hooks/use-auth';
+import { initI18n } from '@/i18n';
+import { AppSettings, AppState, darkTheme, initialSettings, LanguageType, lightTheme, ThemeMode, UserProfile } from '@/types';
 import { Storage } from '@/utils';
 
 export const AppContext = createContext<AppState | null>(null);
@@ -44,23 +28,13 @@ export const initialProfile: UserProfile = {
   avatar: 'person.fill',
 };
 
-function AppProviderContent({
-  children,
-  loadedSettings,
-}: {
-  children: ReactNode;
-  loadedSettings: AppSettings;
-}) {
+function AppProviderContent({ children, loadedSettings }: { children: ReactNode; loadedSettings: AppSettings }) {
   const { user } = useAuth();
   const { t } = useTranslation();
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
   const [settings, setSettings] = useState<AppSettings>(loadedSettings);
-  const [systemColorScheme, setSystemColorScheme] = useState(
-    Appearance.getColorScheme()
-  );
-  const [currentLanguage, setCurrentLanguage] = useState<LanguageType>(
-    (i18n.language as LanguageType) || 'en'
-  );
+  const [systemColorScheme, setSystemColorScheme] = useState(Appearance.getColorScheme());
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageType>((i18n.language as LanguageType) || 'en');
 
   // Listen for system appearance changes
   useEffect(() => {
@@ -93,9 +67,7 @@ function AppProviderContent({
 
   // Update system UI when theme changes
   useEffect(() => {
-    SystemUI.setBackgroundColorAsync(
-      getCurrentTheme().colors.systemBackground
-    ).then((_) => {});
+    SystemUI.setBackgroundColorAsync(getCurrentTheme().colors.systemBackground).then((_) => {});
   }, [settings.themeMode, systemColorScheme, getCurrentTheme]);
 
   const updateSettings = useCallback(
@@ -110,9 +82,7 @@ function AppProviderContent({
   const changeThemeMode = useCallback(
     async (themeMode: ThemeMode) => {
       try {
-        Appearance.setColorScheme(
-          themeMode === 'system' ? undefined : themeMode
-        );
+        Appearance.setColorScheme(themeMode === 'system' ? undefined : themeMode);
         await updateSettings({ themeMode });
       } catch (error) {
         console.error('Error changing theme:', error);
@@ -121,10 +91,10 @@ function AppProviderContent({
     [updateSettings]
   );
 
-  const changeLanguage = useCallback(
+  const setUserLanguage = useCallback(
     async (language: LanguageType) => {
       try {
-        await i18n.changeLanguage(language);
+        await changeLanguage(language);
         setCurrentLanguage(language);
         await updateSettings({ language });
       } catch (error) {
@@ -153,7 +123,7 @@ function AppProviderContent({
 
     // Language
     currentLanguage,
-    changeLanguage,
+    setUserLanguage,
     t,
     availableLanguages,
   };
@@ -163,8 +133,7 @@ function AppProviderContent({
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [loadedSettings, setLoadedSettings] =
-    useState<AppSettings>(initialSettings);
+  const [loadedSettings, setLoadedSettings] = useState<AppSettings>(initialSettings);
 
   // Initialize everything at once
   useEffect(() => {
@@ -177,11 +146,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         await initI18n(loadedSettings.language);
 
         // Set theme
-        Appearance.setColorScheme(
-          loadedSettings.themeMode === 'system'
-            ? undefined
-            : loadedSettings.themeMode
-        );
+        Appearance.setColorScheme(loadedSettings.themeMode === 'system' ? undefined : loadedSettings.themeMode);
 
         setLoadedSettings(loadedSettings);
         setIsInitialized(true);
@@ -202,11 +167,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  return (
-    <AppProviderContent loadedSettings={loadedSettings}>
-      {children}
-    </AppProviderContent>
-  );
+  return <AppProviderContent loadedSettings={loadedSettings}>{children}</AppProviderContent>;
 }
 
 export function useAppContext(): AppState {

@@ -1,9 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { Text, Pressable, Platform } from 'react-native';
-
 import { ThemedView } from '@/components';
-import { useContainerStyles, useLanguage, useTextStyles, useStyles } from '@/hooks';
 import { GlobalStyles } from '@/constants/global-styles';
+import { useContainerStyles, useLanguage, useTextStyles, useStyles } from '@/hooks';
 import { getThemedTypography } from '@/utils/style-utils';
 
 export default function NotFoundScreen() {
@@ -46,14 +45,8 @@ export default function NotFoundScreen() {
         }}
       />
       <ThemedView style={containerStyles.centered}>
-        <Text style={[textStyles.heading, GlobalStyles.py16]}>
-          {t('not-found.description')}
-        </Text>
-        <Pressable
-          style={styles.button}
-          onPress={() => router.push({ pathname: '/' })}
-          role="link"
-        >
+        <Text style={[textStyles.heading, GlobalStyles.py16]}>{t('not-found.description')}</Text>
+        <Pressable style={styles.button} onPress={() => router.push({ pathname: '/' })} role="link">
           <Text style={styles.buttonText}>{t('not-found.go-back')}</Text>
         </Pressable>
       </ThemedView>

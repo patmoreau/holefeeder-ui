@@ -1,11 +1,7 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Pressable } from 'react-native';
+import { useLanguage, useStyles, useContainerStyles } from '@/hooks';
 import { useAuth } from '@/hooks/use-auth';
-import {
-  useLanguage,
-  useStyles,
-  useContainerStyles,
-} from '@/hooks';
 import { getColor, getThemedTypography } from '@/utils/style-utils';
 
 export const AuthButton: React.FC = () => {
@@ -60,10 +56,7 @@ export const AuthButton: React.FC = () => {
   if (isLoading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator
-          size="large"
-          color={styles.activityIndicator.color}
-        />
+        <ActivityIndicator size="large" color={styles.activityIndicator.color} />
         <Text style={styles.loadingText}>{t('auth.loading')}</Text>
       </View>
     );
@@ -72,13 +65,8 @@ export const AuthButton: React.FC = () => {
   if (user) {
     return (
       <View style={containerStyles.primary}>
-        <Pressable
-          style={[styles.button, styles.destructiveButton]}
-          onPress={logout}
-        >
-          <Text style={[styles.buttonText, styles.destructiveText]}>
-            {t('auth.logoutButton')}
-          </Text>
+        <Pressable style={[styles.button, styles.destructiveButton]} onPress={logout}>
+          <Text style={[styles.buttonText, styles.destructiveText]}>{t('auth.logoutButton')}</Text>
         </Pressable>
       </View>
     );

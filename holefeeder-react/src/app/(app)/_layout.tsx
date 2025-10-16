@@ -1,7 +1,11 @@
 import { Stack } from 'expo-router';
 import { PurchaseButton } from '@/components/ui/purchase-button';
+import { useColorScheme, useLanguage } from '@/hooks';
 
 export default function AppLayout() {
+  const { t } = useLanguage();
+  const colorScheme = useColorScheme();
+
   return (
     <Stack>
       <Stack.Screen
@@ -12,7 +16,14 @@ export default function AppLayout() {
           headerRight: () => <PurchaseButton />,
         }}
       />
-      <Stack.Screen name="purchase" />
+      <Stack.Screen
+        name="purchase"
+        options={{
+          title: t('purchase.title'),
+          headerTransparent: true,
+          headerTintColor: colorScheme === 'dark' ? '#fff' : '#000',
+        }}
+      />
       <Stack.Screen
         name="modal"
         options={{

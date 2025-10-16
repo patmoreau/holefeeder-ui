@@ -18,7 +18,7 @@ const defaultAppState = (): AppState => ({
   availableThemeModes: [{ code: 'system', langId: 'systemId' }],
   themeMode: 'system',
   currentLanguage: 'en',
-  changeLanguage: (_) => Promise.resolve(),
+  setUserLanguage: (_) => Promise.resolve(),
   t: (_, __?) => '',
   availableLanguages: [{ code: 'en', name: 'en_CA' }],
 });

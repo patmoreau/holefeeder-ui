@@ -2,8 +2,8 @@ import { Section, LabeledContent, Button } from '@expo/ui/swift-ui';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { CategoryPicker } from '@/components/category-picker';
+import { Category } from '@/core';
 import { useCategories, useLanguage } from '@/hooks';
-import { Category } from '@/types';
 
 export function TestSection() {
   const { t } = useLanguage();
@@ -25,7 +25,11 @@ export function TestSection() {
         </Button>
       </LabeledContent>
       <LabeledContent label={t('test-section.component')}>
-        <CategoryPicker categories={categories || []} selectedCategory={selectedCategory || categories?.[0] || null} onSelectCategory={setSelectedCategory} />
+        <CategoryPicker
+          categories={categories || []}
+          selectedCategory={selectedCategory || categories?.[0] || null}
+          onSelectCategory={setSelectedCategory}
+        />
       </LabeledContent>
     </Section>
   );

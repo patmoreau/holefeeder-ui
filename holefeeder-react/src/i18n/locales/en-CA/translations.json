@@ -54,6 +54,16 @@
     "expires-at": "Expires At",
     "no-expires-at": "No Expiry Information"
   },
+  "purchase": {
+    "title": "Purchase",
+    "basic-section": {
+      "title": "Basic Section",
+      "account": "Account",
+      "category": "Category",
+      "date": "Date",
+      "amount": "Amount"
+    }
+  },
   "quick-actions": {
     "help-title": "Wait! Don't delete me!",
     "help-subtitle": "We're here to help",

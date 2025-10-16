@@ -1,18 +1,18 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { View, Platform } from 'react-native';
-import { Category } from '@/core';
+import { Account } from '@/core';
 import { useStyles } from '@/hooks';
 import { getColor } from '@/utils/style-utils';
 import { LoadingIndicator } from './ui';
 
 type Props = {
-  categories: Category[] | null;
-  selectedCategory: Category | null;
-  onSelectCategory: (category: Category) => void;
+  accounts: Account[] | null;
+  selectedAccount: Account | null;
+  onSelectAccount: (category: Account) => void;
 };
 
-export function CategoryPicker({ categories, selectedCategory, onSelectCategory }: Props) {
+export function AccountPicker({ accounts, selectedAccount, onSelectAccount }: Props) {
   const styles = useStyles((theme) => ({
     container: {
       position: 'relative',
@@ -45,7 +45,7 @@ export function CategoryPicker({ categories, selectedCategory, onSelectCategory 
     }),
   }));
 
-  if (!categories) {
+  if (!accounts) {
     return <LoadingIndicator size="small" />;
   }
 
@@ -53,16 +53,16 @@ export function CategoryPicker({ categories, selectedCategory, onSelectCategory 
     <View style={styles.container}>
       <Picker
         style={styles.picker}
-        selectedValue={selectedCategory?.id}
+        selectedValue={selectedAccount?.id}
         onValueChange={(itemValue: string | number) => {
-          const selected = categories.find((cat) => cat.id === itemValue);
+          const selected = accounts.find((cat) => cat.id === itemValue);
           if (selected) {
-            onSelectCategory(selected);
+            onSelectAccount(selected);
           }
         }}
       >
-        {categories.map((category) => (
-          <Picker.Item key={category.id} label={category.name} value={category.id} style={styles.pickerItem} />
+        {accounts.map((account) => (
+          <Picker.Item key={account.id} label={account.name} value={account.id} style={styles.pickerItem} />
         ))}
       </Picker>
     </View>

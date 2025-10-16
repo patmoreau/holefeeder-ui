@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react-native';
 import { aCategory, aTokenInfo } from '@/__tests__';
-import { anAxiosResponse } from '@/__tests__/mocks/axios-response';
+import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { useAuth, useCategories, useCategory } from '@/hooks';
 import { apiService } from '@/services';
 import { renderQueryHook } from './mocks/mock-query-client';

@@ -1,5 +1,5 @@
+import { Category } from '@/core/category';
 import { apiService } from '@/services';
-import { Category } from '@/types';
 import { createListQueryHook, createOneQueryHook } from './use-query';
 
 const categoryQueries = createListQueryHook<Category>('categories', (token) =>

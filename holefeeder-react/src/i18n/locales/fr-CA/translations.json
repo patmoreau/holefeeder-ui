@@ -55,6 +55,16 @@
     "no-expires-at": "Pas d'information d'expiration"
 
   },
+  "purchase": {
+    "title": "Achat",
+    "basic-section": {
+      "title": "Section de base",
+      "account": "Compte",
+      "category": "Catégorie",
+      "date": "Date",
+      "amount": "Montant"
+    }
+  },
   "quick-actions": {
     "help-title": "Attendez ! Ne me supprimez pas !",
     "help-subtitle": "Nous sommes là pour vous aider",

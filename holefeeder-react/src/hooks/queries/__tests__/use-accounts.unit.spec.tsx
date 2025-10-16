@@ -1,11 +1,11 @@
 import { waitFor } from '@testing-library/react-native';
 import { aTokenInfo } from '@/__tests__';
 import { anAccount } from '@/__tests__/mocks/account-builder';
+import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { useAuth } from '@/hooks';
 import { useAccounts } from '@/hooks/queries/use-accounts';
 import { apiService } from '@/services';
 import { renderQueryHook } from './mocks/mock-query-client';
-import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 
 jest.mock('@/services/api-service');
 jest.mock('@/hooks/use-auth');

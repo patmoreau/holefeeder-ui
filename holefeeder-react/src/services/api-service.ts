@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from 'axios';
 import { config } from '@/config';
-import { Category } from '@/types';
+import { Account } from '@/core/account';
+import { Category } from '@/core/category';
 
 export const apiService = (token: string | null) => {
   const api = axios.create({
@@ -52,11 +53,14 @@ export const apiService = (token: string | null) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
+  const getAccounts = () => getWithAuth<Account[]>('/api/v2/accounts');
+
   const getCategories = () => getWithAuth<Category[]>('/api/v2/categories');
 
   const getCategory = (id: string) => getWithAuth<Category>(`/api/v2/categories/${id}`);
 
   return {
+    getAccounts,
     getCategories,
     getCategory,
   };

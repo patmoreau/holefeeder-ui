@@ -1,5 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { aCategory } from '@/__tests__';
+import { anAccount } from '@/__tests__/mocks/account-builder';
 import { config } from '@/config';
 import { apiService } from '@/services';
 
@@ -15,6 +17,7 @@ jest.mock('@/config', () => ({
 }));
 
 describe('apiService', () => {
+  const mockToken = 'test-token';
   let mockAxios: MockAdapter;
   let consoleSpy: jest.SpyInstance;
 
@@ -30,7 +33,7 @@ describe('apiService', () => {
 
   describe('axios instance configuration', () => {
     it('should create axios instance with correct base configuration', () => {
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
 
       // Verify the service is created successfully
       expect(service).toBeDefined();
@@ -47,7 +50,7 @@ describe('apiService', () => {
     it('should log requests when logRequest is enabled', async () => {
       mockAxios.onGet('/api/v2/categories').reply(200, []);
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
       await service.getCategories();
 
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -63,7 +66,7 @@ describe('apiService', () => {
       const mockData = [{ id: 1, name: 'Category 1' }];
       mockAxios.onGet('/api/v2/categories').reply(200, mockData);
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
       await service.getCategories();
 
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -78,7 +81,7 @@ describe('apiService', () => {
     it('should log error responses when logRequest is enabled', async () => {
       mockAxios.onGet('/api/v2/categories').reply(404, { error: 'Not found' });
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
 
       await expect(service.getCategories()).rejects.toThrow();
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -93,23 +96,53 @@ describe('apiService', () => {
     it('should log network errors when logRequest is enabled', async () => {
       mockAxios.onGet('/api/v2/categories').networkError();
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
 
       await expect(service.getCategories()).rejects.toThrow();
       expect(consoleSpy).toHaveBeenCalledWith('Error:', 'Network Error');
     });
   });
 
-  describe('getCategories', () => {
-    it('should make GET request to categories endpoint with auth header', async () => {
-      const mockData = [
-        { id: 1, name: 'Category 1' },
-        { id: 2, name: 'Category 2' },
-      ];
+  describe('getAccounts', () => {
+    const mockData = [anAccount(), anAccount()];
 
+    it('should make GET request to accounts endpoint with auth header', async () => {
+      mockAxios.onGet('/api/v2/accounts').reply(200, mockData);
+
+      const service = apiService(mockToken);
+      const response = await service.getAccounts();
+
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual(mockData);
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe('Bearer test-token');
+    });
+
+    it('should handle null token', async () => {
+      mockAxios.onGet('/api/v2/accounts').reply(200, mockData);
+
+      const service = apiService(null);
+      const response = await service.getAccounts();
+
+      expect(response.status).toBe(200);
+      expect(mockAxios.history.get[0].headers?.Authorization).toBe('Bearer null');
+    });
+
+    it('should handle API errors', async () => {
+      mockAxios.onGet('/api/v2/accounts').reply(500, { error: 'Server error' });
+
+      const service = apiService(mockToken);
+
+      await expect(service.getAccounts()).rejects.toThrow();
+    });
+  });
+
+  describe('getCategories', () => {
+    const mockData = [aCategory(), aCategory()];
+
+    it('should make GET request to categories endpoint with auth header', async () => {
       mockAxios.onGet('/api/v2/categories').reply(200, mockData);
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
       const response = await service.getCategories();
 
       expect(response.status).toBe(200);
@@ -118,8 +151,6 @@ describe('apiService', () => {
     });
 
     it('should handle null token', async () => {
-      const mockData = [{ id: 1, name: 'Category 1' }];
-
       mockAxios.onGet('/api/v2/categories').reply(200, mockData);
 
       const service = apiService(null);
@@ -132,19 +163,18 @@ describe('apiService', () => {
     it('should handle API errors', async () => {
       mockAxios.onGet('/api/v2/categories').reply(500, { error: 'Server error' });
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
 
       await expect(service.getCategories()).rejects.toThrow();
     });
   });
 
   describe('getCategory', () => {
+    const mockData = aCategory();
     it('should make GET request to categories endpoint with auth header and id', async () => {
-      const mockData = { id: 1, name: 'Category 1' };
-
       mockAxios.onGet('/api/v2/categories/1').reply(200, mockData);
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
       const response = await service.getCategory('1');
 
       expect(response.status).toBe(200);
@@ -153,8 +183,6 @@ describe('apiService', () => {
     });
 
     it('should handle null token', async () => {
-      const mockData = { id: 1, name: 'Category 1' };
-
       mockAxios.onGet('/api/v2/categories/1').reply(200, mockData);
 
       const service = apiService(null);
@@ -167,7 +195,7 @@ describe('apiService', () => {
     it('should handle API errors', async () => {
       mockAxios.onGet('/api/v2/categories/1').reply(500, { error: 'Server error' });
 
-      const service = apiService('test-token');
+      const service = apiService(mockToken);
 
       await expect(service.getCategory('1')).rejects.toThrow();
     });

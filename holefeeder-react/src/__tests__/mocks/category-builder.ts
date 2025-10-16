@@ -1,11 +1,14 @@
-import { Category } from '@/types';
+import { aBoolean } from '@/__tests__/mocks/boolean-for-test';
+import { anAmount } from '@/__tests__/mocks/number-for-test';
+import { aColor, anId, aString } from '@/__tests__/mocks/string-for-test';
+import { Category } from '@/core/category';
 
 const defaultData = (): Category => ({
-  id: '1',
-  name: 'Test',
-  color: '#000000',
-  budgetAmount: 0,
-  favorite: false,
+  id: anId(),
+  name: aString(),
+  color: aColor(),
+  budgetAmount: anAmount(),
+  favorite: aBoolean(),
 });
 
 export const aCategory = (data: Partial<Category> = {}): Category => ({ ...defaultData(), ...data });

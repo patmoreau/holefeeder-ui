@@ -107,7 +107,9 @@ describe('useEventBus', () => {
       const initialCallback = jest.fn();
       const newCallback = jest.fn();
 
-      const { rerender } = renderHook((props: { callback: jest.Mock }) => useEventBusListener(notification, props.callback), { initialProps: { callback: initialCallback } });
+      const { rerender } = renderHook((props: { callback: jest.Mock }) => useEventBusListener(notification, props.callback), {
+        initialProps: { callback: initialCallback },
+      });
 
       rerender({ callback: newCallback });
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme } from '@/hooks/theme/use-theme';
 import { Theme } from '@/types/theme';
 
 export const useComponentStyles = <T extends Record<string, any>>(createStyles: (theme: Theme) => T) => {

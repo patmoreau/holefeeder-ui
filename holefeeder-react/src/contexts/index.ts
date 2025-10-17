@@ -1,2 +1,2 @@
-export * from './app-context';
+export * from './AppContext';
 export * from './query-provider';

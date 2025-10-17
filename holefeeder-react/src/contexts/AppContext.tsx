@@ -2,7 +2,9 @@ import * as SystemUI from 'expo-system-ui';
 import i18n, { changeLanguage } from 'i18next';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Appearance, StyleSheet, View } from 'react-native';
+import { Appearance, View } from 'react-native';
+import { LoadingIndicator } from '@/components';
+import { useContainerStyles } from '@/hooks';
 import { useAuth } from '@/hooks/use-auth';
 import { initI18n } from '@/i18n';
 import { AppSettings, AppState, darkTheme, initialSettings, LanguageType, lightTheme, ThemeMode, UserProfile } from '@/types';
@@ -67,7 +69,7 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
 
   // Update system UI when theme changes
   useEffect(() => {
-    SystemUI.setBackgroundColorAsync(getCurrentTheme().colors.systemBackground).then((_) => {});
+    SystemUI.setBackgroundColorAsync(getCurrentTheme().colors.background).then((_) => {});
   }, [settings.themeMode, systemColorScheme, getCurrentTheme]);
 
   const updateSettings = useCallback(
@@ -134,6 +136,7 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
 export function AppProvider({ children }: { children: ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [loadedSettings, setLoadedSettings] = useState<AppSettings>(initialSettings);
+  const containerStyles = useContainerStyles();
 
   // Initialize everything at once
   useEffect(() => {
@@ -161,8 +164,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   if (!isInitialized) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator testID="loading" size="large" color="#007AFF" />
+      <View style={containerStyles.centered}>
+        <LoadingIndicator size="large" variant="primary" />
       </View>
     );
   }
@@ -177,12 +180,3 @@ export function useAppContext(): AppState {
   }
   return context;
 }
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-});

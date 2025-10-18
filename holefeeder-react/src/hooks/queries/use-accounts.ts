@@ -1,5 +1,5 @@
 import { Account } from '@/core/account';
-import { apiService } from '@/services';
+import { apiService } from '@/services/api-service';
 import { createListQueryHook } from './use-query';
 
 const accountQueries = createListQueryHook<Account>('accounts', (token) =>

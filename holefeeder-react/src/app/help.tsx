@@ -1,10 +1,10 @@
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { ThemedText, ThemedView } from '@/components';
-import { useContainerStyles } from '@/hooks';
+import { useViewStyles } from '@/hooks';
 
-export default function ModalScreen() {
-  const containerStyles = useContainerStyles();
+export default function HelpScreen() {
+  const containerStyles = useViewStyles();
 
   return (
     <ThemedView style={containerStyles.centered}>

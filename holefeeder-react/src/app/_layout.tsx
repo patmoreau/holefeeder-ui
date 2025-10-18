@@ -7,11 +7,11 @@ import { LoadingIndicator } from '@/components';
 import { config } from '@/config';
 import { AppProvider } from '@/contexts';
 import { QueryProvider } from '@/contexts/query-provider';
-import { useAuth, useContainerStyles, useQuickActions } from '@/hooks';
+import { useAuth, useViewStyles, useQuickActions } from '@/hooks';
 
 function AppContent() {
   const { user, isLoading } = useAuth();
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
 
   useQuickActionRouting();
   useQuickActions();

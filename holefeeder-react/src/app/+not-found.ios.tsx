@@ -3,11 +3,11 @@ import { router, Stack } from 'expo-router';
 import { Text } from 'react-native';
 import { ThemedView } from '@/components';
 import { GlobalStyles } from '@/constants/global-styles';
-import { useContainerStyles, useLanguage, useTextStyles } from '@/hooks';
+import { useViewStyles, useLanguage, useTextStyles } from '@/hooks';
 
 export default function NotFoundScreen() {
   const { t } = useLanguage();
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
   const textStyles = useTextStyles();
 
   return (

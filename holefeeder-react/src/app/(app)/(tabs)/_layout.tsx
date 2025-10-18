@@ -2,7 +2,7 @@ import { Icon, NativeTabs, Label } from 'expo-router/unstable-native-tabs';
 import React from 'react';
 import { useLanguage } from '@/hooks';
 
-export default function TabLayout() {
+export default function TabsLayout() {
   const { t, currentLanguage } = useLanguage();
 
   return (

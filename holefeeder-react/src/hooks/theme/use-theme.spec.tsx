@@ -3,7 +3,7 @@ import { anAppState } from '@/__tests__';
 import { useAppContext } from '@/contexts';
 import { useTheme } from '@/hooks';
 
-jest.mock('@/contexts/app-context');
+jest.mock('@/contexts/AppContext');
 
 const mockAppContext = jest.mocked(useAppContext);
 

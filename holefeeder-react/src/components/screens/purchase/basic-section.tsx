@@ -1,7 +1,7 @@
 import { Section, LabeledContent } from '@expo/ui/swift-ui';
 import React, { useState } from 'react';
-import { AccountPicker } from '@/components/account-picker';
-import { CategoryPicker } from '@/components/category-picker';
+import { AccountPicker } from '@/components/AccountPicker';
+import { CategoryPicker } from '@/components/CategoryPicker';
 import { DatePicker } from '@/components/date-picker';
 import { AmountTextField } from '@/components/ui/amount-text-field';
 import { Account, Category } from '@/core';

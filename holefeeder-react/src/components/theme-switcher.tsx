@@ -23,7 +23,7 @@ export function ThemeSwitcher() {
   const styles = useStyles((theme) => ({
     container: {
       flexDirection: 'row' as const,
-      backgroundColor: getColor(theme, 'secondarySystemBackground'),
+      backgroundColor: getColor(theme, 'secondaryBackground'),
       borderRadius: 8,
       padding: 2,
       ...(Platform.OS === 'web'
@@ -75,7 +75,13 @@ export function ThemeSwitcher() {
   return (
     <View style={styles.container as ViewStyle}>
       {availableThemeModes.map((mode, index) => (
-        <Pressable key={mode.code} style={[styles.button as ViewStyle, index === selectedIndex && (styles.selectedButton as ViewStyle)]} onPress={() => handleThemeChange(mode.code, index)} role="radio" aria-checked={index === selectedIndex}>
+        <Pressable
+          key={mode.code}
+          style={[styles.button as ViewStyle, index === selectedIndex && (styles.selectedButton as ViewStyle)]}
+          onPress={() => handleThemeChange(mode.code, index)}
+          role="radio"
+          aria-checked={index === selectedIndex}
+        >
           <Text style={[styles.buttonText, index === selectedIndex && styles.selectedButtonText]}>{t(`theme-switcher.${mode.langId}`)}</Text>
         </Pressable>
       ))}

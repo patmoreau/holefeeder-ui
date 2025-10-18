@@ -9,6 +9,8 @@ export const darkTheme: Theme = {
     background: '#000000',
     text: '#FFFFFF',
     secondaryText: '#EBEBF5', // 60% opacity
+    separator: '#54545899', // 33% opacity
+    opaqueSeparator: '#38383A',
     link: '#0A84FF',
   },
 };

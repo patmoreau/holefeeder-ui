@@ -11,6 +11,12 @@ export interface Theme {
     background: string;
     text: string;
     secondaryText: string;
+
+    // separators
+    separator: string;
+    opaqueSeparator: string;
+
+    // others
     link: string;
   };
   typography: {
@@ -23,6 +29,10 @@ export interface Theme {
       page: ViewStyle;
       center: ViewStyle;
       section: ViewStyle;
+    };
+    components: {
+      picker: TextStyle;
+      pickerItem: TextStyle;
     };
   };
 }

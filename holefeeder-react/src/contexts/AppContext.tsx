@@ -4,11 +4,11 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useState 
 import { useTranslation } from 'react-i18next';
 import { Appearance, View } from 'react-native';
 import { LoadingIndicator } from '@/components';
-import { useContainerStyles } from '@/hooks';
+import { useViewStyles } from '@/hooks';
 import { useAuth } from '@/hooks/use-auth';
 import { initI18n } from '@/i18n';
 import { AppSettings, AppState, darkTheme, initialSettings, LanguageType, lightTheme, ThemeMode, UserProfile } from '@/types';
-import { Storage } from '@/utils';
+import { Storage } from '@/utils/storage';
 
 export const AppContext = createContext<AppState | null>(null);
 
@@ -136,7 +136,7 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
 export function AppProvider({ children }: { children: ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [loadedSettings, setLoadedSettings] = useState<AppSettings>(initialSettings);
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
 
   // Initialize everything at once
   useEffect(() => {

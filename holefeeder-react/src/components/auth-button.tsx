@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Pressable } from 'react-native';
-import { useLanguage, useStyles, useContainerStyles } from '@/hooks';
+import { useLanguage, useStyles, useViewStyles } from '@/hooks';
 import { useAuth } from '@/hooks/use-auth';
 import { getColor, getThemedTypography } from '@/utils/style-utils';
 
 export const AuthButton: React.FC = () => {
   const { user, isLoading, login, logout } = useAuth();
   const { t } = useLanguage();
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
 
   const styles = useStyles((theme, global) => ({
     container: {

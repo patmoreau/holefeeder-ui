@@ -1,20 +1,20 @@
 import { useMemo } from 'react';
-import { ViewStyle, TextStyle } from 'react-native';
+import { ViewStyle, TextStyle, ImageStyle, Platform } from 'react-native';
 import { GlobalStyles } from '@/constants/global-styles';
 import { useTheme } from '@/hooks/theme/use-theme';
 import { Theme } from '@/types/theme';
-import { getContainerStyle, combineStyles, getColor } from '@/utils/style-utils';
+import { getContainerStyle, combineStyles, getColor, getComponentStyle } from '@/utils/style-utils';
 
 type StyleFunction<T> = (theme: Theme, globalStyles: typeof GlobalStyles) => T;
 
-export const useStyles = <T extends Record<string, ViewStyle | TextStyle>>(stylesFn: StyleFunction<T>): T => {
+export const useStyles = <T extends Record<string, ViewStyle | TextStyle | ImageStyle>>(stylesFn: StyleFunction<T>): T => {
   const themeState = useTheme();
+  const { theme } = themeState;
 
-  return useMemo(() => stylesFn(themeState.theme, GlobalStyles), [stylesFn, themeState.theme]);
+  return useMemo(() => stylesFn(theme, GlobalStyles), [stylesFn, theme]);
 };
 
-// Helper functions for common patterns
-export const useContainerStyles = () => {
+export const useViewStyles = () => {
   const themeState = useTheme();
   const { theme } = themeState;
 
@@ -55,6 +55,19 @@ export const useTextStyles = () => {
       }),
       link: combineStyles(theme.typography.body, {
         color: getColor(theme, 'link'),
+      }),
+      picker: combineStyles(getComponentStyle(theme, 'picker'), {
+        backgroundColor: getColor(theme, 'background'),
+        borderColor: getColor(theme, 'separator'),
+      }),
+      pickerItem: combineStyles(getComponentStyle(theme, 'pickerItem'), {
+        ...Platform.select({
+          web: {
+            backgroundColor: getColor(theme, 'background'),
+            color: getColor(theme, 'text'),
+          },
+          default: {},
+        }),
       }),
     }),
     [theme]

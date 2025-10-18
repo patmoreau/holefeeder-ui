@@ -1,14 +1,15 @@
 import { Host, Button } from '@expo/ui/swift-ui';
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { useLanguage, useStyles, useContainerStyles } from '@/hooks';
+import { View, Text } from 'react-native';
+import { LoadingIndicator } from '@/components';
+import { useLanguage, useStyles, useViewStyles } from '@/hooks';
 import { useAuth } from '@/hooks/use-auth';
 import { getColor, getThemedTypography } from '@/utils/style-utils';
 
 export const AuthButton: React.FC = () => {
   const { user, isLoading, login, logout } = useAuth();
   const { t } = useLanguage();
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
 
   const styles = useStyles((theme, global) => ({
     container: {
@@ -30,15 +31,12 @@ export const AuthButton: React.FC = () => {
       ...global.mb20,
       ...global.textCenter,
     },
-    activityIndicator: {
-      color: getColor(theme, 'label'),
-    },
   }));
 
   if (isLoading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color={styles.activityIndicator.color} />
+        <LoadingIndicator size="large" />
         <Text style={styles.loadingText}>{t('auth.loading')}</Text>
       </View>
     );

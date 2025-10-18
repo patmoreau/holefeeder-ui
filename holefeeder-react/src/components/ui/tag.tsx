@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Colors } from '@/constants';
+import { Colors } from '@/constants/colors';
 import { useTheme } from '@/hooks/theme/use-theme';
 
 export type TagProps = {

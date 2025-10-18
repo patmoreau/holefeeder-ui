@@ -1,5 +1,5 @@
 import { Picker } from '@expo/ui/swift-ui';
-import { Account } from '@/core';
+import { Account } from '@/core/account';
 import { LoadingIndicator } from './ui';
 
 type Props = {

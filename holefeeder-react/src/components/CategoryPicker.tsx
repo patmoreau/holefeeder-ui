@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { View } from 'react-native';
-import { Category } from '@/core';
+import { Category } from '@/core/category';
 import { useTextStyles } from '@/hooks/theme/use-styles';
 import { LoadingIndicator } from './ui';
 

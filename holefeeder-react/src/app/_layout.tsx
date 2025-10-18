@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Auth0Provider } from 'react-native-auth0';
 import { LoadingIndicator } from '@/components';
 import { config } from '@/config';
-import { AppProvider } from '@/contexts';
+import { AppProvider } from '@/contexts/AppContext';
 import { QueryProvider } from '@/contexts/query-provider';
 import { useViewStyles } from '@/hooks/theme/use-styles';
 import { useAuth } from '@/hooks/use-auth';

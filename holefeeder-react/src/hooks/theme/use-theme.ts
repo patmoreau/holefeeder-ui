@@ -1,4 +1,4 @@
-import { useAppContext } from '@/contexts';
+import { useAppContext } from '@/contexts/AppContext';
 import { ThemeState } from '@/types/app-state';
 
 export function useTheme(): ThemeState {

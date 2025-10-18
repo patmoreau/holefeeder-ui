@@ -4,7 +4,7 @@ import { Image as ExpoImage } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { AuthButton } from '@/components/auth-button';
-import { useAppContext } from '@/contexts';
+import { useAppContext } from '@/contexts/AppContext';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
 

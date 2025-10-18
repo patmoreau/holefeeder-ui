@@ -1,4 +1,4 @@
-import { useAppContext } from '@/contexts';
+import { useAppContext } from '@/contexts/AppContext';
 import { LanguageState } from '@/types/app-state';
 
 export function useLanguage(): LanguageState {

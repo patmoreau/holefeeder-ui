@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Credentials, useAuth0 } from 'react-native-auth0';
-import { config } from '@/config';
+import { config } from '@/config/config';
 import { TokenInfo } from '@/types/token-info';
 
 export function useAuth() {

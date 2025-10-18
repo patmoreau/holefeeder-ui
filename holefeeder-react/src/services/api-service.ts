@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from 'axios';
-import { config } from '@/config';
+import { config } from '@/config/config';
 import { Account } from '@/core/account';
 import { Category } from '@/core/category';
 

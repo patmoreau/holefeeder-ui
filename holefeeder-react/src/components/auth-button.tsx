@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Pressable } from 'react-native';
-import { useLanguage, useStyles, useViewStyles } from '@/hooks';
+import { useStyles, useViewStyles } from '@/hooks/theme/use-styles';
 import { useAuth } from '@/hooks/use-auth';
+import { useLanguage } from '@/hooks/use-language';
 import { getColor, getThemedTypography } from '@/utils/style-utils';
 
 export const AuthButton: React.FC = () => {

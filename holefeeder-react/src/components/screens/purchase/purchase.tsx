@@ -2,7 +2,7 @@ import { Form, Host } from '@expo/ui/swift-ui';
 import { router } from 'expo-router';
 import React from 'react';
 import { BasicSection } from '@/components/screens/purchase/basic-section';
-import { useViewStyles, useStyles } from '@/hooks';
+import { useStyles, useViewStyles } from '@/hooks/theme/use-styles';
 
 export default function PurchaseScreen() {
   const containerStyles = useViewStyles();

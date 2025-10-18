@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Pressable, Text, Platform } from 'react-native';
 import type { ViewStyle } from 'react-native';
-import { useLanguage, useStyles } from '@/hooks';
+import { useStyles } from '@/hooks/theme/use-styles';
+import { useLanguage } from '@/hooks/use-language';
 import { getColor, getThemedTypography } from '@/utils/style-utils';
 
 type CursorType =
@@ -109,7 +110,13 @@ export function LanguageSwitcher() {
   return (
     <View style={styles.container as ViewStyle}>
       {availableLanguages.map((language, index) => (
-        <Pressable key={language.code} style={[styles.button as ViewStyle, index === selectedIndex && (styles.selectedButton as ViewStyle)]} onPress={() => handleLanguageChange(language.code, index)} role="radio" aria-checked={index === selectedIndex}>
+        <Pressable
+          key={language.code}
+          style={[styles.button as ViewStyle, index === selectedIndex && (styles.selectedButton as ViewStyle)]}
+          onPress={() => handleLanguageChange(language.code, index)}
+          role="radio"
+          aria-checked={index === selectedIndex}
+        >
           <Text style={[styles.buttonText, index === selectedIndex && styles.selectedButtonText]}>{language.name}</Text>
         </Pressable>
       ))}

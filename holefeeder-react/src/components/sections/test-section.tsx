@@ -3,7 +3,8 @@ import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { CategoryPicker } from '@/components/CategoryPicker';
 import { Category } from '@/core';
-import { useCategories, useLanguage } from '@/hooks';
+import { useCategories } from '@/hooks/queries/use-categories';
+import { useLanguage } from '@/hooks/use-language';
 
 export function TestSection() {
   const { t } = useLanguage();

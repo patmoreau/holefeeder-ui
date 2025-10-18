@@ -3,7 +3,8 @@ import { router, Stack } from 'expo-router';
 import { Text } from 'react-native';
 import { ThemedView } from '@/components';
 import { GlobalStyles } from '@/constants/global-styles';
-import { useViewStyles, useLanguage, useTextStyles } from '@/hooks';
+import { useTextStyles, useViewStyles } from '@/hooks/theme/use-styles';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function NotFoundScreen() {
   const { t } = useLanguage();

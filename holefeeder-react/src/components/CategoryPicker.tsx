@@ -2,7 +2,7 @@ import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { View } from 'react-native';
 import { Category } from '@/core';
-import { useTextStyles } from '@/hooks';
+import { useTextStyles } from '@/hooks/theme/use-styles';
 import { LoadingIndicator } from './ui';
 
 type Props = {

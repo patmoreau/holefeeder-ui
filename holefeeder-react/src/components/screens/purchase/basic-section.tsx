@@ -5,7 +5,9 @@ import { CategoryPicker } from '@/components/CategoryPicker';
 import { DatePicker } from '@/components/date-picker';
 import { AmountTextField } from '@/components/ui/amount-text-field';
 import { Account, Category } from '@/core';
-import { useAccounts, useCategories, useLanguage } from '@/hooks';
+import { useAccounts } from '@/hooks/queries/use-accounts';
+import { useCategories } from '@/hooks/queries/use-categories';
+import { useLanguage } from '@/hooks/use-language';
 
 export function BasicSection() {
   const { t } = useLanguage();

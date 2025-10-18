@@ -3,12 +3,16 @@ import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { IconSymbol, ParallaxScrollView, ThemedText, ThemedView } from '@/components';
 import { ProfileSection, DisplaySection, TestSection } from '@/components/sections';
-import { useLanguage } from '@/hooks';
+import { useLanguage } from '@/hooks/use-language';
 
 function ScreenContent() {
   const { t } = useLanguage();
   return (
-    <ParallaxScrollView style={styles.container} headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }} headerImage={<IconSymbol size={310} color="#808080" name="gearshape" style={styles.headerImage} />}>
+    <ParallaxScrollView
+      style={styles.container}
+      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerImage={<IconSymbol size={310} color="#808080" name="gearshape" style={styles.headerImage} />}
+    >
       <ThemedView style={styles.titleContainer} lightColor={'#F2F2F7'} darkColor={'#000000'}>
         <ThemedText type="title">{t('settings.title')}</ThemedText>
       </ThemedView>

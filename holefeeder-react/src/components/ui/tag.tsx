@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Colors } from '@/constants';
-import { useTheme } from '@/hooks';
+import { useTheme } from '@/hooks/theme/use-theme';
 
 export type TagProps = {
   label: string;

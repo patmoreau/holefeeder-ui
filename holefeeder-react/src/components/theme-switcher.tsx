@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Pressable, Text, Platform } from 'react-native';
 import type { ViewStyle } from 'react-native';
-import { useLanguage, useTheme, useStyles } from '@/hooks';
+import { useStyles } from '@/hooks/theme/use-styles';
+import { useTheme } from '@/hooks/theme/use-theme';
+import { useLanguage } from '@/hooks/use-language';
 import { ThemeMode } from '@/types/theme/theme';
 import { getColor, getThemedTypography } from '@/utils/style-utils';
 

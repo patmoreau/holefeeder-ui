@@ -1,6 +1,6 @@
 import { Picker } from '@expo/ui/swift-ui';
 import React, { useState } from 'react';
-import { useLanguage } from '@/hooks';
+import { useLanguage } from '@/hooks/use-language';
 
 export function LanguageSwitcher() {
   const { setUserLanguage, availableLanguages, currentLanguage } = useLanguage();

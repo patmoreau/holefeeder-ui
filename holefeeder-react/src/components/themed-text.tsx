@@ -1,5 +1,5 @@
 import { Text, type TextProps } from 'react-native';
-import { useTextStyles } from '@/hooks';
+import { useTextStyles } from '@/hooks/theme/use-styles';
 
 export type ThemedTextProps = TextProps & {
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';

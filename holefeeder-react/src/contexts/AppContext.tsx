@@ -4,7 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useState 
 import { useTranslation } from 'react-i18next';
 import { Appearance, View } from 'react-native';
 import { LoadingIndicator } from '@/components';
-import { useViewStyles } from '@/hooks';
+import { useViewStyles } from '@/hooks/theme/use-styles';
 import { useAuth } from '@/hooks/use-auth';
 import { initI18n } from '@/i18n';
 import { AppSettings, initialSettings } from '@/types/app-settings';

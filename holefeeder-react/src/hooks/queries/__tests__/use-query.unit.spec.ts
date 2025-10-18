@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { anEmptyTokenInfo, aTokenInfo } from '@/__tests__';
-import { useAuth } from '@/hooks';
 import { createListQueryHook, createOneQueryHook } from '@/hooks/queries/use-query';
+import { useAuth } from '@/hooks/use-auth';
 import { renderQueryHook } from './mocks/mock-query-client';
 
 jest.mock('@/hooks/use-auth');

@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/hooks';
+import { useAuth } from '@/hooks/use-auth';
 
-export const createMutationHook = <T>(resourceName: string, commandHandler: (data: T, authToken: string | null) => Promise<T | void>, withAuth: boolean = true) => {
+export const createMutationHook = <T>(
+  resourceName: string,
+  commandHandler: (data: T, authToken: string | null) => Promise<T | void>,
+  withAuth: boolean = true
+) => {
   const useCommand = () => {
     const { tokenInfo } = useAuth();
     const queryClient = useQueryClient();

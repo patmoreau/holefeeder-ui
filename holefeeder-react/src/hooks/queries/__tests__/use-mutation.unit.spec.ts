@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { anEmptyTokenInfo, aTokenInfo } from '@/__tests__';
-import { useAuth } from '@/hooks';
 import { createMutationHook } from '@/hooks/queries/use-mutation';
+import { useAuth } from '@/hooks/use-auth';
 import { mockQueryClient, renderQueryHook } from './mocks/mock-query-client';
 
 jest.mock('@/hooks/use-auth');

@@ -1,5 +1,5 @@
 import { ActivityIndicator, ActivityIndicatorProps } from 'react-native';
-import { useTheme } from '@/hooks';
+import { useTheme } from '@/hooks/theme/use-theme';
 
 interface LoadingIndicatorProps extends Omit<ActivityIndicatorProps, 'size' | 'color'> {
   size?: 'small' | 'large';

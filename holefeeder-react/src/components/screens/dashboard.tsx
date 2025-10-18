@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { Platform, StyleSheet } from 'react-native';
 import { ParallaxScrollView, ThemedText, ThemedView } from '@/components';
-import { useLanguage } from '@/hooks';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function HomeScreen() {
   const { t } = useLanguage();

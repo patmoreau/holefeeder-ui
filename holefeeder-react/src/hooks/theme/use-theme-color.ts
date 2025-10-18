@@ -1,4 +1,4 @@
-import { useTheme } from '@/hooks';
+import { useTheme } from '@/hooks/theme/use-theme';
 import { darkTheme } from '@/types/theme/dark';
 import { lightTheme } from '@/types/theme/light';
 

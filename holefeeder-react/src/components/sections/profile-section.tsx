@@ -5,14 +5,17 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { AuthButton } from '@/components/auth-button';
 import { useAppContext } from '@/contexts';
-import { useAuth, useLanguage } from '@/hooks';
+import { useAuth } from '@/hooks/use-auth';
+import { useLanguage } from '@/hooks/use-language';
 
 export function ProfileSection() {
   const { profile } = useAppContext();
   const { tokenInfo } = useAuth();
   const { t } = useLanguage();
 
-  const avatarUri = profile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || profile.email || 'User')}&size=120&background=007AFF&color=fff`;
+  const avatarUri =
+    profile.avatar ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || profile.email || 'User')}&size=120&background=007AFF&color=fff`;
 
   return (
     <>

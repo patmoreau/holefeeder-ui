@@ -1,4 +1,7 @@
-import { darkTheme, lightTheme, ThemeMode, ThemeState } from '@/types';
+import { ThemeState } from '@/types/app-state';
+import { darkTheme } from '@/types/theme/dark';
+import { lightTheme } from '@/types/theme/light';
+import { ThemeMode } from '@/types/theme/theme';
 
 const defaultData = {
   changeThemeMode: (_: ThemeMode) => Promise.resolve(),

@@ -1,4 +1,4 @@
-import { EventCallback, Event } from '@/types';
+import { EventCallback, Event } from '@/types/event';
 
 const createEventBus = () => {
   const events: { [key: string]: EventCallback[] } = {};

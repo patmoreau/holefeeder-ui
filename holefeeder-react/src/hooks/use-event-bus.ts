@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { eventBus } from '@/services';
-import { EventCallback, Event } from '@/types';
+import { EventCallback, Event } from '@/types/event';
 
 export const useEventBusListener = (event: Event, callback: EventCallback) => {
   const callbackRef = useRef(callback);

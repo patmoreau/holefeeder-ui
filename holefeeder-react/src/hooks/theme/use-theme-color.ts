@@ -1,5 +1,6 @@
 import { useTheme } from '@/hooks';
-import { darkTheme, lightTheme } from '@/types';
+import { darkTheme } from '@/types/theme/dark';
+import { lightTheme } from '@/types/theme/light';
 
 export const useThemeColor = (
   props: { light?: string; dark?: string },

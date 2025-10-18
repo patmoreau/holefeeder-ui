@@ -1,4 +1,5 @@
-import { lightTheme, Theme } from '@/types/theme';
+import { lightTheme } from '@/types/theme/light';
+import { Theme } from '@/types/theme/theme';
 import { createStyles, getColor, combineStyles, getContainerStyle } from '@/utils/style-utils';
 
 const mockTheme = lightTheme;

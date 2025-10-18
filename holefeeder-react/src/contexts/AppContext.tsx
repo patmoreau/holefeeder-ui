@@ -7,7 +7,12 @@ import { LoadingIndicator } from '@/components';
 import { useViewStyles } from '@/hooks';
 import { useAuth } from '@/hooks/use-auth';
 import { initI18n } from '@/i18n';
-import { AppSettings, AppState, darkTheme, initialSettings, LanguageType, lightTheme, ThemeMode, UserProfile } from '@/types';
+import { AppSettings, initialSettings } from '@/types/app-settings';
+import { AppState, LanguageType } from '@/types/app-state';
+import { darkTheme } from '@/types/theme/dark';
+import { lightTheme } from '@/types/theme/light';
+import { ThemeMode } from '@/types/theme/theme';
+import { UserProfile } from '@/types/user-profile';
 import { Storage } from '@/utils/storage';
 
 export const AppContext = createContext<AppState | null>(null);

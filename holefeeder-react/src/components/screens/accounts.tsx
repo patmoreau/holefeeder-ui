@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 import { Collapsible, ExternalLink, IconSymbol, ParallaxScrollView, ThemedText, ThemedView } from '@/components';
-import { Fonts } from '@/types';
+import { Fonts } from '@/types/theme/theme';
 
 export default function AccountsScreen() {
   return (

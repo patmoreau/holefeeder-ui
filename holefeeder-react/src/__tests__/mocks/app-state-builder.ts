@@ -1,5 +1,7 @@
 import { aUserProfile } from '@/__tests__';
-import { AppState, LanguageType, lightTheme, ThemeMode } from '@/types';
+import { AppState, LanguageType } from '@/types/app-state';
+import { lightTheme } from '@/types/theme/light';
+import { ThemeMode } from '@/types/theme/theme';
 
 const defaultAppState = (): AppState => ({
   profile: aUserProfile(),

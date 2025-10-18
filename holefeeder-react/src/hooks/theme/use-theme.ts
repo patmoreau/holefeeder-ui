@@ -1,5 +1,5 @@
 import { useAppContext } from '@/contexts';
-import { ThemeState } from '@/types';
+import { ThemeState } from '@/types/app-state';
 
 export function useTheme(): ThemeState {
   const context = useAppContext();

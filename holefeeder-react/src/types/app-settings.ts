@@ -1,4 +1,4 @@
-import { ThemeMode } from '@/types/theme';
+import { ThemeMode } from '@/types/theme/theme';
 
 export interface AppSettings {
   notifications: boolean;

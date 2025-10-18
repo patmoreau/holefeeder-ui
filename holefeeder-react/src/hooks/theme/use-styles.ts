@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { ViewStyle, TextStyle, ImageStyle, Platform } from 'react-native';
 import { GlobalStyles } from '@/constants/global-styles';
 import { useTheme } from '@/hooks/theme/use-theme';
-import { Theme } from '@/types/theme';
+import { Theme } from '@/types/theme/theme';
 import { getContainerStyle, combineStyles, getColor, getComponentStyle } from '@/utils/style-utils';
 
 type StyleFunction<T> = (theme: Theme, globalStyles: typeof GlobalStyles) => T;

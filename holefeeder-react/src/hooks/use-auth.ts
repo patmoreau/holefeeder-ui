@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Credentials, useAuth0 } from 'react-native-auth0';
 import { config } from '@/config';
-import { TokenInfo } from '@/types';
+import { TokenInfo } from '@/types/token-info';
 
 export function useAuth() {
   const { user, getCredentials, isLoading: authLoading, authorize, clearSession } = useAuth0();

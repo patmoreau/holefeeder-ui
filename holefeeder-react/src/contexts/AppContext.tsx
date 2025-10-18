@@ -3,7 +3,7 @@ import i18n, { changeLanguage } from 'i18next';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Appearance, View } from 'react-native';
-import { LoadingIndicator } from '@/components';
+import { LoadingIndicator } from '@/components/ui/LoadingIndicator';
 import { useViewStyles } from '@/hooks/theme/use-styles';
 import { useAuth } from '@/hooks/use-auth';
 import { initI18n } from '@/i18n';

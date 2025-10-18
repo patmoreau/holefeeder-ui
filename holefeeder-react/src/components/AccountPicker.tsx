@@ -3,7 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Account } from '@/core/account';
 import { useTextStyles } from '@/hooks/theme/use-styles';
-import { LoadingIndicator } from './ui';
+import { LoadingIndicator } from './ui/LoadingIndicator';
 
 type Props = {
   accounts: Account[] | null;

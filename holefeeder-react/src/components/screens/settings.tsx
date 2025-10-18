@@ -1,8 +1,13 @@
 import { Form, Host } from '@expo/ui/swift-ui';
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { IconSymbol, ParallaxScrollView, ThemedText, ThemedView } from '@/components';
-import { ProfileSection, DisplaySection, TestSection } from '@/components/sections';
+import { ParallaxScrollView } from '@/components/parallax-scroll-view';
+import { DisplaySection } from '@/components/sections/display-section';
+import { ProfileSection } from '@/components/sections/profile-section';
+import { TestSection } from '@/components/sections/test-section';
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useLanguage } from '@/hooks/use-language';
 
 function ScreenContent() {

@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 import { View } from 'react-native';
 import { Auth0Provider } from 'react-native-auth0';
-import { LoadingIndicator } from '@/components';
+import { LoadingIndicator } from '@/components/ui/LoadingIndicator';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
 import { QueryProvider } from '@/contexts/query-provider';

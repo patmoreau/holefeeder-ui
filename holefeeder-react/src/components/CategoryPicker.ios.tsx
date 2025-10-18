@@ -1,6 +1,6 @@
 import { Picker } from '@expo/ui/swift-ui';
 import { Category } from '@/core/category';
-import { LoadingIndicator } from './ui';
+import { LoadingIndicator } from './ui/LoadingIndicator';
 
 type Props = {
   categories: Category[] | null;

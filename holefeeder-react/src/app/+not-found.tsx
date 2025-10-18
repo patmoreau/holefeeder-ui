@@ -1,6 +1,6 @@
 import { router, Stack } from 'expo-router';
 import { Text, Pressable, Platform } from 'react-native';
-import { ThemedView } from '@/components';
+import { ThemedView } from '@/components/themed-view';
 import { GlobalStyles } from '@/constants/global-styles';
 import { useStyles, useTextStyles, useViewStyles } from '@/hooks/theme/use-styles';
 import { useLanguage } from '@/hooks/use-language';

@@ -11,7 +11,9 @@ export const mockQueryClient = new QueryClient({
 mockQueryClient.invalidateQueries = jest.fn();
 
 const createWrapper = () => {
-  const Wrapper = ({ children }: { children: React.ReactNode }) => <QueryClientProvider client={mockQueryClient}>{children}</QueryClientProvider>;
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={mockQueryClient}>{children}</QueryClientProvider>
+  );
   Wrapper.displayName = 'QueryClientTestWrapper';
   return Wrapper;
 };

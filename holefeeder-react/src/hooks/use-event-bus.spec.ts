@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 import { useEventBusEmitter, useEventBusListener } from '@/hooks/use-event-bus';
-import { eventBus } from '@/services';
+import { eventBus } from '@/services/event-bus';
 
 const notification = 'test-notification';
 describe('useEventBus', () => {

@@ -22,6 +22,7 @@ export const lightTheme: Theme = {
     primary: '#007AFF',
     secondary: '#FF5733',
     background: '#FFFFFF',
+    secondaryBackground: '#F2F2F7',
     text: '#000000',
     secondaryText: '#3C3C43', // 60% opacity
     destructive: '#FF3B30',

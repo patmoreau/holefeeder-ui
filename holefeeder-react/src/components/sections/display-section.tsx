@@ -1,7 +1,7 @@
 import { Section, LabeledContent } from '@expo/ui/swift-ui';
 import React from 'react';
-import { LanguageSwitcher } from '@/components/language-switcher';
-import { ThemeSwitcher } from '@/components/theme-switcher';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { useLanguage } from '@/hooks/use-language';
 
 export function DisplaySection() {

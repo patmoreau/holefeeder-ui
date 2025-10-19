@@ -7,6 +7,7 @@ export const darkTheme: Theme = {
     primary: '#007AFF',
     secondary: '#FF5733',
     background: '#000000',
+    secondaryBackground: '#1C1C1E',
     text: '#FFFFFF',
     secondaryText: '#EBEBF5', // 60% opacity
     destructive: '#FF3B30',

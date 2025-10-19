@@ -9,6 +9,7 @@ export interface Theme {
     primary: string;
     secondary: string;
     background: string;
+    secondaryBackground: string;
     text: string;
     secondaryText: string;
     destructive: string;

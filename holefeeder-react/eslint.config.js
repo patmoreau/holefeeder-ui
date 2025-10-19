@@ -15,6 +15,7 @@ export default defineConfig([
   pluginImport.flatConfigs.recommended,
   {
     rules: {
+      '@typescript-eslint/no-redeclare': 'off',
       'max-len': ['error', { code: 255 }],
       'import/order': [
         'error',

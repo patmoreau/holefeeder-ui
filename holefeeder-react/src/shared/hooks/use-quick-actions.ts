@@ -8,7 +8,7 @@ export function useQuickActions() {
   const { t } = useLanguage();
 
   useEffect(() => {
-    QuickActions.setItems<RouterAction>([
+    QuickActions.setItems<RouterAction<'/purchase' | '/help'>>([
       {
         title: t('quick-actions.purchase-title'),
         icon: Platform.OS === 'ios' ? 'symbol:cart.fill.badge.plus' : undefined,
@@ -22,6 +22,8 @@ export function useQuickActions() {
         id: '1',
         params: { href: '/help' },
       },
-    ]);
+    ]).then(() => {
+      console.debug('Quick actions set');
+    });
   }, [t]);
 }

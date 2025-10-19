@@ -19,5 +19,5 @@ export const aDarkThemeState = (): ThemeState => ({
   ...defaultData,
   theme: darkTheme,
   isDark: true,
-  themeMode: 'light',
+  themeMode: 'dark',
 });

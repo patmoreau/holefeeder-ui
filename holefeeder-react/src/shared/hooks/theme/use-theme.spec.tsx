@@ -1,9 +1,12 @@
+/* eslint-disable import/first */
+jest.mock('@/contexts/AppContext', () => ({
+  useAppContext: jest.fn(),
+}));
+
 import { renderHook } from '@testing-library/react-native';
 import { anAppState } from '@/__tests__';
 import { useAppContext } from '@/contexts/AppContext';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-
-jest.mock('@/contexts/AppContext');
 
 const mockAppContext = jest.mocked(useAppContext);
 
@@ -37,6 +40,7 @@ describe('useTheme', () => {
 
   it('should return themeMode', () => {
     const { result } = renderHook(() => useTheme());
+
     expect(result.current.themeMode).toBe(mockAppState.themeMode);
   });
 });

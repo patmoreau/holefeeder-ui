@@ -1,13 +1,9 @@
-import { Form, Host } from '@expo/ui/swift-ui';
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ParallaxScrollView } from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { DisplaySection } from '@/features/settings/ui/display-section';
-import { ProfileSection } from '@/features/settings/ui/profile-section';
-import { TestSection } from '@/features/settings/ui/test-section';
 import { useLanguage } from '@/shared/hooks/use-language';
 
 function ScreenContent() {
@@ -21,18 +17,6 @@ function ScreenContent() {
       <ThemedView style={styles.titleContainer} lightColor={'#F2F2F7'} darkColor={'#000000'}>
         <ThemedText type="title">{t('settings.title')}</ThemedText>
       </ThemedView>
-
-      {Platform.select({
-        ios: (
-          <Host matchContents={{ vertical: true }} style={{ flex: 1 }}>
-            <Form>
-              <ProfileSection />
-              <DisplaySection />
-              {__DEV__ && <TestSection />}
-            </Form>
-          </Host>
-        ),
-      })}
     </ParallaxScrollView>
   );
 }

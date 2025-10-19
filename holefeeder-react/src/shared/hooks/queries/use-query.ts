@@ -58,3 +58,13 @@ export const createOneQueryHook = <T extends { id: string | number }>(
 
   return { useOne, keys };
 };
+
+export const useMultipleQueries = (...queries: ReturnType<typeof useQuery>[]) => {
+  return {
+    isLoading: queries.some((q) => q.isLoading),
+    isFetching: queries.some((q) => q.isFetching),
+    isError: queries.some((q) => q.isError),
+    isSuccess: queries.every((q) => q.isSuccess),
+    errors: queries.filter((q) => q.error).map((q) => q.error),
+  };
+};

@@ -23,6 +23,11 @@ describe('createMutationHook', () => {
     mockCommand.mockResolvedValue(mockItem);
   });
 
+  afterEach(async () => {
+    mockQueryClient.clear();
+    await Promise.resolve();
+  });
+
   describe('when useCommand is called', () => {
     beforeEach(() => {
       mockedUseAuth.mockReturnValue({

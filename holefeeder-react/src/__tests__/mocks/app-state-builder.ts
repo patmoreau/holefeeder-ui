@@ -1,6 +1,6 @@
-import { aUserProfile } from '@/__tests__';
+import { aLightThemeState, aUserProfile } from '@/__tests__';
+import { aLanguageState } from '@/__tests__/mocks/language-state-builder';
 import { AppState, LanguageType } from '@/types/app-state';
-import { lightTheme } from '@/types/theme/light';
 import { ThemeMode } from '@/types/theme/theme';
 
 const defaultAppState = (): AppState => ({
@@ -9,20 +9,13 @@ const defaultAppState = (): AppState => ({
   settings: {
     notifications: true,
     autoSave: true,
-    themeMode: 'system' as ThemeMode,
+    themeMode: 'light' as ThemeMode,
     language: 'en' as LanguageType,
   },
   updateSettings: () => Promise.resolve(),
   isSettingsLoaded: true,
-  theme: lightTheme,
-  isDark: false,
-  changeThemeMode: (_) => Promise.resolve(),
-  availableThemeModes: [{ code: 'system', langId: 'systemId' }],
-  themeMode: 'system',
-  currentLanguage: 'en',
-  setUserLanguage: (_) => Promise.resolve(),
-  t: (_, __?) => '',
-  availableLanguages: [{ code: 'en', name: 'en_CA' }],
+  ...aLightThemeState(),
+  ...aLanguageState(),
 });
 
 export const anAppState = (data: Partial<AppState> = {}): AppState => ({ ...defaultAppState(), ...data });

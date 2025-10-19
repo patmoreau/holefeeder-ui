@@ -1,16 +1,15 @@
 import { waitFor } from '@testing-library/react-native';
-import { aTokenInfo } from '@/__tests__';
-import { anAccount } from '@/__tests__/mocks/account-builder';
+import { anAccount, aTokenInfo } from '@/__tests__';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
+import { renderQueryHook } from '@/__tests__/mocks/mock-query-client';
+import { accountApi } from '@/features/purchase/api/account-api';
 import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { apiService } from '@/shared/services/api-service';
-import { renderQueryHook } from '../../../__tests__/mocks/mock-query-client';
 
-jest.mock('@/shared/services/api-service');
+jest.mock('@/features/purchase/api/account-api');
 jest.mock('@/shared/hooks/use-auth');
 
-const mockApiService = jest.mocked(apiService);
+const mockService = jest.mocked(accountApi);
 const mockUseAuth = jest.mocked(useAuth);
 
 describe('accountQueries', () => {
@@ -22,8 +21,8 @@ describe('accountQueries', () => {
     jest.clearAllMocks();
     mockUseAuth.mockReturnValue({ tokenInfo } as any);
     mockGetAccounts.mockResolvedValue(anAxiosResponse(mockAccounts));
-    mockApiService.mockReturnValue({
-      getAccounts: mockGetAccounts,
+    mockService.mockReturnValue({
+      getAll: mockGetAccounts,
     } as any);
   });
 

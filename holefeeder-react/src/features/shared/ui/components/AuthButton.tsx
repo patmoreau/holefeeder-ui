@@ -1,4 +1,3 @@
-import React from 'react';
 import { View } from 'react-native';
 import { Button } from '@/features/shared/ui/components/Button';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
@@ -6,7 +5,7 @@ import { useViewStyles } from '@/shared/hooks/theme/use-styles';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useLanguage } from '@/shared/hooks/use-language';
 
-export function AuthButton() {
+export const AuthButton = () => {
   const { user, isLoading, login, logout } = useAuth();
   const { t } = useLanguage();
   const viewStyles = useViewStyles();
@@ -36,4 +35,4 @@ export function AuthButton() {
       </Button>
     </View>
   );
-}
+};

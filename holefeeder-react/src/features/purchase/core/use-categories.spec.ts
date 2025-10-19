@@ -2,14 +2,14 @@ import { waitFor } from '@testing-library/react-native';
 import { aCategory, aTokenInfo } from '@/__tests__';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { renderQueryHook } from '@/__tests__/mocks/mock-query-client';
+import { categoryApi } from '@/features/purchase/api/category-api';
 import { useCategories, useCategory } from '@/features/purchase/core/use-categories';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { apiService } from '@/shared/services/api-service';
 
-jest.mock('@/shared/services/api-service');
+jest.mock('@/features/purchase/api/category-api');
 jest.mock('@/shared/hooks/use-auth');
 
-const mockApiService = jest.mocked(apiService);
+const mockService = jest.mocked(categoryApi);
 const mockUseAuth = jest.mocked(useAuth);
 
 describe('categoryQueries', () => {
@@ -24,9 +24,9 @@ describe('categoryQueries', () => {
     mockUseAuth.mockReturnValue({ tokenInfo } as any);
     mockGetCategories.mockResolvedValue(anAxiosResponse(mockCategories));
     mockGetCategory.mockResolvedValue(anAxiosResponse(mockCategory));
-    mockApiService.mockReturnValue({
-      getCategories: mockGetCategories,
-      getCategory: mockGetCategory,
+    mockService.mockReturnValue({
+      getAll: mockGetCategories,
+      getById: mockGetCategory,
     } as any);
   });
 

@@ -1,5 +1,7 @@
+import { Id } from '@/features/purchase/core/id';
+
 export interface Category {
-  id: string;
+  id: Id;
   name: string;
   color: string;
   budgetAmount: number;

@@ -8,11 +8,11 @@ import { initReactI18next } from 'react-i18next';
  * @param debug - Enable debug mode for i18next.
  * @returns Initialized i18n instance.
  * @example
- * const i18nInstance = i18nForTest('translations');
+ * const i18nInstance = i18nBuilder('translations');
  * i18nInstance.addResourceBundle('en', 'translations', { key: 'value' });
  * render(<I18nextProvider i18n={i18nInstance}></I18nextProvider>);
  */
-const i18nForTest = (ns: string, debug: boolean = false) => {
+const i18nBuilder = (ns: string, debug: boolean = false) => {
   i18n
     .use(initReactI18next)
     .init({
@@ -26,4 +26,4 @@ const i18nForTest = (ns: string, debug: boolean = false) => {
     .then();
   return i18n;
 };
-export default i18nForTest;
+export default i18nBuilder;

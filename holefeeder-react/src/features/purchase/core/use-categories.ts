@@ -1,16 +1,16 @@
-import { Category } from '@/core/category';
+import { categoryApi } from '@/features/purchase/api/category-api';
+import { Category } from '@/features/purchase/core/category';
 import { createListQueryHook, createOneQueryHook } from '@/shared/hooks/queries/use-query';
-import { apiService } from '@/shared/services/api-service';
 
 const categoryQueries = createListQueryHook<Category>('categories', (token) =>
-  apiService(token)
-    .getCategories()
+  categoryApi(token)
+    .getAll()
     .then((r) => r.data)
 );
 
 const categoryDetailQueries = createOneQueryHook<Category>('categories', (id, token) =>
-  apiService(token)
-    .getCategory(id as string)
+  categoryApi(token)
+    .getById(id as string)
     .then((r) => r.data)
 );
 

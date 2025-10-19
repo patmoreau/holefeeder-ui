@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, screen } from '@testing-library/react-native';
 import { aLightThemeState } from '@/__tests__';
 import { Button } from '@/features/shared/ui/components/Button';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
@@ -6,9 +6,7 @@ import { useTheme } from '@/shared/hooks/theme/use-theme';
 jest.mock('@/shared/hooks/theme/use-theme');
 const mockUseTheme = jest.mocked(useTheme);
 
-const testId = 'button';
-
-describe('Button', () => {
+describe('<Button />', () => {
   const mockTheme = aLightThemeState();
   const mockOnPress = jest.fn();
 
@@ -18,38 +16,54 @@ describe('Button', () => {
   });
 
   it('should render', () => {
-    const result = render(<Button />);
+    render(<Button accessibilityLabel="text">text</Button>);
 
-    expect(result).toBeTruthy();
+    screen.debug();
+    const button = screen.getByLabelText('text');
+
+    expect(button).toBeOnTheScreen();
+    expect(button).toHaveTextContent('text');
   });
 
   it('should call onPress when clicked', () => {
-    const result = render(
-      <Button testID={testId} onPress={mockOnPress}>
+    render(
+      <Button accessibilityLabel="text" onPress={mockOnPress}>
         text
       </Button>
     );
-    const button = result.getByTestId(testId);
+    const button = screen.getByLabelText('text');
     fireEvent.press(button);
     expect(mockOnPress).toHaveBeenCalled();
   });
 
   describe('with variant', () => {
     it('should render primary', () => {
-      const result = render(<Button testID={testId} variant="primary" />);
-      const button = result.getByTestId(testId);
+      render(
+        <Button accessibilityLabel="text" variant="primary">
+          text
+        </Button>
+      );
+      const button = screen.getByLabelText('text');
       expect(button.props.style.backgroundColor).toBe(mockTheme.theme.colors.primary);
     });
 
     it('should render secondary', () => {
-      const result = render(<Button testID={testId} variant="secondary" />);
-      const button = result.getByTestId(testId);
+      render(
+        <Button accessibilityLabel="text" variant="secondary">
+          text
+        </Button>
+      );
+      const button = screen.getByLabelText('text');
       expect(button.props.style.backgroundColor).toBe(mockTheme.theme.colors.secondary);
     });
 
     it('should render destructive', () => {
-      const result = render(<Button testID={testId} variant="destructive" />);
-      const button = result.getByTestId(testId);
+      render(
+        <Button accessibilityLabel="text" variant="destructive">
+          text
+        </Button>
+      );
+      const button = screen.getByLabelText('text');
       expect(button.props.style.backgroundColor).toBe(mockTheme.theme.colors.destructive);
     });
   });

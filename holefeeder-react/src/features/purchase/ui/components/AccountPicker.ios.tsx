@@ -1,6 +1,6 @@
 import { Picker } from '@expo/ui/swift-ui';
-import { LoadingIndicator } from '@/components/ui/LoadingIndicator';
 import { Account } from '@/core/account';
+import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 
 type Props = {
   accounts: Account[] | null;

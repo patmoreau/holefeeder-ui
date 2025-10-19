@@ -3,8 +3,8 @@ import { cornerRadius, foregroundStyle, frame, padding } from '@expo/ui/swift-ui
 import { Image as ExpoImage } from 'expo-image';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { AuthButton } from '@/components/AuthButton';
 import { useAppContext } from '@/contexts/AppContext';
+import { AuthButton } from '@/features/shared/ui/components/AuthButton';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
 

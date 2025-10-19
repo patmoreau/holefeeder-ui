@@ -6,7 +6,7 @@ export type ThemedTextProps = TextProps & {
 };
 
 export function ThemedText({ style, type = 'default', ...props }: ThemedTextProps) {
-  const { body } = useTextStyles();
+  const { body, heading } = useTextStyles();
 
-  return <Text style={[type === 'default' ? body : undefined, style]} {...props} />;
+  return <Text style={[type === 'default' && body, type === 'title' && heading, style]} {...props} />;
 }

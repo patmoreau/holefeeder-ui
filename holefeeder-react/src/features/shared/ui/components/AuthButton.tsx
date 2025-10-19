@@ -1,12 +1,12 @@
-import { Host, Button } from '@expo/ui/swift-ui';
 import React from 'react';
 import { View } from 'react-native';
-import { LoadingIndicator } from '@/components/ui/LoadingIndicator';
+import { Button } from '@/features/shared/ui/components/Button';
+import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useViewStyles } from '@/hooks/theme/use-styles';
 import { useAuth } from '@/hooks/use-auth';
 import { useLanguage } from '@/hooks/use-language';
 
-export const AuthButton: React.FC = () => {
+export function AuthButton() {
   const { user, isLoading, login, logout } = useAuth();
   const { t } = useLanguage();
   const viewStyles = useViewStyles();
@@ -21,19 +21,19 @@ export const AuthButton: React.FC = () => {
 
   if (user) {
     return (
-      <Host style={viewStyles.host}>
-        <Button variant="glassProminent" role="destructive" onPress={logout}>
+      <View style={viewStyles.primary}>
+        <Button variant="destructive" onPress={logout}>
           {t('auth.logoutButton')}
         </Button>
-      </Host>
+      </View>
     );
   }
 
   return (
-    <Host style={viewStyles.host}>
-      <Button variant="glassProminent" onPress={login}>
+    <View style={viewStyles.primary}>
+      <Button variant="primary" onPress={login}>
         {t('auth.loginButton')}
       </Button>
-    </Host>
+    </View>
   );
-};
+}

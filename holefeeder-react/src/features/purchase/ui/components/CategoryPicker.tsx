@@ -1,8 +1,8 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { View } from 'react-native';
-import { LoadingIndicator } from '@/components/ui/LoadingIndicator';
 import { Category } from '@/core/category';
+import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTextStyles } from '@/hooks/theme/use-styles';
 
 type Props = {

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 import { aLightThemeState } from '@/__tests__';
-import { LoadingIndicator } from '@/components/ui/LoadingIndicator';
+import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/hooks/theme/use-theme';
 
 jest.mock('@/hooks/theme/use-theme');

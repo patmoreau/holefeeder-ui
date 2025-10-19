@@ -1,1 +1,1 @@
-export { default } from '@/components/screens/login';
+export { default } from '@/features/user-registration/ui/login';

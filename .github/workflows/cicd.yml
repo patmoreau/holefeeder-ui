@@ -85,7 +85,7 @@ jobs:
           version: 8.x
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
         working-directory: ./holefeeder-react
 
       - name: Run ESLint

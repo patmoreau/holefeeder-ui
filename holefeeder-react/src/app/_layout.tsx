@@ -3,15 +3,17 @@ import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 import { View } from 'react-native';
 import { Auth0Provider } from 'react-native-auth0';
-import { LoadingIndicator } from '@/components';
-import { config } from '@/config';
-import { AppProvider } from '@/contexts';
+import { config } from '@/config/config';
+import { AppProvider } from '@/contexts/AppContext';
 import { QueryProvider } from '@/contexts/query-provider';
-import { useAuth, useContainerStyles, useQuickActions } from '@/hooks';
+import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
+import { useViewStyles } from '@/shared/hooks/theme/use-styles';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useQuickActions } from '@/shared/hooks/use-quick-actions';
 
 function AppContent() {
   const { user, isLoading } = useAuth();
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
 
   useQuickActionRouting();
   useQuickActions();

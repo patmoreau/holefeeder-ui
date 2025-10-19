@@ -1,5 +1,7 @@
-import { lightTheme, darkTheme, ThemeMode } from '@/types';
 import { AppSettings } from '@/types/app-settings';
+import { darkTheme } from '@/types/theme/dark';
+import { lightTheme } from '@/types/theme/light';
+import { ThemeMode } from '@/types/theme/theme';
 import { UserProfile } from './user-profile';
 
 export type LanguageType = 'en' | 'fr';

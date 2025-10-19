@@ -1,13 +1,13 @@
 import { router, Stack } from 'expo-router';
 import { Text, Pressable, Platform } from 'react-native';
-import { ThemedView } from '@/components';
-import { GlobalStyles } from '@/constants/global-styles';
-import { useContainerStyles, useLanguage, useTextStyles, useStyles } from '@/hooks';
-import { getThemedTypography } from '@/utils/style-utils';
+import { ThemedView } from '@/components/themed-view';
+import { useStyles, useTextStyles, useViewStyles } from '@/shared/hooks/theme/use-styles';
+import { useLanguage } from '@/shared/hooks/use-language';
+import { GlobalStyles } from '@/types/theme/global-styles';
 
 export default function NotFoundScreen() {
   const { t } = useLanguage();
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
   const textStyles = useTextStyles();
 
   const styles = useStyles((theme) => ({
@@ -23,7 +23,7 @@ export default function NotFoundScreen() {
       }),
     },
     buttonText: {
-      ...getThemedTypography(theme, 'body', 'systemBlue'),
+      ...textStyles.link,
       textDecorationLine: 'underline',
     },
   }));

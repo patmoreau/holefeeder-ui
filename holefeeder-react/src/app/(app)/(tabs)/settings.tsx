@@ -1,1 +1,1 @@
-export { default } from '@/components/screens/settings';
+export { default } from '@/features/settings/ui/Settings';

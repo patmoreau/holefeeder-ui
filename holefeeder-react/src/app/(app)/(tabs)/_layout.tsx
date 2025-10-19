@@ -1,12 +1,14 @@
 import { Icon, NativeTabs, Label } from 'expo-router/unstable-native-tabs';
 import React from 'react';
-import { useLanguage } from '@/hooks';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useLanguage } from '@/shared/hooks/use-language';
 
-export default function TabLayout() {
+export default function TabsLayout() {
   const { t, currentLanguage } = useLanguage();
+  const { theme } = useTheme();
 
   return (
-    <NativeTabs key={currentLanguage}>
+    <NativeTabs key={currentLanguage} iconColor={theme.colors.tabIconDefault} tintColor={theme.colors.tabIconSelected}>
       <NativeTabs.Trigger name="index">
         <Icon sf="rectangle.3.group.fill" />
         <Label>{t('tabs.dashboard')}</Label>

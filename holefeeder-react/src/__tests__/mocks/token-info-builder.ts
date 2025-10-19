@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { TokenInfo } from '../../types';
+import { TokenInfo } from '@/types/token-info';
 
 const defaultData = (): TokenInfo => ({
   accessToken: faker.internet.jwt(),

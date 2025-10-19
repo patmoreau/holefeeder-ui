@@ -6,14 +6,22 @@ const config: Config = {
     {
       displayName: 'unit',
       preset: 'jest-expo',
-      testMatch: ['**/__tests__/**/*.unit.{test,spec}.{js,jsx,ts,tsx}'],
-      testPathIgnorePatterns: ['/node_modules/', '.*\\.integration\\.(test|spec)\\.(js|jsx|ts|tsx)$'],
+      testMatch: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
+      testPathIgnorePatterns: ['/node_modules/', '.*/__tests__/.*\\.integration\\.(test|spec)\\.(js|jsx|ts|tsx)$'],
       transformIgnorePatterns: [
         // eslint-disable-next-line max-len
         'node_modules/(?!((.pnpm/)?(@?react-native|@react-native-community|@react-navigation|expo|@expo|react-native-safe-area-context|react-native-screens|react-native-gesture-handler|react-native-reanimated|react-native-svg|react-native-vector-icons|@faker-js)))',
       ],
       setupFilesAfterEnv: ['<rootDir>/jest.setup.unit.ts'],
-      collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!src/**/__tests__/**', '!src/**/*.{test,spec}.{js,jsx,ts,tsx}', '!src/app/_layout.tsx', '!src/app/+not-found.tsx', '!src/**/*.d.ts', '!**/node_modules/**'],
+      collectCoverageFrom: [
+        'src/**/*.{js,jsx,ts,tsx}',
+        '!src/**/__tests__/**',
+        '!src/**/*.{test,spec}.{js,jsx,ts,tsx}',
+        '!src/app/_layout.tsx',
+        '!src/app/+not-found.tsx',
+        '!src/**/*.d.ts',
+        '!**/node_modules/**',
+      ],
       coveragePathIgnorePatterns: ['/node_modules/', '/__tests__/', '\\.test\\.', '\\.spec\\.', '\\.integration\\.'],
       coverageDirectory: 'coverage/unit',
       moduleNameMapper: {
@@ -24,13 +32,21 @@ const config: Config = {
       displayName: 'integration',
       preset: 'jest-expo',
       testMatch: ['**/__tests__/**/*.integration.{test,spec}.{js,jsx,ts,tsx}'],
-      testPathIgnorePatterns: ['/node_modules/', '.*\\.unit\\.(test|spec)\\.(js|jsx|ts|tsx)$'],
+      testPathIgnorePatterns: ['/node_modules/', '.*/__tests__/.*(?<!integration)\\.(test|spec)\\.(js|jsx|ts|tsx)$'],
       transformIgnorePatterns: [
         // eslint-disable-next-line max-len
         'node_modules/(?!((.pnpm/)?(@?react-native|@react-native-community|@react-navigation|expo|@expo|react-native-safe-area-context|react-native-screens|react-native-gesture-handler|react-native-reanimated|react-native-svg|react-native-vector-icons)))',
       ],
       setupFilesAfterEnv: ['<rootDir>/jest.setup.integration.ts'],
-      collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!src/**/__tests__/**', '!src/**/*.{test,spec}.{js,jsx,ts,tsx}', '!src/app/_layout.tsx', '!src/app/+not-found.tsx', '!src/**/*.d.ts', '!**/node_modules/**'],
+      collectCoverageFrom: [
+        'src/**/*.{js,jsx,ts,tsx}',
+        '!src/**/__tests__/**',
+        '!src/**/*.{test,spec}.{js,jsx,ts,tsx}',
+        '!src/app/_layout.tsx',
+        '!src/app/+not-found.tsx',
+        '!src/**/*.d.ts',
+        '!**/node_modules/**',
+      ],
       coveragePathIgnorePatterns: ['/node_modules/', '/__tests__/', '\\.test\\.', '\\.spec\\.', '\\.integration\\.'],
       coverageDirectory: 'coverage/integration',
       moduleNameMapper: {

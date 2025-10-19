@@ -1,1 +1,1 @@
-export { default } from '@/components/screens/purchase/purchase';
+export { default } from '@/features/purchase/ui/purchase';

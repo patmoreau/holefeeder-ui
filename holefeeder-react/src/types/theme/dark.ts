@@ -1,0 +1,24 @@
+import { lightTheme } from '@/types/theme/light';
+import { Theme } from '@/types/theme/theme';
+
+const tintColorDark = '#fff';
+
+export const darkTheme: Theme = {
+  ...lightTheme,
+  colors: {
+    primary: '#007AFF',
+    secondary: '#FF5733',
+    background: '#000000',
+    secondaryBackground: '#1C1C1E',
+    text: '#FFFFFF',
+    secondaryText: '#EBEBF5', // 60% opacity
+    destructive: '#FF3B30',
+    tint: tintColorDark,
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: tintColorDark,
+    separator: '#54545899', // 33% opacity
+    opaqueSeparator: '#38383A',
+    link: '#0A84FF',
+  },
+};

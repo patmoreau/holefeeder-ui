@@ -1,13 +1,14 @@
 import { Button, Host } from '@expo/ui/swift-ui';
 import { router, Stack } from 'expo-router';
 import { Text } from 'react-native';
-import { ThemedView } from '@/components';
-import { GlobalStyles } from '@/constants/global-styles';
-import { useContainerStyles, useLanguage, useTextStyles } from '@/hooks';
+import { ThemedView } from '@/components/themed-view';
+import { useTextStyles, useViewStyles } from '@/shared/hooks/theme/use-styles';
+import { useLanguage } from '@/shared/hooks/use-language';
+import { GlobalStyles } from '@/types/theme/global-styles';
 
 export default function NotFoundScreen() {
   const { t } = useLanguage();
-  const containerStyles = useContainerStyles();
+  const containerStyles = useViewStyles();
   const textStyles = useTextStyles();
 
   return (

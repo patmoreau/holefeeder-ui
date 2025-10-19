@@ -9,6 +9,6 @@ export * from './enum-for-test';
 export { i18nForTest };
 export * from './number-for-test';
 export * from './string-for-test';
-export * from './theme-builder';
+export * from './theme-state-builder';
 export * from './token-info-builder';
 export * from './user-profil-builder';

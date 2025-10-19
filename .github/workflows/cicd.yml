@@ -3,22 +3,42 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Flutter
+name: CI/CD
 
 on:
   push:
     branches: ["main"]
     paths:
       - "holefeeder-flutter/**"
+      - "holefeeder-react/**"
       - ".github/workflows/cicd.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "holefeeder-flutter/**"
+      - "holefeeder-react/**"
       - ".github/workflows/cicd.yml"
 
 jobs:
-  build:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      flutter: ${{ steps.filter.outputs.flutter }}
+      react: ${{ steps.filter.outputs.react }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            flutter:
+              - 'holefeeder-flutter/**'
+            react:
+              - 'holefeeder-react/**'
+
+  flutter-build:
+    needs: changes
+    if: ${{ needs.changes.outputs.flutter == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -44,3 +64,28 @@ jobs:
       - name: Run tests
         run: flutter test
         working-directory: ./holefeeder-flutter
+
+  react-native-lint:
+    needs: changes
+    if: ${{ needs.changes.outputs.react == 'true' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: "./holefeeder-react/pnpm-lock.yaml"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: ./holefeeder-react
+
+      - name: Run ESLint
+        run: pnpm lint
+        working-directory: ./holefeeder-react

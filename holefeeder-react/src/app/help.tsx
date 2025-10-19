@@ -1,7 +1,8 @@
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
 import { useViewStyles } from '@/hooks/theme/use-styles';
-import { ThemedText, ThemedView } from '@/components';
 
 export default function HelpScreen() {
   const containerStyles = useViewStyles();

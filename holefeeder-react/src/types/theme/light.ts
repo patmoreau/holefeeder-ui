@@ -24,26 +24,48 @@ export const lightTheme: Theme = {
     background: '#FFFFFF',
     text: '#000000',
     secondaryText: '#3C3C43', // 60% opacity
+    destructive: '#FF3B30',
     separator: '#3C3C4349', // 22% opacity
     opaqueSeparator: '#C6C6C8',
     link: '#007AFF',
   },
   typography: iosTypography,
   styles: {
-    containers: {
-      page: {
-        flex: 1,
-        padding: 16,
+    buttons: {
+      primary: {
+        minHeight: 44,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.0,
+        elevation: 1,
       },
-      center: {
-        flex: 1,
+      secondary: {
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        minHeight: 44,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
       },
-      section: {
-        marginBottom: 24,
-        padding: 16,
-        borderRadius: 12,
+      destructive: {
+        minHeight: 44,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.0,
+        elevation: 1,
       },
     },
     components: {
@@ -64,6 +86,22 @@ export const lightTheme: Theme = {
         }),
       },
       pickerItem: {},
+    },
+    containers: {
+      page: {
+        flex: 1,
+        padding: 16,
+      },
+      center: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      section: {
+        marginBottom: 24,
+        padding: 16,
+        borderRadius: 12,
+      },
     },
   },
 };

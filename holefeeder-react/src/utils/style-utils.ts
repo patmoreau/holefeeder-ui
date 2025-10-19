@@ -3,12 +3,14 @@ import { Theme } from '@/types/theme/theme';
 
 type Style = ViewStyle | TextStyle | ImageStyle;
 
+export const combineStyles = <T extends Style>(themeStyle: T, customStyle?: Partial<T>): T => ({ ...themeStyle, ...customStyle }) as T;
+
 export const createStyles = <T extends Record<string, Style>>(stylesFn: (theme: Theme) => T) => stylesFn;
+
+export const getButtonStyle = (theme: Theme, variant: keyof Theme['styles']['buttons']): ViewStyle => theme.styles.buttons[variant];
 
 export const getColor = (theme: Theme, color: keyof Theme['colors']): string => theme.colors[color];
 
-export const combineStyles = <T extends Style>(themeStyle: T, customStyle?: Partial<T>): T => ({ ...themeStyle, ...customStyle }) as T;
+export const getComponentStyle = (theme: Theme, variant: keyof Theme['styles']['components']): TextStyle => theme.styles.components[variant];
 
 export const getContainerStyle = (theme: Theme, variant: keyof Theme['styles']['containers']): ViewStyle => theme.styles.containers[variant];
-
-export const getComponentStyle = (theme: Theme, variant: keyof Theme['styles']['components']): TextStyle => theme.styles.components[variant];

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { AuthButton } from '@/components/auth-button';
+import { AuthButton } from '@/components/AuthButton';
 import { useStyles, useTextStyles, useViewStyles } from '@/hooks/theme/use-styles';
 import { useLanguage } from '@/hooks/use-language';
 

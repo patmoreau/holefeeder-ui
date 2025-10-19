@@ -11,6 +11,7 @@ export interface Theme {
     background: string;
     text: string;
     secondaryText: string;
+    destructive: string;
 
     // separators
     separator: string;
@@ -25,14 +26,19 @@ export interface Theme {
     body: TextStyle;
   };
   styles: {
-    containers: {
-      page: ViewStyle;
-      center: ViewStyle;
-      section: ViewStyle;
+    buttons: {
+      primary: ViewStyle;
+      secondary: ViewStyle;
+      destructive: ViewStyle;
     };
     components: {
       picker: TextStyle;
       pickerItem: TextStyle;
+    };
+    containers: {
+      page: ViewStyle;
+      center: ViewStyle;
+      section: ViewStyle;
     };
   };
 }

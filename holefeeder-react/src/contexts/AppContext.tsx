@@ -2,9 +2,7 @@ import * as SystemUI from 'expo-system-ui';
 import i18n, { changeLanguage } from 'i18next';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Appearance, View } from 'react-native';
-import { LoadingIndicator } from '@/components/ui/LoadingIndicator';
-import { useViewStyles } from '@/hooks/theme/use-styles';
+import { ActivityIndicator, Appearance, View } from 'react-native';
 import { useAuth } from '@/hooks/use-auth';
 import { initI18n } from '@/i18n';
 import { AppSettings, initialSettings } from '@/types/app-settings';
@@ -141,7 +139,6 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
 export function AppProvider({ children }: { children: ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [loadedSettings, setLoadedSettings] = useState<AppSettings>(initialSettings);
-  const containerStyles = useViewStyles();
 
   // Initialize everything at once
   useEffect(() => {
@@ -169,8 +166,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   if (!isInitialized) {
     return (
-      <View style={containerStyles.centered}>
-        <LoadingIndicator size="large" variant="primary" />
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <ActivityIndicator size="large" />
       </View>
     );
   }

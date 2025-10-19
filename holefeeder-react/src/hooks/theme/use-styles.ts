@@ -3,7 +3,7 @@ import { ViewStyle, TextStyle, ImageStyle, Platform } from 'react-native';
 import { GlobalStyles } from '@/constants/global-styles';
 import { useTheme } from '@/hooks/theme/use-theme';
 import { Theme } from '@/types/theme/theme';
-import { getContainerStyle, combineStyles, getColor, getComponentStyle } from '@/utils/style-utils';
+import { getContainerStyle, combineStyles, getColor, getComponentStyle, getButtonStyle } from '@/utils/style-utils';
 
 type StyleFunction<T> = (theme: Theme, globalStyles: typeof GlobalStyles) => T;
 
@@ -20,6 +20,15 @@ export const useViewStyles = () => {
 
   return useMemo(
     () => ({
+      primaryButton: combineStyles(getButtonStyle(theme, 'primary'), {
+        backgroundColor: getColor(theme, 'primary'),
+      }),
+      destructiveButton: combineStyles(getButtonStyle(theme, 'destructive'), {
+        backgroundColor: getColor(theme, 'destructive'),
+      }),
+      secondaryButton: combineStyles(getButtonStyle(theme, 'secondary'), {
+        backgroundColor: getColor(theme, 'secondary'),
+      }),
       primary: combineStyles(getContainerStyle(theme, 'page'), {
         backgroundColor: getColor(theme, 'background'),
       }),

@@ -1,14 +1,14 @@
 import { Section, LabeledContent } from '@expo/ui/swift-ui';
 import React, { useState } from 'react';
-import { AccountPicker } from '@/components/AccountPicker';
-import { CategoryPicker } from '@/components/CategoryPicker';
-import { DatePicker } from '@/components/date-picker';
-import { AmountTextField } from '@/components/ui/amount-text-field';
 import { Account } from '@/core/account';
 import { Category } from '@/core/category';
 import { useAccounts } from '@/hooks/queries/use-accounts';
 import { useCategories } from '@/hooks/queries/use-categories';
 import { useLanguage } from '@/hooks/use-language';
+import { AccountPicker } from '@/use-cases/purchase/ui/components/AccountPicker';
+import { AmountTextField } from '@/use-cases/purchase/ui/components/AmountTextField';
+import { CategoryPicker } from '@/use-cases/purchase/ui/components/CategoryPicker';
+import { DatePicker } from '@/use-cases/purchase/ui/components/DatePicker';
 
 export function BasicSection() {
   const { t } = useLanguage();

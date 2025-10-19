@@ -1,8 +1,8 @@
 import { Form, Host } from '@expo/ui/swift-ui';
 import { router } from 'expo-router';
 import React from 'react';
-import { BasicSection } from '@/components/screens/purchase/basic-section';
 import { useStyles, useViewStyles } from '@/hooks/theme/use-styles';
+import { BasicSection } from '@/use-cases/purchase/ui/basic-section';
 
 export default function PurchaseScreen() {
   const containerStyles = useViewStyles();
@@ -38,7 +38,7 @@ export default function PurchaseScreen() {
         router.push('/');
       }
     } catch (error) {
-      console.error('Purchase save failed:', error);
+      console.error('purchase save failed:', error);
     }
   };
 

@@ -5,7 +5,7 @@ import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { useAccounts } from '@/hooks/queries/use-accounts';
 import { useAuth } from '@/hooks/use-auth';
 import { apiService } from '@/services/api-service';
-import { renderQueryHook } from './mocks/mock-query-client';
+import { renderQueryHook } from './__tests__/mock-query-client';
 
 jest.mock('@/services/api-service');
 jest.mock('@/hooks/use-auth');

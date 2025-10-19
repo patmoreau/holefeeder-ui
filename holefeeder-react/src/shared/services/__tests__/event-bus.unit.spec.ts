@@ -1,4 +1,4 @@
-import { eventBus } from '@/services/event-bus';
+import { eventBus } from '@/shared/services/event-bus';
 
 describe('eventBus', () => {
   test('should emit and listen to events', () => {

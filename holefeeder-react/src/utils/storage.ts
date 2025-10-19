@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { STORAGE_KEYS } from '@/constants/storage-keys';
 import { AppSettings, initialSettings } from '@/types/app-settings';
+
+export const STORAGE_KEYS = {
+  APP_SETTINGS: '@app_settings',
+} as const;
 
 const loadSettings = async (): Promise<AppSettings> => {
   try {

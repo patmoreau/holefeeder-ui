@@ -8,7 +8,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { DisplaySection } from '@/features/settings/ui/display-section';
 import { ProfileSection } from '@/features/settings/ui/profile-section';
 import { TestSection } from '@/features/settings/ui/test-section';
-import { useLanguage } from '@/hooks/use-language';
+import { useLanguage } from '@/shared/hooks/use-language';
 
 function ScreenContent() {
   const { t } = useLanguage();

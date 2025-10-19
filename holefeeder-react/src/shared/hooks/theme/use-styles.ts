@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { ViewStyle, TextStyle, ImageStyle, Platform } from 'react-native';
-import { GlobalStyles } from '@/constants/global-styles';
-import { useTheme } from '@/hooks/theme/use-theme';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { GlobalStyles } from '@/types/theme/global-styles';
 import { Theme } from '@/types/theme/theme';
 import { getContainerStyle, combineStyles, getColor, getComponentStyle, getButtonStyle } from '@/utils/style-utils';
 
@@ -40,6 +40,9 @@ export const useViewStyles = () => {
         maxWidth: 300,
         ...{ flexDirection: 'column' },
       }),
+      tag: combineStyles(getContainerStyle(theme, 'tag'), {
+        backgroundColor: getColor(theme, 'tint'),
+      }),
     }),
     [theme]
   );
@@ -77,6 +80,9 @@ export const useTextStyles = () => {
           },
           default: {},
         }),
+      }),
+      tag: combineStyles(theme.typography.body, {
+        color: getColor(theme, 'tint'),
       }),
     }),
     [theme]

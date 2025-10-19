@@ -1,6 +1,6 @@
 import { Category } from '@/core/category';
-import { apiService } from '@/services/api-service';
-import { createListQueryHook, createOneQueryHook } from './use-query';
+import { createListQueryHook, createOneQueryHook } from '@/shared/hooks/queries/use-query';
+import { apiService } from '@/shared/services/api-service';
 
 const categoryQueries = createListQueryHook<Category>('categories', (token) =>
   apiService(token)

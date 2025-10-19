@@ -5,8 +5,8 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { useAppContext } from '@/contexts/AppContext';
 import { AuthButton } from '@/features/shared/ui/components/AuthButton';
-import { useAuth } from '@/hooks/use-auth';
-import { useLanguage } from '@/hooks/use-language';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useLanguage } from '@/shared/hooks/use-language';
 
 export function ProfileSection() {
   const { profile } = useAppContext();

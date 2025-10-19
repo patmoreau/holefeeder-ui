@@ -1,9 +1,9 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { View } from 'react-native';
-import { useTextStyles } from '@/hooks/theme/use-styles';
-import { useTheme } from '@/hooks/theme/use-theme';
-import { useLanguage } from '@/hooks/use-language';
+import { useTextStyles } from '@/shared/hooks/theme/use-styles';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useLanguage } from '@/shared/hooks/use-language';
 import { ThemeMode } from '@/types/theme/theme';
 
 export function ThemeSwitcher() {

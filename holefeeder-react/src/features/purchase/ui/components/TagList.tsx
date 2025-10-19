@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Tag } from './tag';
+import { Tag } from './Tag';
 
 export type TagListProps = {
   tags: string[];
 };
 
-export const TagList: React.FC<TagListProps> = ({ tags }) => {
+export function TagList({ tags }: TagListProps) {
   return (
     <View
       style={{
@@ -20,4 +20,4 @@ export const TagList: React.FC<TagListProps> = ({ tags }) => {
       ))}
     </View>
   );
-};
+}

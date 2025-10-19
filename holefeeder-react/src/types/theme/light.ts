@@ -17,6 +17,8 @@ const iosTypography = {
   },
 } as const;
 
+const tintColorLight = '#0a7ea4';
+
 export const lightTheme: Theme = {
   colors: {
     primary: '#007AFF',
@@ -26,6 +28,11 @@ export const lightTheme: Theme = {
     text: '#000000',
     secondaryText: '#3C3C43', // 60% opacity
     destructive: '#FF3B30',
+    tint: tintColorLight,
+    icon: '#687076',
+    tabIconDefault: '#687076',
+    tabIconSelected: tintColorLight,
+
     separator: '#3C3C4349', // 22% opacity
     opaqueSeparator: '#C6C6C8',
     link: '#007AFF',
@@ -102,6 +109,13 @@ export const lightTheme: Theme = {
         marginBottom: 24,
         padding: 16,
         borderRadius: 12,
+      },
+      tag: {
+        borderRadius: 20,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        marginRight: 8,
+        marginBottom: 8,
       },
     },
   },

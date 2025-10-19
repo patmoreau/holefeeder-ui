@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { aCategory } from '@/__tests__';
 import { anAccount } from '@/__tests__/mocks/account-builder';
 import { config } from '@/config/config';
-import { apiService } from '@/services/api-service';
+import { apiService } from '@/shared/services/api-service';
 
 // Mock the config
 jest.mock('@/config/config', () => ({

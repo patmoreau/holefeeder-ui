@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, PressableProps } from 'react-native';
-import { useViewStyles } from '@/hooks/theme/use-styles';
+import { useViewStyles } from '@/shared/hooks/theme/use-styles';
 
 interface ButtonProps extends Omit<PressableProps, 'onPress'> {
   variant?: 'primary' | 'secondary' | 'destructive';

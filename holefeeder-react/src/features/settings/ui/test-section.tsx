@@ -2,9 +2,9 @@ import { Section, LabeledContent, Button } from '@expo/ui/swift-ui';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Category } from '@/core/category';
+import { useCategories } from '@/features/purchase/core/use-categories';
 import { CategoryPicker } from '@/features/purchase/ui/components/CategoryPicker';
-import { useCategories } from '@/hooks/queries/use-categories';
-import { useLanguage } from '@/hooks/use-language';
+import { useLanguage } from '@/shared/hooks/use-language';
 
 export function TestSection() {
   const { t } = useLanguage();

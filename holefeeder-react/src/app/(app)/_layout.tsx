@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { PurchaseButton } from '@/components/ui/purchase-button';
-import { useColorScheme } from '@/hooks/theme/use-color-scheme';
-import { useLanguage } from '@/hooks/use-language';
+import { useColorScheme } from '@/shared/hooks/theme/use-color-scheme';
+import { useLanguage } from '@/shared/hooks/use-language';
 
 export default function AppLayout() {
   const { t } = useLanguage();

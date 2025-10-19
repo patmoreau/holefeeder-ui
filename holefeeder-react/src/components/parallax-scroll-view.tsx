@@ -3,8 +3,8 @@ import type { ReactElement } from 'react';
 import { StyleSheet, Text, View, type ViewProps } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
 import { ThemedView } from '@/components/themed-view';
-import { useColorScheme } from '@/hooks/theme/use-color-scheme';
-import { useThemeColor } from '@/hooks/theme/use-theme-color';
+import { useColorScheme } from '@/shared/hooks/theme/use-color-scheme';
+import { useThemeColor } from '@/shared/hooks/theme/use-theme-color';
 
 const HEADER_HEIGHT = 250;
 

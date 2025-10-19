@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleProp, TextInput, TextStyle } from 'react-native';
-import { useStyles, useTextStyles } from '@/hooks/theme/use-styles';
+import { useStyles, useTextStyles } from '@/shared/hooks/theme/use-styles';
 import { amountInputConverter } from '@/utils/amount-input-converter';
 
 type Props = {

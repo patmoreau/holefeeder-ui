@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-native';
 import { aDarkThemeState, aLightThemeState } from '@/__tests__';
-import { useTheme } from '@/hooks/theme/use-theme';
-import { useThemeColor } from '@/hooks/theme/use-theme-color';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useThemeColor } from '@/shared/hooks/theme/use-theme-color';
 import { darkTheme } from '@/types/theme/dark';
 import { lightTheme } from '@/types/theme/light';
 
-jest.mock('@/hooks/theme/use-theme');
+jest.mock('@/shared/hooks/theme/use-theme');
 const mockUseTheme = jest.mocked(useTheme);
 
 describe('useThemeColor', () => {

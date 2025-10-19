@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/shared/hooks/use-auth';
 
 export const createMutationHook = <T>(
   resourceName: string,

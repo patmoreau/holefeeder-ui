@@ -1,8 +1,8 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { View } from 'react-native';
-import { useTextStyles } from '@/hooks/theme/use-styles';
-import { useLanguage } from '@/hooks/use-language';
+import { useTextStyles } from '@/shared/hooks/theme/use-styles';
+import { useLanguage } from '@/shared/hooks/use-language';
 
 export function LanguageSwitcher() {
   const { setUserLanguage, availableLanguages, currentLanguage } = useLanguage();

@@ -1,8 +1,8 @@
 import { Text, type TextProps } from 'react-native';
-import { useTextStyles } from '@/hooks/theme/use-styles';
+import { useTextStyles } from '@/shared/hooks/theme/use-styles';
 
 export type ThemedTextProps = TextProps & {
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'footnote';
 };
 
 export function ThemedText({ style, type = 'default', ...props }: ThemedTextProps) {

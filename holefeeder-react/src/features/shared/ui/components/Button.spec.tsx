@@ -1,9 +1,9 @@
 import { render, fireEvent } from '@testing-library/react-native';
 import { aLightThemeState } from '@/__tests__';
 import { Button } from '@/features/shared/ui/components/Button';
-import { useTheme } from '@/hooks/theme/use-theme';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
 
-jest.mock('@/hooks/theme/use-theme');
+jest.mock('@/shared/hooks/theme/use-theme');
 const mockUseTheme = jest.mocked(useTheme);
 
 const testId = 'button';

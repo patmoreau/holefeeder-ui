@@ -7,9 +7,9 @@ import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
 import { QueryProvider } from '@/contexts/query-provider';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
-import { useViewStyles } from '@/hooks/theme/use-styles';
-import { useAuth } from '@/hooks/use-auth';
-import { useQuickActions } from '@/hooks/use-quick-actions';
+import { useViewStyles } from '@/shared/hooks/theme/use-styles';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useQuickActions } from '@/shared/hooks/use-quick-actions';
 
 function AppContent() {
   const { user, isLoading } = useAuth();

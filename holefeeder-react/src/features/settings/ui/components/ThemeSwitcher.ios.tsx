@@ -1,7 +1,7 @@
 import { Picker } from '@expo/ui/swift-ui';
 import React, { useEffect, useState } from 'react';
-import { useTheme } from '@/hooks/theme/use-theme';
-import { useLanguage } from '@/hooks/use-language';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useLanguage } from '@/shared/hooks/use-language';
 import { ThemeMode } from '@/types/theme/theme';
 
 export function ThemeSwitcher() {

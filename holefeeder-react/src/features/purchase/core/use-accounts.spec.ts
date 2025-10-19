@@ -2,13 +2,13 @@ import { waitFor } from '@testing-library/react-native';
 import { aTokenInfo } from '@/__tests__';
 import { anAccount } from '@/__tests__/mocks/account-builder';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
-import { useAccounts } from '@/hooks/queries/use-accounts';
-import { useAuth } from '@/hooks/use-auth';
-import { apiService } from '@/services/api-service';
-import { renderQueryHook } from './__tests__/mock-query-client';
+import { useAccounts } from '@/features/purchase/core/use-accounts';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { apiService } from '@/shared/services/api-service';
+import { renderQueryHook } from '../../../__tests__/mocks/mock-query-client';
 
-jest.mock('@/services/api-service');
-jest.mock('@/hooks/use-auth');
+jest.mock('@/shared/services/api-service');
+jest.mock('@/shared/hooks/use-auth');
 
 const mockApiService = jest.mocked(apiService);
 const mockUseAuth = jest.mocked(useAuth);

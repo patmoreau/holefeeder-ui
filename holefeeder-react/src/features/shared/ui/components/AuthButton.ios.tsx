@@ -2,9 +2,9 @@ import { Host, Button } from '@expo/ui/swift-ui';
 import React from 'react';
 import { View } from 'react-native';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
-import { useViewStyles } from '@/hooks/theme/use-styles';
-import { useAuth } from '@/hooks/use-auth';
-import { useLanguage } from '@/hooks/use-language';
+import { useViewStyles } from '@/shared/hooks/theme/use-styles';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useLanguage } from '@/shared/hooks/use-language';
 
 export const AuthButton: React.FC = () => {
   const { user, isLoading, login, logout } = useAuth();

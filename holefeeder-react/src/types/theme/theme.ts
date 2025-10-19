@@ -14,6 +14,11 @@ export interface Theme {
     secondaryText: string;
     destructive: string;
 
+    tint: string;
+    icon: string;
+    tabIconDefault: string;
+    tabIconSelected: string;
+
     // separators
     separator: string;
     opaqueSeparator: string;
@@ -40,6 +45,7 @@ export interface Theme {
       page: ViewStyle;
       center: ViewStyle;
       section: ViewStyle;
+      tag: ViewStyle;
     };
   };
 }

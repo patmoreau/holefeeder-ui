@@ -3,7 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Category } from '@/core/category';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
-import { useTextStyles } from '@/hooks/theme/use-styles';
+import { useTextStyles } from '@/shared/hooks/theme/use-styles';
 
 type Props = {
   categories: Category[] | null;

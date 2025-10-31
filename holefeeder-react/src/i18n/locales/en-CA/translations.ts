@@ -87,8 +87,9 @@ const en = {
       date: 'Date',
       amount: 'Amount',
     },
-    'details-section': {
+    detailsSection: {
       title: 'Additional details',
+      description: 'Note',
     },
   },
   'quick-actions': {

@@ -1,19 +1,25 @@
-import { Section } from '@expo/ui/swift-ui';
-import { fixedSize, frame } from '@expo/ui/swift-ui/modifiers';
+import { Section, TextField } from '@expo/ui/swift-ui';
 import React from 'react';
+import { View } from 'react-native';
+import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { TagList } from '@/features/purchase/ui/components/TagList';
 import { useLanguage } from '@/shared/hooks/use-language';
 
-export const AdditionalDetailsSection = () => {
+export const AdditionalDetailsSection = ({ tags }: { tags: Tag[] }) => {
   const { t } = useLanguage();
-  const { updateFormField } = usePurchaseForm();
+  const { formData, updateFormField } = usePurchaseForm();
 
-  const updateTags = (next: string[]) => updateFormField('tags', next);
+  const selectedTags = formData?.tags ?? [];
+  const updateTags = (next: Tag[]) => updateFormField('tags', next);
+  const updateDescription = (value: string) => updateFormField('description', value);
 
   return (
-    <Section modifiers={[frame({ minHeight: 100 }), fixedSize({ horizontal: true })]} title={t('purchase.details-section.title')}>
-      <TagList tags={['coffee', 'restaurant']} selected={['restaurant']} onChange={updateTags} />
+    <Section title={t('purchase.detailsSection.title')}>
+      <View style={{ height: 500, flex: 1 }}>
+        <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
+      </View>
+      <TextField placeholder={t('purchase.detailsSection.description')} defaultValue={formData.description} onChangeText={updateDescription} />
     </Section>
   );
 };

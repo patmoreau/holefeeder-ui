@@ -1,41 +1,31 @@
-import { useState, useMemo } from 'react';
 import { View, TextInput, ScrollView, StyleSheet } from 'react-native';
-import { Tag } from './Tag';
+import { Tag } from '@/features/purchase/core/tag';
+import { useTagList } from '@/features/purchase/core/use-tag-list';
+import { TagItem } from './TagItem';
 
 export type TagListProps = {
-  tags: string[];
-  selected: string[];
-  onChange: (next: string[]) => void;
+  tags: Tag[];
+  selected: Tag[];
+  onChange: (next: Tag[]) => void;
   placeholder?: string;
   showIcon?: boolean;
-  disabled?: boolean;
 };
 
-export function TagList({ tags, selected, onChange, placeholder = 'Filter tags…', showIcon = true, disabled = false }: TagListProps) {
-  const [query, setQuery] = useState('');
+export function TagList({ tags, selected, onChange, placeholder = 'Filter tags…', showIcon = true }: TagListProps) {
+  const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return tags;
-    return tags.filter((t) => t.toLowerCase().includes(q));
-  }, [tags, query]);
-
-  const toggleTag = React.useCallback(
-    (t: string) => {
-      if (disabled) return;
-      const exists = selected.includes(t);
-      const next = exists ? selected.filter((s) => s !== t) : [...selected, t];
-      onChange(next);
-    },
-    [selected, onChange, disabled]
-  );
-  console.debug(tags, selected, filtered);
   return (
     <View style={styles.container}>
-      <TextInput value={query} onChangeText={setQuery} placeholder={placeholder} editable={!disabled} style={styles.input} />
+      <TextInput value={filter} onChangeText={setFilter} onSubmitEditing={onSubmit} placeholder={placeholder} style={styles.input} />
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
         {filtered.map((tag) => (
-          <Tag key={tag} label={tag} selected={selected.includes(tag)} onPress={() => toggleTag(tag)} showIcon={showIcon} disabled={disabled} />
+          <TagItem
+            key={tag.id}
+            label={tag.tag}
+            selected={selected.some((t) => t.id === tag.id)}
+            onPress={() => toggleTag(tag)}
+            showIcon={showIcon}
+          />
         ))}
       </ScrollView>
     </View>

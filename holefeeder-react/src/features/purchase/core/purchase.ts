@@ -1,5 +1,6 @@
 import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
+import { Tag } from '@/features/purchase/core/tag';
 
 export interface Purchase {
   date: string;
@@ -7,7 +8,7 @@ export interface Purchase {
   description: string;
   account: Account | undefined;
   category: Category | undefined;
-  tags: string[];
+  tags: Tag[];
   cashflow?: CashflowRequest;
 }
 

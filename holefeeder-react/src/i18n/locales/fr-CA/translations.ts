@@ -2,8 +2,7 @@ const fr = {
   alert: {
     discard: {
       title: 'Annuler les modifications ?',
-      message:
-        'Vous avez des modifications non enregistrées. Voulez-vous les annuler et revenir en arrière ?',
+      message: 'Vous avez des modifications non enregistrées. Voulez-vous les annuler et revenir en arrière ?',
       confirmText: 'Annuler',
       cancelText: 'Rester',
     },
@@ -39,13 +38,11 @@ const fr = {
   errors: {
     noInternetConnection: {
       title: 'Pas de connexion Internet',
-      message:
-        'Il semble que vous soyez hors ligne. Veuillez vérifier votre connexion Internet et réessayer.',
+      message: 'Il semble que vous soyez hors ligne. Veuillez vérifier votre connexion Internet et réessayer.',
     },
     cannotReachServer: {
       title: 'Impossible de joindre le serveur',
-      message:
-        'Nous ne pouvons pas joindre le backend pour le moment. Veuillez réessayer dans un instant.',
+      message: 'Nous ne pouvons pas joindre le backend pour le moment. Veuillez réessayer dans un instant.',
     },
   },
   errorSheet: {
@@ -58,8 +55,7 @@ const fr = {
     step1Description:
       'Modifiez app/(tabs)/index.tsx pour voir les changements. Appuyez sur {{shortcut}} pour ouvrir les outils de développement.',
     step2Title: 'Étape 2 : Explorez',
-    step2Description:
-      "Appuyez sur l'onglet Explorer pour en savoir plus sur ce qui est inclus dans cette application de démarrage.",
+    step2Description: "Appuyez sur l'onglet Explorer pour en savoir plus sur ce qui est inclus dans cette application de démarrage.",
     step3Title: 'Étape 3 : Nouveau départ',
     step3Description:
       "Quand vous êtes prêt, exécutez npm run reset-project pour obtenir un nouveau répertoire d'application. Cela déplacera l'application actuelle vers app-example.",
@@ -67,11 +63,9 @@ const fr = {
     authDescription:
       "Votre application inclut maintenant l'authentification Auth0 avec persistance des tokens. Connectez-vous pour accéder aux fonctionnalités protégées et effectuer des appels API authentifiés.",
     apiTitle: 'Appels API Authentifiés',
-    apiDescription:
-      'Une fois authentifié, vous pouvez effectuer des appels API sécurisés avec gestion automatique des tokens.',
+    apiDescription: 'Une fois authentifié, vous pouvez effectuer des appels API sécurisés avec gestion automatique des tokens.',
     setupTitle: 'Instructions de configuration',
-    setupDescription:
-      "Pour configurer Auth0, ajoutez ces variables d'environnement à votre fichier .env :",
+    setupDescription: "Pour configurer Auth0, ajoutez ces variables d'environnement à votre fichier .env :",
   },
   'not-found': {
     title: 'Oops !',
@@ -87,15 +81,16 @@ const fr = {
   },
   purchase: {
     title: 'Achat',
-    'basic-section': {
+    basicSection: {
       title: 'Section de base',
       account: 'Compte',
       category: 'Catégorie',
       date: 'Date',
       amount: 'Montant',
     },
-    'details-section': {
+    detailsSection: {
       title: 'Détails supplémentaires',
+      description: 'Note',
     },
   },
   'quick-actions': {

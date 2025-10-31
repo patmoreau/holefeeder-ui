@@ -40,9 +40,6 @@ export const useViewStyles = () => {
         maxWidth: 300,
         ...{ flexDirection: 'column' },
       }),
-      tag: combineStyles(getContainerStyle(theme, 'tag'), {
-        backgroundColor: getColor(theme, 'tint'),
-      }),
     }),
     [theme]
   );

@@ -9,10 +9,10 @@ import { CategoryPicker } from '@/features/purchase/ui/components/CategoryPicker
 import { DatePicker } from '@/features/purchase/ui/components/DatePicker';
 import { useLanguage } from '@/shared/hooks/use-language';
 
-type Props = {
+interface Props {
   accounts: Account[];
   categories: Category[];
-};
+}
 
 export function BasicSection({ accounts, categories }: Props) {
   const { t } = useLanguage();
@@ -22,17 +22,17 @@ export function BasicSection({ accounts, categories }: Props) {
 
   const updateCategory = (category: Category) => updateFormField('category', category);
   return (
-    <Section title={t('purchase.basic-section.title')}>
-      <LabeledContent label={t('purchase.basic-section.amount')}>
+    <Section title={t('purchase.basicSection.title')}>
+      <LabeledContent label={t('purchase.basicSection.amount')}>
         <AmountTextField initialAmount={formData.amount} onAmountChange={(amount) => updateFormField('amount', amount)} />
       </LabeledContent>
-      <LabeledContent label={t('purchase.basic-section.date')}>
+      <LabeledContent label={t('purchase.basicSection.date')}>
         <DatePicker selectedDate={formData.date} onDateSelected={(date) => updateFormField('date', date)} />
       </LabeledContent>
-      <LabeledContent label={t('purchase.basic-section.account')}>
+      <LabeledContent label={t('purchase.basicSection.account')}>
         <AccountPicker accounts={accounts} selectedAccount={formData.account || accounts?.[0] || null} onSelectAccount={updateAccount} />
       </LabeledContent>
-      <LabeledContent label={t('purchase.basic-section.category')}>
+      <LabeledContent label={t('purchase.basicSection.category')}>
         <CategoryPicker
           categories={categories}
           selectedCategory={formData.category || categories?.[0] || null}

@@ -30,6 +30,7 @@ export interface Theme {
     title: TextStyle;
     subtitle: TextStyle;
     body: TextStyle;
+    chip: TextStyle;
   };
   styles: {
     buttons: {
@@ -40,12 +41,12 @@ export interface Theme {
     components: {
       picker: TextStyle;
       pickerItem: TextStyle;
+      chip: ViewStyle;
     };
     containers: {
       page: ViewStyle;
       center: ViewStyle;
       section: ViewStyle;
-      tag: ViewStyle;
     };
   };
 }

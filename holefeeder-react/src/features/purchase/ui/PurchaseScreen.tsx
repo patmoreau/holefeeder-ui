@@ -2,6 +2,7 @@ import React from 'react';
 import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { useCategories } from '@/features/purchase/core/use-categories';
 import { PurchaseFormProvider } from '@/features/purchase/core/use-purchase-form';
+import { useTags } from '@/features/purchase/core/use-tags';
 import { PurchaseForm } from '@/features/purchase/ui/PurchaseForm';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
@@ -11,8 +12,9 @@ import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-er
 export default function PurchaseScreen() {
   const accountsQuery = useAccounts();
   const categoriesQuery = useCategories();
+  const tagsQuery = useTags();
 
-  const { isLoading, data, errorSheetProps } = useDataFetchingErrorHandler(accountsQuery, categoriesQuery);
+  const { isLoading, data, errorSheetProps } = useDataFetchingErrorHandler(accountsQuery, categoriesQuery, tagsQuery);
 
   if (isLoading || !data) {
     return (
@@ -23,7 +25,7 @@ export default function PurchaseScreen() {
     );
   }
 
-  const [accounts, categories] = data;
+  const [accounts, categories, tags] = data;
 
   const initialData = {
     date: withDate(new Date()).toDateOnly(),
@@ -37,7 +39,7 @@ export default function PurchaseScreen() {
   return (
     <>
       <PurchaseFormProvider initialValue={initialData}>
-        <PurchaseForm accounts={accounts!} categories={categories!} />
+        <PurchaseForm accounts={accounts!} categories={categories!} tags={tags!} />
       </PurchaseFormProvider>
       <ErrorSheet {...errorSheetProps} />
     </>

@@ -22,8 +22,6 @@ export function useQuickActions() {
         id: '1',
         params: { href: '/help' },
       },
-    ]).then(() => {
-      console.debug('Quick actions set');
-    });
+    ]).then();
   }, [t]);
 }

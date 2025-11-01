@@ -4,7 +4,7 @@ import { LanguageState } from '@/types/app-state';
 
 export function useLanguage(): LanguageState {
   const context = useAppContext();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return {
     currentLanguage: context.currentLanguage,

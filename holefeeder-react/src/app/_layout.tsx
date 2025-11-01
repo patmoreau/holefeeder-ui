@@ -12,9 +12,8 @@ import { useQuickActions } from '@/shared/hooks/use-quick-actions';
 
 function AppContent() {
   const { user, isLoading } = useAuth();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const action = useQuickAction();
-
-  console.log('action', action);
 
   useQuickActionRouting();
   useQuickActions();

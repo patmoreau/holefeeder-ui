@@ -91,3 +91,30 @@ jobs:
       - name: Run ESLint
         run: pnpm lint
         working-directory: ./holefeeder-react
+
+  react-native-test:
+    needs: changes
+    if: ${{ needs.changes.outputs.react == 'true' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.x
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: "./holefeeder-react/pnpm-lock.yaml"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: ./holefeeder-react
+
+      - name: Run tests
+        run: pnpm test
+        working-directory: ./holefeeder-react

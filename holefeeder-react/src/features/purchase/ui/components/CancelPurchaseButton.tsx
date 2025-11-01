@@ -8,7 +8,7 @@ type CancelPurchaseButtonProps = {
 
 export function CancelPurchaseButton({ onCancel }: CancelPurchaseButtonProps) {
   return (
-    <Button onClick={onCancel}>
+    <Button onPress={onCancel}>
       <IconSymbol name={'chevron.backward'} color={'primary'} />
     </Button>
   );

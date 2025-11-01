@@ -26,5 +26,5 @@ export const PurchaseForm = ({ accounts, categories, tags }: PurchaseFormProps) 
     },
   });
 
-  return <PurchaseFormContent accounts={accounts} categories={categories} tags={tags} value={formData} onChange={setFormData} />;
+  return <PurchaseFormContent accounts={accounts} categories={categories} tags={tags} />;
 };

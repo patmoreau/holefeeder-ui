@@ -9,4 +9,3 @@ export const toTag = (response: TagResponse): Tag => ({
   ...response,
   id: response.tag,
 });
-export class TagWithIdFn {}

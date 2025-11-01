@@ -1,5 +1,5 @@
 import { aBoolean, aPastDate, aRecentDate, anAccountType, aCount, anAmount, anId, aString } from '@/__tests__';
-import { Account } from '@/core/account';
+import { Account } from '@/features/purchase/core/account';
 
 const defaultData = (): Account => ({
   id: anId(),

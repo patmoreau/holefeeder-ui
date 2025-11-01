@@ -1,7 +1,5 @@
 import axios, { type AxiosResponse } from 'axios';
 import { config } from '@/config/config';
-import { Account } from '@/core/account';
-import { Category } from '@/core/category';
 
 export const apiService = (token: string | null) => {
   const api = axios.create({
@@ -48,20 +46,25 @@ export const apiService = (token: string | null) => {
     );
   }
 
-  const getWithAuth = <T>(url: string): Promise<AxiosResponse<T>> =>
-    api.get(url, {
+  const getWithAuth = <T>(url: string): Promise<AxiosResponse<T>> => {
+    if (config.api.simulateNetworkDelay > 0) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(
+            api.get(url, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+          );
+        }, config.api.simulateNetworkDelay);
+      });
+    }
+
+    return api.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
-
-  const getAccounts = () => getWithAuth<Account[]>('/api/v2/accounts');
-
-  const getCategories = () => getWithAuth<Category[]>('/api/v2/categories');
-
-  const getCategory = (id: string) => getWithAuth<Category>(`/api/v2/categories/${id}`);
+  };
 
   return {
-    getAccounts,
-    getCategories,
-    getCategory,
+    getWithAuth,
   };
 };

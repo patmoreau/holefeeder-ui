@@ -1,50 +1,65 @@
-import { render } from '@testing-library/react-native';
+/* eslint-disable import/first */
+jest.mock('@/shared/hooks/theme/use-theme', () => ({
+  useTheme: jest.fn(),
+}));
+jest.mock('@/shared/hooks/use-language', () => ({
+  useLanguage: jest.fn(),
+}));
+
+import { render, screen } from '@testing-library/react-native';
 import { aLightThemeState } from '@/__tests__';
+import { aLanguageState } from '@/__tests__/mocks/language-state-builder';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useLanguage } from '@/shared/hooks/use-language';
 
-jest.mock('@/shared/hooks/theme/use-theme');
 const mockUseTheme = jest.mocked(useTheme);
+const mockUseLanguage = jest.mocked(useLanguage);
 
-const testId = 'loading-indicator';
-
-describe('LoadingIndicator', () => {
+describe('<LoadingIndicator />', () => {
   const mockTheme = aLightThemeState();
   beforeEach(() => {
     mockUseTheme.mockReturnValue(mockTheme);
+    mockUseLanguage.mockReturnValue(aLanguageState());
   });
 
-  it('should render', () => {
-    const result = render(<LoadingIndicator />);
+  it('should render with default props', () => {
+    render(<LoadingIndicator />);
+    const activityIndicator = screen.queryByLabelText('common.loading');
 
-    expect(result).toBeTruthy();
+    expect(activityIndicator.props.size).toBe('large');
+    expect(activityIndicator.props.color).toBe(mockTheme.theme.colors.primary);
   });
 
   describe('with variant', () => {
     it('should render with primary color', () => {
-      const result = render(<LoadingIndicator testID={testId} variant="primary" />);
-      const indicator = result.getByTestId(testId);
-      expect(indicator.props.color).toBe(mockTheme.theme.colors.primary);
+      render(<LoadingIndicator variant="primary" />);
+      const activityIndicator = screen.queryByLabelText('common.loading');
+
+      expect(activityIndicator.props.color).toBe(mockTheme.theme.colors.primary);
     });
 
     it('should render with secondary color', () => {
-      const result = render(<LoadingIndicator testID={testId} variant="secondary" />);
-      const indicator = result.getByTestId(testId);
-      expect(indicator.props.color).toBe(mockTheme.theme.colors.secondary);
+      render(<LoadingIndicator variant="secondary" />);
+      const activityIndicator = screen.queryByLabelText('common.loading');
+
+      expect(activityIndicator.props.color).toBe(mockTheme.theme.colors.secondary);
     });
   });
 
   describe('with size', () => {
     it('should render small', () => {
-      const result = render(<LoadingIndicator testID={testId} size="small" />);
-      const indicator = result.getByTestId(testId);
-      expect(indicator.props.size).toBe('small');
+      render(<LoadingIndicator size="small" />);
+      const activityIndicator = screen.queryByLabelText('common.loading');
+
+      expect(activityIndicator.props.size).toBe('small');
     });
 
     it('should render large', () => {
-      const result = render(<LoadingIndicator testID={testId} size="large" />);
-      const indicator = result.getByTestId(testId);
-      expect(indicator.props.size).toBe('large');
+      render(<LoadingIndicator size="large" />);
+      const activityIndicator = screen.queryByLabelText('common.loading');
+
+      expect(activityIndicator.props.size).toBe('large');
     });
   });
 });

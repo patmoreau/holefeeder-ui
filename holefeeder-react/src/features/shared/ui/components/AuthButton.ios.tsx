@@ -1,22 +1,16 @@
 import { Host, Button } from '@expo/ui/swift-ui';
-import React from 'react';
-import { View } from 'react-native';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useViewStyles } from '@/shared/hooks/theme/use-styles';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useLanguage } from '@/shared/hooks/use-language';
 
-export const AuthButton: React.FC = () => {
+export const AuthButton = () => {
   const { user, isLoading, login, logout } = useAuth();
   const { t } = useLanguage();
   const viewStyles = useViewStyles();
 
   if (isLoading) {
-    return (
-      <View style={viewStyles.centered}>
-        <LoadingIndicator size="large" />
-      </View>
-    );
+    return <LoadingIndicator size="large" />;
   }
 
   if (user) {

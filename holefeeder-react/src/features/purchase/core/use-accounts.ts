@@ -1,10 +1,10 @@
-import { Account } from '@/core/account';
+import { Account } from '@/features/purchase/core/account';
 import { createListQueryHook } from '@/shared/hooks/queries/use-query';
-import { apiService } from '@/shared/services/api-service';
+import { accountApi } from '../api/account-api';
 
 const accountQueries = createListQueryHook<Account>('accounts', (token) =>
-  apiService(token)
-    .getAccounts()
+  accountApi(token)
+    .getAll()
     .then((r) => r.data)
 );
 

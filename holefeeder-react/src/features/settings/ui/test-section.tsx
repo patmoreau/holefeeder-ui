@@ -1,7 +1,7 @@
 import { Section, LabeledContent, Button } from '@expo/ui/swift-ui';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Category } from '@/core/category';
+import { Category } from '@/features/purchase/core/category';
 import { useCategories } from '@/features/purchase/core/use-categories';
 import { CategoryPicker } from '@/features/purchase/ui/components/CategoryPicker';
 import { useLanguage } from '@/shared/hooks/use-language';

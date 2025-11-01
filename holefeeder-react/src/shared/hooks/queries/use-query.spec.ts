@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react-native';
 import { anEmptyTokenInfo, aTokenInfo } from '@/__tests__';
-import { renderQueryHook } from '@/__tests__/mocks/mock-query-client';
+import { mockQueryClient, renderQueryHook } from '@/__tests__/mocks/mock-query-client';
 import { createListQueryHook, createOneQueryHook } from '@/shared/hooks/queries/use-query';
 import { useAuth } from '@/shared/hooks/use-auth';
 
@@ -18,8 +18,10 @@ describe('Query Hook Creators', () => {
     } as any);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     jest.clearAllMocks();
+    mockQueryClient.clear();
+    await Promise.resolve();
   });
 
   describe('createListQueryHook', () => {

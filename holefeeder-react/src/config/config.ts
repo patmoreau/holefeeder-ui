@@ -23,5 +23,6 @@ export const config = {
     baseUrl: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3000',
     timeout: Number(process.env.EXPO_PUBLIC_API_TIMEOUT) || 10000,
     logRequest: process.env.EXPO_PUBLIC_API_LOG_REQUEST === 'true',
+    simulateNetworkDelay: Number(process.env.EXPO_PUBLIC_SIMULATE_NETWORK_DELAY) || 0,
   },
 };

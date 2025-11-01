@@ -1,1 +1,1 @@
-export { default } from '@/features/purchase/ui/purchase';
+export { default } from '@/features/purchase/ui/PurchaseScreen';

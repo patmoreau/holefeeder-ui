@@ -15,6 +15,11 @@ const iosTypography = {
     fontWeight: 'normal',
     lineHeight: 24,
   },
+  chip: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    lineHeight: 16,
+  },
 } as const;
 
 const tintColorLight = '#0a7ea4';
@@ -94,6 +99,7 @@ export const lightTheme: Theme = {
         }),
       },
       pickerItem: {},
+      chip: {},
     },
     containers: {
       page: {
@@ -109,13 +115,6 @@ export const lightTheme: Theme = {
         marginBottom: 24,
         padding: 16,
         borderRadius: 12,
-      },
-      tag: {
-        borderRadius: 20,
-        paddingVertical: 6,
-        paddingHorizontal: 12,
-        marginRight: 8,
-        marginBottom: 8,
       },
     },
   },

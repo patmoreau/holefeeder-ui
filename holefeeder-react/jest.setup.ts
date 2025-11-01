@@ -50,5 +50,19 @@ jest.mock('expo/src/winter/ImportMetaRegistry', () => ({
   },
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: {
+      changeLanguage: jest.fn(),
+      language: 'en',
+    },
+  }),
+  initReactI18next: {
+    type: '3rdParty',
+    init: jest.fn(),
+  },
+}));
+
 // Mock structuredClone global function
 global.structuredClone = jest.fn((obj) => JSON.parse(JSON.stringify(obj)));

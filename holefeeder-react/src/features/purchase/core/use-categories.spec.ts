@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { aCategory, aTokenInfo } from '@/__tests__';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
-import { renderQueryHook } from '@/__tests__/mocks/mock-query-client';
+import { mockQueryClient, renderQueryHook } from '@/__tests__/mocks/mock-query-client';
 import { categoryApi } from '@/features/purchase/api/category-api';
 import { useCategories, useCategory } from '@/features/purchase/core/use-categories';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -32,6 +32,7 @@ describe('categoryQueries', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    mockQueryClient.clear();
   });
 
   describe('createListQueryHook', () => {

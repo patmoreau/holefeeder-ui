@@ -5,6 +5,10 @@ export const mockQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
+      gcTime: 0,
+    },
+    mutations: {
+      gcTime: 0,
     },
   },
 });

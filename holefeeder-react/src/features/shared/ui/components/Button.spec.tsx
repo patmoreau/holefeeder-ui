@@ -18,7 +18,6 @@ describe('<Button />', () => {
   it('should render', () => {
     render(<Button accessibilityLabel="text">text</Button>);
 
-    screen.debug();
     const button = screen.getByLabelText('text');
 
     expect(button).toBeOnTheScreen();

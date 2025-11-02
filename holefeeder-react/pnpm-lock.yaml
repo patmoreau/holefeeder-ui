@@ -28,13 +28,13 @@ importers:
         version: 2.11.1(react-native@0.81.5(@babel/core@7.28.5)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@tanstack/query-async-storage-persister':
         specifier: ^5.90.7
-        version: 5.90.7
+        version: 5.90.8
       '@tanstack/react-query':
         specifier: ^5.90.5
-        version: 5.90.5(react@19.1.0)
+        version: 5.90.6(react@19.1.0)
       '@tanstack/react-query-persist-client':
         specifier: ^5.90.7
-        version: 5.90.7(@tanstack/react-query@5.90.5(react@19.1.0))(react@19.1.0)
+        version: 5.90.8(@tanstack/react-query@5.90.6(react@19.1.0))(react@19.1.0)
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
@@ -1530,23 +1530,23 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  '@tanstack/query-async-storage-persister@5.90.7':
-    resolution: {integrity: sha512-WbQ20ebB2rZoZONgIz5y/oxunX4X/+3T81v2Le1FzyJX2l5CqenygqTTx3HF/+OVNbv/Kph/QCDkbES6SGkdKw==}
+  '@tanstack/query-async-storage-persister@5.90.8':
+    resolution: {integrity: sha512-8zFqc3eeYxB7esCZqXv5/fhtWuH9z3QPsRBDDQcw4MR92Sl40YTrIMnhoBHLX9FQTMHxxNb3jZKHNptNeobHKg==}
 
-  '@tanstack/query-core@5.90.5':
-    resolution: {integrity: sha512-wLamYp7FaDq6ZnNehypKI5fNvxHPfTYylE0m/ZpuuzJfJqhR5Pxg9gvGBHZx4n7J+V5Rg5mZxHHTlv25Zt5u+w==}
+  '@tanstack/query-core@5.90.6':
+    resolution: {integrity: sha512-AnZSLF26R8uX+tqb/ivdrwbVdGemdEDm1Q19qM6pry6eOZ6bEYiY7mWhzXT1YDIPTNEVcZ5kYP9nWjoxDLiIVw==}
 
-  '@tanstack/query-persist-client-core@5.91.4':
-    resolution: {integrity: sha512-HZ8kvAbhttLZKUO4ASHl49u7dQXzRVEogi7/6CCZ5BBItWh2hoEUqy9QHUS4ji7iZiuXe4jwTJNzq2VIuxlnsQ==}
+  '@tanstack/query-persist-client-core@5.91.5':
+    resolution: {integrity: sha512-wo+8ni3VBNqE2FIo8OiiaxbGNmRgyBalQnLFzupOId9gtOIsr++ADCi0dVnvdf1k+LWGfnijyWFxnXmkDKdf2A==}
 
-  '@tanstack/react-query-persist-client@5.90.7':
-    resolution: {integrity: sha512-TlEzewa4YN51ZhbLZ9HzIBTY/b1K7xFJGSm1cUCE+tNnzSUwiLWhoD6H7EvgWb/KJePYDIJ3hGWLwQPdP86fmA==}
+  '@tanstack/react-query-persist-client@5.90.8':
+    resolution: {integrity: sha512-IcdOPGmk5KoQQxbsZboyurA9n6CKqdnz7BS2TAuPgbCxhVdpXloQ99hJPOk4QEtV3QhdQyAVrntiGfr/ReYobg==}
     peerDependencies:
-      '@tanstack/react-query': ^5.90.5
+      '@tanstack/react-query': ^5.90.6
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.90.5':
-    resolution: {integrity: sha512-pN+8UWpxZkEJ/Rnnj2v2Sxpx1WFlaa9L6a4UO89p6tTQbeo+m0MS8oYDjbggrR8QcTyjKoYWKS3xJQGr3ExT8Q==}
+  '@tanstack/react-query@5.90.6':
+    resolution: {integrity: sha512-gB1sljYjcobZKxjPbKSa31FUTyr+ROaBdoH+wSSs9Dk+yDCmMs+TkTV3PybRRVLC7ax7q0erJ9LvRWnMktnRAw==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -7683,26 +7683,26 @@ snapshots:
       - supports-color
       - typescript
 
-  '@tanstack/query-async-storage-persister@5.90.7':
+  '@tanstack/query-async-storage-persister@5.90.8':
     dependencies:
-      '@tanstack/query-core': 5.90.5
-      '@tanstack/query-persist-client-core': 5.91.4
+      '@tanstack/query-core': 5.90.6
+      '@tanstack/query-persist-client-core': 5.91.5
 
-  '@tanstack/query-core@5.90.5': {}
+  '@tanstack/query-core@5.90.6': {}
 
-  '@tanstack/query-persist-client-core@5.91.4':
+  '@tanstack/query-persist-client-core@5.91.5':
     dependencies:
-      '@tanstack/query-core': 5.90.5
+      '@tanstack/query-core': 5.90.6
 
-  '@tanstack/react-query-persist-client@5.90.7(@tanstack/react-query@5.90.5(react@19.1.0))(react@19.1.0)':
+  '@tanstack/react-query-persist-client@5.90.8(@tanstack/react-query@5.90.6(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@tanstack/query-persist-client-core': 5.91.4
-      '@tanstack/react-query': 5.90.5(react@19.1.0)
+      '@tanstack/query-persist-client-core': 5.91.5
+      '@tanstack/react-query': 5.90.6(react@19.1.0)
       react: 19.1.0
 
-  '@tanstack/react-query@5.90.5(react@19.1.0)':
+  '@tanstack/react-query@5.90.6(react@19.1.0)':
     dependencies:
-      '@tanstack/query-core': 5.90.5
+      '@tanstack/query-core': 5.90.6
       react: 19.1.0
 
   '@testing-library/dom@10.4.1':

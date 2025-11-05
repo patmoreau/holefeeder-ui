@@ -4,9 +4,9 @@ import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { AccountPicker } from '@/features/purchase/ui/components/AccountPicker';
-import { AmountTextField } from '@/features/purchase/ui/components/AmountTextField';
 import { CategoryPicker } from '@/features/purchase/ui/components/CategoryPicker';
 import { DatePicker } from '@/features/purchase/ui/components/DatePicker';
+import { AmountTextField } from '@/features/purchase/ui/components/fields/AmountTextField';
 import { useLanguage } from '@/shared/hooks/use-language';
 
 interface Props {

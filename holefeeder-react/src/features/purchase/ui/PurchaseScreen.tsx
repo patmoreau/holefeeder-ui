@@ -1,13 +1,31 @@
 import React from 'react';
+import { Account } from '@/features/purchase/core/account';
+import { Category } from '@/features/purchase/core/category';
+import { Tag } from '@/features/purchase/core/tag';
 import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { useCategories } from '@/features/purchase/core/use-categories';
-import { PurchaseFormProvider } from '@/features/purchase/core/use-purchase-form';
+import { PurchaseFormProvider, usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
+import { usePurchaseFormHeader } from '@/features/purchase/core/use-purchase-form-header';
 import { useTags } from '@/features/purchase/core/use-tags';
-import { PurchaseForm } from '@/features/purchase/ui/PurchaseForm';
+import { PurchaseFormContent } from '@/features/purchase/ui/PurchaseFormContent';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { withDate } from '@/features/shared/utils/with-date';
 import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
+
+function PurchaseFormWithHeader({ accounts, categories, tags }: { accounts: Account[]; categories: Category[]; tags: Tag[] }) {
+  const { formData, isDirty } = usePurchaseForm();
+
+  usePurchaseFormHeader({
+    isDirty,
+    formData,
+    onSave: async () => {
+      console.log('Saving purchase:', formData);
+    },
+  });
+
+  return <PurchaseFormContent accounts={accounts} categories={categories} tags={tags} />;
+}
 
 export default function PurchaseScreen() {
   const accountsQuery = useAccounts();
@@ -39,7 +57,7 @@ export default function PurchaseScreen() {
   return (
     <>
       <PurchaseFormProvider initialValue={initialData}>
-        <PurchaseForm accounts={accounts!} categories={categories!} tags={tags!} />
+        <PurchaseFormWithHeader accounts={accounts!} categories={categories!} tags={tags!} />
       </PurchaseFormProvider>
       <ErrorSheet {...errorSheetProps} />
     </>

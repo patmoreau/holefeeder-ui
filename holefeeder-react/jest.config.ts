@@ -22,6 +22,8 @@ const config: Config = {
   ],
   coveragePathIgnorePatterns: ['/node_modules/', '/__tests__/', '\\.test\\.', '\\.spec\\.', '\\.integration\\.'],
   coverageDirectory: 'coverage/unit',
+  moduleDirectories: ['node_modules', '<rootDir>'],
+  roots: ['<rootDir>/src', '<rootDir>/__mocks__'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },

@@ -1,4 +1,4 @@
-import { Form, Host } from '@expo/ui/swift-ui';
+import { Form, Host, List } from '@expo/ui/swift-ui';
 import React from 'react';
 import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';

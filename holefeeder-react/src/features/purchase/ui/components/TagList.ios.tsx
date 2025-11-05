@@ -1,6 +1,10 @@
-import { View, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { VStack } from '@expo/ui/swift-ui';
+import * as React from 'react';
 import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
+import { FilterTextField } from '@/features/purchase/ui/components/fields/FilterTextField';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { HorizontalScrollView } from '../../../../../modules/horizontal-scroll-view';
 import { TagItem } from './TagItem';
 
 export type TagListProps = {
@@ -13,11 +17,12 @@ export type TagListProps = {
 
 export function TagList({ tags, selected, onChange, placeholder = 'Filter tagsâ€¦', showIcon = true }: TagListProps) {
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
+  const { theme } = useTheme();
 
   return (
-    <View style={styles.container}>
-      <TextInput value={filter} onChangeText={setFilter} onSubmitEditing={onSubmit} placeholder={placeholder} style={styles.input} />
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
+    <VStack spacing={8}>
+      <FilterTextField filter={filter} setFilter={setFilter} onSubmit={onSubmit} placeholder={placeholder} />
+      <HorizontalScrollView style={{ gap: 18 }}>
         {filtered.map((tag) => (
           <TagItem
             key={tag.id}
@@ -27,27 +32,7 @@ export function TagList({ tags, selected, onChange, placeholder = 'Filter tagsâ€
             showIcon={showIcon}
           />
         ))}
-      </ScrollView>
-    </View>
+      </HorizontalScrollView>
+    </VStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: 500,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#DADCE3',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    marginBottom: 8,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 8,
-  },
-});

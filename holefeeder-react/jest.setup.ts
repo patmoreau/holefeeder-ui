@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 jest.mock('@expo/ui/swift-ui', () => {
   const React = require('react');
-  const { View, Text: RNText, Button: RNButton } = require('react-native');
+  const { View, Text: RNText, Button: RNButton, TextInput } = require('react-native');
 
   return {
     Host: ({ children, style }: { children: unknown; style: unknown }) => React.createElement(View, { testID: 'host', style }, children),
     BottomSheet: ({ children, isOpened }: { children: unknown; isOpened: unknown }) =>
       isOpened ? React.createElement(View, { testID: 'bottom-sheet' }, children) : null,
     VStack: ({ children }: { children: unknown }) => React.createElement(View, { testID: 'vstack' }, children),
-    HStack: ({ children }: { children: unknown }) => React.createElement(View, { testID: 'hstack', style: { flexDirection: 'row' } }, children),
+    HStack: ({ children, modifiers }: { children: unknown; modifiers: unknown }) =>
+      React.createElement(View, { testID: 'hstack', style: { flexDirection: 'row' } }, children),
     Text: ({ children }: { children: unknown; style: unknown }) => React.createElement(RNText, null, children),
+    TextField: ({ children }: { children: unknown; style: unknown }) => React.createElement(TextInput, null, children),
     Button: ({ children, onPress }: { children: unknown; onPress: unknown }) =>
       React.createElement(RNButton, {
         title: typeof children === 'string' ? children : 'Button',
@@ -22,11 +24,7 @@ jest.mock('@expo/ui/swift-ui', () => {
 jest.mock('@expo/ui/swift-ui/modifiers', () => ({
   frame: jest.fn((props) => props),
   padding: jest.fn((props) => props),
-}));
-
-jest.mock('react-native-auth0', () => ({
-  useAuth0: jest.fn(),
-  Auth0Provider: ({ children }: { children: React.ReactNode }) => children,
+  border: jest.fn((props) => props), // Add this line
 }));
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -50,6 +48,11 @@ jest.mock('expo/src/winter/ImportMetaRegistry', () => ({
   },
 }));
 
+jest.mock('react-native-auth0', () => ({
+  useAuth0: jest.fn(),
+  Auth0Provider: ({ children }: { children: React.ReactNode }) => children,
+}));
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
@@ -63,6 +66,16 @@ jest.mock('react-i18next', () => ({
     init: jest.fn(),
   },
 }));
+
+jest.mock('./modules/horizontal-scroll-view', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+
+  return {
+    HorizontalScrollView: ({ children, style }: { children: unknown; style: unknown }) =>
+      React.createElement(View, { testID: 'horizontal-scroll-view', style }, children),
+  };
+});
 
 // Mock structuredClone global function
 global.structuredClone = jest.fn((obj) => JSON.parse(JSON.stringify(obj)));

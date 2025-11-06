@@ -3,8 +3,8 @@ import * as React from 'react';
 import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
 import { FilterTextField } from '@/features/purchase/ui/components/fields/FilterTextField';
+import { HorizontalScrollView } from '@/modules/horizontal-scroll-view';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { HorizontalScrollView } from '../../../../../modules/horizontal-scroll-view';
 import { TagItem } from './TagItem';
 
 export type TagListProps = {

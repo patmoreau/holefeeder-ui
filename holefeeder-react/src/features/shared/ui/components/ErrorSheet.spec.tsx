@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import React from 'react';
 import { anAppState } from '@/__tests__';
 import { useAppContext } from '@/contexts/AppContext';
@@ -19,21 +19,23 @@ describe('ErrorSheet', () => {
   it('renders the bottom sheet when showError is true', () => {
     render(<ErrorSheet showError={true} setShowError={jest.fn()} error={ErrorKey.noInternetConnection} />);
 
-    expect(screen.queryByText('errors.noInternetConnection.title')).toBeDefined();
+    expect(screen.queryByText('errors.noInternetConnection.title')).toBeOnTheScreen();
   });
 
   it('displays the error title and message', () => {
     render(<ErrorSheet showError={true} setShowError={jest.fn()} error={ErrorKey.noInternetConnection} />);
 
-    expect(screen.getByText('errors.noInternetConnection.title')).toBeTruthy();
-    expect(screen.getByText('errors.noInternetConnection.message')).toBeTruthy();
+    expect(screen.queryByText('errors.noInternetConnection.title')).toBeOnTheScreen();
+    expect(screen.queryByText('errors.noInternetConnection.message')).toBeOnTheScreen();
   });
 
   it('calls setShowError when dismiss button is pressed', () => {
     const setShowError = jest.fn();
     render(<ErrorSheet showError={true} setShowError={setShowError} error={ErrorKey.noInternetConnection} />);
 
-    fireEvent.press(screen.getByRole('button', { name: 'errorSheet.dismiss' }));
+    const button = screen.queryByRole('button', { name: 'errorSheet.dismiss' });
+
+    act(() => fireEvent.press(button));
     expect(setShowError).toHaveBeenCalledWith(false);
   });
 
@@ -41,20 +43,26 @@ describe('ErrorSheet', () => {
     const onRetry = jest.fn();
     render(<ErrorSheet showError={true} setShowError={jest.fn()} error={ErrorKey.noInternetConnection} onRetry={onRetry} />);
 
-    expect(screen.getByRole('button', { name: 'errorSheet.retry' })).toBeTruthy();
+    const button = screen.queryByRole('button', { name: 'errorSheet.retry' });
+
+    expect(button).toBeOnTheScreen();
   });
 
   it('calls onRetry when retry button is pressed', () => {
     const onRetry = jest.fn();
     render(<ErrorSheet showError={true} setShowError={jest.fn()} error={ErrorKey.noInternetConnection} onRetry={onRetry} />);
 
-    fireEvent.press(screen.getByRole('button', { name: 'errorSheet.retry' }));
+    const button = screen.getByRole('button', { name: 'errorSheet.retry' });
+
+    act(() => fireEvent.press(button));
     expect(onRetry).toHaveBeenCalled();
   });
 
   it('does not show retry button when onRetry is not provided', () => {
     render(<ErrorSheet showError={true} setShowError={jest.fn()} error={ErrorKey.noInternetConnection} />);
 
-    expect(screen.queryByText('errorSheet.retry')).toBeNull();
+    const button = screen.queryByRole('button', { name: 'errorSheet.retry' });
+
+    expect(button).not.toBeOnTheScreen();
   });
 });

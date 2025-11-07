@@ -1,8 +1,5 @@
-import { Purchase } from '../../features/purchase/core/purchase';
-import { anAccount } from './account-builder';
-import { aCategory } from './category-builder';
-import { anAmount } from './number-builder';
-import { aString } from './string-builder';
+import { anAccount, aCategory, anAmount, aString } from '@/__tests__';
+import { Purchase } from '@/features/purchase/core/purchase';
 import { aTag } from './tag-builder';
 
 const defaultPurchase = (): Purchase => ({

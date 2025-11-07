@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react-native';
+import { waitFor } from '@testing-library/react-native';
 import { aTokenInfo } from '@/__tests__';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { mockQueryClient, renderQueryHook } from '@/__tests__/mocks/mock-query-client';

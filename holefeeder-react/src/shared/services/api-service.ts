@@ -64,7 +64,14 @@ export const apiService = (token: string | null) => {
     });
   };
 
+  const postWithAuth = <T>(url: string, data: T): Promise<AxiosResponse<T>> => {
+    return api.post(url, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   return {
     getWithAuth,
+    postWithAuth,
   };
 };

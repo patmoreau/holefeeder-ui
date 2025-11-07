@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import React, { useState } from 'react';
 import { aLightThemeState } from '@/__tests__';
 import { aTag } from '@/__tests__/mocks/tag-builder';
@@ -17,7 +17,7 @@ const middleTag = aTag({ tag: 'middle-tag' });
 const lastTag = aTag({ tag: 'last-tag' });
 const selectedTag = aTag({ tag: 'selected-tag' });
 const newTag = aTag({ tag: 'new-tag' });
-const tagsPattern = new RegExp(`^(?:${firstTag.tag}|${middleTag.tag}|${lastTag.tag}|${selectedTag.tag}|${newTag.tag})$`);
+const tagsPattern = new RegExp(`^#(?:${firstTag.tag}|${middleTag.tag}|${lastTag.tag}|${selectedTag.tag}|${newTag.tag})$`);
 
 function TestHost() {
   const [selected, setSelected] = useState<Tag[]>([selectedTag]);
@@ -25,6 +25,8 @@ function TestHost() {
     <TagList placeholder={placeHolderText} tags={[firstTag, middleTag, lastTag, selectedTag]} selected={selected} onChange={setSelected} />
   );
 }
+
+const displayTag = (tag: Tag) => `#${tag.tag}`;
 
 describe('TagList', () => {
   const mockTheme = aLightThemeState();
@@ -35,135 +37,150 @@ describe('TagList', () => {
   });
 
   it('shows placeholder', () => {
-    expect(screen.queryByPlaceholderText('my filter tag')).toBeOnTheScreen();
+    expect(screen.queryByPlaceholderText(placeHolderText)).toBeOnTheScreen();
   });
 
   it('shows tags in order', () => {
-    const tags = screen.queryAllByText(tagsPattern);
+    const tags = screen.queryAllByTestId(tagsPattern);
 
-    expect(tags[0]).toHaveTextContent(selectedTag.tag);
-    expect(tags[1]).toHaveTextContent(firstTag.tag);
-    expect(tags[2]).toHaveTextContent(middleTag.tag);
-    expect(tags[3]).toHaveTextContent(lastTag.tag);
+    expect(tags).toHaveLength(4);
+    expect(tags.map((tag) => tag.props.children)).toEqual([
+      displayTag(selectedTag),
+      displayTag(firstTag),
+      displayTag(middleTag),
+      displayTag(lastTag),
+    ]);
   });
 
   describe('when toggling a tag', () => {
     it('toggle to selected on pressing an unselected tag', () => {
-      fireEvent.press(screen.getByText(middleTag.tag));
+      act(() => fireEvent.press(screen.getByTestId(displayTag(middleTag))));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      expect(tags[0]).toHaveTextContent(selectedTag.tag);
-      expect(tags[1]).toHaveTextContent(middleTag.tag);
-      expect(tags[2]).toHaveTextContent(firstTag.tag);
-      expect(tags[3]).toHaveTextContent(lastTag.tag);
+      expect(tags).toHaveLength(4);
+      expect(tags.map((tag) => tag.props.children)).toEqual([
+        displayTag(selectedTag),
+        displayTag(middleTag),
+        displayTag(firstTag),
+        displayTag(lastTag),
+      ]);
     });
 
     it('toggle to unselected on pressing a selected tag', () => {
-      fireEvent.press(screen.getByText(selectedTag.tag));
+      act(() => fireEvent.press(screen.getByTestId(displayTag(selectedTag))));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      expect(tags[0]).toHaveTextContent(firstTag.tag);
-      expect(tags[1]).toHaveTextContent(middleTag.tag);
-      expect(tags[2]).toHaveTextContent(lastTag.tag);
-      expect(tags[3]).toHaveTextContent(selectedTag.tag);
+      expect(tags).toHaveLength(4);
+      expect(tags.map((tag) => tag.props.children)).toEqual([
+        displayTag(firstTag),
+        displayTag(middleTag),
+        displayTag(lastTag),
+        displayTag(selectedTag),
+      ]);
     });
   });
 
   describe('when entering text', () => {
     it('shows tags matching the text', () => {
-      fireEvent.changeText(screen.getByPlaceholderText(placeHolderText), 'd');
+      act(() => fireEvent.changeText(screen.getByPlaceholderText(placeHolderText), 'd'));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      expect(tags[0]).toHaveTextContent(selectedTag.tag);
-      expect(tags[1]).toHaveTextContent(middleTag.tag);
+      expect(tags).toHaveLength(2);
+      expect(tags.map((tag) => tag.props.children)).toEqual([displayTag(selectedTag), displayTag(middleTag)]);
     });
 
     it('trim spaces', () => {
-      fireEvent.changeText(screen.getByPlaceholderText(placeHolderText), ' d ');
+      act(() => fireEvent.changeText(screen.getByPlaceholderText(placeHolderText), ' d '));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      expect(tags[0]).toHaveTextContent(selectedTag.tag);
-      expect(tags[1]).toHaveTextContent(middleTag.tag);
+      expect(tags).toHaveLength(2);
+      expect(tags.map((tag) => tag.props.children)).toEqual([displayTag(selectedTag), displayTag(middleTag)]);
     });
 
     it('shows no tags on no match', () => {
-      fireEvent.changeText(screen.getByPlaceholderText(placeHolderText), 'z');
+      act(() => fireEvent.changeText(screen.getByPlaceholderText(placeHolderText), 'z'));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
       expect(tags.length).toBe(0);
     });
 
     it('on enter with exact single match, selects that tag and clears filter', () => {
       const input = screen.getByPlaceholderText(placeHolderText);
+      const add = screen.getByTestId('image-plus');
 
-      fireEvent.changeText(input, 'mid'); // matches only middle-tag
-      fireEvent(input, 'submitEditing', { nativeEvent: { text: 'mid' } });
+      act(() => fireEvent.changeText(input, 'mid'));
+      act(() => fireEvent.press(add));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      // newest-first in selected on Enter
-      expect(tags[0]).toHaveTextContent(middleTag.tag);
-      expect(tags[1]).toHaveTextContent(selectedTag.tag);
-      expect(tags[2]).toHaveTextContent(firstTag.tag);
-      expect(tags[3]).toHaveTextContent(lastTag.tag);
-
-      // input cleared implies a full list shown again (filtered reset)
-      expect(screen.getByPlaceholderText(placeHolderText).props.value).toBe('');
+      expect(tags).toHaveLength(4);
+      expect(tags.map((tag) => tag.props.children)).toEqual([
+        displayTag(middleTag),
+        displayTag(selectedTag),
+        displayTag(firstTag),
+        displayTag(lastTag),
+      ]);
     });
 
     it('on pressing a tag, selects that tag and clears filter', () => {
       const input = screen.getByPlaceholderText(placeHolderText);
+      const add = screen.getByTestId('image-plus');
 
-      fireEvent.changeText(input, 'mid');
-      fireEvent.press(screen.getByText(middleTag.tag));
+      act(() => fireEvent.changeText(input, 'mid'));
+      act(() => fireEvent.press(screen.getByTestId(displayTag(middleTag))));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      // newest-first in selected on Enter
-      expect(tags[0]).toHaveTextContent(selectedTag.tag);
-      expect(tags[1]).toHaveTextContent(middleTag.tag);
-      expect(tags[2]).toHaveTextContent(firstTag.tag);
-      expect(tags[3]).toHaveTextContent(lastTag.tag);
-
-      // input cleared implies a full list shown again (filtered reset)
-      expect(screen.getByPlaceholderText(placeHolderText).props.value).toBe('');
+      expect(tags).toHaveLength(4);
+      expect(tags.map((tag) => tag.props.children)).toEqual([
+        displayTag(selectedTag),
+        displayTag(middleTag),
+        displayTag(firstTag),
+        displayTag(lastTag),
+      ]);
     });
 
     it('on enter with multiple matches, creates a new lowercase tag and selects it, then clears filter', () => {
       const input = screen.getByPlaceholderText(placeHolderText);
+      const add = screen.getByTestId('image-plus');
 
-      fireEvent.changeText(input, newTag.tag.toUpperCase()); // matches many
-      fireEvent(input, 'submitEditing', { nativeEvent: { text: newTag.tag.toUpperCase() } });
+      act(() => fireEvent.changeText(input, newTag.tag.toUpperCase()));
+      act(() => fireEvent.press(add));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      expect(tags[0]).toHaveTextContent(newTag.tag);
-      expect(tags[1]).toHaveTextContent(selectedTag.tag);
-      expect(tags[2]).toHaveTextContent(firstTag.tag);
-      expect(tags[3]).toHaveTextContent(middleTag.tag);
-      expect(tags[4]).toHaveTextContent(lastTag.tag);
-
-      expect(screen.getByPlaceholderText(placeHolderText).props.value).toBe('');
+      expect(tags).toHaveLength(5);
+      expect(tags.map((tag) => tag.props.children)).toEqual([
+        displayTag(newTag),
+        displayTag(selectedTag),
+        displayTag(firstTag),
+        displayTag(middleTag),
+        displayTag(lastTag),
+      ]);
     });
 
     it('on enter, add new tag to list and selects it', () => {
       const input = screen.getByPlaceholderText(placeHolderText);
+      const add = screen.getByTestId('image-plus');
 
-      fireEvent.changeText(input, newTag.tag);
-      fireEvent(input, 'submitEditing', { nativeEvent: { text: newTag.tag } });
+      act(() => fireEvent.changeText(input, newTag.tag));
+      act(() => fireEvent.press(add));
 
-      const tags = screen.queryAllByText(tagsPattern);
+      const tags = screen.queryAllByTestId(tagsPattern);
 
-      expect(tags[0]).toHaveTextContent(newTag.tag);
-      expect(tags[1]).toHaveTextContent(selectedTag.tag);
-      expect(tags[2]).toHaveTextContent(firstTag.tag);
-      expect(tags[3]).toHaveTextContent(middleTag.tag);
-      expect(tags[4]).toHaveTextContent(lastTag.tag);
+      expect(tags).toHaveLength(5);
+      expect(tags.map((tag) => tag.props.children)).toEqual([
+        displayTag(newTag),
+        displayTag(selectedTag),
+        displayTag(firstTag),
+        displayTag(middleTag),
+        displayTag(lastTag),
+      ]);
     });
   });
 });

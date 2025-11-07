@@ -112,7 +112,7 @@ describe('apiService', () => {
       },
     ];
 
-    it('should make GET request to categories endpoint with auth header', async () => {
+    it('should make GET request to test endpoint with auth header', async () => {
       mockAxios.onGet(testApiUrl).reply(200, mockData);
 
       const service = apiService(mockToken);
@@ -147,6 +147,51 @@ describe('apiService', () => {
       const service = apiService(mockToken);
 
       await expect(service.getWithAuth<MockObject>(testApiUrl)).rejects.toThrow();
+    });
+  });
+
+  describe('postWithAuth', () => {
+    const mockData: MockObject[] = [
+      {
+        id: '1',
+        name: 'Category 1',
+      },
+    ];
+
+    it('should make POST request to test endpoint with auth header', async () => {
+      mockAxios.onPost(testApiUrl).reply(201);
+
+      const service = apiService(mockToken);
+      const response = await service.postWithAuth<MockObject>(testApiUrl, mockData[0]);
+
+      expect(response.status).toBe(201);
+      expect(mockAxios.history.post[0].headers?.Authorization).toBe('Bearer test-token');
+    });
+
+    it('should handle null token', async () => {
+      mockAxios.onPost(testApiUrl).reply(201);
+
+      const service = apiService(null);
+      const response = await service.postWithAuth<MockObject>(testApiUrl, mockData[0]);
+
+      expect(response.status).toBe(201);
+      expect(mockAxios.history.post[0].headers?.Authorization).toBe('Bearer null');
+    });
+
+    it('should handle API errors', async () => {
+      mockAxios.onPost(testApiUrl).reply(500, { error: 'Server error' });
+
+      const service = apiService(mockToken);
+
+      await expect(service.postWithAuth<MockObject>(testApiUrl, mockData[0])).rejects.toThrow();
+    });
+
+    it('should handle unauthorized errors', async () => {
+      mockAxios.onPost(testApiUrl).reply(401, { message: 'Unauthorized' });
+
+      const service = apiService(mockToken);
+
+      await expect(service.postWithAuth<MockObject>(testApiUrl, mockData[0])).rejects.toThrow();
     });
   });
 });

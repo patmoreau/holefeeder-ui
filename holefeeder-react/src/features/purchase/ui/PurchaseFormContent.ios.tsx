@@ -3,7 +3,6 @@ import React from 'react';
 import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { Tag } from '@/features/purchase/core/tag';
-import { AdditionalDetailsSection } from '@/features/purchase/ui/AdditionalDetailsSection';
 import { BasicSection } from '@/features/purchase/ui/BasicSection';
 
 interface PurchaseFormProps {
@@ -16,8 +15,7 @@ export const PurchaseFormContent = ({ accounts, categories, tags }: PurchaseForm
   return (
     <Host style={{ flex: 1 }}>
       <Form>
-        <BasicSection accounts={accounts} categories={categories} />
-        <AdditionalDetailsSection tags={tags} />
+        <BasicSection accounts={accounts} categories={categories} tags={tags} />
       </Form>
     </Host>
   );

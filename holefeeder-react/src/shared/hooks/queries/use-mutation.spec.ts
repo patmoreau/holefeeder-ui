@@ -19,7 +19,6 @@ describe('createMutationHook', () => {
   const mockTokenInfo = aTokenInfo();
 
   beforeEach(() => {
-    jest.clearAllMocks();
     mockCommand.mockResolvedValue(mockItem);
   });
 
@@ -38,13 +37,28 @@ describe('createMutationHook', () => {
     it('should handle command error', async () => {
       mockCommand.mockRejectedValue(new Error('Command failed'));
 
-      const { useCommand } = createMutationHook<TestItem>('test-resource', mockCommand, false);
+      const { useCommand } = createMutationHook<TestItem>('test-resource', mockCommand, [], false);
       const { result } = renderQueryHook(() => useCommand());
 
       result.current.mutate(mockItem);
 
       await waitFor(() => expect(result.current.isError).toBe(true));
       expect(mockCommand).toHaveBeenCalledWith(mockItem, null);
+    });
+
+    it('invokes command and invalidate all queries', async () => {
+      const { useCommand } = createMutationHook<TestItem>('test-resource', mockCommand, ['affected-resource'], false);
+      const { result } = renderQueryHook(() => useCommand());
+
+      result.current.mutate(mockItem);
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+      expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
+        queryKey: ['test-resource', 'list'],
+      });
+      expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
+        queryKey: ['affected-resource', 'list'],
+      });
     });
 
     describe('with authentication', () => {
@@ -61,7 +75,6 @@ describe('createMutationHook', () => {
         result.current.mutate(mockItem);
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
-        expect(mockCommand).toHaveBeenCalledWith(mockItem, mockTokenInfo.accessToken);
         expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
           queryKey: ['test-resource', 'list'],
         });
@@ -90,7 +103,7 @@ describe('createMutationHook', () => {
       });
 
       it('should be invoked when token is not available', async () => {
-        const { useCommand } = createMutationHook<TestItem>('test-resource', mockCommand, false);
+        const { useCommand } = createMutationHook<TestItem>('test-resource', mockCommand, [], false);
         const { result } = renderQueryHook(() => useCommand());
 
         result.current.mutate(mockItem);

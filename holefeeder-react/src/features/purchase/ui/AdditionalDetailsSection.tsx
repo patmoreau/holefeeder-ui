@@ -1,6 +1,5 @@
 import { Section, TextField } from '@expo/ui/swift-ui';
 import React from 'react';
-import { View } from 'react-native';
 import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { TagList } from '@/features/purchase/ui/components/TagList';
@@ -16,9 +15,7 @@ export const AdditionalDetailsSection = ({ tags }: { tags: Tag[] }) => {
 
   return (
     <Section title={t('purchase.detailsSection.title')}>
-      <View style={{ height: 500, flex: 1 }}>
-        <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
-      </View>
+      <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
       <TextField placeholder={t('purchase.detailsSection.description')} defaultValue={formData.description} onChangeText={updateDescription} />
     </Section>
   );

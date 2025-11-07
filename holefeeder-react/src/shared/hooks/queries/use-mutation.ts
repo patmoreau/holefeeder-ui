@@ -4,6 +4,7 @@ import { useAuth } from '@/shared/hooks/use-auth';
 export const createMutationHook = <T>(
   resourceName: string,
   commandHandler: (data: T, authToken: string | null) => Promise<T | void>,
+  affectedResources: string[] = [],
   withAuth: boolean = true
 ) => {
   const useCommand = () => {
@@ -18,10 +19,16 @@ export const createMutationHook = <T>(
         }
         return commandHandler(data, token);
       },
-      onSuccess: () =>
-        queryClient.invalidateQueries({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
           queryKey: [resourceName, 'list'],
-        }),
+        });
+        affectedResources.forEach((resource) => {
+          queryClient.invalidateQueries({
+            queryKey: [resource, 'list'],
+          });
+        });
+      },
     });
   };
 

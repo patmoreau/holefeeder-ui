@@ -16,7 +16,7 @@ const iosTypography = {
     lineHeight: 24,
   },
   chip: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'normal',
     lineHeight: 16,
   },

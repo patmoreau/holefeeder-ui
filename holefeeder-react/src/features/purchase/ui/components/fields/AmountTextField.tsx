@@ -1,4 +1,5 @@
 import { TextField, TextFieldRef, VStack } from '@expo/ui/swift-ui';
+import { multilineTextAlignment } from '@expo/ui/swift-ui/modifiers';
 import React, { useRef, useState } from 'react';
 import { amountInputConverter } from '@/utils/amount-input-converter';
 
@@ -29,7 +30,7 @@ export function AmountTextField({ initialAmount = 0, placeHolder = '', onAmountC
         defaultValue={displayValue}
         placeholder={placeHolder}
         keyboardType={'numeric'}
-        modifiers={[]}
+        modifiers={[multilineTextAlignment('trailing')]}
         onChangeText={handleChange}
       />
     </VStack>

@@ -17,9 +17,6 @@ const useComponentStyles = () =>
     },
     input: {
       flex: 1,
-      borderWidth: 1,
-      borderColor: theme.colors.separator,
-      borderRadius: 8,
       paddingHorizontal: 12,
       paddingVertical: 8,
       marginBottom: 8,

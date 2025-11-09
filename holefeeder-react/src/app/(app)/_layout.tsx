@@ -1,10 +1,11 @@
 import { Stack } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { PurchaseButton } from '@/components/ui/purchase-button';
+import { tk } from '@/i18n/translations';
 import { useColorScheme } from '@/shared/hooks/theme/use-color-scheme';
-import { useLanguage } from '@/shared/hooks/use-language';
 
 export default function AppLayout() {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const colorScheme = useColorScheme();
 
   return (
@@ -20,7 +21,7 @@ export default function AppLayout() {
       <Stack.Screen
         name="purchase"
         options={{
-          title: t('purchase.title'),
+          title: t(tk.purchase.title),
           headerTransparent: true,
           headerTintColor: colorScheme === 'dark' ? '#fff' : '#000',
         }}

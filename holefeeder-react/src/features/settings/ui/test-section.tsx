@@ -1,20 +1,21 @@
 import { Section, LabeledContent, Button } from '@expo/ui/swift-ui';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Category } from '@/features/purchase/core/category';
 import { useCategories } from '@/features/purchase/core/use-categories';
 import { CategoryPicker } from '@/features/purchase/ui/components/CategoryPicker';
-import { useLanguage } from '@/shared/hooks/use-language';
+import { tk } from '@/i18n/translations';
 
 export function TestSection() {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const { data: categories } = useCategories();
 
   // Form state
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   return (
-    <Section title={t('test-section.title')}>
-      <LabeledContent label={t('test-section.not-found-page')}>
+    <Section title={t(tk.testSection.title)}>
+      <LabeledContent label={t(tk.testSection.notFoundPage)}>
         <Button
           variant="link"
           onPress={() => {
@@ -22,10 +23,10 @@ export function TestSection() {
             router.push({ pathname: '/+not-found' });
           }}
         >
-          {t('test-section.go-to')}
+          {t(tk.testSection.goTo)}
         </Button>
       </LabeledContent>
-      <LabeledContent label={t('test-section.component')}>
+      <LabeledContent label={t(tk.testSection.component)}>
         <CategoryPicker
           categories={categories || []}
           selectedCategory={selectedCategory || categories?.[0] || null}

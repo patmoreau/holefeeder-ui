@@ -35,13 +35,13 @@ describe('isNetworkError', () => {
   });
 
   it('treats axios error with no response as network error', () => {
-    (isAxiosError as jest.Mock).mockReturnValue(true);
+    (isAxiosError as unknown as jest.Mock).mockReturnValue(true);
     const error = { message: 'Something', code: 'SOME_CODE', response: undefined } as any;
     expect(isNetworkError(error)).toBe(true);
   });
 
   it('treats axios error with known network codes as network error', () => {
-    (isAxiosError as jest.Mock).mockReturnValue(true);
+    (isAxiosError as unknown as jest.Mock).mockReturnValue(true);
 
     for (const code of ['ERR_NETWORK', 'ECONNABORTED', 'ETIMEDOUT']) {
       const error = { message: 'Something', code, response: {} } as any;
@@ -50,13 +50,13 @@ describe('isNetworkError', () => {
   });
 
   it('falls back to axios error message matching when response exists', () => {
-    (isAxiosError as jest.Mock).mockReturnValue(true);
+    (isAxiosError as unknown as jest.Mock).mockReturnValue(true);
     const error = { message: 'Network Error', response: { status: 500 } } as any;
     expect(isNetworkError(error)).toBe(true);
   });
 
   it('returns false for axios error that is not a network issue', () => {
-    (isAxiosError as jest.Mock).mockReturnValue(true);
+    (isAxiosError as unknown as jest.Mock).mockReturnValue(true);
     const error = { message: 'Request failed with status code 500', code: 'ERR_BAD_RESPONSE', response: { status: 500 } } as any;
     expect(isNetworkError(error)).toBe(false);
   });

@@ -1,13 +1,14 @@
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet } from 'react-native';
 import { ParallaxScrollView } from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { useLanguage } from '@/shared/hooks/use-language';
+import { tk } from '@/i18n/translations';
 
 export default function HomeScreen() {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <ParallaxScrollView
@@ -16,7 +17,7 @@ export default function HomeScreen() {
       headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">{t('home.title')}</ThemedText>
+        <ThemedText type="title">{t(tk.home.title)}</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>

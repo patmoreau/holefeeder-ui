@@ -1,22 +1,30 @@
+import { useTranslation } from 'react-i18next';
 import { View, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
+import { tk } from '@/i18n/translations';
 import { TagItem } from './TagItem';
 
 export type TagListProps = {
   tags: Tag[];
   selected: Tag[];
   onChange: (next: Tag[]) => void;
-  placeholder?: string;
   showIcon?: boolean;
 };
 
-export function TagList({ tags, selected, onChange, placeholder = 'Filter tags…', showIcon = true }: TagListProps) {
+export function TagList({ tags, selected, onChange, showIcon = true }: TagListProps) {
+  const { t } = useTranslation();
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
   return (
     <View style={styles.container}>
-      <TextInput value={filter} onChangeText={setFilter} onSubmitEditing={onSubmit} placeholder={placeholder} style={styles.input} />
+      <TextInput
+        value={filter}
+        onChangeText={setFilter}
+        onSubmitEditing={onSubmit}
+        placeholder={t(tk.tagList.placeHolder)}
+        style={styles.input}
+      />
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
         {filtered.map((tag) => (
           <TagItem

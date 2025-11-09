@@ -1,13 +1,14 @@
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Button } from '@/features/shared/ui/components/Button';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
+import { tk } from '@/i18n/translations';
 import { useViewStyles } from '@/shared/hooks/theme/use-styles';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { useLanguage } from '@/shared/hooks/use-language';
 
 export const AuthButton = () => {
   const { user, isLoading, login, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const viewStyles = useViewStyles();
 
   if (isLoading) {
@@ -22,7 +23,7 @@ export const AuthButton = () => {
     return (
       <View style={viewStyles.primary}>
         <Button variant="destructive" onPress={logout}>
-          {t('auth.logoutButton')}
+          {t(tk.auth.logoutButton)}
         </Button>
       </View>
     );
@@ -31,7 +32,7 @@ export const AuthButton = () => {
   return (
     <View style={viewStyles.primary}>
       <Button variant="primary" onPress={login}>
-        {t('auth.loginButton')}
+        {t(tk.auth.loginButton)}
       </Button>
     </View>
   );

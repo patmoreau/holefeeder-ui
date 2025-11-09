@@ -1,4 +1,6 @@
-const fr = {
+import { TranslationStructure } from '@/i18n/translations';
+
+export const fr: TranslationStructure = {
   alert: {
     discard: {
       title: 'Annuler les modifications ?',
@@ -36,7 +38,7 @@ const fr = {
     yearly: 'Annuel',
     oneTime: 'Unique',
   },
-  'display-section': {
+  displaySection: {
     title: 'Affichage',
     language: 'Langue',
     theme: 'Thème',
@@ -73,17 +75,17 @@ const fr = {
     setupTitle: 'Instructions de configuration',
     setupDescription: "Pour configurer Auth0, ajoutez ces variables d'environnement à votre fichier .env :",
   },
-  'not-found': {
+  notFound: {
     title: 'Oops !',
     description: "Désolé, la page que vous recherchez n'existe pas.",
-    'go-back': 'Tableau de bord',
+    goBack: 'Tableau de bord',
   },
-  'profile-section': {
+  profileSection: {
     title: 'Profil utilisateur',
-    'access-token': "Jeton d'accès",
-    'no-access-token': "Pas de jeton d'accès",
-    'expires-at': 'Expire le',
-    'no-expires-at': "Pas d'information d'expiration",
+    accessToken: "Jeton d'accès",
+    noAccessToken: "Pas de jeton d'accès",
+    expiresAt: 'Expire le',
+    noExpiresAt: "Pas d'information d'expiration",
   },
   purchase: {
     title: 'Achat',
@@ -103,10 +105,10 @@ const fr = {
       frequency: 'Fréquence',
     },
   },
-  'quick-actions': {
-    'help-title': 'Attendez ! Ne me supprimez pas !',
-    'help-subtitle': 'Nous sommes là pour vous aider',
-    'purchase-title': 'Acheter',
+  quickActions: {
+    helpTitle: 'Attendez ! Ne me supprimez pas !',
+    helpSubtitle: 'Nous sommes là pour vous aider',
+    purchaseTitle: 'Acheter',
   },
   settings: {
     title: 'Paramètres',
@@ -118,17 +120,18 @@ const fr = {
     settings: 'Configuration',
     test: 'Examen',
   },
-  'test-section': {
+  tagList: {
+    placeHolder: 'Filtrer les étiquettes…',
+  },
+  testSection: {
     title: 'Test',
-    'not-found-page': 'Page non trouvée',
-    'go-to': 'Aller à',
+    notFoundPage: 'Page non trouvée',
+    goTo: 'Aller à',
     component: 'Composant',
   },
-  'theme-switcher': {
+  themeSwitcher: {
     system: 'Automatique',
     light: 'Clair',
     dark: 'Sombre',
   },
 } as const;
-
-export default fr;

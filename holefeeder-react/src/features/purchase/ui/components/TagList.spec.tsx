@@ -11,7 +11,7 @@ jest.mock('@/shared/hooks/theme/use-theme', () => ({
 }));
 const mockUseTheme = jest.mocked(useTheme);
 
-const placeHolderText = 'my filter tag';
+const placeHolderText = 'tagList.placeHolder';
 const firstTag = aTag({ tag: 'first-tag' });
 const middleTag = aTag({ tag: 'middle-tag' });
 const lastTag = aTag({ tag: 'last-tag' });
@@ -21,9 +21,7 @@ const tagsPattern = new RegExp(`^#(?:${firstTag.tag}|${middleTag.tag}|${lastTag.
 
 function TestHost() {
   const [selected, setSelected] = useState<Tag[]>([selectedTag]);
-  return (
-    <TagList placeholder={placeHolderText} tags={[firstTag, middleTag, lastTag, selectedTag]} selected={selected} onChange={setSelected} />
-  );
+  return <TagList tags={[firstTag, middleTag, lastTag, selectedTag]} selected={selected} onChange={setSelected} />;
 }
 
 const displayTag = (tag: Tag) => `#${tag.tag}`;
@@ -34,6 +32,7 @@ describe('TagList', () => {
   beforeEach(() => {
     mockUseTheme.mockReturnValue(mockTheme);
     render(<TestHost />);
+    screen.debug();
   });
 
   it('shows placeholder', () => {
@@ -129,7 +128,6 @@ describe('TagList', () => {
 
     it('on pressing a tag, selects that tag and clears filter', () => {
       const input = screen.getByPlaceholderText(placeHolderText);
-      const add = screen.getByTestId('image-plus');
 
       act(() => fireEvent.changeText(input, 'mid'));
       act(() => fireEvent.press(screen.getByTestId(displayTag(middleTag))));

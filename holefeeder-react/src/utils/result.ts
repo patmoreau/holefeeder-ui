@@ -13,7 +13,6 @@ const failure = <E>(error: E): Failure<E> => ({
   error,
 });
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Result = {
   success,
   failure,

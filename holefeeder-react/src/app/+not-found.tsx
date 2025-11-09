@@ -1,12 +1,13 @@
 import { router, Stack } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Text, Pressable, Platform } from 'react-native';
 import { ThemedView } from '@/components/themed-view';
+import { tk } from '@/i18n/translations';
 import { useStyles, useTextStyles, useViewStyles } from '@/shared/hooks/theme/use-styles';
-import { useLanguage } from '@/shared/hooks/use-language';
 import { GlobalStyles } from '@/types/theme/global-styles';
 
 export default function NotFoundScreen() {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const containerStyles = useViewStyles();
   const textStyles = useTextStyles();
 
@@ -33,7 +34,7 @@ export default function NotFoundScreen() {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: t('not-found.title'),
+          title: t(tk.notFound.title),
           headerTitleStyle: {
             fontSize: textStyles.subtitle.fontSize,
             fontWeight: textStyles.subtitle.fontWeight,
@@ -45,9 +46,9 @@ export default function NotFoundScreen() {
         }}
       />
       <ThemedView style={containerStyles.centered}>
-        <Text style={[textStyles.heading, GlobalStyles.py16]}>{t('not-found.description')}</Text>
+        <Text style={[textStyles.heading, GlobalStyles.py16]}>{t(tk.notFound.description)}</Text>
         <Pressable style={styles.button} onPress={() => router.push({ pathname: '/' })} role="link">
-          <Text style={styles.buttonText}>{t('not-found.go-back')}</Text>
+          <Text style={styles.buttonText}>{t(tk.notFound.goBack)}</Text>
         </Pressable>
       </ThemedView>
     </>

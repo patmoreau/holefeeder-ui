@@ -39,6 +39,7 @@ describe('transaction-api', () => {
               effectiveDate: purchase.cashflowEffectiveDate,
               intervalType: purchase.cashflowIntervalType,
               frequency: purchase.cashflowFrequency,
+              recurrence: 0,
             }
           : undefined,
       });

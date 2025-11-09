@@ -1,13 +1,14 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { tk } from '@/i18n/translations';
 import { useTextStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { useLanguage } from '@/shared/hooks/use-language';
 import { ThemeMode } from '@/types/theme/theme';
 
 export function ThemeSwitcher() {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const { changeThemeMode, availableThemeModes, themeMode } = useTheme();
   const textStyles = useTextStyles();
 
@@ -28,7 +29,7 @@ export function ThemeSwitcher() {
         onValueChange={(code: ThemeMode, index: number) => handleThemeChange(code, index).then()}
       >
         {availableThemeModes.map((mode) => (
-          <Picker.Item key={mode.code} label={t(`theme-switcher.${mode.langId}`)} value={mode} style={textStyles.pickerItem} />
+          <Picker.Item key={mode.code} label={t(`${tk.themeSwitcher}.${mode.langId}`)} value={mode} style={textStyles.pickerItem} />
         ))}
       </Picker>
     </View>

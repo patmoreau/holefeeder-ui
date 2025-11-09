@@ -1,9 +1,10 @@
 import { BottomSheet, Button, Host, HStack, Image, Text, VStack } from '@expo/ui/swift-ui';
 import { frame, padding } from '@expo/ui/swift-ui/modifiers';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWindowDimensions } from 'react-native';
-import { ErrorKey } from '@/features/shared/core/error-key';
-import { useLanguage } from '@/shared/hooks/use-language';
+import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/features/shared/core/error-key';
+import { tk } from '@/i18n/translations';
 
 type Props = {
   showError: boolean;
@@ -12,7 +13,7 @@ type Props = {
   onRetry?: () => void;
 };
 export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const { width } = useWindowDimensions();
 
   return (
@@ -20,22 +21,22 @@ export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) =
       <BottomSheet isOpened={showError} onIsOpenedChange={(e) => setShowError(e)}>
         <VStack spacing={32} modifiers={[frame({ maxWidth: width }), padding({ all: 32 })]}>
           <Text size={18} weight="bold" color="red">
-            {t(`errors.${error}.title`)}
+            {t(tkErrorTitles[error])}
           </Text>
           <HStack spacing={16}>
             <Image systemName="exclamationmark.triangle" />
             <Text size={17} modifiers={[frame({ maxWidth: width, height: 100 })]}>
-              {t(`errors.${error}.message`)}
+              {t(tkErrorMessages[error])}
             </Text>
           </HStack>
           <HStack spacing={16}>
             {onRetry && (
               <Button variant="borderedProminent" onPress={onRetry}>
-                {t('errorSheet.retry')}
+                {t(tk.errorSheet.retry)}
               </Button>
             )}
             <Button variant="bordered" onPress={() => setShowError(false)}>
-              {t('errorSheet.dismiss')}
+              {t(tk.errorSheet.dismiss)}
             </Button>
           </HStack>
         </VStack>

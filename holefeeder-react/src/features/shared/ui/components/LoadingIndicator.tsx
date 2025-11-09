@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, ActivityIndicatorProps, View, ViewProps } from 'react-native';
+import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { useLanguage } from '@/shared/hooks/use-language';
 
 interface LoadingIndicatorProps extends Omit<ActivityIndicatorProps, 'size' | 'color'> {
   size?: 'small' | 'large';
@@ -30,7 +31,7 @@ export const LoadingIndicator = ({
   accessibilityRole = 'progressbar',
   ...props
 }: LoadingIndicatorProps) => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const styles = useLoadingIndicatorStyles();
   const { theme } = useTheme();
 
@@ -40,7 +41,7 @@ export const LoadingIndicator = ({
   return (
     <View style={viewStyle} {...containerProps}>
       <ActivityIndicator
-        accessibilityLabel={t('common.loading')}
+        accessibilityLabel={t(tk.common.loading)}
         accessibilityRole={accessibilityRole}
         size={size}
         color={variantColor}

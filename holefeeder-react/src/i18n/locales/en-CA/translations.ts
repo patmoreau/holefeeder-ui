@@ -1,4 +1,4 @@
-const en = {
+export const en = {
   alert: {
     discard: {
       title: 'Discard changes?',
@@ -72,17 +72,17 @@ const en = {
     setupTitle: 'Setup Instructions',
     setupDescription: 'To configure Auth0, add these environment variables to your .env file:',
   },
-  'not-found': {
+  notFound: {
     title: 'Oops!',
     description: 'Sorry, the page you are looking for does not exist.',
-    'go-back': 'Dashboard',
+    goBack: 'Dashboard',
   },
-  'profile-section': {
+  profileSection: {
     title: 'User Profile',
-    'access-token': 'Access Token',
-    'no-access-token': 'No Access Token',
-    'expires-at': 'Expires At',
-    'no-expires-at': 'No Expiry Information',
+    accessToken: 'Access Token',
+    noAccessToken: 'No Access Token',
+    expiresAt: 'Expires At',
+    noExpiresAt: 'No Expiry Information',
   },
   purchase: {
     title: 'Purchase',
@@ -102,10 +102,10 @@ const en = {
       frequency: 'Frequency',
     },
   },
-  'quick-actions': {
-    'help-title': "Wait! Don't delete me!",
-    'help-subtitle': "We're here to help",
-    'purchase-title': 'Purchase',
+  quickActions: {
+    helpTitle: "Wait! Don't delete me!",
+    helpSubtitle: "We're here to help",
+    purchaseTitle: 'Purchase',
   },
   settings: {
     title: 'Settings',
@@ -117,17 +117,18 @@ const en = {
     settings: 'Settings',
     test: 'Test',
   },
-  'test-section': {
+  tagList: {
+    placeHolder: 'Filter tags…',
+  },
+  testSection: {
     title: 'Test',
-    'not-found-page': 'Page not found',
-    'go-to': 'Go to',
+    notFoundPage: 'Page not found',
+    goTo: 'Go to',
     component: 'Component',
   },
-  'theme-switcher': {
+  themeSwitcher: {
     system: 'Automatic',
     light: 'Light',
     dark: 'Dark',
   },
 } as const;
-
-export default en;

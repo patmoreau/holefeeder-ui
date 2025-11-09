@@ -2,16 +2,17 @@ import { HStack, Section, VStack, Text, LabeledContent, Spacer } from '@expo/ui/
 import { cornerRadius, foregroundStyle, frame, padding } from '@expo/ui/swift-ui/modifiers';
 import { Image as ExpoImage } from 'expo-image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useAppContext } from '@/contexts/AppContext';
 import { AuthButton } from '@/features/shared/ui/components/AuthButton';
+import { tk } from '@/i18n/translations';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { useLanguage } from '@/shared/hooks/use-language';
 
 export function ProfileSection() {
   const { profile } = useAppContext();
   const { tokenInfo } = useAuth();
-  const { t } = useLanguage();
+  const { t } = useTranslation();
 
   const avatarUri =
     profile.avatar ||
@@ -19,7 +20,7 @@ export function ProfileSection() {
 
   return (
     <>
-      <Section title={t('profile-section.title')}>
+      <Section title={t(tk.profileSection.title)}>
         <VStack spacing={16} alignment={'center'}>
           <HStack spacing={16}>
             <HStack modifiers={[frame({ width: 120, height: 120 }), cornerRadius(100)]}>
@@ -35,11 +36,11 @@ export function ProfileSection() {
               <AuthButton />
             </VStack>
           </HStack>
-          <LabeledContent label={t('profile-section.access-token')}>
-            <Text>{tokenInfo.accessToken ? `${tokenInfo.accessToken?.substring(0, 20)}...` : t('profile-section.no-access-token')}</Text>
+          <LabeledContent label={t(tk.profileSection.accessToken)}>
+            <Text>{tokenInfo.accessToken ? `${tokenInfo.accessToken?.substring(0, 20)}...` : t(tk.profileSection.noAccessToken)}</Text>
           </LabeledContent>
-          <LabeledContent label={t('profile-section.expires-at')}>
-            <Text>{tokenInfo.expiresAt ?? t('profile-section.no-expires-at')}</Text>
+          <LabeledContent label={t(tk.profileSection.expiresAt)}>
+            <Text>{tokenInfo.expiresAt ?? t(tk.profileSection.noExpiresAt)}</Text>
           </LabeledContent>
         </VStack>
       </Section>

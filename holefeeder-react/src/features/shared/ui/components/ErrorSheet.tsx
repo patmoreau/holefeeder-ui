@@ -1,8 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
-import { ErrorKey } from '@/features/shared/core/error-key';
+import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/features/shared/core/error-key';
 import { Button } from '@/features/shared/ui/components/Button';
-import { useLanguage } from '@/shared/hooks/use-language';
+import { tk } from '@/i18n/translations';
 
 type Props = {
   showError: boolean;
@@ -12,7 +13,7 @@ type Props = {
 };
 
 export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
 
   if (!showError) return null;
 
@@ -33,16 +34,16 @@ export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) =
         elevation: 6,
       }}
     >
-      <Text style={{ fontSize: 20, fontWeight: '600', marginBottom: 8 }}>{t(`errors.${error}.title`)}</Text>
-      <Text style={{ fontSize: 16, marginBottom: 16 }}>{t(`errors.${error}.message`)}</Text>
+      <Text style={{ fontSize: 20, fontWeight: '600', marginBottom: 8 }}>{t(tkErrorTitles[error])}</Text>
+      <Text style={{ fontSize: 16, marginBottom: 16 }}>{t(tkErrorMessages[error])}</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
         {onRetry && (
           <Button variant={'primary'} onPress={onRetry}>
-            {t('errorSheet.retry')}
+            {t(tk.errorSheet.retry)}
           </Button>
         )}
         <Button variant={'secondary'} onPress={() => setShowError(false)}>
-          {t('errorSheet.dismiss')}
+          {t(tk.errorSheet.dismiss)}
         </Button>
       </View>
     </View>

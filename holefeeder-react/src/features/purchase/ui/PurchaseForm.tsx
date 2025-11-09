@@ -1,5 +1,6 @@
 import { useNavigation } from 'expo-router';
 import React, { useCallback, useLayoutEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { Tag } from '@/features/purchase/core/tag';
@@ -10,7 +11,6 @@ import { SavePurchaseButton } from '@/features/purchase/ui/components/SavePurcha
 import { PurchaseFormContent } from '@/features/purchase/ui/PurchaseFormContent';
 import { goBack } from '@/features/shared/utils/navigation';
 import { showAlert } from '@/features/shared/utils/show-alert';
-import { useLanguage } from '@/shared/hooks/use-language';
 
 interface PurchaseFormProps {
   accounts: Account[];
@@ -22,7 +22,7 @@ export const PurchaseForm = ({ accounts, categories, tags }: PurchaseFormProps) 
   const { formData, isDirty } = usePurchaseForm();
   const purchaseMutation = usePurchase();
 
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const { showDiscardAlert } = showAlert(t);
   const navigation = useNavigation();
 

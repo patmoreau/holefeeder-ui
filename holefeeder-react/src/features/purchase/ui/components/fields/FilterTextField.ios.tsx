@@ -1,5 +1,5 @@
 import { HStack, Image, TextField, TextFieldRef } from '@expo/ui/swift-ui';
-import { border, padding } from '@expo/ui/swift-ui/modifiers';
+import { padding } from '@expo/ui/swift-ui/modifiers';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
@@ -19,9 +19,6 @@ const useComponentStyles = () =>
     },
     input: {
       flex: 1,
-      borderWidth: 1,
-      borderColor: theme.colors.separator,
-      borderRadius: 8,
       paddingHorizontal: 12,
       paddingVertical: 8,
       marginBottom: 8,
@@ -48,7 +45,7 @@ export const FilterTextField = ({ filter, setFilter, onSubmit, placeholder }: Fi
   }, [filter]);
 
   return (
-    <HStack modifiers={[border({ width: 1, color: '#DADCE3' })]}>
+    <HStack>
       <TextField
         ref={textFieldRef}
         autocorrection={false}

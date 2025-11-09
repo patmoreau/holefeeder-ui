@@ -48,7 +48,7 @@ export function BasicSection({ accounts, categories, tags }: Props) {
         />
       </LabeledContent>
       <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
-      <TextField placeholder={t('purchase.detailsSection.description')} defaultValue={formData.description} onChangeText={updateDescription} />
+      <TextField placeholder={t('purchase.basicSection.description')} defaultValue={formData.description} onChangeText={updateDescription} />
     </Section>
   );
 }

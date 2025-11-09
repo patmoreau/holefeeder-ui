@@ -4,6 +4,6 @@ export const goBack = () => {
   if (router.canGoBack()) {
     router.back();
   } else {
-    router.replace('/');
+    router.navigate('/');
   }
 };

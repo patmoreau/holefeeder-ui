@@ -30,6 +30,12 @@ const en = {
     edit: 'Edit',
     done: 'Done',
   },
+  dateIntervalTypePicker: {
+    weekly: 'Weekly',
+    monthly: 'Monthly',
+    yearly: 'Yearly',
+    oneTime: 'One Time',
+  },
   displaySection: {
     title: 'Display',
     language: 'Language',
@@ -86,10 +92,14 @@ const en = {
       category: 'Category',
       date: 'Date',
       amount: 'Amount',
-    },
-    detailsSection: {
-      title: 'Additional details',
       description: 'Note',
+    },
+    cashflowSection: {
+      title: 'Cashflow details',
+      cashflow: 'Cashflow',
+      date: 'Date',
+      intervalType: 'Interval Type',
+      frequency: 'Frequency',
     },
   },
   'quick-actions': {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Purchase } from '@/features/purchase/core/purchase';
 import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { useCategories } from '@/features/purchase/core/use-categories';
 import { PurchaseFormProvider } from '@/features/purchase/core/use-purchase-form';
@@ -27,13 +28,17 @@ export default function PurchaseScreen() {
 
   const [accounts, categories, tags] = data;
 
-  const initialData = {
+  const initialData: Purchase = {
     date: withDate(new Date()).toDateOnly(),
     amount: 0,
     description: '',
     account: accounts![0],
     category: categories![0],
     tags: [],
+    hasCashflow: false,
+    cashflowEffectiveDate: withDate(new Date()).toDateOnly(),
+    cashflowIntervalType: 'monthly',
+    cashflowFrequency: 1,
   };
 
   return (

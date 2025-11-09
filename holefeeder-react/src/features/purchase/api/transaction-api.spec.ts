@@ -34,12 +34,11 @@ describe('transaction-api', () => {
         accountId: purchase.account!.id,
         categoryId: purchase.category!.id,
         tags: purchase.tags.map((tag) => tag.id),
-        cashflow: purchase.cashflow
+        cashflow: purchase.hasCashflow
           ? {
-              effectiveDate: purchase.cashflow.effectiveDate,
-              intervalType: purchase.cashflow.intervalType,
-              frequency: purchase.cashflow.frequency,
-              recurrence: purchase.cashflow.recurrence,
+              effectiveDate: purchase.cashflowEffectiveDate,
+              intervalType: purchase.cashflowIntervalType,
+              frequency: purchase.cashflowFrequency,
             }
           : undefined,
       });

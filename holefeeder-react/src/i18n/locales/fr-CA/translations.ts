@@ -30,6 +30,12 @@ const fr = {
     edit: 'Modifier',
     done: 'Terminé',
   },
+  dateIntervalTypePicker: {
+    weekly: 'Hebdomadaire',
+    monthly: 'Mensuel',
+    yearly: 'Annuel',
+    oneTime: 'Unique',
+  },
   'display-section': {
     title: 'Affichage',
     language: 'Langue',
@@ -87,10 +93,14 @@ const fr = {
       category: 'Catégorie',
       date: 'Date',
       amount: 'Montant',
-    },
-    detailsSection: {
-      title: 'Détails supplémentaires',
       description: 'Note',
+    },
+    cashflowSection: {
+      title: 'Détails des flux de trésorerie',
+      cashflow: 'Flux de trésorerie',
+      date: 'Date',
+      intervalType: "Type d'intervalle",
+      frequency: 'Fréquence',
     },
   },
   'quick-actions': {

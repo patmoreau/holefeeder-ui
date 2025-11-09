@@ -10,12 +10,8 @@ export interface Purchase {
   account: Account | undefined;
   category: Category | undefined;
   tags: Tag[];
-  cashflow?: CashflowRequest;
-}
-
-export interface CashflowRequest {
-  effectiveDate: string;
-  intervalType: DateIntervalType;
-  frequency: number;
-  recurrence: number;
+  hasCashflow: boolean;
+  cashflowEffectiveDate: string;
+  cashflowIntervalType: DateIntervalType;
+  cashflowFrequency: number;
 }

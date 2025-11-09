@@ -1,4 +1,4 @@
-const DateIntervalType = {
+export const DateIntervalType = {
   weekly: 'weekly',
   monthly: 'monthly',
   yearly: 'yearly',

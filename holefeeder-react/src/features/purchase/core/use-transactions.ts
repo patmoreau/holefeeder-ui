@@ -1,9 +1,9 @@
 import { transactionApi } from '@/features/purchase/api/transaction-api';
-import { Purchase } from '@/features/purchase/core/purchase';
+import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 import { createMutationHook } from '@/shared/hooks/queries/use-mutation';
 
-const purchaseMutation = createMutationHook<Purchase>('transactions', (data, token) => {
-  return transactionApi(token).makePurchase(data).then();
+const purchaseMutation = createMutationHook<PurchaseFormData>('transactions', (data, token) => {
+  return transactionApi(token).createTransaction(data).then();
 });
 
 export const { useCommand: usePurchase } = purchaseMutation;

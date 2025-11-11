@@ -6,6 +6,13 @@ export const en = {
       confirmText: 'Discard',
       cancelText: 'Stay',
     },
+    formError: {
+      title_one: 'Form Error',
+      title_other: 'Form Errors',
+      message_one: 'There is an error in the form. Please fix it before proceeding.',
+      message_other: 'There are errors in the form. Please fix them before proceeding.',
+      dismissText: 'Dismiss',
+    },
   },
   auth: {
     loginTitle: 'Welcome',
@@ -87,7 +94,6 @@ export const en = {
   purchase: {
     title: 'Purchase',
     basicSection: {
-      title: 'Basic Section',
       account: 'Account',
       category: 'Category',
       date: 'Date',
@@ -100,6 +106,23 @@ export const en = {
       date: 'Date',
       intervalType: 'Interval Type',
       frequency: 'Frequency',
+    },
+    purchaseTransferSection: {
+      purchase: 'Purchase',
+      transfer: 'Transfer',
+    },
+    transferSection: {
+      accountFrom: 'Source Account',
+      accountTo: 'Target Account',
+      amount: 'Amount',
+      date: 'Date',
+      description: 'Note',
+    },
+    errors: {
+      sameAccount: 'Transfer destination must be different from source account',
+      amountRequired: 'Amount must be greater than zero',
+      accountRequired: 'Account is required',
+      categoryRequired: 'Category is required for non-transfer transactions',
     },
   },
   quickActions: {

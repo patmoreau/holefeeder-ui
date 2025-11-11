@@ -27,8 +27,15 @@ describe('translations', () => {
     });
 
     it('should handle all keys from the source translation object', () => {
+      const pluralSuffixRegex = /_(one|other|zero|few|many)$/;
+
       const checkAllKeys = (source: any, generated: any, path = ''): void => {
         for (const key in source) {
+          // Skip pluralized keys as they are not included in tk
+          if (pluralSuffixRegex.test(key)) {
+            continue;
+          }
+
           const currentPath = path ? `${path}.${key}` : key;
 
           if (typeof source[key] === 'string') {
@@ -157,6 +164,7 @@ describe('translations', () => {
 
     it('should create unique paths for each translation key', () => {
       const paths = new Set<string>();
+      const pluralSuffixRegex = /_(one|other|zero|few|many)$/;
 
       const collectPaths = (obj: any): void => {
         for (const key in obj) {
@@ -170,10 +178,15 @@ describe('translations', () => {
 
       collectPaths(tk);
 
-      // Count total string values in the source
+      // Count total string values in the source (excluding pluralized keys)
       const countStrings = (obj: any): number => {
         let count = 0;
         for (const key in obj) {
+          // Skip pluralized keys as they are not included in tk
+          if (pluralSuffixRegex.test(key)) {
+            continue;
+          }
+
           if (typeof obj[key] === 'string') {
             count++;
           } else if (typeof obj[key] === 'object' && obj[key] !== null) {

@@ -1,18 +1,26 @@
-import { anAccount, aCategory, anAmount, aString, aBoolean, aDateIntervalType, aCount } from '@/__tests__';
-import { Purchase } from '@/features/purchase/core/purchase';
+import { aBoolean, aCategory, aCount, aDateIntervalType, anAccount, anAmount, aString } from '@/__tests__';
+import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 import { aTag } from './tag-builder';
 
-const defaultPurchase = (): Purchase => ({
+const defaultPurchase = (): PurchaseFormData => ({
   date: new Date().toISOString(),
   amount: anAmount(),
   description: aString(),
-  account: anAccount(),
+  sourceAccount: anAccount(),
   category: aCategory(),
   tags: [aTag()],
   hasCashflow: aBoolean(),
   cashflowEffectiveDate: new Date().toISOString(),
   cashflowIntervalType: aDateIntervalType(),
   cashflowFrequency: aCount(),
+  transfer: false,
+  targetAccount: anAccount(),
 });
 
-export const aPurchase = (overrides: Partial<Purchase> = {}): Purchase => ({ ...defaultPurchase(), ...overrides });
+export const aPurchase = (overrides: Partial<PurchaseFormData> = {}): PurchaseFormData => ({ ...defaultPurchase(), ...overrides });
+
+export const aTransfer = (overrides: Partial<PurchaseFormData> = {}): PurchaseFormData => ({
+  ...defaultPurchase(),
+  ...overrides,
+  transfer: true,
+});

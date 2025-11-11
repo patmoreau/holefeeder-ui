@@ -1,6 +1,6 @@
 import { type AxiosResponse } from 'axios';
 import { DateIntervalType } from '@/features/purchase/core/date-interval-type';
-import { Purchase } from '@/features/purchase/core/purchase';
+import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 import { apiService } from '@/shared/services/api-service';
 
 type PurchaseApi = {
@@ -12,22 +12,42 @@ type PurchaseApi = {
   tags: string[];
   cashflow?: { effectiveDate: string; intervalType: DateIntervalType; frequency: number; recurrence: number };
 };
+
+type TransferApi = {
+  date: string;
+  amount: number;
+  description: string;
+  fromAccountId: string;
+  toAccountId: string;
+};
+
 export const transactionApi = (token: string | null) => {
   const api = apiService(token);
 
-  const makePurchase = (purchase: Purchase): Promise<AxiosResponse> => {
+  const makeTransfer = (formData: PurchaseFormData): Promise<AxiosResponse> => {
+    const transferApi: TransferApi = {
+      date: formData.date,
+      amount: formData.amount,
+      description: formData.description,
+      fromAccountId: formData.sourceAccount!.id,
+      toAccountId: formData.targetAccount!.id,
+    };
+    return api.postWithAuth<TransferApi>('/api/v2/transactions/transfer', transferApi);
+  };
+
+  const makePurchase = (formData: PurchaseFormData): Promise<AxiosResponse> => {
     const purchaseApi: PurchaseApi = {
-      date: purchase.date,
-      amount: purchase.amount,
-      description: purchase.description,
-      accountId: purchase.account!.id,
-      categoryId: purchase.category!.id,
-      tags: purchase.tags.map((tag) => tag.id),
-      cashflow: purchase.hasCashflow
+      date: formData.date,
+      amount: formData.amount,
+      description: formData.description,
+      accountId: formData.sourceAccount!.id,
+      categoryId: formData.category!.id,
+      tags: formData.tags.map((tag) => tag.id),
+      cashflow: formData.hasCashflow
         ? {
-            effectiveDate: purchase.cashflowEffectiveDate,
-            intervalType: purchase.cashflowIntervalType,
-            frequency: purchase.cashflowFrequency,
+            effectiveDate: formData.cashflowEffectiveDate,
+            intervalType: formData.cashflowIntervalType,
+            frequency: formData.cashflowFrequency,
             recurrence: 0,
           }
         : undefined,
@@ -35,7 +55,15 @@ export const transactionApi = (token: string | null) => {
     return api.postWithAuth<PurchaseApi>('/api/v2/transactions/make-purchase', purchaseApi);
   };
 
+  const createTransaction = (formData: PurchaseFormData): Promise<AxiosResponse> => {
+    if (formData.transfer) {
+      return makeTransfer(formData);
+    } else {
+      return makePurchase(formData);
+    }
+  };
+
   return {
-    makePurchase,
+    createTransaction: createTransaction,
   };
 };

@@ -8,6 +8,13 @@ export const fr: TranslationStructure = {
       confirmText: 'Annuler',
       cancelText: 'Rester',
     },
+    formError: {
+      title_one: 'Erreur de formulaire',
+      title_other: 'Erreurs de formulaire',
+      message_one: 'Il y a une erreur dans le formulaire. Veuillez la corriger',
+      message_other: 'Il y a des erreurs dans le formulaire. Veuillez les corriger',
+      dismissText: 'Fermer',
+    },
   },
   auth: {
     loginTitle: 'Bienvenue',
@@ -90,11 +97,10 @@ export const fr: TranslationStructure = {
   purchase: {
     title: 'Achat',
     basicSection: {
-      title: 'Section de base',
       account: 'Compte',
+      amount: 'Montant',
       category: 'Catégorie',
       date: 'Date',
-      amount: 'Montant',
       description: 'Note',
     },
     cashflowSection: {
@@ -103,6 +109,23 @@ export const fr: TranslationStructure = {
       date: 'Date',
       intervalType: "Type d'intervalle",
       frequency: 'Fréquence',
+    },
+    purchaseTransferSection: {
+      purchase: 'Achat',
+      transfer: 'Transfert',
+    },
+    transferSection: {
+      accountFrom: 'Compte source',
+      accountTo: 'Compte destination',
+      amount: 'Montant',
+      date: 'Date',
+      description: 'Note',
+    },
+    errors: {
+      sameAccount: 'Le compte de destination doit être différent du compte source',
+      amountRequired: 'Le montant doit être supérieur à zéro',
+      accountRequired: 'Le compte est requis',
+      categoryRequired: 'La catégorie est requise pour les transactions non-transfert',
     },
   },
   quickActions: {

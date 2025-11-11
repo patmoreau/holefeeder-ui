@@ -1,6 +1,12 @@
 import { Platform, TextStyle, ViewStyle } from 'react-native';
 
-export type ThemeMode = 'light' | 'dark' | 'system';
+export const ThemeMode = {
+  light: 'light',
+  dark: 'dark',
+  system: 'system',
+} as const;
+
+export type ThemeMode = (typeof ThemeMode)[keyof typeof ThemeMode];
 
 export type Typography = 'default' | 'title';
 

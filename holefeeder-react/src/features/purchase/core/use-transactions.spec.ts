@@ -16,14 +16,14 @@ const mockUseAuth = jest.mocked(useAuth);
 describe('purchaseMutation', () => {
   const tokenInfo = aTokenInfo();
   const purchase = aPurchase();
-  const mockMakePurchase = jest.fn();
+  const mockCreateTransaction = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseAuth.mockReturnValue({ tokenInfo } as any);
-    mockMakePurchase.mockResolvedValue(anAxiosResponse({}));
+    mockCreateTransaction.mockResolvedValue(anAxiosResponse({}));
     mockService.mockReturnValue({
-      makePurchase: mockMakePurchase,
+      createTransaction: mockCreateTransaction,
     } as any);
   });
 
@@ -39,7 +39,7 @@ describe('purchaseMutation', () => {
       result.current.mutate(purchase);
 
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mockMakePurchase).toHaveBeenCalledWith(purchase);
+      expect(mockCreateTransaction).toHaveBeenCalledWith(purchase);
     });
   });
 });

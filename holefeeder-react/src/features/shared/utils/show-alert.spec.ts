@@ -9,6 +9,11 @@ const mockT = jest.fn((key) => {
     'alert.discard.message': 'Are you sure you want to discard your changes?',
     'alert.discard.cancelText': 'Cancel',
     'alert.discard.confirmText': 'Discard',
+    'alert.formError.title_one': 'Form Error',
+    'alert.formError.title_other': 'Form Errors',
+    'alert.formError.message_one': 'There is an error in the form. Please fix it before proceeding.',
+    'alert.formError.message_other': 'There are errors in the form. Please fix them before proceeding.',
+    'alert.formError.dismissText': 'Dismiss',
   };
   return translations[key] || '';
 });
@@ -25,10 +30,11 @@ describe('showAlert', () => {
     mockAlert.mockClear();
   });
 
-  it('returns an object with a showDiscardAlert method', () => {
+  it('returns an object with a showDiscardAlert and showFormErrorAlert method', () => {
     const alertFunctions = showAlert(mockT);
     expect(typeof alertFunctions).toBe('object');
     expect(typeof alertFunctions.showDiscardAlert).toBe('function');
+    expect(typeof alertFunctions.showFormErrorAlert).toBe('function');
   });
 
   describe('showDiscardAlert', () => {

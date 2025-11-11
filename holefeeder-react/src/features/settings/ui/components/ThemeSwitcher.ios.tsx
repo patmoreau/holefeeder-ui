@@ -5,7 +5,13 @@ import { tk } from '@/i18n/translations';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { ThemeMode } from '@/types/theme/theme';
 
-export function ThemeSwitcher() {
+const tkThemes: Record<ThemeMode, string> = {
+  [ThemeMode.light]: tk.themeSwitcher.light,
+  [ThemeMode.dark]: tk.themeSwitcher.dark,
+  [ThemeMode.system]: tk.themeSwitcher.system,
+};
+
+export const ThemeSwitcher = () => {
   const { t } = useTranslation();
   const { changeThemeMode, availableThemeModes, themeMode } = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(availableThemeModes.findIndex((mode) => mode.code === themeMode));
@@ -17,8 +23,7 @@ export function ThemeSwitcher() {
 
   return (
     <Picker
-      modifiers={[]}
-      options={availableThemeModes.map((mode) => t(`${tk.themeSwitcher}.${mode.langId}`))}
+      options={availableThemeModes.map((mode) => t(tkThemes[mode.code]))}
       selectedIndex={selectedIndex}
       onOptionSelected={({ nativeEvent: { index } }) => {
         handleLanguageChange(availableThemeModes[index].code).finally(() => setSelectedIndex(index));
@@ -26,4 +31,4 @@ export function ThemeSwitcher() {
       variant="menu"
     />
   );
-}
+};

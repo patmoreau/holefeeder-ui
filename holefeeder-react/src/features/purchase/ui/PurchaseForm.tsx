@@ -19,19 +19,23 @@ interface PurchaseFormProps {
 }
 
 export const PurchaseForm = ({ accounts, categories, tags }: PurchaseFormProps) => {
-  const { formData, isDirty } = usePurchaseForm();
+  const { formData, isDirty, hasErrors, getErrorCount } = usePurchaseForm();
   const purchaseMutation = usePurchase();
 
   const { t } = useTranslation();
-  const { showDiscardAlert } = showAlert(t);
+  const { showDiscardAlert, showFormErrorAlert } = showAlert(t);
   const navigation = useNavigation();
 
   const handleSave = useCallback(async () => {
+    if (hasErrors()) {
+      showFormErrorAlert({ errorCount: getErrorCount() });
+      return;
+    }
     if (isDirty) {
       await purchaseMutation.mutateAsync(formData);
     }
     goBack();
-  }, [formData, isDirty, purchaseMutation]);
+  }, [formData, getErrorCount, hasErrors, isDirty, purchaseMutation, showFormErrorAlert]);
 
   const handleCancel = useCallback(() => {
     if (!isDirty) {

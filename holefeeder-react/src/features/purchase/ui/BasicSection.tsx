@@ -1,4 +1,4 @@
-import { Section, LabeledContent, TextField } from '@expo/ui/swift-ui';
+import { LabeledContent, TextField } from '@expo/ui/swift-ui';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Account } from '@/features/purchase/core/account';
@@ -12,17 +12,17 @@ import { AmountTextField } from '@/features/purchase/ui/components/fields/Amount
 import { TagList } from '@/features/purchase/ui/components/TagList';
 import { tk } from '@/i18n/translations';
 
-interface Props {
+type Props = {
   accounts: Account[];
   categories: Category[];
   tags: Tag[];
-}
+};
 
 export function BasicSection({ accounts, categories, tags }: Props) {
   const { t } = useTranslation();
   const { formData, updateFormField } = usePurchaseForm();
 
-  const updateAccount = (account: Account) => updateFormField('account', account);
+  const updateSourceAccount = (account: Account) => updateFormField('sourceAccount', account);
 
   const updateCategory = (category: Category) => updateFormField('category', category);
 
@@ -31,7 +31,7 @@ export function BasicSection({ accounts, categories, tags }: Props) {
   const updateDescription = (value: string) => updateFormField('description', value);
 
   return (
-    <Section title={t(tk.purchase.basicSection.title)}>
+    <>
       <LabeledContent label={t(tk.purchase.basicSection.amount)}>
         <AmountTextField initialAmount={formData.amount} onAmountChange={(amount) => updateFormField('amount', amount)} />
       </LabeledContent>
@@ -39,7 +39,7 @@ export function BasicSection({ accounts, categories, tags }: Props) {
         <DatePicker selectedDate={formData.date} onDateSelected={(date) => updateFormField('date', date)} />
       </LabeledContent>
       <LabeledContent label={t(tk.purchase.basicSection.account)}>
-        <AccountPicker accounts={accounts} selectedAccount={formData.account || accounts?.[0] || null} onSelectAccount={updateAccount} />
+        <AccountPicker accounts={accounts} selectedAccount={formData.sourceAccount} onSelectAccount={updateSourceAccount} />
       </LabeledContent>
       <LabeledContent label={t(tk.purchase.basicSection.category)}>
         <CategoryPicker
@@ -50,6 +50,6 @@ export function BasicSection({ accounts, categories, tags }: Props) {
       </LabeledContent>
       <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
       <TextField placeholder={t(tk.purchase.basicSection.description)} defaultValue={formData.description} onChangeText={updateDescription} />
-    </Section>
+    </>
   );
 }

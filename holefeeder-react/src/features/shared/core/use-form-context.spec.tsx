@@ -8,7 +8,7 @@ type TestFormData = {
   name: string;
 };
 
-const { FormDataProvider, useFormDataContext } = createFormDataContext<TestFormData>('Test');
+const { FormDataProvider, useFormDataContext } = createFormDataContext<TestFormData, string>('Test');
 
 const INITIAL_VALUE: TestFormData = { id: '1', name: 'Initial' };
 

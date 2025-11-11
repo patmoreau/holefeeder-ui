@@ -1,7 +1,7 @@
 import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Text, Pressable, Platform } from 'react-native';
-import { ThemedView } from '@/components/themed-view';
+import { Platform, Pressable, Text } from 'react-native';
+import { ThemedView } from '@/features/shared/ui/components/ThemedView';
 import { tk } from '@/i18n/translations';
 import { useStyles, useTextStyles, useViewStyles } from '@/shared/hooks/theme/use-styles';
 import { GlobalStyles } from '@/types/theme/global-styles';
@@ -11,7 +11,7 @@ export default function NotFoundScreen() {
   const containerStyles = useViewStyles();
   const textStyles = useTextStyles();
 
-  const styles = useStyles((theme) => ({
+  const styles = useStyles((_) => ({
     button: {
       paddingVertical: 8,
       paddingHorizontal: 16,

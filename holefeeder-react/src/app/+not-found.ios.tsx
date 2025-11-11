@@ -2,7 +2,7 @@ import { Button, Host } from '@expo/ui/swift-ui';
 import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
-import { ThemedView } from '@/components/themed-view';
+import { ThemedView } from '@/features/shared/ui/components/ThemedView';
 import { tk } from '@/i18n/translations';
 import { useTextStyles, useViewStyles } from '@/shared/hooks/theme/use-styles';
 import { GlobalStyles } from '@/types/theme/global-styles';

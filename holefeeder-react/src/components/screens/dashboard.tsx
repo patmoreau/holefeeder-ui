@@ -3,8 +3,9 @@ import { Link } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet } from 'react-native';
 import { ParallaxScrollView } from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { ScreenTitle } from '@/features/shared/ui/components/ScreenTitle';
+import { ThemedText } from '@/features/shared/ui/components/ThemedText';
+import { ThemedView } from '@/features/shared/ui/components/ThemedView';
 import { tk } from '@/i18n/translations';
 
 export default function HomeScreen() {
@@ -16,9 +17,7 @@ export default function HomeScreen() {
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">{t(tk.home.title)}</ThemedText>
-      </ThemedView>
+      <ScreenTitle title={t(tk.home.title)} />
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>

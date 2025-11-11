@@ -32,7 +32,6 @@ describe('TagList', () => {
   beforeEach(() => {
     mockUseTheme.mockReturnValue(mockTheme);
     render(<TestHost />);
-    screen.debug();
   });
 
   it('shows placeholder', () => {

@@ -9,14 +9,21 @@ type Props = {
   onAmountChange: (amount: number) => void;
 };
 
-export function AmountTextField({ initialAmount = 0, placeHolder = '', onAmountChange }: Props) {
+export const AmountTextField = ({ initialAmount = 0, placeHolder = '', onAmountChange }: Props) => {
   const [displayValue, setDisplayValue] = useState(initialAmount > 0 ? initialAmount.toFixed(2) : '');
-
   const textFieldRef = useRef<TextFieldRef>(null);
+
   const updateDisplayValue = (newValue: string) => {
     setDisplayValue(newValue);
     if (textFieldRef.current) {
       textFieldRef.current.setText(newValue).then();
+      textFieldRef.current.setSelection(displayValue.length, displayValue.length).then();
+    }
+  };
+
+  const selectTextOnFocus = (focused: boolean) => {
+    if (focused && textFieldRef.current) {
+      textFieldRef.current.setSelection(0, displayValue.length).then();
     }
   };
 
@@ -25,6 +32,8 @@ export function AmountTextField({ initialAmount = 0, placeHolder = '', onAmountC
   return (
     <VStack alignment="trailing">
       <TextField
+        autoFocus={true}
+        onChangeFocus={selectTextOnFocus}
         ref={textFieldRef}
         autocorrection={false}
         defaultValue={displayValue}
@@ -35,4 +44,4 @@ export function AmountTextField({ initialAmount = 0, placeHolder = '', onAmountC
       />
     </VStack>
   );
-}
+};

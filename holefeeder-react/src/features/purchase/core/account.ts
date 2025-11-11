@@ -1,17 +1,8 @@
-export const AccountType = {
-  Checking: 'checking',
-  CreditCard: 'savings',
-  CreditLine: 'credit',
-  Investment: 'investment',
-  Loan: 'loan',
-  Mortgage: 'mortgage',
-  Savings: 'savings',
-} as const;
-
-export type AccountType = (typeof AccountType)[keyof typeof AccountType];
+import { AccountType } from '@/features/purchase/core/account-type';
+import { Id } from '@/features/purchase/core/id';
 
 export interface Account {
-  id: string;
+  id: Id;
   type: AccountType;
   name: string;
   openBalance: number;

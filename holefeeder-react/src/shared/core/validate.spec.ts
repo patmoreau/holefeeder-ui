@@ -36,7 +36,7 @@ describe('Validate.validate', () => {
 
     expect(result.isFailure).toBe(true);
     if (result.isFailure) {
-      expect(result.error).toEqual(expect.arrayContaining(['name is required']));
+      expect(result.errors).toEqual(expect.arrayContaining(['name is required']));
     }
   });
 
@@ -45,7 +45,7 @@ describe('Validate.validate', () => {
 
     expect(result.isFailure).toBe(true);
     if (result.isFailure) {
-      expect(result.error).toEqual(expect.arrayContaining(['no extras']));
+      expect(result.errors).toEqual(expect.arrayContaining(['no extras']));
     }
   });
 
@@ -64,10 +64,9 @@ describe('Validate.validate', () => {
 
     expect(result.isFailure).toBe(true);
     if (result.isFailure) {
-      expect(Array.isArray(result.error)).toBe(true);
-      expect(result.error.length).toBeGreaterThan(0);
-      // messages are strings
-      result.error.forEach((m) => expect(typeof m).toBe('string'));
+      expect(Array.isArray(result.errors)).toBe(true);
+      expect(result.errors.length).toBeGreaterThan(0);
+      result.errors.forEach((m) => expect(typeof m).toBe('string'));
     }
   });
 });

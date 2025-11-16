@@ -44,8 +44,8 @@ describe('Id.create', () => {
       expect(result.isFailure).toBe(true);
       if (result.isFailure) {
         // Ensure we get at least one error message from validation
-        expect(Array.isArray(result.error)).toBe(true);
-        expect(result.error.length).toBeGreaterThan(0);
+        expect(Array.isArray(result.errors)).toBe(true);
+        expect(result.errors.length).toBeGreaterThan(0);
       }
     }
   });

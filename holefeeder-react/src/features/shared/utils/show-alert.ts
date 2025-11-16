@@ -8,6 +8,7 @@ type AlertCallbacks = {
 
 type FormErrorAlertProps = {
   errorCount: number;
+  errors: Record<string, string>;
 };
 
 export const showAlert = (t: (key: string, options?: any) => string) => {
@@ -26,13 +27,22 @@ export const showAlert = (t: (key: string, options?: any) => string) => {
     ]);
   };
 
-  const showFormErrorAlert = ({ errorCount }: FormErrorAlertProps) => {
-    Alert.alert(t('alert.formError.title', { count: errorCount }), t('alert.formError.message', { count: errorCount }), [
-      {
-        text: t(tk.alert.formError.dismissText),
-        style: 'cancel',
-      },
-    ]);
+  const showFormErrorAlert = ({ errorCount, errors }: FormErrorAlertProps) => {
+    console.debug('showFormErrorAlert called with errors:', errorCount);
+    console.debug('showFormErrorAlert called with errors:', errors);
+    const errorsList = Object.entries(errors)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n');
+    Alert.alert(
+      t('alert.formError.title', { count: errorCount }),
+      __DEV__ ? `${t('alert.formError.message', { count: errorCount })}\n\n${errorsList}` : t('alert.formError.message', { count: errorCount }),
+      [
+        {
+          text: t(tk.alert.formError.dismissText),
+          style: 'cancel',
+        },
+      ]
+    );
   };
 
   return { showDiscardAlert, showFormErrorAlert };

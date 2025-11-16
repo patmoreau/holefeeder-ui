@@ -1,9 +1,9 @@
-import { Icon, NativeTabs, Label } from 'expo-router/unstable-native-tabs';
+import { Icon, Label, NativeTabs } from 'expo-router/unstable-native-tabs';
 import React from 'react';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useLanguage } from '@/shared/hooks/use-language';
 
-export default function TabsLayout() {
+const TabsLayout = () => {
   const { t, currentLanguage } = useLanguage();
   const { theme } = useTheme();
 
@@ -23,4 +23,6 @@ export default function TabsLayout() {
       </NativeTabs.Trigger>
     </NativeTabs>
   );
-}
+};
+
+export default TabsLayout;

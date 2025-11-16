@@ -39,6 +39,12 @@ export interface Theme {
     chip: TextStyle;
   };
   styles: {
+    view: {
+      center: ViewStyle;
+    };
+    text: {
+      link: TextStyle;
+    };
     buttons: {
       primary: ViewStyle;
       secondary: ViewStyle;

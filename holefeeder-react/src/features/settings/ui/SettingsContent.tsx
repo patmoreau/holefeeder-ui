@@ -1,6 +1,7 @@
 import { Form, Host } from '@expo/ui/swift-ui';
 import { DisplaySection } from '@/features/settings/ui/display-section';
 import { ProfileSection } from '@/features/settings/ui/profile-section';
+import { TestSection } from '@/features/settings/ui/test-section';
 
 export const SettingsContent = () => {
   return (
@@ -8,6 +9,7 @@ export const SettingsContent = () => {
       <Form>
         <ProfileSection />
         <DisplaySection />
+        {__DEV__ && <TestSection />}
       </Form>
     </Host>
   );

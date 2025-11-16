@@ -44,6 +44,19 @@ export const lightTheme: Theme = {
   },
   typography: iosTypography,
   styles: {
+    view: {
+      center: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+    text: {
+      link: {
+        color: '#007AFF',
+        textDecorationLine: 'underline',
+      },
+    },
     buttons: {
       primary: {
         minHeight: 44,

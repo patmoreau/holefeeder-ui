@@ -11,7 +11,7 @@ type Schema = {
   $id: string;
 };
 
-const validate = <T>(schema: Schema, value: unknown): Result<T, string[]> => {
+const validate = <T>(schema: Schema, value: unknown): Result<T> => {
   const validateFunction = getValidateFunctionFor(schema);
 
   return validateFunction(value) ? Result.success(value as T) : Result.failure(buildErrors(validateFunction.errors));

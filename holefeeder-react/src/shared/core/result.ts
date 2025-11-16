@@ -1,17 +1,17 @@
-export type Result<T, E> = Success<T> | Failure<E>;
+export type Result<T> = Success<T> | Failure;
 
 export type Success<T> = {
   readonly isFailure: false;
   readonly value: T;
 };
 
-export type Failure<E> = {
+export type Failure = {
   readonly isFailure: true;
-  readonly error: E;
+  readonly errors: string[];
 };
 
 const success = <T>(value: T): Success<T> => ({ isFailure: false, value });
 
-const failure = <E>(error: E): Failure<E> => ({ isFailure: true, error });
+const failure = (errors: string[]): Failure => ({ isFailure: true, errors });
 
 export const Result = { success, failure } as const;

@@ -1,34 +1,46 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { AuthButton } from '@/features/shared/ui/components/AuthButton';
 import { tk } from '@/i18n/translations';
-import { useStyles, useTextStyles, useViewStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { GlobalStyles } from '@/types/theme/global-styles';
+import { Theme } from '@/types/theme/theme';
+
+const createStyles = (theme: Theme, global: any) => ({
+  centered: {
+    ...theme.styles.containers.center,
+    backgroundColor: theme.colors.background,
+  },
+  content: {
+    width: '80%',
+    maxWidth: 300,
+    ...global.column,
+    ...global.roundedLg,
+    ...global.p24,
+    ...global.alignCenter,
+  },
+  heading: {
+    ...theme.typography.title,
+    color: theme.colors.text,
+    ...GlobalStyles.textCenter,
+  },
+  subtitle: {
+    ...theme.typography.subtitle,
+    color: theme.colors.secondaryText,
+    ...global.textCenter,
+    ...global.mb32,
+  },
+});
 
 export default function LoginScreen() {
   const { t } = useTranslation();
-  const containerStyles = useViewStyles();
-  const textStyles = useTextStyles();
-
-  const styles = useStyles((theme, global) => ({
-    content: {
-      width: '80%',
-      maxWidth: 300,
-      ...global.column,
-      ...global.roundedLg,
-      ...global.p24,
-      ...global.alignCenter,
-    },
-    subtitle: {
-      ...textStyles.subtitle,
-      ...global.mb32,
-    },
-  }));
+  const styles = useStyles(createStyles);
 
   return (
-    <View style={containerStyles.centered}>
+    <View style={styles.centered}>
       <View style={styles.content}>
-        <Text style={textStyles.heading}>{t(tk.auth.loginTitle)}</Text>
+        <Text style={styles.heading}>{t(tk.auth.loginTitle)}</Text>
         <Text style={styles.subtitle}>{t(tk.auth.loginSubtitle)}</Text>
         <AuthButton />
       </View>

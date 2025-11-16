@@ -10,7 +10,7 @@ const schema = {
   pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
 };
 
-const create = (value: string): Result<Id, string[]> => {
+const create = (value: string): Result<Id> => {
   return Validate.validate<Id>(schema, value);
 };
 

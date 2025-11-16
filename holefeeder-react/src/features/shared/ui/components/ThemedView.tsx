@@ -1,15 +1,15 @@
 import { View, type ViewProps } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { Theme } from '@/types/theme/theme';
 
-const useComponentStyles = () =>
-  useStyles((theme) => ({
-    container: {
-      backgroundColor: theme.colors.background,
-    },
-  }));
+const createStyles = (theme: Theme) => ({
+  container: {
+    backgroundColor: theme.colors.background,
+  },
+});
 
 export const ThemedView = ({ style, ...otherProps }: ViewProps) => {
-  const styles = useComponentStyles();
+  const styles = useStyles(createStyles);
 
   return <View style={[styles.container, style]} {...otherProps} />;
 };

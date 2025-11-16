@@ -3,17 +3,29 @@ import { View } from 'react-native';
 import { Button } from '@/features/shared/ui/components/Button';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { tk } from '@/i18n/translations';
-import { useViewStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { Theme } from '@/types/theme/theme';
+
+const createStyles = (theme: Theme) => ({
+  centered: {
+    ...theme.styles.containers.center,
+    backgroundColor: theme.colors.background,
+  },
+  primary: {
+    ...theme.styles.containers.page,
+    backgroundColor: theme.colors.background,
+  },
+});
 
 export const AuthButton = () => {
   const { user, isLoading, login, logout } = useAuth();
   const { t } = useTranslation();
-  const viewStyles = useViewStyles();
+  const styles = useStyles(createStyles);
 
   if (isLoading) {
     return (
-      <View style={viewStyles.centered}>
+      <View style={styles.centered}>
         <LoadingIndicator size="large" />
       </View>
     );
@@ -21,7 +33,7 @@ export const AuthButton = () => {
 
   if (user) {
     return (
-      <View style={viewStyles.primary}>
+      <View style={styles.primary}>
         <Button variant="destructive" onPress={logout}>
           {t(tk.auth.logoutButton)}
         </Button>
@@ -30,7 +42,7 @@ export const AuthButton = () => {
   }
 
   return (
-    <View style={viewStyles.primary}>
+    <View style={styles.primary}>
       <Button variant="primary" onPress={login}>
         {t(tk.auth.loginButton)}
       </Button>

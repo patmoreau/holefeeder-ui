@@ -1,9 +1,10 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Category } from '@/features/purchase/core/category';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
-import { useTextStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { Theme } from '@/types/theme/theme';
 
 type Props = {
   categories: Category[] | null;
@@ -11,8 +12,26 @@ type Props = {
   onSelectCategory: (category: Category) => void;
 };
 
+const createStyles = (theme: Theme) => ({
+  picker: {
+    ...theme.styles.components.picker,
+    backgroundColor: theme.colors.background,
+    borderColor: theme.colors.separator,
+  },
+  pickerItem: {
+    ...theme.styles.components.pickerItem,
+    ...Platform.select({
+      web: {
+        backgroundColor: theme.colors.background,
+        color: theme.colors.text,
+      },
+      default: {},
+    }),
+  },
+});
+
 export function CategoryPicker({ categories, selectedCategory, onSelectCategory }: Props) {
-  const textStyles = useTextStyles();
+  const styles = useStyles(createStyles);
 
   if (!categories) {
     return <LoadingIndicator size="small" />;
@@ -26,7 +45,7 @@ export function CategoryPicker({ categories, selectedCategory, onSelectCategory 
       }}
     >
       <Picker
-        style={textStyles.picker}
+        style={styles.picker}
         selectedValue={selectedCategory?.id}
         onValueChange={(itemValue: string | number) => {
           const selected = categories.find((cat) => cat.id === itemValue);
@@ -36,7 +55,7 @@ export function CategoryPicker({ categories, selectedCategory, onSelectCategory 
         }}
       >
         {categories.map((category) => (
-          <Picker.Item key={category.id} label={category.name} value={category.id} style={textStyles.pickerItem} />
+          <Picker.Item key={category.id} label={category.name} value={category.id} style={styles.pickerItem} />
         ))}
       </Picker>
     </View>

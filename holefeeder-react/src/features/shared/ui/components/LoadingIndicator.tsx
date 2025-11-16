@@ -3,24 +3,24 @@ import { ActivityIndicator, ActivityIndicatorProps, View, ViewProps } from 'reac
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { Theme } from '@/types/theme/theme';
 
-interface LoadingIndicatorProps extends Omit<ActivityIndicatorProps, 'size' | 'color'> {
+type LoadingIndicatorProps = Omit<ActivityIndicatorProps, 'size' | 'color'> & {
   size?: 'small' | 'large';
   variant?: 'primary' | 'secondary';
   containerStyle?: ViewProps['style'];
   containerProps?: Omit<ViewProps, 'style'>;
   withBackground?: boolean;
-}
+};
 
-const useLoadingIndicatorStyles = () =>
-  useStyles((theme) => ({
-    containerBase: {
-      ...theme.styles.containers.center,
-    },
-    background: {
-      backgroundColor: theme.colors.background,
-    },
-  }));
+const createStyles = (theme: Theme) => ({
+  containerBase: {
+    ...theme.styles.containers.center,
+  },
+  background: {
+    backgroundColor: theme.colors.background,
+  },
+});
 
 export const LoadingIndicator = ({
   size = 'large',
@@ -32,7 +32,7 @@ export const LoadingIndicator = ({
   ...props
 }: LoadingIndicatorProps) => {
   const { t } = useTranslation();
-  const styles = useLoadingIndicatorStyles();
+  const styles = useStyles(createStyles);
   const { theme } = useTheme();
 
   const variantColor = variant === 'primary' ? theme.colors.primary : theme.colors.secondary;

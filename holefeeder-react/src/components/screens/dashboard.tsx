@@ -19,10 +19,10 @@ export default function HomeScreen() {
     >
       <ScreenTitle title={t(tk.home.title)} />
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+        <ThemedText variant="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{' '}
-          <ThemedText type="defaultSemiBold">
+          Edit <ThemedText variant="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{' '}
+          <ThemedText variant="defaultSemiBold">
             {Platform.select({
               ios: 'cmd + d',
               android: 'cmd + m',
@@ -35,7 +35,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <Link href="/modal">
           <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+            <ThemedText variant="subtitle">Step 2: Explore</ThemedText>
           </Link.Trigger>
           <Link.Preview />
           <Link.Menu>
@@ -50,12 +50,12 @@ export default function HomeScreen() {
         <ThemedText>{`Tap the Explore tab to learn more about what's included in this starter app.`}</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+        <ThemedText variant="subtitle">Step 3: Get a fresh start</ThemedText>
         <ThemedText>
           {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+          <ThemedText variant="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
+          <ThemedText variant="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
+          <ThemedText variant="defaultSemiBold">app</ThemedText> to <ThemedText variant="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
     </ParallaxScrollView>

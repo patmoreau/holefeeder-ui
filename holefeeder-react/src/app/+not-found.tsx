@@ -2,6 +2,7 @@ import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 import { Button } from '@/features/shared/ui/components/Button';
+import { ThemedText } from '@/features/shared/ui/components/ThemedText';
 import { ThemedView } from '@/features/shared/ui/components/ThemedView';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
@@ -53,7 +54,7 @@ export default function NotFoundScreen() {
         }}
       />
       <ThemedView style={styles.centered}>
-        <Text style={styles.heading}>{t(tk.notFound.description)}</Text>
+        <ThemedText variant="title">{t(tk.notFound.description)}</ThemedText>
         <Button variant="primary" onPress={() => router.push({ pathname: '/' })}>
           <Text>{t(tk.notFound.goBack)}</Text>
         </Button>

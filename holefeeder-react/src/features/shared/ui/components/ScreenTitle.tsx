@@ -25,7 +25,7 @@ export const ScreenTitle = ({ title, viewProps, textProps }: ScreenTitleProps) =
 
   return (
     <ThemedView style={styles.titleContainer} {...viewProps}>
-      <ThemedText type="title" {...textProps}>
+      <ThemedText variant="title" {...textProps}>
         {title}
       </ThemedText>
     </ThemedView>

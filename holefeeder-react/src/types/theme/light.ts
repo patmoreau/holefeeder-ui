@@ -5,6 +5,7 @@ const iosTypography = {
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    paddingBottom: 16,
   },
   subtitle: {
     fontSize: 20,

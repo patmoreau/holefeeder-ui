@@ -3,11 +3,11 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 export type ThemedTextProps = TextProps & {
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'footnote';
+  variant?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'footnote';
 };
 
 const createStyles = (theme: Theme) => ({
-  heading: {
+  title: {
     ...theme.typography.title,
     color: theme.colors.text,
     textAlign: 'center' as const,
@@ -23,8 +23,8 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const ThemedText = ({ style, type = 'default', ...props }: ThemedTextProps) => {
+export const ThemedText = ({ style, variant = 'default', ...props }: ThemedTextProps) => {
   const styles = useStyles(createStyles);
 
-  return <Text style={[type === 'default' && styles.body, type === 'title' && styles.heading, style]} {...props} />;
+  return <Text style={[variant === 'default' && styles.body, variant === 'title' && styles.title, style]} {...props} />;
 };

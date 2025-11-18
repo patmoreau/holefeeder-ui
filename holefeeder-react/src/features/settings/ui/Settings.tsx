@@ -6,24 +6,24 @@ import { SettingsContent } from '@/features/settings/ui/SettingsContent';
 import { ScreenTitle } from '@/features/shared/ui/components/ScreenTitle';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { Theme } from '@/types/theme/theme';
 
-const useComponentStyles = () =>
-  useStyles((_) => ({
-    container: {
-      flex: 1,
-      minHeight: '100%',
-    },
-    headerImage: {
-      color: '#808080',
-      bottom: -90,
-      left: -35,
-      position: 'absolute',
-    },
-  }));
+const createStyles = (theme: Theme) => ({
+  container: {
+    flex: 1,
+    minHeight: '100%' as const,
+  },
+  headerImage: {
+    color: '#808080',
+    bottom: -90,
+    left: -35,
+    position: 'absolute' as const,
+  },
+});
 
 const SettingsScreen = () => {
   const { t } = useTranslation();
-  const styles = useComponentStyles();
+  const styles = useStyles(createStyles);
 
   return (
     <ParallaxScrollView

@@ -36,6 +36,7 @@ export interface Theme {
     title: TextStyle;
     subtitle: TextStyle;
     body: TextStyle;
+    secondary: TextStyle;
     chip: TextStyle;
   };
   styles: {

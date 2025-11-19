@@ -21,10 +21,25 @@ const createStyles = (theme: Theme) => ({
     ...theme.typography.body,
     color: theme.colors.text,
   },
+  footnote: {
+    ...theme.typography.body,
+    color: theme.colors.secondaryText,
+  },
 });
 
 export const ThemedText = ({ style, variant = 'default', ...props }: ThemedTextProps) => {
   const styles = useStyles(createStyles);
 
-  return <Text style={[variant === 'default' && styles.body, variant === 'title' && styles.title, style]} {...props} />;
+  return (
+    <Text
+      style={[
+        variant === 'default' && styles.body,
+        variant === 'title' && styles.title,
+        variant === 'subtitle' && styles.subtitle,
+        variant === 'footnote' && styles.footnote,
+        style,
+      ]}
+      {...props}
+    />
+  );
 };

@@ -102,6 +102,7 @@ export const fr: TranslationStructure = {
       category: 'Catégorie',
       date: 'Date',
       description: 'Note',
+      tags: 'Étiquettes',
     },
     cashflowSection: {
       title: 'Détails des flux de trésorerie',
@@ -110,13 +111,14 @@ export const fr: TranslationStructure = {
       intervalType: "Type d'intervalle",
       frequency: 'Fréquence',
     },
-    purchaseTransferSection: {
-      purchase: 'Achat',
+    transactionTypeSection: {
+      expense: 'Achat',
+      income: 'Revenu',
       transfer: 'Transfert',
     },
     transferSection: {
-      accountFrom: 'Compte source',
-      accountTo: 'Compte destination',
+      accountFrom: 'Source',
+      accountTo: 'Destination',
       amount: 'Montant',
       date: 'Date',
       description: 'Note',

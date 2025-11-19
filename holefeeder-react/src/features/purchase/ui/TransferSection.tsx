@@ -1,14 +1,13 @@
-import { LabeledContent, Text, TextField, VStack } from '@expo/ui/swift-ui';
-import { font, padding } from '@expo/ui/swift-ui/modifiers';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Account } from '@/features/purchase/core/account';
 import { PurchaseFormError, usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
-import { AccountPicker } from '@/features/purchase/ui/components/AccountPicker';
-import { DatePicker } from '@/features/purchase/ui/components/DatePicker';
-import { AmountTextField } from '@/features/purchase/ui/components/fields/AmountTextField';
+import { AccountField } from '@/features/purchase/ui/components/fields/AccountField';
+import { DateField } from '@/features/purchase/ui/components/fields/DateField';
+import { DescriptionField } from '@/features/purchase/ui/components/fields/DescriptionField';
+import { Section } from '@/features/shared/ui/Section';
 import { tk } from '@/i18n/translations';
 
 const tkErrors: Record<PurchaseFormError, string> = {
@@ -45,32 +44,36 @@ export const TransferSection = ({ accounts }: Props) => {
   const accountToErrorKey = getFieldError('targetAccount') as PurchaseFormError;
 
   return (
-    <>
-      <LabeledContent label={t(tk.purchase.transferSection.amount)}>
-        <AmountTextField initialAmount={formData.amount} onAmountChange={(amount) => updateFormField('amount', amount)} />
-      </LabeledContent>
-      <LabeledContent label={t(tk.purchase.transferSection.date)}>
-        <DatePicker selectedDate={formData.date} onDateSelected={(date) => updateFormField('date', date)} />
-      </LabeledContent>
-      <LabeledContent label={t(tk.purchase.transferSection.accountFrom)}>
-        <AccountPicker accounts={accounts} selectedAccount={formData.sourceAccount} onSelectAccount={updateSourceAccount} />
-      </LabeledContent>
-      <VStack>
-        <LabeledContent label={t(tk.purchase.transferSection.accountTo)}>
-          <AccountPicker accounts={accounts} selectedAccount={formData.targetAccount} onSelectAccount={updateTargetAccount} />
-        </LabeledContent>
-        {accountToErrorKey && (
-          <Text color={styles.errorText.color} modifiers={[font({ size: styles.errorText.fontSize }), padding({ all: 4 } as const)]}>
-            {t(tkErrors[accountToErrorKey])}
-          </Text>
-        )}
-      </VStack>
-      <TextField
-        placeholder={t(tk.purchase.transferSection.description)}
-        defaultValue={formData.description}
-        onChangeText={updateDescription}
+    <Section>
+      <DateField
+        label={t(tk.purchase.transferSection.date)}
+        selectedDate={formData.date}
+        onDateSelected={(date) => updateFormField('date', date)}
       />
-    </>
+      <AccountField
+        label={t(tk.purchase.transferSection.accountFrom)}
+        accounts={accounts}
+        selectedAccount={formData.sourceAccount}
+        onSelectAccount={updateSourceAccount}
+      />
+      {/*<VStack>*/}
+      <AccountField
+        label={t(tk.purchase.transferSection.accountTo)}
+        accounts={accounts}
+        selectedAccount={formData.targetAccount}
+        onSelectAccount={updateTargetAccount}
+      />
+      {accountToErrorKey && (
+        // <Text color={styles.errorText.color} modifiers={[font({ size: styles.errorText.fontSize }), padding({ all: 4 } as const)]}>
+        <Text style={styles.errorText}>{t(tkErrors[accountToErrorKey])}</Text>
+      )}
+      {/*</VStack>*/}
+      <DescriptionField
+        label={t(tk.purchase.transferSection.description)}
+        description={formData.description}
+        onDescriptionChange={updateDescription}
+      />
+    </Section>
   );
 };
 

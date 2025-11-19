@@ -1,10 +1,10 @@
-import { Section, LabeledContent, Button } from '@expo/ui/swift-ui';
+import { Button, LabeledContent, Section } from '@expo/ui/swift-ui';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Category } from '@/features/purchase/core/category';
 import { useCategories } from '@/features/purchase/core/use-categories';
-import { CategoryPicker } from '@/features/purchase/ui/components/CategoryPicker';
+import { CategoryField } from '@/features/purchase/ui/components/fields/CategoryField';
 import { tk } from '@/i18n/translations';
 
 export function TestSection() {
@@ -27,7 +27,7 @@ export function TestSection() {
         </Button>
       </LabeledContent>
       <LabeledContent label={t(tk.testSection.component)}>
-        <CategoryPicker
+        <CategoryField
           categories={categories || []}
           selectedCategory={selectedCategory || categories?.[0] || null}
           onSelectCategory={setSelectedCategory}

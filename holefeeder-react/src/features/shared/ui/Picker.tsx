@@ -1,15 +1,21 @@
-import { Picker } from '@react-native-picker/picker';
+import { Picker as PickerRN } from '@react-native-picker/picker';
 import React from 'react';
 import { Platform, View } from 'react-native';
-import { Category } from '@/features/purchase/core/category';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
-type Props = {
-  categories: Category[] | null;
-  selectedCategory: Category | null;
-  onSelectCategory: (category: Category) => void;
+export type PickerOption = {
+  id: string | number;
+  [key: string]: any;
+};
+
+export type PickerProps<T extends PickerOption> = {
+  variant?: 'menu' | 'segmented';
+  options: T[];
+  selectedOption: T;
+  onSelectOption: (option: T) => void;
+  onOptionLabel: (option: T) => string;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -30,10 +36,16 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export function CategoryPicker({ categories, selectedCategory, onSelectCategory }: Props) {
+export const Picker = <T extends PickerOption>({
+  variant = 'menu',
+  options,
+  selectedOption,
+  onSelectOption,
+  onOptionLabel,
+}: PickerProps<T>) => {
   const styles = useStyles(createStyles);
 
-  if (!categories) {
+  if (!options) {
     return <LoadingIndicator size="small" />;
   }
 
@@ -44,20 +56,20 @@ export function CategoryPicker({ categories, selectedCategory, onSelectCategory 
         width: '100%',
       }}
     >
-      <Picker
+      <PickerRN
         style={styles.picker}
-        selectedValue={selectedCategory?.id}
+        selectedValue={selectedOption?.id}
         onValueChange={(itemValue: string | number) => {
-          const selected = categories.find((cat) => cat.id === itemValue);
+          const selected = options.find((option) => option.id === itemValue);
           if (selected) {
-            onSelectCategory(selected);
+            onSelectOption(selected);
           }
         }}
       >
-        {categories.map((category) => (
-          <Picker.Item key={category.id} label={category.name} value={category.id} style={styles.pickerItem} />
+        {options.map((option) => (
+          <PickerRN.Item key={option.id} label={onOptionLabel(option)} value={option.id} style={styles.pickerItem} />
         ))}
-      </Picker>
+      </PickerRN>
     </View>
   );
-}
+};

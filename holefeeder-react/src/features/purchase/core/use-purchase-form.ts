@@ -13,7 +13,9 @@ export type PurchaseFormError = (typeof PurchaseFormError)[keyof typeof Purchase
 export const validatePurchaseForm: ValidationFunction<PurchaseFormData, PurchaseFormError> = (formData) => {
   const errors: Partial<Record<keyof PurchaseFormData, PurchaseFormError>> = {};
 
-  if (formData.transfer && formData.sourceAccount && formData.targetAccount) {
+  const transfer = formData.purchaseType === 'transfer';
+
+  if (transfer && formData.sourceAccount && formData.targetAccount) {
     if (formData.sourceAccount.id === formData.targetAccount.id) {
       errors.targetAccount = PurchaseFormError.sameAccount;
     }
@@ -27,7 +29,7 @@ export const validatePurchaseForm: ValidationFunction<PurchaseFormData, Purchase
     errors.sourceAccount = PurchaseFormError.accountRequired;
   }
 
-  if (!formData.transfer && !formData.category) {
+  if (!transfer && !formData.category) {
     errors.category = PurchaseFormError.categoryRequired;
   }
 

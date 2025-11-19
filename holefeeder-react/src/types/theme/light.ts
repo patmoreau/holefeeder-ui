@@ -8,13 +8,17 @@ const iosTypography = {
     paddingBottom: 16,
   },
   subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontWeight: 'normal',
   },
   body: {
     fontSize: 17,
     fontWeight: 'normal',
     lineHeight: 24,
+  },
+  secondary: {
+    fontSize: 15,
+    fontWeight: 'normal',
   },
   chip: {
     fontSize: 14,
@@ -126,9 +130,12 @@ export const lightTheme: Theme = {
         justifyContent: 'center',
       },
       section: {
-        marginBottom: 24,
-        padding: 16,
-        borderRadius: 12,
+        flexGrow: 1,
+        gap: 4,
+        marginHorizontal: 16,
+        marginBottom: 16,
+        paddingHorizontal: 16,
+        borderRadius: 24,
       },
     },
   },

@@ -99,6 +99,7 @@ export const en = {
       date: 'Date',
       amount: 'Amount',
       description: 'Note',
+      tags: 'Tags',
     },
     cashflowSection: {
       title: 'Cashflow details',
@@ -107,13 +108,14 @@ export const en = {
       intervalType: 'Interval Type',
       frequency: 'Frequency',
     },
-    purchaseTransferSection: {
-      purchase: 'Purchase',
+    transactionTypeSection: {
+      expense: 'Expense',
+      income: 'Income',
       transfer: 'Transfer',
     },
     transferSection: {
-      accountFrom: 'Source Account',
-      accountTo: 'Target Account',
+      accountFrom: 'Source',
+      accountTo: 'Target',
       amount: 'Amount',
       date: 'Date',
       description: 'Note',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
+import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { useCategories } from '@/features/purchase/core/use-categories';
 import { PurchaseFormProvider, validatePurchaseForm } from '@/features/purchase/core/use-purchase-form';
@@ -29,6 +29,7 @@ export default function PurchaseScreen() {
   const [accounts, categories, tags] = data;
 
   const initialData: PurchaseFormData = {
+    purchaseType: PurchaseType.expense,
     date: withDate(new Date()).toDateOnly(),
     amount: 0,
     description: '',
@@ -39,7 +40,6 @@ export default function PurchaseScreen() {
     cashflowEffectiveDate: withDate(new Date()).toDateOnly(),
     cashflowIntervalType: 'monthly',
     cashflowFrequency: 1,
-    transfer: false,
     targetAccount: accounts![1] || accounts![0],
   };
 

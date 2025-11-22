@@ -1,5 +1,3 @@
-import { useQuickAction } from 'expo-quick-actions/hooks';
-import { useQuickActionRouting } from 'expo-quick-actions/router';
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 import { useEffect } from 'react';
@@ -11,6 +9,17 @@ import { QueryProvider } from '@/contexts/query-provider';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useQuickActions } from '@/shared/hooks/use-quick-actions';
+
+(function addConsoleTimestamp() {
+  const methods: (keyof Console)[] = ['log', 'info', 'warn', 'error', 'debug'];
+  methods.forEach((m) => {
+    const orig = (console as any)[m].bind(console);
+    (console as any)[m] = (...args: any[]) => {
+      const time = new Date().toISOString();
+      orig(`[${time}]`, ...args);
+    };
+  });
+})();
 
 // ===== PRODUCTION LOGGING SETUP =====
 if (!__DEV__) {
@@ -48,10 +57,7 @@ if (!__DEV__) {
 
 function AppContent() {
   const { user, isLoading } = useAuth();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const action = useQuickAction();
 
-  useQuickActionRouting();
   useQuickActions();
 
   if (isLoading) {
@@ -78,8 +84,6 @@ export default function RootLayout() {
       console.log('[APP-LIFECYCLE] RootLayout mounted');
     }
   }, []);
-
-  useQuickActionRouting();
 
   const errorHandler = (error: Error, stackTrace: string) => {
     console.error('[ERROR-HANDLER]', error, stackTrace);

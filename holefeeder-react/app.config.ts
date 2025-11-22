@@ -39,6 +39,7 @@ export default {
       'expo-font',
       'expo-localization',
       'expo-web-browser',
+      'expo-quick-actions',
       [
         'expo-router',
         {

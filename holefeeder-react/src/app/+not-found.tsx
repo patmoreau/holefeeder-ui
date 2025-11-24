@@ -1,8 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
-import { ThemedText } from '@/features/shared/ui/components/ThemedText';
-import { ThemedView } from '@/features/shared/ui/components/ThemedView';
+import { AppText } from '@/features/shared/ui/components/AppText';
+import { AppView } from '@/features/shared/ui/components/AppView';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { GlobalStyles } from '@/types/theme/global-styles';
@@ -52,10 +52,10 @@ export default function NotFoundScreen() {
           headerBackButtonDisplayMode: 'minimal',
         }}
       />
-      <ThemedView style={styles.centered}>
-        <ThemedText variant="title">{t(tk.notFound.description)}</ThemedText>
+      <AppView style={styles.centered}>
+        <AppText variant="title">{t(tk.notFound.description)}</AppText>
         <AppButton label={t(tk.notFound.goBack)} variant="primary" onPress={() => router.push({ pathname: '/' })} />
-      </ThemedView>
+      </AppView>
     </>
   );
 }

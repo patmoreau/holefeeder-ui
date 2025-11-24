@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
-import { ThemedText } from '@/features/shared/ui/components/ThemedText';
-import { ThemedView } from '@/features/shared/ui/components/ThemedView';
+import { AppText } from '@/features/shared/ui/components/AppText';
+import { AppView } from '@/features/shared/ui/components/AppView';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
@@ -19,11 +19,11 @@ const createStyles = (theme: Theme) => ({
 export default function ModalScreen() {
   const styles = useStyles(createStyles);
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText variant="title">This is a modal</ThemedText>
+    <AppView style={styles.container}>
+      <AppText variant="title">This is a modal</AppText>
       <Link href="/" dismissTo style={styles.link}>
-        <ThemedText variant="link">Go to home screen</ThemedText>
+        <AppText variant="link">Go to home screen</AppText>
       </Link>
-    </ThemedView>
+    </AppView>
   );
 }

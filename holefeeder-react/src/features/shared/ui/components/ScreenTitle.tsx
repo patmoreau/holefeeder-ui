@@ -1,7 +1,7 @@
 import React from 'react';
 import { ViewProps } from 'react-native';
-import { ThemedText, ThemedTextProps } from '@/features/shared/ui/components/ThemedText';
-import { ThemedView } from '@/features/shared/ui/components/ThemedView';
+import { AppText, ThemedTextProps } from '@/features/shared/ui/components/AppText';
+import { AppView } from '@/features/shared/ui/components/AppView';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
@@ -24,10 +24,10 @@ export const ScreenTitle = ({ title, viewProps, textProps }: ScreenTitleProps) =
   const styles = useStyles(createStyles);
 
   return (
-    <ThemedView style={styles.titleContainer} {...viewProps}>
-      <ThemedText variant="title" {...textProps}>
+    <AppView style={styles.titleContainer} {...viewProps}>
+      <AppText variant="title" {...textProps}>
         {title}
-      </ThemedText>
-    </ThemedView>
+      </AppText>
+    </AppView>
   );
 };

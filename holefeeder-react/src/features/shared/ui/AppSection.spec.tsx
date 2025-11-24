@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Section } from './Section';
+import { AppSection } from './AppSection';
 
 // Mock the useStyles hook
 jest.mock('@/shared/hooks/theme/use-styles', () => ({
@@ -21,9 +21,9 @@ jest.mock('@/shared/hooks/theme/use-styles', () => ({
 describe('Section', () => {
   it('renders children without dividers when there is only one child', () => {
     const { getByText } = render(
-      <Section>
+      <AppSection>
         <Text>Child 1</Text>
-      </Section>
+      </AppSection>
     );
 
     expect(getByText('Child 1')).toBeTruthy();
@@ -31,7 +31,7 @@ describe('Section', () => {
 
   it('renders dividers between multiple children', () => {
     const { getByText, UNSAFE_root } = render(
-      <Section>
+      <AppSection>
         <View testID="child1">
           <Text>Child 1</Text>
         </View>
@@ -41,7 +41,7 @@ describe('Section', () => {
         <View testID="child3">
           <Text>Child 3</Text>
         </View>
-      </Section>
+      </AppSection>
     );
 
     expect(getByText('Child 1')).toBeTruthy();
@@ -56,14 +56,14 @@ describe('Section', () => {
 
   it('does not render a divider after the last child', () => {
     const { UNSAFE_root } = render(
-      <Section>
+      <AppSection>
         <View testID="first">
           <Text>First</Text>
         </View>
         <View testID="last">
           <Text>Last</Text>
         </View>
-      </Section>
+      </AppSection>
     );
 
     const allViews = UNSAFE_root.findAllByType(View);

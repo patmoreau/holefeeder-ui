@@ -47,7 +47,7 @@ export type FieldProps = {
   variant?: 'default' | 'large';
 } & Omit<ViewProps, 'children'>;
 
-export const Field = ({ label, icon, children, style, variant = 'default', ...otherProps }: FieldProps) => {
+export const AppField = ({ label, icon, children, style, variant = 'default', ...otherProps }: FieldProps) => {
   const styles = useStyles(createStyles);
   const { theme } = useTheme();
 

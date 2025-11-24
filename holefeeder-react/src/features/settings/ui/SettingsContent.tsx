@@ -1,14 +1,14 @@
 import { DisplaySection } from '@/features/settings/ui/DisplaySection';
 import { ProfileSection } from '@/features/settings/ui/ProfileSection';
 import { TestSection } from '@/features/settings/ui/TestSection';
-import { Form } from '@/features/shared/ui/Form';
+import { AppForm } from '@/features/shared/ui/AppForm';
 
 export const SettingsContent = () => {
   return (
-    <Form>
+    <AppForm>
       <ProfileSection />
       <DisplaySection />
       {__DEV__ && <TestSection />}
-    </Form>
+    </AppForm>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, PressableProps, View } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { AppButtonVariant } from '@/features/shared/ui/components/AppButtonVariant';
-import { ThemedText } from '@/features/shared/ui/components/ThemedText';
+import { AppText } from '@/features/shared/ui/components/AppText';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 import { Theme } from '@/types/theme/theme';
@@ -61,9 +61,9 @@ export function AppButton({ label, icon, variant = AppButtonVariant.secondary, o
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {icon && <IconSymbol name={icon} color={style.color} />}
         {label && (
-          <ThemedText style={{ color: style.color }} variant="default">
+          <AppText style={{ color: style.color }} variant="default">
             {label}
-          </ThemedText>
+          </AppText>
         )}
       </View>
     </Pressable>

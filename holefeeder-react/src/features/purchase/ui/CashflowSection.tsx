@@ -5,7 +5,7 @@ import { DateField } from '@/features/purchase/ui/components/fields/DateField';
 import { DateIntervalTypeField } from '@/features/purchase/ui/components/fields/DateIntervalTypeField';
 import { FrequencyField } from '@/features/purchase/ui/components/fields/FrequencyField';
 import { HasCashflowField } from '@/features/purchase/ui/components/fields/HasCashflowField';
-import { Section } from '@/features/shared/ui/Section';
+import { AppSection } from '@/features/shared/ui/AppSection';
 import { tk } from '@/i18n/translations';
 
 export const CashflowSection = () => {
@@ -14,14 +14,14 @@ export const CashflowSection = () => {
 
   if (!formData.hasCashflow) {
     return (
-      <Section title={t(tk.purchase.cashflowSection.title)}>
+      <AppSection title={t(tk.purchase.cashflowSection.title)}>
         <HasCashflowField hasCashflow={formData.hasCashflow} onHasCashflowChange={(value) => updateFormField('hasCashflow', value)} />
-      </Section>
+      </AppSection>
     );
   }
 
   return (
-    <Section title={t(tk.purchase.cashflowSection.title)}>
+    <AppSection title={t(tk.purchase.cashflowSection.title)}>
       <HasCashflowField hasCashflow={formData.hasCashflow} onHasCashflowChange={(value) => updateFormField('hasCashflow', value)} />
       <DateField
         label={t(tk.purchase.cashflowSection.date)}
@@ -36,6 +36,6 @@ export const CashflowSection = () => {
         selectedFrequency={formData.cashflowFrequency}
         onSelectFrequency={(frequency) => updateFormField('cashflowFrequency', frequency)}
       />
-    </Section>
+    </AppSection>
   );
 };

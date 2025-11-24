@@ -1,8 +1,8 @@
 import { PropsWithChildren, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { ThemedText } from '@/features/shared/ui/components/ThemedText';
-import { ThemedView } from '@/features/shared/ui/components/ThemedView';
+import { AppText } from '@/features/shared/ui/components/AppText';
+import { AppView } from '@/features/shared/ui/components/AppView';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 
 export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
@@ -10,7 +10,7 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
   const { theme } = useTheme();
 
   return (
-    <ThemedView>
+    <AppView>
       <TouchableOpacity style={styles.heading} onPress={() => setIsOpen((value) => !value)} activeOpacity={0.8}>
         <IconSymbol
           name="chevron.right"
@@ -20,10 +20,10 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
           style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
         />
 
-        <ThemedText variant="defaultSemiBold">{title}</ThemedText>
+        <AppText variant="defaultSemiBold">{title}</AppText>
       </TouchableOpacity>
-      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
-    </ThemedView>
+      {isOpen && <AppView style={styles.content}>{children}</AppView>}
+    </AppView>
   );
 }
 

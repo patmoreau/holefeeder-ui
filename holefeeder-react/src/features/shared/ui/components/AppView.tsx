@@ -8,7 +8,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const ThemedView = ({ style, ...otherProps }: ViewProps) => {
+export const AppView = ({ style, ...otherProps }: ViewProps) => {
   const styles = useStyles(createStyles);
 
   return <View style={[styles.container, style]} {...otherProps} />;

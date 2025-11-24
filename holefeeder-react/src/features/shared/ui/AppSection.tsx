@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, type ViewProps } from 'react-native';
-import { ThemedText } from '@/features/shared/ui/components/ThemedText';
+import { AppText } from '@/features/shared/ui/components/AppText';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
@@ -25,7 +25,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const Section = ({ title, style, children, ...otherProps }: SectionProps) => {
+export const AppSection = ({ title, style, children, ...otherProps }: SectionProps) => {
   const styles = useStyles(createStyles);
 
   const childrenWithDividers = React.Children.toArray(children).reduce<React.ReactNode[]>((acc, child, index) => {
@@ -39,9 +39,9 @@ export const Section = ({ title, style, children, ...otherProps }: SectionProps)
   return (
     <View style={{ flexDirection: 'column' }}>
       {title && (
-        <ThemedText style={styles.title} variant="footnote">
+        <AppText style={styles.title} variant="footnote">
           {title}
-        </ThemedText>
+        </AppText>
       )}
       <View style={[styles.section, style]} {...otherProps}>
         {childrenWithDividers}

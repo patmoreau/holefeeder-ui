@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import type { ReactElement } from 'react';
 import { StyleSheet, Text, View, type ViewProps } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
-import { ThemedView } from '@/features/shared/ui/components/ThemedView';
+import { AppView } from '@/features/shared/ui/components/AppView';
 import { useColorScheme } from '@/shared/hooks/theme/use-color-scheme';
 import { useThemeColor } from '@/shared/hooks/theme/use-theme-color';
 
@@ -45,7 +45,7 @@ export function ParallaxScrollView({ headerImage, headerBackgroundColor, ...othe
         <Animated.View style={[styles.header, { backgroundColor: headerBackgroundColor[colorScheme] }, headerAnimatedStyle]}>
           {headerImage}
         </Animated.View>
-        <ThemedView style={styles.content} {...otherProps}></ThemedView>
+        <AppView style={styles.content} {...otherProps}></AppView>
       </Animated.ScrollView>
     </View>
   );

@@ -7,7 +7,7 @@ import { PurchaseFormError, usePurchaseForm } from '@/features/purchase/core/use
 import { AccountField } from '@/features/purchase/ui/components/fields/AccountField';
 import { DateField } from '@/features/purchase/ui/components/fields/DateField';
 import { DescriptionField } from '@/features/purchase/ui/components/fields/DescriptionField';
-import { Section } from '@/features/shared/ui/Section';
+import { AppSection } from '@/features/shared/ui/AppSection';
 import { tk } from '@/i18n/translations';
 
 const tkErrors: Record<PurchaseFormError, string> = {
@@ -44,7 +44,7 @@ export const TransferSection = ({ accounts }: Props) => {
   const accountToErrorKey = getFieldError('targetAccount') as PurchaseFormError;
 
   return (
-    <Section>
+    <AppSection>
       <DateField
         label={t(tk.purchase.transferSection.date)}
         selectedDate={formData.date}
@@ -69,7 +69,7 @@ export const TransferSection = ({ accounts }: Props) => {
       )}
       {/*</VStack>*/}
       <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
-    </Section>
+    </AppSection>
   );
 };
 

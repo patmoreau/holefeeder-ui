@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DateIntervalType } from '@/features/purchase/core/date-interval-type';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 import { Picker, PickerOption } from '@/features/shared/ui/Picker';
 import { tk } from '@/i18n/translations';
 
@@ -35,13 +35,13 @@ export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIn
   const selectedOption = options.find((opt) => opt.value === selectedDateIntervalType) ?? options[0];
 
   return (
-    <Field label={t(tk.purchase.cashflowSection.intervalType)} icon={'calendar'}>
+    <AppField label={t(tk.purchase.cashflowSection.intervalType)} icon={'calendar'}>
       <Picker
         options={options}
         selectedOption={selectedOption}
         onSelectOption={(option) => onSelectDateIntervalType(option.value)}
         onOptionLabel={(option) => t(tkTypes[option.value])}
       />
-    </Field>
+    </AppField>
   );
 }

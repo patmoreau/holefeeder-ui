@@ -27,7 +27,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const ThemedText = ({ style, variant = 'default', ...props }: ThemedTextProps) => {
+export const AppText = ({ style, variant = 'default', ...props }: ThemedTextProps) => {
   const styles = useStyles(createStyles);
 
   return (

@@ -17,7 +17,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const Form = ({ style, ...otherProps }: ScrollViewProps) => {
+export const AppForm = ({ style, ...otherProps }: ScrollViewProps) => {
   const styles = useStyles(createStyles);
   const headerHeight = useHeaderHeight();
 

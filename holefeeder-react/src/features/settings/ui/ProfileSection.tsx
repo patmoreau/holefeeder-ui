@@ -5,9 +5,9 @@ import { View } from 'react-native';
 import { useAppContext } from '@/contexts/AppContext';
 import { AccessTokenField } from '@/features/settings/ui/fields/AccessTokenField';
 import { ExpiresAtField } from '@/features/settings/ui/fields/ExpiresAtField';
+import { AppSection } from '@/features/shared/ui/AppSection';
+import { AppText } from '@/features/shared/ui/components/AppText';
 import { AuthButton } from '@/features/shared/ui/components/AuthButton';
-import { ThemedText } from '@/features/shared/ui/components/ThemedText';
-import { Section } from '@/features/shared/ui/Section';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -51,20 +51,20 @@ export const ProfileSection = () => {
     `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || profile.email || 'User')}&size=120&background=007AFF&color=fff`;
 
   return (
-    <Section title={t(tk.profileSection.title)}>
+    <AppSection title={t(tk.profileSection.title)}>
       <View style={styles.profile}>
         <View style={styles.avatarContainer}>
           <ExpoImage source={{ uri: avatarUri }} style={styles.avatar} contentFit="cover" />
         </View>
 
         <View style={styles.profileInfo}>
-          <ThemedText variant={'title'}>{profile.name}</ThemedText>
-          <ThemedText>{profile.email}</ThemedText>
+          <AppText variant={'title'}>{profile.name}</AppText>
+          <AppText>{profile.email}</AppText>
           <AuthButton />
         </View>
       </View>
       <AccessTokenField tokenInfo={tokenInfo} />
       <ExpiresAtField tokenInfo={tokenInfo} />
-    </Section>
+    </AppSection>
   );
 };

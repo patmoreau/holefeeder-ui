@@ -9,7 +9,7 @@ import { CategoryField } from '@/features/purchase/ui/components/fields/Category
 import { DateField } from '@/features/purchase/ui/components/fields/DateField';
 import { DescriptionField } from '@/features/purchase/ui/components/fields/DescriptionField';
 import { TagList } from '@/features/purchase/ui/components/TagList';
-import { Section } from '@/features/shared/ui/Section';
+import { AppSection } from '@/features/shared/ui/AppSection';
 import { tk } from '@/i18n/translations';
 
 type Props = {
@@ -31,7 +31,7 @@ export function BasicSection({ accounts, categories, tags }: Props) {
   const updateDescription = (value: string) => updateFormField('description', value);
 
   return (
-    <Section>
+    <AppSection>
       <DateField
         label={t(tk.purchase.basicSection.date)}
         selectedDate={formData.date}
@@ -46,6 +46,6 @@ export function BasicSection({ accounts, categories, tags }: Props) {
       <CategoryField categories={categories} selectedCategory={formData.category} onSelectCategory={updateCategory} />
       <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
       <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
-    </Section>
+    </AppSection>
   );
 }

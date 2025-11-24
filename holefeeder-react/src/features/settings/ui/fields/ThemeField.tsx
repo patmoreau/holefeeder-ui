@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 import { Picker, PickerOption } from '@/features/shared/ui/Picker';
 import { tk } from '@/i18n/translations';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
@@ -38,13 +38,13 @@ export const ThemeField = () => {
   }, [themeMode, options]);
 
   return (
-    <Field label={t(tk.displaySection.theme)} icon={'pencil.and.scribble'}>
+    <AppField label={t(tk.displaySection.theme)} icon={'pencil.and.scribble'}>
       <Picker
         options={options}
         selectedOption={selectedOption}
         onSelectOption={(option) => handleThemeChange(option).catch(console.error)}
         onOptionLabel={(option) => t(tkTypes[option.value])}
       />
-    </Field>
+    </AppField>
   );
 };

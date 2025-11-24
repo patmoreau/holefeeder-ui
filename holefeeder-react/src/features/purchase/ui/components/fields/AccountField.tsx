@@ -1,6 +1,6 @@
 import React from 'react';
 import { Account } from '@/features/purchase/core/account';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 import { Picker } from '@/features/shared/ui/Picker';
 
 type Props = {
@@ -12,8 +12,8 @@ type Props = {
 
 export function AccountField({ label, accounts, selectedAccount, onSelectAccount }: Props) {
   return (
-    <Field label={label} icon={'creditcard'}>
+    <AppField label={label} icon={'creditcard'}>
       <Picker options={accounts} selectedOption={selectedAccount} onSelectOption={onSelectAccount} onOptionLabel={(account) => account.name} />
-    </Field>
+    </AppField>
   );
 }

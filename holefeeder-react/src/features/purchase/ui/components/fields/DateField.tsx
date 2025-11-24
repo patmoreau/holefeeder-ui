@@ -1,5 +1,5 @@
 import { DateTimePicker, Host } from '@expo/ui/swift-ui';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 
 type Props = {
   label: string;
@@ -21,10 +21,10 @@ export function DateField({ label, selectedDate, onDateSelected }: Props) {
   };
 
   return (
-    <Field label={label} icon={'calendar'}>
+    <AppField label={label} icon={'calendar'}>
       <Host matchContents>
         <DateTimePicker {...datePickerProps} />
       </Host>
-    </Field>
+    </AppField>
   );
 }

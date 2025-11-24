@@ -4,8 +4,8 @@ import { ExternalLink } from '@/components/external-link';
 import { ParallaxScrollView } from '@/components/parallax-scroll-view';
 import { Collapsible } from '@/components/ui/collapsible';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { AppText } from '@/features/shared/ui/components/AppText';
 import { ScreenTitle } from '@/features/shared/ui/components/ScreenTitle';
-import { ThemedText } from '@/features/shared/ui/components/ThemedText';
 import { Fonts } from '@/types/theme/theme';
 
 export default function AccountsScreen() {
@@ -16,59 +16,59 @@ export default function AccountsScreen() {
       headerImage={<IconSymbol size={310} color="#808080" name="chevron.left.forwardslash.chevron.right" style={styles.headerImage} />}
     >
       <ScreenTitle title={'Explore'} />
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
+      <AppText>This app includes example code to help you get started.</AppText>
       <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens: <ThemedText variant="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText variant="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText variant="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText> sets up the tab navigator.
-        </ThemedText>
+        <AppText>
+          This app has two screens: <AppText variant="defaultSemiBold">app/(tabs)/index.tsx</AppText> and{' '}
+          <AppText variant="defaultSemiBold">app/(tabs)/explore.tsx</AppText>
+        </AppText>
+        <AppText>
+          The layout file in <AppText variant="defaultSemiBold">app/(tabs)/_layout.tsx</AppText> sets up the tab navigator.
+        </AppText>
         <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText variant="link">Learn more</ThemedText>
+          <AppText variant="link">Learn more</AppText>
         </ExternalLink>
       </Collapsible>
       <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText variant="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
+        <AppText>
+          You can open this project on Android, iOS, and the web. To open the web version, press <AppText variant="defaultSemiBold">w</AppText>{' '}
+          in the terminal running this project.
+        </AppText>
       </Collapsible>
       <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText variant="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText variant="defaultSemiBold">@3x</ThemedText> suffixes to provide files for different screen densities
-        </ThemedText>
+        <AppText>
+          For static images, you can use the <AppText variant="defaultSemiBold">@2x</AppText> and{' '}
+          <AppText variant="defaultSemiBold">@3x</AppText> suffixes to provide files for different screen densities
+        </AppText>
         <Image source={require('@/assets/images/react-logo.png')} style={{ width: 100, height: 100, alignSelf: 'center' }} />
         <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText variant="link">Learn more</ThemedText>
+          <AppText variant="link">Learn more</AppText>
         </ExternalLink>
       </Collapsible>
       <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The <ThemedText variant="defaultSemiBold">useColorScheme()</ThemedText> hook lets you
-          inspect what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
+        <AppText>
+          This template has light and dark mode support. The <AppText variant="defaultSemiBold">useColorScheme()</AppText> hook lets you inspect
+          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
+        </AppText>
         <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText variant="link">Learn more</ThemedText>
+          <AppText variant="link">Learn more</AppText>
         </ExternalLink>
       </Collapsible>
       <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText variant="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses the powerful{' '}
-          <ThemedText variant="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
+        <AppText>
+          This template includes an example of an animated component. The <AppText variant="defaultSemiBold">components/HelloWave.tsx</AppText>{' '}
+          component uses the powerful{' '}
+          <AppText variant="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
             react-native-reanimated
-          </ThemedText>{' '}
+          </AppText>{' '}
           library to create a waving hand animation.
-        </ThemedText>
+        </AppText>
         {Platform.select({
           ios: (
-            <ThemedText>
-              The <ThemedText variant="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText> component provides a parallax effect for
-              the header image.
-            </ThemedText>
+            <AppText>
+              The <AppText variant="defaultSemiBold">components/ParallaxScrollView.tsx</AppText> component provides a parallax effect for the
+              header image.
+            </AppText>
           ),
         })}
       </Collapsible>

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 import { tk } from '@/i18n/translations';
 import { TagItem } from './TagItem';
 
@@ -18,7 +18,7 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
   return (
-    <Field label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
+    <AppField label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
       <View style={styles.container}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
           {filtered.map((tag) => (
@@ -39,7 +39,7 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
           style={styles.input}
         />
       </View>
-    </Field>
+    </AppField>
   );
 }
 

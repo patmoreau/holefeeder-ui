@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 import { Picker, PickerOption } from '@/features/shared/ui/Picker';
 import { tk } from '@/i18n/translations';
 
@@ -27,13 +27,13 @@ export function FrequencyField({ selectedFrequency, onSelectFrequency }: Props) 
   const selectedOption = options.find((opt) => opt.value === selectedFrequency) ?? null;
 
   return (
-    <Field label={t(tk.purchase.cashflowSection.frequency)} icon={'calendar'}>
+    <AppField label={t(tk.purchase.cashflowSection.frequency)} icon={'calendar'}>
       <Picker
         options={options}
         selectedOption={selectedOption}
         onSelectOption={(option) => onSelectFrequency(option.value)}
         onOptionLabel={(option) => option.value.toString()}
       />
-    </Field>
+    </AppField>
   );
 }

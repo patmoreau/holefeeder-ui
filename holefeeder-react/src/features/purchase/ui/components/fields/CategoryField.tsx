@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Category } from '@/features/purchase/core/category';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 import { Picker } from '@/features/shared/ui/Picker';
 import { tk } from '@/i18n/translations';
 
@@ -15,13 +15,13 @@ export function CategoryField({ categories, selectedCategory, onSelectCategory }
   const { t } = useTranslation();
 
   return (
-    <Field label={t(tk.purchase.basicSection.category)} icon={'cart'}>
+    <AppField label={t(tk.purchase.basicSection.category)} icon={'cart'}>
       <Picker
         options={categories}
         selectedOption={selectedCategory}
         onSelectOption={onSelectCategory}
         onOptionLabel={(category) => category.name}
       />
-    </Field>
+    </AppField>
   );
 }

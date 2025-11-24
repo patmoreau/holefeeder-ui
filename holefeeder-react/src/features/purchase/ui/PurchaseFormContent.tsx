@@ -9,7 +9,7 @@ import { CashflowSection } from '@/features/purchase/ui/CashflowSection';
 import { AmountField } from '@/features/purchase/ui/components/fields/AmountField';
 import { PurchaseTransferSection } from '@/features/purchase/ui/PurchaseTransferSection';
 import { TransferSection } from '@/features/purchase/ui/TransferSection';
-import { Form } from '@/features/shared/ui/Form';
+import { AppForm } from '@/features/shared/ui/AppForm';
 
 type PurchaseFormProps = {
   accounts: Account[];
@@ -21,7 +21,7 @@ export const PurchaseFormContent = ({ accounts, categories, tags }: PurchaseForm
   const { formData, updateFormField } = usePurchaseForm();
 
   return (
-    <Form>
+    <AppForm>
       <PurchaseTransferSection
         selectedPurchaseType={formData.purchaseType}
         onSelectPurchaseType={(type) => updateFormField('purchaseType', type)}
@@ -34,6 +34,6 @@ export const PurchaseFormContent = ({ accounts, categories, tags }: PurchaseForm
         </>
       )}
       {formData.purchaseType === PurchaseType.transfer && <TransferSection accounts={accounts} />}
-    </Form>
+    </AppForm>
   );
 };

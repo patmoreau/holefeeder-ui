@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
 import { FilterTextField } from '@/features/purchase/ui/components/fields/FilterTextField';
-import { Field } from '@/features/shared/ui/Field';
+import { AppField } from '@/features/shared/ui/AppField';
 import { tk } from '@/i18n/translations';
 import { HorizontalScrollView } from '@/modules/horizontal-scroll-view';
 import { TagItem } from './TagItem';
@@ -21,7 +21,7 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
   return (
-    <Field label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
+    <AppField label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
       <Host matchContents>
         <VStack spacing={8}>
           <HorizontalScrollView style={{ gap: 18 }}>
@@ -38,6 +38,6 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
           <FilterTextField filter={filter} setFilter={setFilter} onSubmit={onSubmit} placeholder={t(tk.tagList.placeHolder)} />
         </VStack>
       </Host>
-    </Field>
+    </AppField>
   );
 }

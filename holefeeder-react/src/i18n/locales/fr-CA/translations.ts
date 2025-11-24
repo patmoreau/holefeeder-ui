@@ -49,6 +49,11 @@ export const fr: TranslationStructure = {
     title: 'Affichage',
     language: 'Langue',
     theme: 'Thème',
+    english: 'Anglais',
+    french: 'Français',
+    dark: 'Sombre',
+    light: 'Clair',
+    system: 'Système',
   },
   errors: {
     noInternetConnection: {

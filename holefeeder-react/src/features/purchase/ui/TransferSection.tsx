@@ -68,11 +68,7 @@ export const TransferSection = ({ accounts }: Props) => {
         <Text style={styles.errorText}>{t(tkErrors[accountToErrorKey])}</Text>
       )}
       {/*</VStack>*/}
-      <DescriptionField
-        label={t(tk.purchase.transferSection.description)}
-        description={formData.description}
-        onDescriptionChange={updateDescription}
-      />
+      <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
     </Section>
   );
 };

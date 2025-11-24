@@ -19,10 +19,10 @@ export const Text = ({ children }: { children: unknown }) =>
 export const TextField = ({ children, placeholder }: { children: unknown; placeholder: unknown }) =>
   React.createElement(TextInput, { placeholder }, children);
 
-export const Button = ({ children, onPress }: { children: unknown; onPress?: () => void }) =>
+export const Button = ({ children, variant, role, onPress }: { children: unknown; variant?: string; role?: string; onPress?: () => void }) =>
   React.createElement(
     View,
-    { testID: 'button' },
+    { testID: 'button', 'data-variant': variant, 'data-role': role },
     React.createElement(RNButton, { title: typeof children === 'string' ? children : 'Button', onPress }),
     React.createElement(View, null, children)
   );

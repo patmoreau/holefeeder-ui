@@ -17,6 +17,7 @@ export interface Theme {
     background: string;
     secondaryBackground: string;
     text: string;
+    primaryText: string;
     secondaryText: string;
     destructive: string;
 
@@ -50,6 +51,7 @@ export interface Theme {
       primary: ViewStyle;
       secondary: ViewStyle;
       destructive: ViewStyle;
+      link: ViewStyle;
     };
     components: {
       picker: TextStyle;
@@ -60,6 +62,7 @@ export interface Theme {
       page: ViewStyle;
       center: ViewStyle;
       section: ViewStyle;
+      host: ViewStyle;
     };
   };
 }

@@ -1,6 +1,6 @@
 import { Picker as PickerRN } from '@react-native-picker/picker';
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, StyleProp, View, ViewStyle } from 'react-native';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
@@ -16,9 +16,14 @@ export type PickerProps<T extends PickerOption> = {
   selectedOption: T;
   onSelectOption: (option: T) => void;
   onOptionLabel: (option: T) => string;
+  style?: StyleProp<ViewStyle>;
 };
 
 const createStyles = (theme: Theme) => ({
+  container: {
+    position: 'relative' as const,
+    width: '100%',
+  },
   picker: {
     ...theme.styles.components.picker,
     backgroundColor: theme.colors.background,
@@ -42,6 +47,7 @@ export const Picker = <T extends PickerOption>({
   selectedOption,
   onSelectOption,
   onOptionLabel,
+  style,
 }: PickerProps<T>) => {
   const styles = useStyles(createStyles);
 
@@ -50,12 +56,7 @@ export const Picker = <T extends PickerOption>({
   }
 
   return (
-    <View
-      style={{
-        position: 'relative',
-        width: '100%',
-      }}
-    >
+    <View style={[styles.container, style]}>
       <PickerRN
         style={styles.picker}
         selectedValue={selectedOption?.id}

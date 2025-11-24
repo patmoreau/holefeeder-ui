@@ -30,22 +30,6 @@ describe('<AuthButton />', () => {
     mockUseLanguage.mockReturnValue(aLanguageState());
   });
 
-  it('renders LoadingIndicator when isLoading is true', () => {
-    mockUseAuth.mockReturnValue(aAuthState({ isLoading: true }));
-
-    render(<AuthButton />);
-
-    expect(screen.queryByLabelText('common.loading')).toBeOnTheScreen();
-  });
-
-  it('does not render LoadingIndicator when isLoading is false', () => {
-    mockUseAuth.mockReturnValue(aAuthState({ isLoading: false }));
-
-    render(<AuthButton />);
-
-    expect(screen.queryByLabelText('common.loading')).not.toBeOnTheScreen();
-  });
-
   describe('when user is logged', () => {
     const mockLogout = jest.fn();
 

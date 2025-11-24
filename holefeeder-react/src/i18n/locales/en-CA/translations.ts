@@ -47,6 +47,11 @@ export const en = {
     title: 'Display',
     language: 'Language',
     theme: 'Theme',
+    english: 'English',
+    french: 'French',
+    dark: 'Dark',
+    light: 'Light',
+    system: 'System',
   },
   errors: {
     noInternetConnection: {

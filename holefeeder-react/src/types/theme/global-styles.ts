@@ -137,6 +137,11 @@ export const GlobalStyles = StyleSheet.create({
   py24: { paddingVertical: 24 },
   py32: { paddingVertical: 32 },
 
+  // Gap
+  gapSmall: { gap: 4 },
+  gapMedium: { gap: 8 },
+  gapLarge: { gap: 16 },
+
   // Text alignment
   textCenter: { textAlign: 'center' },
   textLeft: { textAlign: 'left' },

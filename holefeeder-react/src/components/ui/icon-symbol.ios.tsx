@@ -1,19 +1,20 @@
-import { SymbolView, type SymbolViewProps, type SymbolWeight } from 'expo-symbols';
+import { SymbolView, type SymbolWeight } from 'expo-symbols';
 import { StyleProp, ViewStyle } from 'react-native';
+import { AppIcons } from '@/types/icons';
 
-export function IconSymbol({
+export const IconSymbol = ({
   name,
   size = 24,
   color,
   style,
   weight = 'regular',
 }: {
-  name: SymbolViewProps['name'];
+  name: AppIcons;
   size?: number;
   color: string;
   style?: StyleProp<ViewStyle>;
   weight?: SymbolWeight;
-}) {
+}) => {
   return (
     <SymbolView
       weight={weight}
@@ -29,4 +30,4 @@ export function IconSymbol({
       ]}
     />
   );
-}
+};

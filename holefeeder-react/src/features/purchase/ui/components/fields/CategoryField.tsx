@@ -6,8 +6,8 @@ import { Picker } from '@/features/shared/ui/Picker';
 import { tk } from '@/i18n/translations';
 
 type Props = {
-  categories: Category[] | null;
-  selectedCategory: Category | null;
+  categories: Category[];
+  selectedCategory: Category;
   onSelectCategory: (category: Category) => void;
 };
 
@@ -15,7 +15,7 @@ export function CategoryField({ categories, selectedCategory, onSelectCategory }
   const { t } = useTranslation();
 
   return (
-    <Field label={t(tk.purchase.basicSection.category)} iconSymbolName={'cart'}>
+    <Field label={t(tk.purchase.basicSection.category)} icon={'cart'}>
       <Picker
         options={categories}
         selectedOption={selectedCategory}

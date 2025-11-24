@@ -12,6 +12,7 @@ const createStyles = (theme: Theme) => ({
   container: {
     flex: 1,
     minHeight: '100%' as const,
+    backgroundColor: 'red',
   },
   headerImage: {
     color: '#808080',

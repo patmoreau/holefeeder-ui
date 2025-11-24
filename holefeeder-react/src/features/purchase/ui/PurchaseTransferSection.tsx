@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { Picker, PickerOption } from '@/features/shared/ui/Picker';
 import { tk } from '@/i18n/translations';
@@ -23,9 +22,8 @@ type Props = {
 
 const createStyles = () => ({
   container: {
-    flex: 1,
-    marginLeft: 16,
-    marginRight: 16,
+    paddingHorizontal: 16,
+    width: '100%',
   },
 });
 
@@ -44,14 +42,13 @@ export const PurchaseTransferSection = ({ selectedPurchaseType, onSelectPurchase
   const selectedOption = options.find((opt) => opt.value === selectedPurchaseType) || options[0];
 
   return (
-    <View style={styles.container}>
-      <Picker
-        variant="segmented"
-        options={options}
-        selectedOption={selectedOption}
-        onSelectOption={(option) => onSelectPurchaseType(option.value)}
-        onOptionLabel={(option) => t(tkTypes[option.value])}
-      />
-    </View>
+    <Picker
+      variant="segmented"
+      options={options}
+      selectedOption={selectedOption}
+      onSelectOption={(option) => onSelectPurchaseType(option.value)}
+      onOptionLabel={(option) => t(tkTypes[option.value])}
+      style={styles.container}
+    />
   );
 };

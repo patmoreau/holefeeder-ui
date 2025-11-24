@@ -21,7 +21,7 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
   return (
-    <Field label={t(tk.purchase.basicSection.tags)} iconSymbolName={'tag'} variant="large">
+    <Field label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
       <Host matchContents>
         <VStack spacing={8}>
           <HorizontalScrollView style={{ gap: 18 }}>

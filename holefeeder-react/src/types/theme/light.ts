@@ -25,6 +25,14 @@ const iosTypography = {
     fontWeight: 'normal',
     lineHeight: 16,
   },
+  link: {
+    backgroundColor: 'transparent',
+    minHeight: 44,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 } as const;
 
 const tintColorLight = '#0a7ea4';
@@ -36,6 +44,7 @@ export const lightTheme: Theme = {
     background: '#FFFFFF',
     secondaryBackground: '#F2F2F7',
     text: '#000000',
+    primaryText: '#FFFFFF',
     secondaryText: '#3C3C43', // 60% opacity
     destructive: '#FF3B30',
     tint: tintColorLight,
@@ -98,6 +107,19 @@ export const lightTheme: Theme = {
         shadowRadius: 1.0,
         elevation: 1,
       },
+      link: {
+        minHeight: 44,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.0,
+        elevation: 1,
+      },
     },
     components: {
       picker: {
@@ -136,6 +158,12 @@ export const lightTheme: Theme = {
         marginBottom: 16,
         paddingHorizontal: 16,
         borderRadius: 24,
+      },
+      host: {
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flexGrow: 1,
+        // width: '100%',
       },
     },
   },

@@ -27,7 +27,7 @@ export function FrequencyField({ selectedFrequency, onSelectFrequency }: Props) 
   const selectedOption = options.find((opt) => opt.value === selectedFrequency) ?? null;
 
   return (
-    <Field label={t(tk.purchase.cashflowSection.frequency)} iconSymbolName={'calendar'}>
+    <Field label={t(tk.purchase.cashflowSection.frequency)} icon={'calendar'}>
       <Picker
         options={options}
         selectedOption={selectedOption}

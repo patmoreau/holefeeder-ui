@@ -1,8 +1,9 @@
 import React from 'react';
 import { type StyleProp, Text, View, type ViewProps, type ViewStyle } from 'react-native';
-import { IconSymbol, IconSymbolName } from '@/components/ui/icon-symbol';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { AppIcons } from '@/types/icons';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
@@ -28,6 +29,7 @@ const createStyles = (theme: Theme) => ({
   content: {
     flex: 1,
     alignItems: 'flex-end' as const,
+    justifyContent: 'flex-end' as const,
     overflow: 'hidden' as const,
     marginLeft: 12,
   },
@@ -39,13 +41,13 @@ const createStyles = (theme: Theme) => ({
 
 export type FieldProps = {
   label?: string | React.ReactNode;
-  iconSymbolName: IconSymbolName;
+  icon: AppIcons;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   variant?: 'default' | 'large';
 } & Omit<ViewProps, 'children'>;
 
-export const Field = ({ label, iconSymbolName, children, style, variant = 'default', ...otherProps }: FieldProps) => {
+export const Field = ({ label, icon, children, style, variant = 'default', ...otherProps }: FieldProps) => {
   const styles = useStyles(createStyles);
   const { theme } = useTheme();
 
@@ -54,7 +56,7 @@ export const Field = ({ label, iconSymbolName, children, style, variant = 'defau
       <View style={style} {...otherProps}>
         <View style={styles.container}>
           <View style={styles.iconCircle}>
-            <IconSymbol name={iconSymbolName} size={24} color={theme.colors.primary} />
+            <IconSymbol name={icon} size={24} color={theme.colors.primary} />
           </View>
           {label && <Text style={styles.label}>{label}</Text>}
         </View>
@@ -66,7 +68,7 @@ export const Field = ({ label, iconSymbolName, children, style, variant = 'defau
   return (
     <View style={[styles.container, style]} {...otherProps}>
       <View style={styles.iconCircle}>
-        <IconSymbol name={iconSymbolName} size={24} color={theme.colors.primary} />
+        <IconSymbol name={icon} size={24} color={theme.colors.primary} />
       </View>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.content}>{children}</View>

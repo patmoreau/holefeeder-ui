@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { eventBus } from '@/shared/services/event-bus';
-import { EventCallback, Event } from '@/types/event';
+import { Event, EventCallback } from '@/types/event';
 
 export const useEventBusListener = (event: Event, callback: EventCallback) => {
   const callbackRef = useRef(callback);
@@ -38,7 +38,7 @@ export const useEventBusEmitter = (): {
 //   });
 //
 //   return (
-//     <Button
+//     <AppButton
 //       title="Send Notification"
 //   onPress={() => emit('notification', 'Hello World!')}
 //   />

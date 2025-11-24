@@ -13,7 +13,7 @@ export const DescriptionField = ({ description, onDescriptionChange }: Props) =>
   const { t } = useTranslation();
 
   return (
-    <Field iconSymbolName={'pencil.and.list.clipboard'}>
+    <Field label={t(tk.purchase.transferSection.description)} icon={'pencil.and.list.clipboard'}>
       <TextInput
         placeholder={t(tk.purchase.basicSection.description)}
         defaultValue={description}

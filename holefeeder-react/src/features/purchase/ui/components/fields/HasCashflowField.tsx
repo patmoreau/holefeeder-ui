@@ -14,7 +14,7 @@ export const HasCashflowField = ({ hasCashflow, onHasCashflowChange }: Props) =>
   const { t } = useTranslation();
 
   return (
-    <Field label={t(tk.purchase.cashflowSection.cashflow)} iconSymbolName={'arrow.trianglehead.2.clockwise'}>
+    <Field label={t(tk.purchase.cashflowSection.cashflow)} icon={'arrow.trianglehead.2.clockwise'}>
       <Host matchContents>
         <Switch value={hasCashflow} onValueChange={onHasCashflowChange} modifiers={[padding({ trailing: 2 })]} />
       </Host>

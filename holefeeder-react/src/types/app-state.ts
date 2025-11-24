@@ -4,7 +4,12 @@ import { lightTheme } from '@/types/theme/light';
 import { ThemeMode } from '@/types/theme/theme';
 import { UserProfile } from './user-profile';
 
-export type LanguageType = 'en' | 'fr';
+export const LanguageType = {
+  en: 'en',
+  fr: 'fr',
+} as const;
+
+export type LanguageType = (typeof LanguageType)[keyof typeof LanguageType];
 
 export interface ThemeState {
   theme: typeof lightTheme | typeof darkTheme;

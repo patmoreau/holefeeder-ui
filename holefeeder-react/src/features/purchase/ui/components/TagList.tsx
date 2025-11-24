@@ -18,7 +18,7 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
   return (
-    <Field label={t(tk.purchase.basicSection.tags)} iconSymbolName={'tag'} variant="large">
+    <Field label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
       <View style={styles.container}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
           {filtered.map((tag) => (

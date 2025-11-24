@@ -12,7 +12,7 @@ type Props = {
 
 export function AccountField({ label, accounts, selectedAccount, onSelectAccount }: Props) {
   return (
-    <Field label={label} iconSymbolName={'creditcard'}>
+    <Field label={label} icon={'creditcard'}>
       <Picker options={accounts} selectedOption={selectedAccount} onSelectOption={onSelectAccount} onOptionLabel={(account) => account.name} />
     </Field>
   );

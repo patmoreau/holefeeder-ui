@@ -21,7 +21,7 @@ export function DateField({ label, selectedDate, onDateSelected }: Props) {
   };
 
   return (
-    <Field label={label} iconSymbolName={'calendar'}>
+    <Field label={label} icon={'calendar'}>
       <Host matchContents>
         <DateTimePicker {...datePickerProps} />
       </Host>

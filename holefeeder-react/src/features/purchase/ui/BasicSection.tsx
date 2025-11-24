@@ -31,23 +31,21 @@ export function BasicSection({ accounts, categories, tags }: Props) {
   const updateDescription = (value: string) => updateFormField('description', value);
 
   return (
-    <>
-      <Section>
-        <DateField
-          label={t(tk.purchase.basicSection.date)}
-          selectedDate={formData.date}
-          onDateSelected={(date) => updateFormField('date', date)}
-        />
-        <AccountField
-          label={t(tk.purchase.basicSection.account)}
-          accounts={accounts}
-          selectedAccount={formData.sourceAccount}
-          onSelectAccount={updateSourceAccount}
-        />
-        <CategoryField categories={categories} selectedCategory={formData.category} onSelectCategory={updateCategory} />
-        <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
-        <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
-      </Section>
-    </>
+    <Section>
+      <DateField
+        label={t(tk.purchase.basicSection.date)}
+        selectedDate={formData.date}
+        onDateSelected={(date) => updateFormField('date', date)}
+      />
+      <AccountField
+        label={t(tk.purchase.basicSection.account)}
+        accounts={accounts}
+        selectedAccount={formData.sourceAccount}
+        onSelectAccount={updateSourceAccount}
+      />
+      <CategoryField categories={categories} selectedCategory={formData.category} onSelectCategory={updateCategory} />
+      <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
+      <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
+    </Section>
   );
 }

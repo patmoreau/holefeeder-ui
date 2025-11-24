@@ -35,7 +35,7 @@ export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIn
   const selectedOption = options.find((opt) => opt.value === selectedDateIntervalType) ?? options[0];
 
   return (
-    <Field label={t(tk.purchase.cashflowSection.intervalType)} iconSymbolName={'calendar'}>
+    <Field label={t(tk.purchase.cashflowSection.intervalType)} icon={'calendar'}>
       <Picker
         options={options}
         selectedOption={selectedOption}

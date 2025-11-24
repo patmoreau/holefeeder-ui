@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/features/shared/core/error-key';
-import { Button } from '@/features/shared/ui/components/Button';
+import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { tk } from '@/i18n/translations';
 
 type Props = {
@@ -37,14 +37,8 @@ export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) =
       <Text style={{ fontSize: 20, fontWeight: '600', marginBottom: 8 }}>{t(tkErrorTitles[error])}</Text>
       <Text style={{ fontSize: 16, marginBottom: 16 }}>{t(tkErrorMessages[error])}</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
-        {onRetry && (
-          <Button variant={'primary'} onPress={onRetry}>
-            {t(tk.errorSheet.retry)}
-          </Button>
-        )}
-        <Button variant={'secondary'} onPress={() => setShowError(false)}>
-          {t(tk.errorSheet.dismiss)}
-        </Button>
+        {onRetry && <AppButton label={t(tk.errorSheet.retry)} variant={'primary'} onPress={onRetry} />}
+        <AppButton label={t(tk.errorSheet.dismiss)} variant={'secondary'} onPress={() => setShowError(false)} />
       </View>
     </View>
   );

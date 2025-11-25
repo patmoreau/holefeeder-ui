@@ -2,19 +2,21 @@ import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet } from 'react-native';
-import { ParallaxScrollView } from '@/components/parallax-scroll-view';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { AppView } from '@/features/shared/ui/components/AppView';
 import { ScreenTitle } from '@/features/shared/ui/components/ScreenTitle';
+import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
 import { tk } from '@/i18n/translations';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   return (
     <ParallaxScrollView
       style={styles.content}
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={theme.colors.dashboard}
       headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
     >
       <ScreenTitle title={t(tk.home.title)} />

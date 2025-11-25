@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
-import { Picker, PickerOption } from '@/features/shared/ui/Picker';
+import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 
@@ -42,7 +42,7 @@ export const PurchaseTransferSection = ({ selectedPurchaseType, onSelectPurchase
   const selectedOption = options.find((opt) => opt.value === selectedPurchaseType) || options[0];
 
   return (
-    <Picker
+    <AppPicker
       variant="segmented"
       options={options}
       selectedOption={selectedOption}

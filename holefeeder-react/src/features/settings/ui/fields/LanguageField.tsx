@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppField } from '@/features/shared/ui/AppField';
-import { Picker, PickerOption } from '@/features/shared/ui/Picker';
+import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 import { useLanguage } from '@/shared/hooks/use-language';
 import { LanguageType } from '@/types/app-state';
@@ -38,7 +38,7 @@ export const LanguageField = () => {
 
   return (
     <AppField label={t(tk.displaySection.language)} icon={'globe'}>
-      <Picker
+      <AppPicker
         options={options}
         selectedOption={selectedOption}
         onSelectOption={(option) => handleLanguageChange(option).catch(console.error)}

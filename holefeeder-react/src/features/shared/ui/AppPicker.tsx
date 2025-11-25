@@ -41,7 +41,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const Picker = <T extends PickerOption>({
+export const AppPicker = <T extends PickerOption>({
   variant = 'menu',
   options,
   selectedOption,

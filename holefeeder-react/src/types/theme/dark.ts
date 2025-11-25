@@ -11,6 +11,7 @@ export const darkTheme: Theme = {
     background: '#000000',
     secondaryBackground: '#1C1C1E',
     text: '#FFFFFF',
+    primaryText: '#000000',
     secondaryText: '#EBEBF5', // 60% opacity
     destructive: '#FF3B30',
     tint: tintColorDark,
@@ -20,5 +21,8 @@ export const darkTheme: Theme = {
     separator: '#54545899', // 33% opacity
     opaqueSeparator: '#38383A',
     link: '#0A84FF',
+    dashboard: '#1D3D47',
+    accounts: '#353636',
+    settings: '#353636',
   },
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppField } from '@/features/shared/ui/AppField';
-import { Picker, PickerOption } from '@/features/shared/ui/Picker';
+import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { ThemeMode } from '@/types/theme/theme';
@@ -39,7 +39,7 @@ export const ThemeField = () => {
 
   return (
     <AppField label={t(tk.displaySection.theme)} icon={'pencil.and.scribble'}>
-      <Picker
+      <AppPicker
         options={options}
         selectedOption={selectedOption}
         onSelectOption={(option) => handleThemeChange(option).catch(console.error)}

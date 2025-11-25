@@ -5,6 +5,7 @@ import { useCategories } from '@/features/purchase/core/use-categories';
 import { PurchaseFormProvider, validatePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { useTags } from '@/features/purchase/core/use-tags';
 import { PurchaseForm } from '@/features/purchase/ui/PurchaseForm';
+import { AppScreen } from '@/features/shared/ui/AppScreen';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { withDate } from '@/features/shared/utils/with-date';
@@ -44,11 +45,11 @@ export default function PurchaseScreen() {
   };
 
   return (
-    <>
+    <AppScreen>
       <PurchaseFormProvider initialValue={initialData} validate={validatePurchaseForm} validateOnChange>
         <PurchaseForm accounts={accounts!} categories={categories!} tags={tags!} />
       </PurchaseFormProvider>
       <ErrorSheet {...errorSheetProps} />
-    </>
+    </AppScreen>
   );
 }

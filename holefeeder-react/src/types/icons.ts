@@ -19,6 +19,7 @@ export const AppIconsMapping = {
   'chevron.right': 'chevron-right',
   creditcard: 'credit-card',
   'exclamationmark.triangle': 'warning',
+  gearshape: 'settings',
   'house.fill': 'home',
   'paperplane.fill': 'send',
   'pencil.and.list.clipboard': 'edit-note',

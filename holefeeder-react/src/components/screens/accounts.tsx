@@ -1,18 +1,20 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 import { ExternalLink } from '@/components/external-link';
-import { ParallaxScrollView } from '@/components/parallax-scroll-view';
 import { Collapsible } from '@/components/ui/collapsible';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { ScreenTitle } from '@/features/shared/ui/components/ScreenTitle';
+import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { Fonts } from '@/types/theme/theme';
 
 export default function AccountsScreen() {
+  const { theme } = useTheme();
   return (
     <ParallaxScrollView
       style={styles.content}
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerBackgroundColor={theme.colors.accounts}
       headerImage={<IconSymbol size={310} color="#808080" name="chevron.left.forwardslash.chevron.right" style={styles.headerImage} />}
     >
       <ScreenTitle title={'Explore'} />

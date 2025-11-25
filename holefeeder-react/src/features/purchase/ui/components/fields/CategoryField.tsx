@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Category } from '@/features/purchase/core/category';
 import { AppField } from '@/features/shared/ui/AppField';
-import { Picker } from '@/features/shared/ui/Picker';
+import { AppPicker } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 
 type Props = {
@@ -16,7 +16,7 @@ export function CategoryField({ categories, selectedCategory, onSelectCategory }
 
   return (
     <AppField label={t(tk.purchase.basicSection.category)} icon={'cart'}>
-      <Picker
+      <AppPicker
         options={categories}
         selectedOption={selectedCategory}
         onSelectOption={onSelectCategory}

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DateIntervalType } from '@/features/purchase/core/date-interval-type';
 import { AppField } from '@/features/shared/ui/AppField';
-import { Picker, PickerOption } from '@/features/shared/ui/Picker';
+import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 
 const tkTypes: Record<DateIntervalType, string> = {
@@ -36,7 +36,7 @@ export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIn
 
   return (
     <AppField label={t(tk.purchase.cashflowSection.intervalType)} icon={'calendar'}>
-      <Picker
+      <AppPicker
         options={options}
         selectedOption={selectedOption}
         onSelectOption={(option) => onSelectDateIntervalType(option.value)}

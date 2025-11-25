@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppField } from '@/features/shared/ui/AppField';
-import { Picker, PickerOption } from '@/features/shared/ui/Picker';
+import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 
 type FrequencyOption = PickerOption & {
@@ -28,7 +28,7 @@ export function FrequencyField({ selectedFrequency, onSelectFrequency }: Props) 
 
   return (
     <AppField label={t(tk.purchase.cashflowSection.frequency)} icon={'calendar'}>
-      <Picker
+      <AppPicker
         options={options}
         selectedOption={selectedOption}
         onSelectOption={(option) => onSelectFrequency(option.value)}

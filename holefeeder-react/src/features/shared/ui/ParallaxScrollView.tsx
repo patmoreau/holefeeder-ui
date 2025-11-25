@@ -1,23 +1,41 @@
 import { Stack } from 'expo-router';
 import type { ReactElement } from 'react';
-import { StyleSheet, Text, View, type ViewProps } from 'react-native';
+import { Text, View, type ViewProps } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
 import { AppView } from '@/features/shared/ui/components/AppView';
-import { useColorScheme } from '@/shared/hooks/theme/use-color-scheme';
-import { useThemeColor } from '@/shared/hooks/theme/use-theme-color';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { Theme } from '@/types/theme/theme';
 
 const HEADER_HEIGHT = 250;
 
 type Props = ViewProps & {
   headerImage: ReactElement;
-  headerBackgroundColor: { dark: string; light: string };
+  headerBackgroundColor: string;
 };
 
-export function ParallaxScrollView({ headerImage, headerBackgroundColor, ...otherProps }: Props) {
-  const backgroundColor = useThemeColor({}, 'background');
-  const colorScheme = useColorScheme() ?? 'light';
+const createStyles = (theme: Theme) => ({
+  container: {
+    flex: 1,
+  },
+  header: {
+    height: HEADER_HEIGHT,
+    overflow: 'hidden',
+  },
+  content: {
+    minHeight: '100%',
+  },
+  scrollArea: {
+    backgroundColor: theme.colors.background,
+    flex: 1,
+  },
+});
+
+export const ParallaxScrollView = ({ headerImage, headerBackgroundColor, ...otherProps }: Props) => {
+  const styles = useStyles(createStyles);
+
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollOffset(scrollRef);
+
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -41,25 +59,10 @@ export function ParallaxScrollView({ headerImage, headerBackgroundColor, ...othe
         }}
       />
 
-      <Animated.ScrollView ref={scrollRef} style={{ backgroundColor, flex: 1 }} scrollEventThrottle={16}>
-        <Animated.View style={[styles.header, { backgroundColor: headerBackgroundColor[colorScheme] }, headerAnimatedStyle]}>
-          {headerImage}
-        </Animated.View>
+      <Animated.ScrollView ref={scrollRef} style={styles.scrollArea} scrollEventThrottle={16}>
+        <Animated.View style={[styles.header, { backgroundColor: headerBackgroundColor }, headerAnimatedStyle]}>{headerImage}</Animated.View>
         <AppView style={styles.content} {...otherProps}></AppView>
       </Animated.ScrollView>
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    height: HEADER_HEIGHT,
-    overflow: 'hidden',
-  },
-  content: {
-    minHeight: '100%',
-  },
-});
+};

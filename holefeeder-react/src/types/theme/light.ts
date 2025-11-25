@@ -55,6 +55,10 @@ export const lightTheme: Theme = {
     separator: '#3C3C4349', // 22% opacity
     opaqueSeparator: '#C6C6C8',
     link: '#007AFF',
+
+    dashboard: '#A1CEDC',
+    accounts: '#D0D0D0',
+    settings: '#D0D0D0',
   },
   typography: iosTypography,
   styles: {

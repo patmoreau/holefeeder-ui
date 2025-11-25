@@ -32,6 +32,11 @@ export interface Theme {
 
     // others
     link: string;
+
+    // tabs
+    dashboard: string;
+    accounts: string;
+    settings: string;
   };
   typography: {
     title: TextStyle;

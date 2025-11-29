@@ -7,19 +7,23 @@ require('dotenv').config({
   path: `.env.${environment}`,
 });
 
+const IS_DEV = process.env.APP_ENV === 'development';
+const iosIconFile = IS_DEV ? 'safe_dev.icon' : 'safe.icon';
+console.log(`Running in ${environment} mode`);
+
 export default {
   expo: {
     name: 'Holefeeder',
     slug: 'holefeeder',
     version: '1.0.0',
     orientation: 'portrait',
-    icon: './assets/images/icon.png',
+    icon: './assets/images/safe.png',
     scheme: 'holefeeder',
     userInterfaceStyle: 'automatic',
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
-      icon: './assets/safe.icon',
+      icon: `./assets/${iosIconFile}`,
       bundleIdentifier: 'com.drifterapps.holefeeder-react',
     },
     android: {
@@ -33,7 +37,7 @@ export default {
     },
     web: {
       output: 'static',
-      favicon: './assets/images/favicon.png',
+      favicon: './assets/images/safe.png',
     },
     plugins: [
       'expo-font',
@@ -57,8 +61,7 @@ export default {
       [
         'expo-splash-screen',
         {
-          image: './assets/images/splash-icon.png',
-          imageWidth: 200,
+          image: './assets/images/safe.png',
           resizeMode: 'contain',
           backgroundColor: '#ffffff',
         },

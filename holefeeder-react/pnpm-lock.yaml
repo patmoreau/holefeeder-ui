@@ -28,13 +28,13 @@ importers:
         version: 2.11.1(react-native@0.81.5(@babel/core@7.28.5)(@react-native-community/cli@20.0.2(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@tanstack/query-async-storage-persister':
         specifier: ^5.90.12
-        version: 5.90.12
+        version: 5.90.13
       '@tanstack/react-query':
         specifier: ^5.90.10
-        version: 5.90.10(react@19.1.0)
+        version: 5.90.11(react@19.1.0)
       '@tanstack/react-query-persist-client':
         specifier: ^5.90.12
-        version: 5.90.12(@tanstack/react-query@5.90.10(react@19.1.0))(react@19.1.0)
+        version: 5.90.13(@tanstack/react-query@5.90.11(react@19.1.0))(react@19.1.0)
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
@@ -1536,23 +1536,23 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  '@tanstack/query-async-storage-persister@5.90.12':
-    resolution: {integrity: sha512-bLOs6ZLTki88if8oDQDdnxk7wgMaKMAVTRxn+WiSI0An7rj3C/7/yDTjOLhwPaoipbTiFLF0/PnbpVXIbWqQYQ==}
+  '@tanstack/query-async-storage-persister@5.90.13':
+    resolution: {integrity: sha512-72/rRDlfXVJvd1mTyjvsWSU/obj+SoeitKwm1AM5YDId8aIMxGYnJscK7ZDilBFXud2p9DyV6+mRYEzcpPK0VA==}
 
-  '@tanstack/query-core@5.90.10':
-    resolution: {integrity: sha512-EhZVFu9rl7GfRNuJLJ3Y7wtbTnENsvzp+YpcAV7kCYiXni1v8qZh++lpw4ch4rrwC0u/EZRnBHIehzCGzwXDSQ==}
+  '@tanstack/query-core@5.90.11':
+    resolution: {integrity: sha512-f9z/nXhCgWDF4lHqgIE30jxLe4sYv15QodfdPDKYAk7nAEjNcndy4dHz3ezhdUaR23BpWa4I2EH4/DZ0//Uf8A==}
 
-  '@tanstack/query-persist-client-core@5.91.9':
-    resolution: {integrity: sha512-LliMZl/pkO/6vRf5//fO8nl4UCfM1LQsnT+N0aRYkK7bqoM3QdqHxD65EApmJRypKkqaWmiyulPG3Mi1NYuyIA==}
+  '@tanstack/query-persist-client-core@5.91.10':
+    resolution: {integrity: sha512-oZQk/kap5jHx2w+JcSI6CvDFXR5jmAldqJsH5IEQizVOEwaRlCyYEBZ3Df56HXNxW4spWX0cjhI/4o+mnCGtHw==}
 
-  '@tanstack/react-query-persist-client@5.90.12':
-    resolution: {integrity: sha512-o51hwImpKgb85FnFljtCXcUzuLXpKONF9N6bhKfifPL3SNSj8neh1a2aHQd7sN9mbeIeNfGMGJuDpSt/Fc3GwQ==}
+  '@tanstack/react-query-persist-client@5.90.13':
+    resolution: {integrity: sha512-04R+o/su8wuqlEvUl6dJLLI8auUCFCCJ2qGfELPSJSE4mF0HOh+ZtmsDRuLXA/jBMyV6X2RZLrZTMRWNgWM4gw==}
     peerDependencies:
-      '@tanstack/react-query': ^5.90.10
+      '@tanstack/react-query': ^5.90.11
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.90.10':
-    resolution: {integrity: sha512-BKLss9Y8PQ9IUjPYQiv3/Zmlx92uxffUOX8ZZNoQlCIZBJPT5M+GOMQj7xislvVQ6l1BstBjcX0XB/aHfFYVNw==}
+  '@tanstack/react-query@5.90.11':
+    resolution: {integrity: sha512-3uyzz01D1fkTLXuxF3JfoJoHQMU2fxsfJwE+6N5hHy0dVNoZOvwKP8Z2k7k1KDeD54N20apcJnG75TBAStIrBA==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -7698,26 +7698,26 @@ snapshots:
       - supports-color
       - typescript
 
-  '@tanstack/query-async-storage-persister@5.90.12':
+  '@tanstack/query-async-storage-persister@5.90.13':
     dependencies:
-      '@tanstack/query-core': 5.90.10
-      '@tanstack/query-persist-client-core': 5.91.9
+      '@tanstack/query-core': 5.90.11
+      '@tanstack/query-persist-client-core': 5.91.10
 
-  '@tanstack/query-core@5.90.10': {}
+  '@tanstack/query-core@5.90.11': {}
 
-  '@tanstack/query-persist-client-core@5.91.9':
+  '@tanstack/query-persist-client-core@5.91.10':
     dependencies:
-      '@tanstack/query-core': 5.90.10
+      '@tanstack/query-core': 5.90.11
 
-  '@tanstack/react-query-persist-client@5.90.12(@tanstack/react-query@5.90.10(react@19.1.0))(react@19.1.0)':
+  '@tanstack/react-query-persist-client@5.90.13(@tanstack/react-query@5.90.11(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@tanstack/query-persist-client-core': 5.91.9
-      '@tanstack/react-query': 5.90.10(react@19.1.0)
+      '@tanstack/query-persist-client-core': 5.91.10
+      '@tanstack/react-query': 5.90.11(react@19.1.0)
       react: 19.1.0
 
-  '@tanstack/react-query@5.90.10(react@19.1.0)':
+  '@tanstack/react-query@5.90.11(react@19.1.0)':
     dependencies:
-      '@tanstack/query-core': 5.90.10
+      '@tanstack/query-core': 5.90.11
       react: 19.1.0
 
   '@testing-library/dom@10.4.1':

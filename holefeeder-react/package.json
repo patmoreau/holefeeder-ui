@@ -12,7 +12,8 @@
     "ios:deploy": "APP_ENV=production expo run:ios --configuration Release --device",
     "web": "APP_ENV=development expo start --web",
     "lint": "expo lint",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "test:e2e:ios": "maestro test --include-tags=regression .maestro/"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.9.1",

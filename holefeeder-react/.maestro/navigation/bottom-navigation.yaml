@@ -1,0 +1,17 @@
+appId: ${MAESTRO_APP_ID}
+tags:
+  - regression
+---
+- launchApp
+- waitForAnimationToEnd
+- assertVisible: Welcome Home!
+- assertVisible: "Dashboard"
+- assertVisible: "Accounts"
+- assertVisible: "settings"
+- tapOn: accounts
+- assertVisible: Explore
+- tapOn: settings
+- assertVisible: ${MAESTRO_USER_EMAIL}
+- tapOn: dashboard
+- assertVisible: Welcome Home!
+- stopApp

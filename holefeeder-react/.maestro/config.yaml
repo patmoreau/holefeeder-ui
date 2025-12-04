@@ -1,0 +1,5 @@
+flows:
+  - auth/*
+  - navigation/*
+
+testOutputDir: .maestro/test-output

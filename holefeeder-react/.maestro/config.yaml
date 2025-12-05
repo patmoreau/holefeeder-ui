@@ -1,5 +1,6 @@
 flows:
   - auth/*
   - navigation/*
+  - purchase/*
 
 testOutputDir: .maestro/test-output

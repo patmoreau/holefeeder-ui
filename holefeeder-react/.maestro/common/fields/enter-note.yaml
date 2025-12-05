@@ -1,0 +1,6 @@
+appId: ${MAESTRO_APP_ID}
+---
+- tapOn: Note...
+- inputText: "note!"
+- assertVisible: "note!"
+- runFlow: ../ios/dark-box-return.yaml

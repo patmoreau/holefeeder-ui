@@ -103,7 +103,7 @@ export const en = {
       category: 'Category',
       date: 'Date',
       amount: 'Amount',
-      description: 'Note',
+      description: 'Note...',
       tags: 'Tags',
     },
     cashflowSection: {

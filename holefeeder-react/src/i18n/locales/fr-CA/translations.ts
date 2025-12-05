@@ -106,7 +106,7 @@ export const fr: TranslationStructure = {
       amount: 'Montant',
       category: 'Catégorie',
       date: 'Date',
-      description: 'Note',
+      description: 'Note...',
       tags: 'Étiquettes',
     },
     cashflowSection: {

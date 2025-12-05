@@ -1,0 +1,5 @@
+appId: ${MAESTRO_APP_ID}
+---
+- tapOn: Achat
+- tapOn: Revenu
+- assertVisible: Revenu

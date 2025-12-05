@@ -1,0 +1,5 @@
+appId: ${MAESTRO_APP_ID}
+---
+- tapOn: Ma carte de crédit
+- tapOn: Mon compte chèques
+- assertVisible: Mon compte chèques

@@ -6,24 +6,34 @@ import { PurchaseFormProvider, validatePurchaseForm } from '@/features/purchase/
 import { useTags } from '@/features/purchase/core/use-tags';
 import { PurchaseForm } from '@/features/purchase/ui/PurchaseForm';
 import { AppScreen } from '@/features/shared/ui/AppScreen';
+import { AppView } from '@/features/shared/ui/components/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { withDate } from '@/features/shared/utils/with-date';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
+import { Theme } from '@/types/theme/theme';
 
-export default function PurchaseScreen() {
+const createStyles = (theme: Theme) => ({
+  container: {
+    ...theme.styles.containers.center,
+  },
+});
+
+const PurchaseScreen = () => {
   const accountsQuery = useAccounts();
   const categoriesQuery = useCategories();
   const tagsQuery = useTags();
+  const styles = useStyles(createStyles);
 
   const { isLoading, data, errorSheetProps } = useDataFetchingErrorHandler(accountsQuery, categoriesQuery, tagsQuery);
 
   if (isLoading || !data) {
     return (
-      <>
+      <AppView style={styles.container}>
         <LoadingIndicator />
         <ErrorSheet {...errorSheetProps} />
-      </>
+      </AppView>
     );
   }
 
@@ -52,4 +62,6 @@ export default function PurchaseScreen() {
       <ErrorSheet {...errorSheetProps} />
     </AppScreen>
   );
-}
+};
+
+export default PurchaseScreen;

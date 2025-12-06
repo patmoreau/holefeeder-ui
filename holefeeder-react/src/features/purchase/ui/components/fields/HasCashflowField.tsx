@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppField } from '@/features/shared/ui/AppField';
 import { tk } from '@/i18n/translations';
+import { AppIcons } from '@/types/icons';
 
 type Props = {
   hasCashflow: boolean;
@@ -14,7 +15,7 @@ export const HasCashflowField = ({ hasCashflow, onHasCashflowChange }: Props) =>
   const { t } = useTranslation();
 
   return (
-    <AppField label={t(tk.purchase.cashflowSection.cashflow)} icon={'arrow.trianglehead.2.clockwise'}>
+    <AppField label={t(tk.purchase.cashflowSection.cashflow)} icon={AppIcons.cashflow}>
       <Host matchContents>
         <Switch value={hasCashflow} onValueChange={onHasCashflowChange} modifiers={[padding({ trailing: 2 })]} />
       </Host>

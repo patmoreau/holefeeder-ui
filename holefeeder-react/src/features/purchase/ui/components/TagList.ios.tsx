@@ -7,6 +7,7 @@ import { FilterTextField } from '@/features/purchase/ui/components/fields/Filter
 import { AppField } from '@/features/shared/ui/AppField';
 import { tk } from '@/i18n/translations';
 import { HorizontalScrollView } from '@/modules/horizontal-scroll-view';
+import { AppIcons } from '@/types/icons';
 import { TagItem } from './TagItem';
 
 export type TagListProps = {
@@ -21,7 +22,7 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
   return (
-    <AppField label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
+    <AppField label={t(tk.purchase.basicSection.tags)} icon={AppIcons.tag} variant="large">
       <Host matchContents>
         <VStack spacing={8}>
           <HorizontalScrollView style={{ gap: 18 }}>

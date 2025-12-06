@@ -7,9 +7,9 @@ import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { Theme } from '@/types/theme/theme';
+import { AppIcons } from '@/types/icons';
 
-const createStyles = (theme: Theme) => ({
+const createStyles = () => ({
   content: {
     flex: 1,
     overflow: 'hidden',
@@ -36,7 +36,7 @@ const SettingsScreen = () => {
     <ParallaxScrollView
       style={styles.content}
       headerBackgroundColor={theme.colors.settings}
-      headerImage={<IconSymbol size={310} color="#808080" name="gearshape" style={styles.headerImage} />}
+      headerImage={<IconSymbol size={310} color="#808080" name={AppIcons.settings} style={styles.headerImage} />}
     >
       <ScreenTitle title={t(tk.settings.title)} />
       <SettingsContent />

@@ -1,6 +1,6 @@
 import { type AxiosResponse } from 'axios';
 import { DateIntervalType } from '@/features/purchase/core/date-interval-type';
-import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
+import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { apiService } from '@/shared/services/api-service';
 
 type PurchaseApi = {
@@ -56,7 +56,7 @@ export const transactionApi = (token: string | null) => {
   };
 
   const createTransaction = (formData: PurchaseFormData): Promise<AxiosResponse> => {
-    if (formData.transfer) {
+    if (formData.purchaseType === PurchaseType.transfer) {
       return makeTransfer(formData);
     } else {
       return makePurchase(formData);

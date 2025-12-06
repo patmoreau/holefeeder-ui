@@ -1,5 +1,5 @@
 import { aBoolean, aCategory, aCount, aDateIntervalType, anAccount, anAmount, aString } from '@/__tests__';
-import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
+import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { aTag } from './tag-builder';
 
 const defaultPurchase = (): PurchaseFormData => ({
@@ -13,7 +13,7 @@ const defaultPurchase = (): PurchaseFormData => ({
   cashflowEffectiveDate: new Date().toISOString(),
   cashflowIntervalType: aDateIntervalType(),
   cashflowFrequency: aCount(),
-  transfer: false,
+  purchaseType: PurchaseType.expense,
   targetAccount: anAccount(),
 });
 
@@ -22,5 +22,5 @@ export const aPurchase = (overrides: Partial<PurchaseFormData> = {}): PurchaseFo
 export const aTransfer = (overrides: Partial<PurchaseFormData> = {}): PurchaseFormData => ({
   ...defaultPurchase(),
   ...overrides,
-  transfer: true,
+  purchaseType: PurchaseType.transfer,
 });

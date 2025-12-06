@@ -1,6 +1,7 @@
 import { Pressable, TextInput, View } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { AppIcons } from '@/types/icons';
 
 type FilterTextFieldProps = {
   filter: string;
@@ -33,7 +34,7 @@ export const FilterTextField = ({ filter, setFilter, onSubmit, placeholder }: Fi
     <View style={styles.container}>
       <TextInput value={filter} onChangeText={setFilter} placeholder={placeholder} style={styles.input} />
       <Pressable accessibilityRole="button" onPress={onSubmit}>
-        <IconSymbol name={'plus'} color={styles.icon.color} />
+        <IconSymbol name={AppIcons.add} color={styles.icon.color} />
       </Pressable>
     </View>
   );

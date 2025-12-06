@@ -4,6 +4,7 @@ import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
 import { AppField } from '@/features/shared/ui/AppField';
 import { tk } from '@/i18n/translations';
+import { AppIcons } from '@/types/icons';
 import { TagItem } from './TagItem';
 
 export type TagListProps = {
@@ -18,7 +19,7 @@ export function TagList({ tags, selected, onChange, showIcon = true }: TagListPr
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
 
   return (
-    <AppField label={t(tk.purchase.basicSection.tags)} icon={'tag'} variant="large">
+    <AppField label={t(tk.purchase.basicSection.tags)} icon={AppIcons.tag} variant="large">
       <View style={styles.container}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
           {filtered.map((tag) => (

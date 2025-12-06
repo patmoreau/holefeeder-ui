@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
+import { AppIcons } from '@/types/icons';
 
 type FrequencyOption = PickerOption & {
   value: number;
 };
 
 type Props = {
-  selectedFrequency: number | null;
+  selectedFrequency: number;
   onSelectFrequency: (frequency: number) => void;
 };
 
@@ -24,10 +25,10 @@ export function FrequencyField({ selectedFrequency, onSelectFrequency }: Props) 
     }));
   }, []);
 
-  const selectedOption = options.find((opt) => opt.value === selectedFrequency) ?? null;
+  const selectedOption = options.find((opt) => opt.value === selectedFrequency) ?? options[0];
 
   return (
-    <AppField label={t(tk.purchase.cashflowSection.frequency)} icon={'calendar'}>
+    <AppField label={t(tk.purchase.cashflowSection.frequency)} icon={AppIcons.frequency}>
       <AppPicker
         options={options}
         selectedOption={selectedOption}

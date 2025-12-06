@@ -4,6 +4,7 @@ import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { AppIcons } from '@/types/icons';
 import { ThemeMode } from '@/types/theme/theme';
 
 const tkTypes: Record<ThemeMode, string> = {
@@ -38,7 +39,7 @@ export const ThemeField = () => {
   }, [themeMode, options]);
 
   return (
-    <AppField label={t(tk.displaySection.theme)} icon={'pencil.and.scribble'}>
+    <AppField label={t(tk.displaySection.theme)} icon={AppIcons.theme}>
       <AppPicker
         options={options}
         selectedOption={selectedOption}

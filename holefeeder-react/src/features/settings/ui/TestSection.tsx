@@ -4,13 +4,14 @@ import { AppField } from '@/features/shared/ui/AppField';
 import { AppSection } from '@/features/shared/ui/AppSection';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { tk } from '@/i18n/translations';
+import { AppIcons } from '@/types/icons';
 
 export const TestSection = () => {
   const { t } = useTranslation();
 
   return (
     <AppSection title={t(tk.testSection.title)}>
-      <AppField label={t(tk.testSection.notFoundPage)} icon={'exclamationmark.triangle'}>
+      <AppField label={t(tk.testSection.notFoundPage)} icon={AppIcons.warning}>
         <AppButton
           label={t(tk.testSection.goTo)}
           variant={'link'}

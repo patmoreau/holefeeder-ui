@@ -4,6 +4,7 @@ import { DateIntervalType } from '@/features/purchase/core/date-interval-type';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
+import { AppIcons } from '@/types/icons';
 
 const tkTypes: Record<DateIntervalType, string> = {
   [DateIntervalType.weekly]: tk.dateIntervalTypePicker.weekly,
@@ -35,7 +36,7 @@ export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIn
   const selectedOption = options.find((opt) => opt.value === selectedDateIntervalType) ?? options[0];
 
   return (
-    <AppField label={t(tk.purchase.cashflowSection.intervalType)} icon={'calendar'}>
+    <AppField label={t(tk.purchase.cashflowSection.intervalType)} icon={AppIcons.calendar}>
       <AppPicker
         options={options}
         selectedOption={selectedOption}

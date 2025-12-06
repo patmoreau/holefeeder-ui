@@ -5,6 +5,7 @@ import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';
 import { useLanguage } from '@/shared/hooks/use-language';
 import { LanguageType } from '@/types/app-state';
+import { AppIcons } from '@/types/icons';
 
 const tkTypes: Record<LanguageType, string> = {
   [LanguageType.en]: tk.displaySection.english,
@@ -37,7 +38,7 @@ export const LanguageField = () => {
   }, [currentLanguage, options]);
 
   return (
-    <AppField label={t(tk.displaySection.language)} icon={'globe'}>
+    <AppField label={t(tk.displaySection.language)} icon={AppIcons.language}>
       <AppPicker
         options={options}
         selectedOption={selectedOption}

@@ -3,6 +3,7 @@ import { padding } from '@expo/ui/swift-ui/modifiers';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { AppIcons } from '@/types/icons';
 
 type FilterTextFieldProps = {
   filter: string;
@@ -53,7 +54,7 @@ export const FilterTextField = ({ filter, setFilter, onSubmit, placeholder }: Fi
         placeholder={placeholder}
         modifiers={[padding({ all: 4 })]}
       />
-      <Image systemName="plus" onPress={onSubmit} color={styles.icon.color} />
+      <Image systemName={AppIcons.add} onPress={onSubmit} color={styles.icon.color} />
     </HStack>
   );
 };

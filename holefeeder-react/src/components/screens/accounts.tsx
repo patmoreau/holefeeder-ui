@@ -7,6 +7,7 @@ import { AppText } from '@/features/shared/ui/components/AppText';
 import { ScreenTitle } from '@/features/shared/ui/components/ScreenTitle';
 import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { AppIcons } from '@/types/icons';
 import { Fonts } from '@/types/theme/theme';
 
 export default function AccountsScreen() {
@@ -15,7 +16,7 @@ export default function AccountsScreen() {
     <ParallaxScrollView
       style={styles.content}
       headerBackgroundColor={theme.colors.accounts}
-      headerImage={<IconSymbol size={310} color="#808080" name="chevron.left.forwardslash.chevron.right" style={styles.headerImage} />}
+      headerImage={<IconSymbol size={310} color="#808080" name={AppIcons.accounts} style={styles.headerImage} />}
     >
       <ScreenTitle title={'Explore'} />
       <AppText>This app includes example code to help you get started.</AppText>

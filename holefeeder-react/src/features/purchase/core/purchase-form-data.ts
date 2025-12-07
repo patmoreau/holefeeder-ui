@@ -1,7 +1,7 @@
 import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
-import { DateIntervalType } from '@/features/purchase/core/date-interval-type';
 import { Tag } from '@/features/purchase/core/tag';
+import { DateIntervalType } from '@/features/shared/core/date-interval-type';
 
 export const PurchaseType = {
   expense: 'expense',
@@ -11,7 +11,7 @@ export const PurchaseType = {
 
 export type PurchaseType = (typeof PurchaseType)[keyof typeof PurchaseType];
 
-export interface PurchaseFormData {
+export type PurchaseFormData = {
   purchaseType: PurchaseType;
   date: string;
   amount: number;
@@ -24,4 +24,4 @@ export interface PurchaseFormData {
   cashflowEffectiveDate: string;
   cashflowIntervalType: DateIntervalType;
   cashflowFrequency: number;
-}
+};

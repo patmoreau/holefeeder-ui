@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DateIntervalType } from '@/features/purchase/core/date-interval-type';
+import { DateIntervalType } from '@/features/shared/core/date-interval-type';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
 import { tk } from '@/i18n/translations';

@@ -46,13 +46,14 @@ export const apiService = (token: string | null) => {
     );
   }
 
-  const getWithAuth = <T>(url: string): Promise<AxiosResponse<T>> => {
+  const getWithAuth = <T>(url: string, options?: { params?: Record<string, any> }): Promise<AxiosResponse<T>> => {
     if (config.api.simulateNetworkDelay > 0) {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve(
             api.get(url, {
               headers: { Authorization: `Bearer ${token}` },
+              params: options?.params,
             })
           );
         }, config.api.simulateNetworkDelay);
@@ -61,6 +62,7 @@ export const apiService = (token: string | null) => {
 
     return api.get(url, {
       headers: { Authorization: `Bearer ${token}` },
+      params: options?.params,
     });
   };
 

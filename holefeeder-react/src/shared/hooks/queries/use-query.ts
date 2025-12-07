@@ -11,6 +11,18 @@ type DetailQueryKeys = {
   detail: (id: string) => readonly [string, 'detail', string];
 };
 
+type PaginatedQueryKeys<P> = {
+  all: readonly [string];
+  paginated: (queryParams: P | null) => readonly [string, 'paginated', P | null];
+};
+
+export type PaginatedQueryParams<F = Record<string, any>> = {
+  offset?: number;
+  limit?: number;
+  sort?: string[];
+  filter?: F;
+};
+
 export const createListQueryHook = <T extends { id: string | number }, P = void>(
   resourceName: string,
   getList: (authToken: string | null, queryParams: P | null) => Promise<T[]>,
@@ -33,6 +45,34 @@ export const createListQueryHook = <T extends { id: string | number }, P = void>
   };
 
   return { useList, keys };
+};
+
+export const createPaginatedQueryHook = <
+  T extends { id: string | number },
+  F = Record<string, any>,
+  P extends PaginatedQueryParams<F> = PaginatedQueryParams<F>,
+>(
+  resourceName: string,
+  getList: (queryParams: P | null, authToken: string | null) => Promise<T[]>,
+  withAuth: boolean = true
+) => {
+  const keys: PaginatedQueryKeys<P> = {
+    all: [resourceName] as const,
+    paginated: (queryParams: P | null) => [...keys.all, 'paginated', queryParams] as const,
+  };
+
+  const usePaginated = (queryParams: P | null = null) => {
+    const { tokenInfo } = useAuth();
+    const token = withAuth ? tokenInfo.accessToken : null;
+
+    return useQuery({
+      queryKey: keys.paginated(queryParams),
+      queryFn: () => getList(queryParams, token),
+      enabled: withAuth ? !!token : true,
+    });
+  };
+
+  return { usePaginated, keys };
 };
 
 export const createOneQueryHook = <T extends { id: string | number }>(

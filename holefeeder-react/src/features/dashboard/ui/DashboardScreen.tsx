@@ -1,11 +1,22 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
+import { useDashboardComputedSummary } from '@/features/dashboard/core/use-dashboard-summary';
+import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
+import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeaderSmallCard';
 import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
+import { AppView } from '@/features/shared/ui/components/AppView';
+import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
+import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
+  container: {
+    ...theme.styles.containers.center,
+  },
   largeTitle: {
     fontSize: 34,
     fontWeight: 'bold' as const,
@@ -50,17 +61,27 @@ const createStyles = (theme: Theme) => ({
 const DashboardScreen = () => {
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
+  const { i18n } = useTranslation();
+  const dashboardQuery = useDashboardComputedSummary();
 
+  const { isLoading, errorSheetProps } = useDataFetchingErrorHandler(dashboardQuery);
+  const summary = dashboardQuery.summary;
+
+  if (isLoading || !summary) {
+    return (
+      <AppView style={styles.container}>
+        <LoadingIndicator />
+        <ErrorSheet {...errorSheetProps} />
+      </AppView>
+    );
+  }
+
+  // Get comparison to use (prefer average, fallback to last)
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
-      largeCard={
-        <>
-          <Text style={styles.largeTitle}>Bonjour Patrick!</Text>
-          <Text style={styles.subtitle}>Welcome back</Text>
-        </>
-      }
-      smallCard={<Text style={styles.smallTitle}>Patrick</Text>}
+      largeCard={<DashboardHeaderLargeCard summary={summary} />}
+      smallCard={<DashboardHeaderSmallCard summary={summary} />}
     >
       {Array.from({ length: 20 }).map((_, i) => (
         <View key={i} style={styles.contentCard}>

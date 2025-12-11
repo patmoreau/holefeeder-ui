@@ -39,6 +39,19 @@ export const fr: TranslationStructure = {
     edit: 'Modifier',
     done: 'Terminé',
   },
+  dashboard: {
+    largeHeader: {
+      avgSpending: 'Dép. moy.',
+      netFlow: 'Flux net',
+      spendingTitle: 'Dépenses actuelles',
+      totalIncome: 'Revenu total',
+      variationAbove: '{{variation}} de plus que la moyenne',
+      variationBelow: '{{variation}} de moins que la moyenne',
+    },
+    smallHeader: {
+      spendingTitle: 'Dépenses actuelles:',
+    },
+  },
   dateIntervalTypePicker: {
     weekly: 'Hebdomadaire',
     monthly: 'Mensuel',

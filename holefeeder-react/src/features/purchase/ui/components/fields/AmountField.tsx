@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
+import { formatCurrency } from '@/utils/format-currency';
 
 type Props = {
   amount: number;
@@ -21,12 +22,10 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-const formatCurrency = (val: number, isEditing: boolean) => `${isEditing ? '' : '$'}${val.toFixed(2)}`;
-
 export const AmountField = ({ amount, onAmountChange }: Props) => {
   const styles = useStyles(createStyles);
 
-  const [displayAmount, setDisplayAmount] = useState<string>(formatCurrency(amount, false));
+  const [displayAmount, setDisplayAmount] = useState<string>(formatCurrency(amount));
   const [enteringFocus, setEnteringFocus] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selection, setSelection] = useState<{ start: number; end?: number } | undefined>(undefined);
@@ -42,7 +41,7 @@ export const AmountField = ({ amount, onAmountChange }: Props) => {
 
   useEffect(() => {
     if (!isEditing) {
-      const formatted = formatCurrency(amount, false);
+      const formatted = formatCurrency(amount);
       if (formatted !== displayAmount) {
         setDisplayAmount(formatted);
       }

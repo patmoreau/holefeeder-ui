@@ -99,6 +99,32 @@ export const createOneQueryHook = <T extends { id: string | number }>(
   return { useOne, keys };
 };
 
+export const createSingletonQueryHook = <T>(
+  resourceName: string,
+  getSingleton: (authToken: string | null) => Promise<T>,
+  withAuth: boolean = true
+) => {
+  const keys = {
+    all: [resourceName] as const,
+    singleton: () => [...keys.all, 'singleton'] as const,
+  };
+
+  const useSingleton = () => {
+    const { tokenInfo } = useAuth();
+    const token = withAuth ? tokenInfo.accessToken : null;
+
+    return useQuery({
+      queryKey: keys.singleton(),
+      queryFn: () => getSingleton(token),
+      enabled: withAuth ? !!token : true,
+      staleTime: Infinity, // Data never becomes stale automatically
+      gcTime: 1000 * 60 * 60 * 24, // Keep in cache for 24 hours
+    });
+  };
+
+  return { useSingleton, keys };
+};
+
 export const useMultipleQueries = (...queries: ReturnType<typeof useQuery>[]) => {
   return {
     isLoading: queries.some((q) => q.isLoading),

@@ -23,9 +23,15 @@ export const createMutationHook = <T>(
         await queryClient.invalidateQueries({
           queryKey: [resourceName, 'list'],
         });
+        await queryClient.invalidateQueries({
+          queryKey: [resourceName, 'singleton'],
+        });
         affectedResources.forEach((resource) => {
           queryClient.invalidateQueries({
             queryKey: [resource, 'list'],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [resource, 'singleton'],
           });
         });
       },

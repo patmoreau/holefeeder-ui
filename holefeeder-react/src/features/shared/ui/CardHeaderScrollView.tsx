@@ -1,18 +1,13 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import { type ViewProps } from 'react-native';
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollOffset
-} from 'react-native-reanimated';
+import Animated, { Extrapolation, interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
 import { AppView } from '@/features/shared/ui/components/AppView';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
-const HEADER_MAX_HEIGHT = 200;
+const DEFAULT_HEADER_HEIGHT = 300;
 
 type Props = ViewProps & {
   largeCard: ReactNode;
@@ -49,7 +44,7 @@ const createStyles = (theme: Theme) => ({
     bottom: 16,
     left: 16,
     right: 16,
-    alignItems: 'center' as const,
+    alignItems: 'flex-start' as const,
   },
   scrollArea: {
     flex: 1,
@@ -62,8 +57,10 @@ const createStyles = (theme: Theme) => ({
 
 export const CardHeaderScrollView = ({ largeCard, smallCard, headerBackgroundColor = '#007AFF', children, ...otherProps }: Props) => {
   const styles = useStyles(createStyles);
+  const [largeCardHeight, setLargeCardHeight] = useState(0);
 
   const HEADER_MIN_HEIGHT = useHeaderHeight();
+  const HEADER_MAX_HEIGHT = largeCardHeight > 0 ? largeCardHeight + HEADER_MIN_HEIGHT : DEFAULT_HEADER_HEIGHT;
   const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -103,7 +100,17 @@ export const CardHeaderScrollView = ({ largeCard, smallCard, headerBackgroundCol
   return (
     <AppView style={styles.container}>
       <Animated.View style={[styles.header, { backgroundColor: headerBackgroundColor }, headerAnimatedStyle]}>
-        <Animated.View style={[styles.largeCardContainer, largeCardAnimatedStyle]}>{largeCard}</Animated.View>
+        <Animated.View
+          style={[styles.largeCardContainer, largeCardAnimatedStyle]}
+          onLayout={(event) => {
+            const { height } = event.nativeEvent.layout;
+            if (height > 0 && height !== largeCardHeight) {
+              setLargeCardHeight(height);
+            }
+          }}
+        >
+          {largeCard}
+        </Animated.View>
         <Animated.View style={[styles.smallCardContainer, smallCardAnimatedStyle]}>{smallCard}</Animated.View>
       </Animated.View>
 

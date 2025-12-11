@@ -37,6 +37,19 @@ export const en = {
     edit: 'Edit',
     done: 'Done',
   },
+  dashboard: {
+    largeHeader: {
+      avgSpending: 'Avg. Spending',
+      netFlow: 'Net Flow',
+      spendingTitle: 'Current Spending',
+      totalIncome: 'Total Income',
+      variationAbove: '{{variation}} more than average',
+      variationBelow: '{{variation}} less than average',
+    },
+    smallHeader: {
+      spendingTitle: 'Current Spending:',
+    },
+  },
   dateIntervalTypePicker: {
     weekly: 'Weekly',
     monthly: 'Monthly',

@@ -18,7 +18,7 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.10.0",
     "@expo/html-elements": "^0.13.8",
-    "@expo/ui": "0.2.0-canary-20251120-e46b3cc",
+    "@expo/ui": "0.2.0-canary-20251212-acb11f2",
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-picker/picker": "2.11.1",

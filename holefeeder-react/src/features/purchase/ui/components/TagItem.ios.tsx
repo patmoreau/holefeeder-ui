@@ -1,5 +1,5 @@
 import { Button, Text } from '@expo/ui/swift-ui';
-import { font, padding } from '@expo/ui/swift-ui/modifiers';
+import { padding } from '@expo/ui/swift-ui/modifiers';
 import React from 'react';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 
@@ -21,7 +21,7 @@ export function TagItem({ label, selected = false, onPress, showIcon = true }: T
       color={selected ? theme.colors.primary : theme.colors.secondary}
       modifiers={[padding({ all: 2 })]}
     >
-      <Text modifiers={[font({ size: theme.typography.chip.fontSize })]}>{`#${label}`}</Text>
+      <Text size={theme.typography.chip.fontSize}>{`#${label}`}</Text>
     </Button>
   );
 }

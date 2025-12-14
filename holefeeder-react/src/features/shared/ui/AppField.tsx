@@ -1,6 +1,7 @@
 import React from 'react';
 import { type StyleProp, Text, View, type ViewProps, type ViewStyle } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { AppText } from '@/features/shared/ui/components/AppText';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppIcons } from '@/types/icons';
@@ -58,7 +59,7 @@ export const AppField = ({ label, icon, children, style, variant = 'default', ..
           <View style={styles.iconCircle}>
             <IconSymbol name={icon} size={24} color={theme.colors.primary} />
           </View>
-          {label && <Text style={styles.label}>{label}</Text>}
+          {label && <AppText variant={'default'}>{label}</AppText>}
         </View>
         <View style={styles.largeContent}>{children}</View>
       </View>

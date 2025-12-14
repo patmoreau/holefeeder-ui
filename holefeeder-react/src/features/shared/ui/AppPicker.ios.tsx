@@ -1,5 +1,5 @@
-import { Host, Picker, Text } from '@expo/ui/swift-ui';
-import { allowsTightening, fixedSize, frame, padding, pickerStyle, tag, truncationMode } from '@expo/ui/swift-ui/modifiers';
+import { Host, Picker } from '@expo/ui/swift-ui';
+import { fixedSize, frame, padding } from '@expo/ui/swift-ui/modifiers';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { PickerOption, PickerProps } from '@/features/shared/ui/AppPicker';
@@ -33,32 +33,24 @@ export const AppPicker = <T extends PickerOption>({
         }}
       >
         <Picker
-          modifiers={[pickerStyle(variant), frame({ maxWidth: minWidth }), padding({ horizontal: paddingHorizontal })]}
-          selection={options.findIndex((option) => option === selectedOption)}
-          onSelectionChange={({ nativeEvent: { selection } }) => onSelectOption(options[selection as number])}
-        >
-          {options.map((option, index) => (
-            <Text key={index} lineLimit={1} modifiers={[tag(index), allowsTightening(true), truncationMode('tail')]}>
-              {onOptionLabel(option)}
-            </Text>
-          ))}
-        </Picker>
+          options={options.map((option) => onOptionLabel(option))}
+          modifiers={[frame({ maxWidth: minWidth }), padding({ horizontal: paddingHorizontal })]}
+          selectedIndex={options.findIndex((option) => option === selectedOption)}
+          onOptionSelected={({ nativeEvent: { index } }) => onSelectOption(options[index])}
+          variant={variant}
+        />
       </Host>
     );
   }
   return (
     <Host {...(!style ? { matchContents: true } : {})} style={style}>
       <Picker
-        modifiers={[pickerStyle(variant), fixedSize({ horizontal: true, vertical: true })]}
-        selection={options.findIndex((option) => option === selectedOption)}
-        onSelectionChange={({ nativeEvent: { selection } }) => onSelectOption(options[selection as number])}
-      >
-        {options.map((option, index) => (
-          <Text key={index} lineLimit={1} modifiers={[tag(index), allowsTightening(true), truncationMode('tail')]}>
-            {onOptionLabel(option)}
-          </Text>
-        ))}
-      </Picker>
+        options={options.map((option) => onOptionLabel(option))}
+        modifiers={[fixedSize({ horizontal: true, vertical: true })]}
+        selectedIndex={options.findIndex((option) => option === selectedOption)}
+        onOptionSelected={({ nativeEvent: { index } }) => onSelectOption(options[index])}
+        variant={variant}
+      />
     </Host>
   );
 };

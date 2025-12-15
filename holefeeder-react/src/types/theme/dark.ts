@@ -1,28 +1,30 @@
 import { lightTheme } from '@/types/theme/light';
 import { Theme } from '@/types/theme/theme';
 
-const tintColorDark = '#fff';
-
 export const darkTheme: Theme = {
   ...lightTheme,
   colors: {
-    primary: '#007AFF',
-    secondary: '#FF5733',
+    primary: '#9D6DE6',
+    secondary: '#FF9E66',
     background: '#000000',
     secondaryBackground: '#1C1C1E',
-    text: '#FFFFFF',
+    text: '#F2F2F7',
     primaryText: '#000000',
-    secondaryText: '#EBEBF5', // 60% opacity
-    destructive: '#FF3B30',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-    separator: '#54545899', // 33% opacity
+    secondaryText: '#2b2b2d',
+    destructive: '#FF453A',
+    tint: '#9D6DE6',
+    icon: '#AEAEB2',
+    tabIconDefault: '#AEAEB2',
+    tabIconSelected: '#9D6DE6',
+    separator: '#38383A',
     opaqueSeparator: '#38383A',
-    link: '#0A84FF',
-    dashboard: '#1D3D47',
-    accounts: '#353636',
-    settings: '#353636',
+    link: '#9D6DE6',
+    dashboard: '#2E1A47',
+    accounts: '#472F1A',
+    settings: '#1C1C1E',
+    positive: '#7CB342',
+    positiveBackground: '#1E3A2E',
+    negative: '#FF6F42',
+    negativeBackground: '#3A1E1E',
   },
 };

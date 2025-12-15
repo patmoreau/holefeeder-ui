@@ -7,6 +7,7 @@ export type DashboardComputedSummary = {
   currentSpending: number;
   variation: {
     amount: number;
+    percentage: number;
     isOver: boolean;
   };
   netFlow: {
@@ -17,20 +18,25 @@ export type DashboardComputedSummary = {
   averageSpending: number;
 };
 
-const computeDashboardData = (summary: Summary): DashboardComputedSummary => ({
-  raw: summary,
-  currentSpending: summary.currentExpenses,
-  variation: {
-    amount: Math.abs(summary.expenseVariation),
-    isOver: summary.expenseVariation > 0,
-  },
-  netFlow: {
-    amount: Math.abs(summary.netFlow),
-    isOver: summary.netFlow > 0,
-  },
-  totalIncome: summary.currentGains,
-  averageSpending: summary.averageExpenses,
-});
+const computeDashboardData = (summary: Summary): DashboardComputedSummary => {
+  const isOver = summary.expenseVariation > 0;
+
+  return {
+    raw: summary,
+    currentSpending: summary.currentExpenses,
+    variation: {
+      amount: Math.abs(summary.expenseVariation),
+      percentage: Math.abs(summary.expenseVariationPercentage),
+      isOver,
+    },
+    netFlow: {
+      amount: Math.abs(summary.netFlow),
+      isOver: summary.netFlow > 0,
+    },
+    totalIncome: summary.currentGains,
+    averageSpending: summary.averageExpenses,
+  };
+};
 
 const dashboardSummaryQuery = createSingletonQueryHook<Summary>('dashboard', (token) =>
   dashboardApi(token)

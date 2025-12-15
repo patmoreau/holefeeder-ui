@@ -3,19 +3,21 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 export type ThemedTextProps = TextProps & {
-  variant?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'footnote';
+  variant?: 'default' | 'largeTitle' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'footnote';
 };
 
 const createStyles = (theme: Theme) => ({
+  largeTitle: {
+    ...theme.typography.largeTitle,
+    color: theme.colors.text,
+  },
   title: {
     ...theme.typography.title,
     color: theme.colors.text,
-    textAlign: 'center' as const,
   },
   subtitle: {
     ...theme.typography.subtitle,
     color: theme.colors.secondaryText,
-    textAlign: 'center' as const,
   },
   body: {
     ...theme.typography.body,

@@ -2,13 +2,16 @@ import { Platform } from 'react-native';
 import { Theme } from '@/types/theme/theme';
 
 const iosTypography = {
+  largeTitle: {
+    fontSize: 34,
+    fontWeight: '700',
+  },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 16,
+    fontWeight: '600',
   },
   subtitle: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: 'normal',
   },
   body: {
@@ -35,30 +38,30 @@ const iosTypography = {
   },
 } as const;
 
-const tintColorLight = '#0a7ea4';
-
 export const lightTheme: Theme = {
   colors: {
-    primary: '#007AFF',
-    secondary: '#FF5733',
+    primary: '#7B42F6',
+    secondary: '#FF8C42',
     background: '#FFFFFF',
     secondaryBackground: '#F2F2F7',
-    text: '#000000',
+    text: '#1C1C1E',
     primaryText: '#FFFFFF',
-    secondaryText: '#3C3C43', // 60% opacity
-    destructive: '#FF3B30',
-    tint: tintColorLight,
-    icon: '#687076',
+    secondaryText: '#6C6C70',
+    destructive: '#E53B3B',
+    tint: '#7B42F6',
+    icon: '#6C6C70',
     tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-
-    separator: '#3C3C4349', // 22% opacity
+    tabIconSelected: '#7B42F6',
+    separator: '#C6C6C8',
     opaqueSeparator: '#C6C6C8',
-    link: '#007AFF',
-
-    dashboard: '#A1CEDC',
-    accounts: '#D0D0D0',
-    settings: '#D0D0D0',
+    link: '#7B42F6',
+    dashboard: '#F0E6F7',
+    accounts: '#FFF5EB',
+    settings: '#F2F2F7',
+    positive: '#2E7D32',
+    positiveBackground: '#E6F7ED',
+    negative: '#B82E15',
+    negativeBackground: '#FFF2F2',
   },
   typography: iosTypography,
   styles: {

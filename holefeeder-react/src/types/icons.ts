@@ -24,6 +24,8 @@ export const AppIcons = {
   tag: 'tag',
   theme: 'pencil.and.scribble',
   token: 'key.horizontal',
+  trendUp: 'chart.line.uptrend.xyaxis',
+  trendDown: 'chart.line.downtrend.xyaxis',
   warning: 'exclamationmark.triangle',
 } as const;
 
@@ -39,6 +41,8 @@ export const AppIconsMapping = {
   calendar: 'calendar-today',
   cart: 'shopping-cart',
   'chart.bar.xaxis': 'bar-chart',
+  'chart.line.downtrend.xyaxis': 'trending-down',
+  'chart.line.uptrend.xyaxis': 'trending-up',
   'chevron.backward': 'chevron-left',
   'chevron.right': 'chevron-right',
   'clock.badge.exclamationmark': 'lock-clock',

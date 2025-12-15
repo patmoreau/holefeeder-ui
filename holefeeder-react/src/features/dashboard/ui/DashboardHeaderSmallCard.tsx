@@ -1,15 +1,20 @@
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { DashboardComputedSummary } from '@/features/dashboard/core/use-dashboard-summary';
+import { DashboardHeaderExpenseTrend } from '@/features/dashboard/ui/DashboardHeaderExpenseTrend';
+import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 import { formatCurrency } from '@/utils/format-currency';
 
 const createStyles = (theme: Theme) => ({
-  smallTitle: {
-    fontSize: 17,
-    fontWeight: '600' as const,
+  container: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    gap: 8,
+  },
+  text: {
     color: theme.colors.primaryText,
   },
 });
@@ -19,9 +24,10 @@ export const DashboardHeaderSmallCard = ({ summary }: { summary: DashboardComput
   const styles = useStyles(createStyles);
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-      <Text style={styles.smallTitle}>{t(tk.dashboard.smallHeader.spendingTitle)}</Text>
-      <Text style={styles.smallTitle}>{formatCurrency(summary.currentSpending)}</Text>
+    <View style={styles.container}>
+      <AppText style={styles.text}>{t(tk.dashboard.smallHeader.spendingTitle)}</AppText>
+      <AppText style={styles.text}>{formatCurrency(summary.currentSpending)}</AppText>
+      <DashboardHeaderExpenseTrend summary={summary} variant="percentage" />
     </View>
   );
 };

@@ -37,8 +37,15 @@ export interface Theme {
     dashboard: string;
     accounts: string;
     settings: string;
+
+    // amounts
+    positive: string;
+    positiveBackground: string;
+    negative: string;
+    negativeBackground: string;
   };
   typography: {
+    largeTitle: TextStyle;
     title: TextStyle;
     subtitle: TextStyle;
     body: TextStyle;

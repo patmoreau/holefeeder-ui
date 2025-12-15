@@ -45,11 +45,10 @@ export const fr: TranslationStructure = {
       netFlow: 'Flux net',
       spendingTitle: 'Dépenses actuelles',
       totalIncome: 'Revenu total',
-      variationAbove: '{{variation}} de plus que la moyenne',
-      variationBelow: '{{variation}} de moins que la moyenne',
+      variation: '{{variation}} contre moyenne',
     },
     smallHeader: {
-      spendingTitle: 'Dépenses actuelles:',
+      spendingTitle: 'Dépenses:',
     },
   },
   dateIntervalTypePicker: {

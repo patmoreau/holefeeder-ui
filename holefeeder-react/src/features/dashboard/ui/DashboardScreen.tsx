@@ -34,7 +34,7 @@ const createStyles = (theme: Theme) => ({
     color: theme.colors.primaryText,
   },
   contentCard: {
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.secondaryBackground,
     marginHorizontal: 16,
     marginVertical: 8,
     padding: 16,

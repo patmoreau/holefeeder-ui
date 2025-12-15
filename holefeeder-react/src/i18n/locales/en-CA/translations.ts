@@ -43,11 +43,10 @@ export const en = {
       netFlow: 'Net Flow',
       spendingTitle: 'Current Spending',
       totalIncome: 'Total Income',
-      variationAbove: '{{variation}} more than average',
-      variationBelow: '{{variation}} less than average',
+      variation: '{{variation}} vs Average',
     },
     smallHeader: {
-      spendingTitle: 'Current Spending:',
+      spendingTitle: 'Spending:',
     },
   },
   dateIntervalTypePicker: {

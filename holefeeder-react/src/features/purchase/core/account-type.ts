@@ -1,11 +1,11 @@
 export const AccountType = {
-  Checking: 'checking',
-  CreditCard: 'savings',
-  CreditLine: 'credit',
-  Investment: 'investment',
-  Loan: 'loan',
-  Mortgage: 'mortgage',
-  Savings: 'savings',
+  checking: 'checking',
+  creditCard: 'creditCard',
+  creditLine: 'creditLine',
+  investment: 'investment',
+  loan: 'loan',
+  mortgage: 'mortgage',
+  savings: 'savings',
 } as const;
 
 export type AccountType = (typeof AccountType)[keyof typeof AccountType];

@@ -2,6 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
+import { CategoryType } from '@/features/purchase/core/category-type';
+import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { AccountField } from '@/features/purchase/ui/components/fields/AccountField';
@@ -30,6 +32,8 @@ export function BasicSection({ accounts, categories, tags }: Props) {
   const updateTags = (next: Tag[]) => updateFormField('tags', next);
   const updateDescription = (value: string) => updateFormField('description', value);
 
+  const variant = formData.purchaseType === PurchaseType.expense ? CategoryType.expense : CategoryType.gain;
+
   return (
     <AppSection>
       <DateField
@@ -43,7 +47,7 @@ export function BasicSection({ accounts, categories, tags }: Props) {
         selectedAccount={formData.sourceAccount}
         onSelectAccount={updateSourceAccount}
       />
-      <CategoryField categories={categories} selectedCategory={formData.category} onSelectCategory={updateCategory} />
+      <CategoryField categories={categories} selectedCategory={formData.category} onSelectCategory={updateCategory} variant={variant} />
       <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
       <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
     </AppSection>

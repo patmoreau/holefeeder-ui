@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { PurchaseButton } from '@/components/ui/purchase-button';
+import { PurchaseButton } from '@/features/shared/ui/components/PurchaseButton';
 import { tk } from '@/i18n/translations';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 

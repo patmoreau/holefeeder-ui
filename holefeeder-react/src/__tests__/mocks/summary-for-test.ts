@@ -4,6 +4,7 @@ import { Summary } from '@/features/dashboard/core/summary';
 const defaultSummary = (): Summary => ({
   currentExpenses: anAmount(),
   expenseVariation: anAmount(),
+  expenseVariationPercentage: anAmount(),
   netFlow: anAmount(),
   currentGains: anAmount(),
   averageExpenses: anAmount(),

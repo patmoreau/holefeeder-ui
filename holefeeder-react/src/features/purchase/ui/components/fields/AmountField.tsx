@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
@@ -7,6 +7,10 @@ import { formatCurrency } from '@/utils/format-currency';
 type Props = {
   amount: number;
   onAmountChange: (amount: number) => void;
+};
+
+export type AmountFieldRef = {
+  focus: () => void;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -22,13 +26,20 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const AmountField = ({ amount, onAmountChange }: Props) => {
+export const AmountField = React.forwardRef<AmountFieldRef, Props>(({ amount, onAmountChange }, ref) => {
   const styles = useStyles(createStyles);
+  const inputRef = useRef<TextInput>(null);
 
   const [displayAmount, setDisplayAmount] = useState<string>(formatCurrency(amount));
   const [enteringFocus, setEnteringFocus] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selection, setSelection] = useState<{ start: number; end?: number } | undefined>(undefined);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current?.focus();
+    },
+  }));
 
   useEffect(() => {
     if (enteringFocus) {
@@ -77,6 +88,7 @@ export const AmountField = ({ amount, onAmountChange }: Props) => {
   return (
     <View style={[styles.container]}>
       <TextInput
+        ref={inputRef}
         style={styles.input}
         value={displayAmount}
         onChangeText={handleChangeText}
@@ -87,4 +99,6 @@ export const AmountField = ({ amount, onAmountChange }: Props) => {
       />
     </View>
   );
-};
+});
+
+AmountField.displayName = 'AmountField';

@@ -1,5 +1,5 @@
 import { Pressable, TextInput, View } from 'react-native';
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { SettingsContent } from '@/features/settings/ui/SettingsContent';
+import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { ScreenTitle } from '@/features/shared/ui/components/ScreenTitle';
 import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
 import { tk } from '@/i18n/translations';

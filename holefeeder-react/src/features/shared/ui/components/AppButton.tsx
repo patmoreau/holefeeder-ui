@@ -1,8 +1,8 @@
 import React from 'react';
 import { Pressable, PressableProps, View } from 'react-native';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { AppButtonVariant } from '@/features/shared/ui/components/AppButtonVariant';
 import { AppText } from '@/features/shared/ui/components/AppText';
+import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 import { Theme } from '@/types/theme/theme';

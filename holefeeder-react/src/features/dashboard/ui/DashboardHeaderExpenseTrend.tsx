@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { DashboardComputedSummary } from '@/features/dashboard/core/use-dashboard-summary';
 import { AppText } from '@/features/shared/ui/components/AppText';
+import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { type StyleProp, Text, View, type ViewProps, type ViewStyle } from 'react-native';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { AppText } from '@/features/shared/ui/components/AppText';
+import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppIcons } from '@/types/icons';

@@ -39,7 +39,16 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export function AppButton({ label, icon, variant = AppButtonVariant.secondary, onPress = () => {}, color, children, ...props }: ButtonProps) {
+export function AppButton({
+  label,
+  icon,
+  variant = AppButtonVariant.secondary,
+  onPress = () => {},
+  color,
+  children,
+  style,
+  ...props
+}: ButtonProps) {
   const styles = useStyles(createStyles);
 
   const getVariantStyle = () => {
@@ -56,14 +65,15 @@ export function AppButton({ label, icon, variant = AppButtonVariant.secondary, o
     }
   };
 
-  const style = getVariantStyle();
+  const variantStyle = getVariantStyle();
+  const buttonColor = color ?? variantStyle.color;
 
   return (
-    <Pressable style={style} onPress={onPress} accessibilityRole="button" {...props}>
+    <Pressable style={[variantStyle, style]} onPress={onPress} accessibilityRole="button" {...props}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {icon && <IconSymbol name={icon} color={style.color} />}
+        {icon && <IconSymbol name={icon} color={buttonColor} />}
         {label && (
-          <AppText style={{ color: style.color }} variant="default">
+          <AppText style={{ color: buttonColor }} variant="default">
             {label}
           </AppText>
         )}

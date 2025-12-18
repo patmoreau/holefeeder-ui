@@ -17,7 +17,7 @@ const createStyles = (theme: Theme) => ({
     ...theme.typography.secondary,
     paddingLeft: 36,
     textAlign: 'left' as const,
-    color: `${theme.colors.secondaryText}3C`,
+    color: `${theme.colors.text}3C`,
   },
   divider: {
     height: 1,
@@ -28,14 +28,6 @@ const createStyles = (theme: Theme) => ({
 export const AppSection = ({ title, style, children, ...otherProps }: SectionProps) => {
   const styles = useStyles(createStyles);
 
-  const childrenWithDividers = React.Children.toArray(children).reduce<React.ReactNode[]>((acc, child, index) => {
-    acc.push(child);
-    if (index < React.Children.count(children) - 1) {
-      acc.push(<View key={`divider-${index}`} style={styles.divider} />);
-    }
-    return acc;
-  }, []);
-
   return (
     <View style={{ flexDirection: 'column' }}>
       {title && (
@@ -44,7 +36,12 @@ export const AppSection = ({ title, style, children, ...otherProps }: SectionPro
         </AppText>
       )}
       <View style={[styles.section, style]} {...otherProps}>
-        {childrenWithDividers}
+        {React.Children.map(children, (child, index) => (
+          <>
+            {child}
+            {index < React.Children.count(children) - 1 && <View style={styles.divider} />}
+          </>
+        ))}
       </View>
     </View>
   );

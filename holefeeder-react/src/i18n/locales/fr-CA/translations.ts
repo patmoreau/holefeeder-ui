@@ -171,6 +171,7 @@ export const fr: TranslationStructure = {
     notFoundPage: 'Page non trouvée',
     goTo: 'Aller à',
     component: 'Composant',
+    testComponents: 'Tester les composantes',
   },
   themeSwitcher: {
     system: 'Automatique',

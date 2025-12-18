@@ -7,6 +7,7 @@ import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
 import { QueryProvider } from '@/contexts/query-provider';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useQuickActions } from '@/shared/hooks/use-quick-actions';
 
@@ -57,6 +58,7 @@ if (!__DEV__) {
 
 function AppContent() {
   const { user, isLoading } = useAuth();
+  const { theme } = useTheme();
 
   useQuickActions();
 
@@ -74,6 +76,13 @@ function AppContent() {
         <Stack.Screen name="(auth)" />
       </Stack.Protected>
       <Stack.Screen name="+not-found" />
+      <Stack.Screen
+        name="test"
+        options={{
+          headerTransparent: true,
+          headerTintColor: theme.colors.tint,
+        }}
+      />
     </Stack>
   );
 }

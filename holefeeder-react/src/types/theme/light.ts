@@ -19,6 +19,10 @@ const iosTypography = {
     fontWeight: 'normal',
     lineHeight: 24,
   },
+  footnote: {
+    fontSize: 12,
+    fontWeight: 'normal',
+  },
   secondary: {
     fontSize: 15,
     fontWeight: 'normal',

@@ -1,8 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { AppView } from '@/features/shared/ui/AppView';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { AppText } from '@/features/shared/ui/components/AppText';
-import { AppView } from '@/features/shared/ui/components/AppView';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { GlobalStyles } from '@/types/theme/global-styles';

@@ -168,6 +168,7 @@ export const en = {
     notFoundPage: 'Page not found',
     goTo: 'Go to',
     component: 'Component',
+    testComponents: 'Test Components',
   },
   themeSwitcher: {
     system: 'Automatic',

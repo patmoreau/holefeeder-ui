@@ -9,34 +9,40 @@ import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
   container: {
+    paddingVertical: 8,
+  },
+  defaultContainer: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    paddingVertical: 8,
+    gap: 8,
+  },
+  largeContainer: {
+    flexDirection: 'column' as const,
+    gap: 8,
   },
   iconCircle: {
     width: 36,
     height: 36,
     borderRadius: 16,
-    backgroundColor: `${theme.colors.primary}20`, // 20 is hex for ~12% opacity
+    backgroundColor: `${theme.colors.primary}20`,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
-    marginRight: 8,
   },
   label: {
     ...theme.typography.body,
     color: theme.colors.text,
     flexShrink: 0,
   },
-  content: {
+  defaultContent: {
     flex: 1,
+    width: '100%',
     alignItems: 'flex-end' as const,
     justifyContent: 'flex-end' as const,
     overflow: 'hidden' as const,
-    marginLeft: 12,
   },
   largeContent: {
-    width: '100%',
-    alignSelf: 'flex-start' as const,
+    flex: 1,
+    width: '100%' as const,
   },
 });
 
@@ -54,25 +60,29 @@ export const AppField = ({ label, icon, children, style, variant = 'default', ..
 
   if (variant === 'large') {
     return (
-      <View style={style} {...otherProps}>
-        <View style={styles.container}>
-          <View style={styles.iconCircle}>
-            <IconSymbol name={icon} size={24} color={theme.colors.primary} />
+      <View style={[styles.container, style]} {...otherProps}>
+        <View style={styles.largeContainer}>
+          <View style={styles.defaultContainer}>
+            <View style={styles.iconCircle}>
+              <IconSymbol name={icon} size={24} color={theme.colors.primary} />
+            </View>
+            {label && <AppText variant={'default'}>{label}</AppText>}
           </View>
-          {label && <AppText variant={'default'}>{label}</AppText>}
+          <View style={styles.largeContent}>{children}</View>
         </View>
-        <View style={styles.largeContent}>{children}</View>
       </View>
     );
   }
 
   return (
     <View style={[styles.container, style]} {...otherProps}>
-      <View style={styles.iconCircle}>
-        <IconSymbol name={icon} size={24} color={theme.colors.primary} />
+      <View style={styles.defaultContainer}>
+        <View style={styles.iconCircle}>
+          <IconSymbol name={icon} size={24} color={theme.colors.primary} />
+        </View>
+        {label && <Text style={styles.label}>{label}</Text>}
+        <View style={styles.defaultContent}>{children}</View>
       </View>
-      {label && <Text style={styles.label}>{label}</Text>}
-      <View style={styles.content}>{children}</View>
     </View>
   );
 };

@@ -1,9 +1,10 @@
-import { BottomSheet, Button, Host, HStack, Image, Text, VStack } from '@expo/ui/swift-ui';
+import { BottomSheet, Button, HStack, Image, Text, VStack } from '@expo/ui/swift-ui';
 import { frame, padding } from '@expo/ui/swift-ui/modifiers';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowDimensions } from 'react-native';
 import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/features/shared/core/error-key';
+import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
 import { tk } from '@/i18n/translations';
 
 type Props = {
@@ -17,7 +18,7 @@ export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) =
   const { width } = useWindowDimensions();
 
   return (
-    <Host style={{ position: 'absolute', width }}>
+    <AppHost style={{ position: 'absolute', width }}>
       <BottomSheet isOpened={showError} onIsOpenedChange={(e) => setShowError(e)}>
         <VStack spacing={32} modifiers={[frame({ maxWidth: width }), padding({ all: 32 })]}>
           <Text size={18} weight="bold" color="red">
@@ -41,6 +42,6 @@ export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) =
           </HStack>
         </VStack>
       </BottomSheet>
-    </Host>
+    </AppHost>
   );
 };

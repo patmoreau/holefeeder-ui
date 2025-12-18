@@ -1,11 +1,10 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { useDashboardComputedSummary } from '@/features/dashboard/core/use-dashboard-summary';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeaderSmallCard';
+import { AppView } from '@/features/shared/ui/AppView';
 import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
-import { AppView } from '@/features/shared/ui/components/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
@@ -61,7 +60,6 @@ const createStyles = (theme: Theme) => ({
 const DashboardScreen = () => {
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
-  const { i18n } = useTranslation();
   const dashboardQuery = useDashboardComputedSummary();
 
   const { isLoading, errorSheetProps } = useDataFetchingErrorHandler(dashboardQuery);

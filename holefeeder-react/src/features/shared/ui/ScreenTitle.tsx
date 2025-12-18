@@ -1,9 +1,8 @@
 import React from 'react';
 import { ViewProps } from 'react-native';
+import { AppView } from '@/features/shared/ui/AppView';
 import { AppText, ThemedTextProps } from '@/features/shared/ui/components/AppText';
-import { AppView } from '@/features/shared/ui/components/AppView';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { Theme } from '@/types/theme/theme';
 
 type ScreenTitleProps = {
   title: string;
@@ -11,7 +10,7 @@ type ScreenTitleProps = {
   textProps?: ThemedTextProps;
 };
 
-const createStyles = (theme: Theme) => ({
+const createStyles = () => ({
   titleContainer: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,

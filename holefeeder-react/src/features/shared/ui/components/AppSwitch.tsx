@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, View } from 'react-native';
+import { Switch } from 'react-native';
 
 type Props = {
   value: boolean;
@@ -7,9 +7,5 @@ type Props = {
 };
 
 export const AppSwitch = ({ value, onChange }: Props) => {
-  return (
-    <View>
-      <Switch value={value} onValueChange={onChange} />
-    </View>
-  );
+  return <Switch value={value} onValueChange={onChange} />;
 };

@@ -1,6 +1,6 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import { ViewProps } from 'react-native';
-import { AppView } from '@/features/shared/ui/components/AppView';
+import { AppView } from '@/features/shared/ui/AppView';
 
 export const AppScreen = ({ style, children, ...otherProps }: ViewProps) => {
   const headerHeight = useHeaderHeight();

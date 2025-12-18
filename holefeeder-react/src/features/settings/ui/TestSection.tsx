@@ -21,6 +21,16 @@ export const TestSection = () => {
           }}
         />
       </AppField>
+      <AppField label={t(tk.testSection.testComponents)} icon={AppIcons.warning}>
+        <AppButton
+          label={t(tk.testSection.component)}
+          variant={'link'}
+          onPress={() => {
+            // @ts-ignore
+            router.push({ pathname: '/test' });
+          }}
+        />
+      </AppField>
     </AppSection>
   );
 };

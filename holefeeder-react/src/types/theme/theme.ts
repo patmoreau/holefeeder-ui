@@ -50,6 +50,7 @@ export interface Theme {
     subtitle: TextStyle;
     body: TextStyle;
     secondary: TextStyle;
+    footnote: TextStyle;
     chip: TextStyle;
   };
   styles: {

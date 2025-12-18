@@ -18,13 +18,7 @@ const AppLayout = () => {
         options={{
           headerTitle: '',
           headerTransparent: true,
-          headerRight: () => (
-            <AppButton
-              icon={AppIcons.purchase}
-              style={{ width: 35, height: 35, justifyContent: 'center', alignItems: 'center' }}
-              onPress={onPressPurchase}
-            />
-          ),
+          headerRight: () => <AppButton icon={AppIcons.purchase} style={{ width: 35, height: 35 }} onPress={onPressPurchase} />,
         }}
       />
       <Stack.Screen

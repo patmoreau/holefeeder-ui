@@ -1,6 +1,6 @@
-import { Host, Switch } from '@expo/ui/swift-ui';
-import { padding } from '@expo/ui/swift-ui/modifiers';
+import { Switch } from '@expo/ui/swift-ui';
 import React from 'react';
+import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
 
 type Props = {
   value: boolean;
@@ -9,8 +9,8 @@ type Props = {
 
 export const AppSwitch = ({ value, onChange }: Props) => {
   return (
-    <Host matchContents>
-      <Switch value={value} onValueChange={onChange} modifiers={[padding({ trailing: 2 })]} />
-    </Host>
+    <AppHost style={{ margin: 2 }}>
+      <Switch value={value} onValueChange={onChange} />
+    </AppHost>
   );
 };

@@ -6,7 +6,7 @@ import { PurchaseFormProvider, validatePurchaseForm } from '@/features/purchase/
 import { useTags } from '@/features/purchase/core/use-tags';
 import { PurchaseForm } from '@/features/purchase/ui/PurchaseForm';
 import { AppScreen } from '@/features/shared/ui/AppScreen';
-import { AppView } from '@/features/shared/ui/components/AppView';
+import { AppView } from '@/features/shared/ui/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { withDate } from '@/features/shared/utils/with-date';

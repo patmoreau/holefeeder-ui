@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
+import { FilterField } from '@/features/purchase/ui/components/fields/FilterField';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppText } from '@/features/shared/ui/components/AppText';
-import { AppTextInput } from '@/features/shared/ui/components/AppTextInput';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
@@ -67,7 +67,7 @@ export function TagList({ tags, selected, onChange }: TagListProps) {
             </AppText>
           )}
         </ScrollView>
-        <AppTextInput value={filter} onChangeText={setFilter} icon={AppIcons.add} onSubmit={onSubmit} placeholder={t(tk.tagList.placeHolder)} />
+        <FilterField filter={filter} setFilter={setFilter} onSubmit={onSubmit} />
       </View>
     </AppField>
   );

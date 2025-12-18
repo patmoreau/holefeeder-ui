@@ -13,7 +13,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { aLightThemeState, anId } from '@/__tests__';
 import { aAuthState } from '@/__tests__/mocks/auth-state-builder';
 import { aLanguageState } from '@/__tests__/mocks/language-state-builder';
-import { AuthButton } from '@/features/shared/ui/components/AuthButton';
+import { AuthButton } from '@/features/shared/ui/AuthButton';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useLanguage } from '@/shared/hooks/use-language';

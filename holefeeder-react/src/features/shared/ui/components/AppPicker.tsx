@@ -1,6 +1,6 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
-import { Platform, StyleProp, View, ViewStyle } from 'react-native';
+import { Platform, StyleProp, ViewStyle } from 'react-native';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
@@ -20,24 +20,14 @@ export type PickerProps<T extends PickerOption> = {
 };
 
 const createStyles = (theme: Theme) => ({
-  container: {
-    position: 'relative' as const,
-    width: '100%',
-  },
   picker: {
-    ...theme.styles.components.picker,
-    backgroundColor: theme.colors.background,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: Platform.select({ web: 4, default: 8 }),
+    minHeight: 40,
+    backgroundColor: theme.colors.secondaryBackground,
     borderColor: theme.colors.separator,
-  },
-  pickerItem: {
-    ...theme.styles.components.pickerItem,
-    ...Platform.select({
-      web: {
-        backgroundColor: theme.colors.background,
-        color: theme.colors.text,
-      },
-      default: {},
-    }),
+    color: theme.colors.text,
   },
 });
 
@@ -56,21 +46,20 @@ export const AppPicker = <T extends PickerOption>({
   }
 
   return (
-    <View style={[styles.container, style]}>
-      <Picker
-        style={styles.picker}
-        selectedValue={selectedOption?.id}
-        onValueChange={(itemValue: string | number) => {
-          const selected = options.find((option) => option.id === itemValue);
-          if (selected) {
-            onSelectOption(selected);
-          }
-        }}
-      >
-        {options.map((option) => (
-          <Picker.Item key={option.id} label={onOptionLabel(option)} value={option.id} style={styles.pickerItem} />
-        ))}
-      </Picker>
-    </View>
+    <Picker
+      mode="dialog"
+      style={styles.picker}
+      selectedValue={selectedOption?.id}
+      onValueChange={(itemValue: string | number) => {
+        const selected = options.find((option) => option.id === itemValue);
+        if (selected) {
+          onSelectOption(selected);
+        }
+      }}
+    >
+      {options.map((option) => (
+        <Picker.Item key={option.id} label={onOptionLabel(option)} value={option.id} />
+      ))}
+    </Picker>
   );
 };

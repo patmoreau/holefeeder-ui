@@ -25,7 +25,13 @@ export const AppForm = ({ style, ...otherProps }: ScrollViewProps) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={0}
     >
-      <ScrollView style={styles.form} contentContainerStyle={[style]} keyboardShouldPersistTaps="handled" {...otherProps} />
+      <ScrollView
+        style={styles.form}
+        contentContainerStyle={[style]}
+        keyboardShouldPersistTaps="handled"
+        {...otherProps}
+        removeClippedSubviews={false}
+      />
     </KeyboardAvoidingView>
   );
 };

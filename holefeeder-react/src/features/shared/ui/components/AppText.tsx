@@ -7,6 +7,10 @@ export type ThemedTextProps = TextProps & {
 };
 
 const createStyles = (theme: Theme) => ({
+  default: {
+    ...theme.typography.body,
+    color: theme.colors.text,
+  },
   largeTitle: {
     ...theme.typography.largeTitle,
     color: theme.colors.text,
@@ -15,17 +19,21 @@ const createStyles = (theme: Theme) => ({
     ...theme.typography.title,
     color: theme.colors.text,
   },
-  subtitle: {
-    ...theme.typography.subtitle,
-    color: theme.colors.secondaryText,
-  },
-  body: {
+  defaultSemiBold: {
     ...theme.typography.body,
+    fontWeight: '600' as const,
     color: theme.colors.text,
   },
+  subtitle: {
+    ...theme.typography.subtitle,
+    color: theme.colors.text + '60',
+  },
   footnote: {
-    ...theme.typography.body,
-    color: theme.colors.secondaryText,
+    ...theme.typography.footnote,
+    color: theme.colors.text + '60',
+  },
+  link: {
+    color: theme.colors.link,
   },
 });
 
@@ -35,10 +43,13 @@ export const AppText = ({ style, variant = 'default', ...props }: ThemedTextProp
   return (
     <Text
       style={[
-        variant === 'default' && styles.body,
+        variant === 'default' && styles.default,
+        variant === 'largeTitle' && styles.largeTitle,
         variant === 'title' && styles.title,
+        variant === 'defaultSemiBold' && styles.defaultSemiBold,
         variant === 'subtitle' && styles.subtitle,
         variant === 'footnote' && styles.footnote,
+        variant === 'link' && styles.link,
         style,
       ]}
       {...props}

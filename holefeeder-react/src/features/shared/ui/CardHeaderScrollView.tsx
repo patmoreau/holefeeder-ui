@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { type ViewProps } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
-import { AppView } from '@/features/shared/ui/components/AppView';
+import { AppView } from '@/features/shared/ui/AppView';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
@@ -115,7 +115,7 @@ export const CardHeaderScrollView = ({ largeCard, smallCard, headerBackgroundCol
         <Animated.View style={[styles.smallCardContainer, smallCardAnimatedStyle]}>{smallCard}</Animated.View>
       </Animated.View>
 
-      <Animated.ScrollView ref={scrollRef} style={styles.scrollArea} scrollEventThrottle={8}>
+      <Animated.ScrollView ref={scrollRef} style={styles.scrollArea} scrollEventThrottle={8} removeClippedSubviews={false}>
         <AppView style={[styles.content, { paddingTop: HEADER_MAX_HEIGHT }]} {...otherProps}>
           {children}
         </AppView>

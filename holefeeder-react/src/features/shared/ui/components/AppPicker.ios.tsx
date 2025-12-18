@@ -2,7 +2,7 @@ import { Host, Picker } from '@expo/ui/swift-ui';
 import { fixedSize, frame, padding } from '@expo/ui/swift-ui/modifiers';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { PickerOption, PickerProps } from '@/features/shared/ui/AppPicker';
+import { PickerOption, PickerProps } from '@/features/shared/ui/components/AppPicker';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 
 export const AppPicker = <T extends PickerOption>({

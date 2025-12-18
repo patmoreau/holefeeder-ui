@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Category } from '@/features/purchase/core/category';
 import { CategoryType } from '@/features/purchase/core/category-type';
 import { AppField } from '@/features/shared/ui/AppField';
-import { AppPicker } from '@/features/shared/ui/AppPicker';
+import { AppPicker } from '@/features/shared/ui/components/AppPicker';
 import { tk } from '@/i18n/translations';
 import { AppIcons } from '@/types/icons';
 

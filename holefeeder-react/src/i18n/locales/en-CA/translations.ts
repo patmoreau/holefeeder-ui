@@ -161,6 +161,7 @@ export const en = {
   },
   tagList: {
     placeHolder: 'Filter tags…',
+    noTags: 'Add a new tag',
   },
   testSection: {
     title: 'Test',

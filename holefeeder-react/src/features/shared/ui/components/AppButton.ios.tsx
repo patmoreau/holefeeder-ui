@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, Host } from '@expo/ui/swift-ui';
+import { Button, ButtonVariant, Host, Image } from '@expo/ui/swift-ui';
 import { fixedSize } from '@expo/ui/swift-ui/modifiers';
 import { StyleProp, ViewStyle } from 'react-native';
 import { AppButtonVariant } from '@/features/shared/ui/components/AppButtonVariant';
@@ -23,15 +23,18 @@ const variantMapping: Record<AppButtonVariant, ButtonVariant> = {
 export const AppButton = ({ label, icon, variant, onPress = () => {}, style }: ButtonProps) => {
   return (
     <Host {...(!style ? { matchContents: true } : {})} style={style}>
-      <Button
-        systemImage={icon}
-        role={variant === AppButtonVariant.destructive ? 'destructive' : undefined}
-        variant={variantMapping[variant ?? AppButtonVariant.secondary]}
-        onPress={onPress}
-        modifiers={[fixedSize({ horizontal: true, vertical: true })]}
-      >
-        {label}
-      </Button>
+      {!label && icon && <Image systemName={icon} onPress={onPress} />}
+      {label && (
+        <Button
+          systemImage={icon}
+          role={variant === AppButtonVariant.destructive ? 'destructive' : undefined}
+          variant={variantMapping[variant ?? AppButtonVariant.secondary]}
+          onPress={onPress}
+          modifiers={[fixedSize({ horizontal: true, vertical: true })]}
+        >
+          {label}
+        </Button>
+      )}
     </Host>
   );
 };

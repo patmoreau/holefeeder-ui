@@ -1,4 +1,4 @@
-import { Picker as PickerRN } from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { Platform, StyleProp, View, ViewStyle } from 'react-native';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
@@ -57,7 +57,7 @@ export const AppPicker = <T extends PickerOption>({
 
   return (
     <View style={[styles.container, style]}>
-      <PickerRN
+      <Picker
         style={styles.picker}
         selectedValue={selectedOption?.id}
         onValueChange={(itemValue: string | number) => {
@@ -68,9 +68,9 @@ export const AppPicker = <T extends PickerOption>({
         }}
       >
         {options.map((option) => (
-          <PickerRN.Item key={option.id} label={onOptionLabel(option)} value={option.id} style={styles.pickerItem} />
+          <Picker.Item key={option.id} label={onOptionLabel(option)} value={option.id} style={styles.pickerItem} />
         ))}
-      </PickerRN>
+      </Picker>
     </View>
   );
 };

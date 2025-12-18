@@ -2,11 +2,10 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 
-export type TagItemProps = {
+export type AppChipProps = {
   label: string;
   selected?: boolean;
   onPress?: () => void;
-  showIcon?: boolean;
 };
 
 const useTagItemStyles = () =>
@@ -20,12 +19,12 @@ const useTagItemStyles = () =>
       marginVertical: 6,
     },
     chipDefault: {
-      backgroundColor: '#F4F5F7',
-      borderColor: '#DADCE3',
+      backgroundColor: theme.colors.secondary + 20,
+      borderColor: theme.colors.secondary,
     },
     chipSelected: {
-      backgroundColor: '#E6F0FF',
-      borderColor: '#2F6FED',
+      backgroundColor: theme.colors.primary + 20,
+      borderColor: theme.colors.primary,
     },
     chipPressed: {
       opacity: 0.85,
@@ -34,32 +33,18 @@ const useTagItemStyles = () =>
       flexDirection: 'row',
       alignItems: 'center',
     },
-    iconText: {
-      fontSize: 14,
-      marginRight: 6,
-    },
-    iconDefault: {
-      color: '#5F6673',
-    },
-    iconSelected: {
-      color: '#2F6FED',
-    },
-    labelText: {
-      fontSize: 14,
-    },
     labelDefault: {
-      color: '#1A1F2C',
+      color: theme.colors.secondary,
     },
     labelSelected: {
-      color: '#0F3DA3',
-      fontWeight: '600',
+      color: theme.colors.primary,
     },
     chipText: {
       ...theme.typography.chip,
     },
   }));
 
-export function TagItem({ label, selected = false, onPress, showIcon = true }: TagItemProps) {
+export function AppChip({ label, selected = false, onPress }: AppChipProps) {
   const styles = useTagItemStyles();
 
   return (
@@ -70,8 +55,7 @@ export function TagItem({ label, selected = false, onPress, showIcon = true }: T
       style={({ pressed }) => [styles.chip, selected ? styles.chipSelected : styles.chipDefault, pressed ? styles.chipPressed : null]}
     >
       <View style={styles.chipContent}>
-        {showIcon && <Text style={[styles.iconText, selected ? styles.iconSelected : styles.iconDefault]}>{selected ? '×' : '+'}</Text>}
-        <Text numberOfLines={1} style={[styles.labelText, selected ? styles.labelSelected : styles.labelDefault, styles.chipText]}>
+        <Text numberOfLines={1} style={[selected ? styles.labelSelected : styles.labelDefault, styles.chipText]}>
           {label}
         </Text>
       </View>

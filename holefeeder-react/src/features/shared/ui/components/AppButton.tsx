@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, PressableProps, View } from 'react-native';
+import { Pressable, PressableProps, StyleProp, View, ViewStyle } from 'react-native';
 import { AppButtonVariant } from '@/features/shared/ui/components/AppButtonVariant';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
@@ -12,6 +12,8 @@ export type ButtonProps = Omit<PressableProps, 'onPress'> & {
   icon?: AppIcons;
   variant?: AppButtonVariant;
   onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
+  color?: string;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -37,7 +39,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export function AppButton({ label, icon, variant = AppButtonVariant.secondary, onPress = () => {}, children, ...props }: ButtonProps) {
+export function AppButton({ label, icon, variant = AppButtonVariant.secondary, onPress = () => {}, color, children, ...props }: ButtonProps) {
   const styles = useStyles(createStyles);
 
   const getVariantStyle = () => {

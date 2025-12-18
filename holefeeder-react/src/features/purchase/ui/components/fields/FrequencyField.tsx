@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppField } from '@/features/shared/ui/AppField';
-import { AppPicker, PickerOption } from '@/features/shared/ui/AppPicker';
+import { AppPicker, PickerOption } from '@/features/shared/ui/components/AppPicker';
 import { tk } from '@/i18n/translations';
 import { AppIcons } from '@/types/icons';
 

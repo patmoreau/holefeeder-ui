@@ -164,6 +164,7 @@ export const fr: TranslationStructure = {
   },
   tagList: {
     placeHolder: 'Filtrer les étiquettes…',
+    noTags: 'Ajouter une nouvelle étiquette',
   },
   testSection: {
     title: 'Test',

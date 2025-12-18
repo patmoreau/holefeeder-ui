@@ -6,11 +6,11 @@ import { Category } from '@/features/purchase/core/category';
 import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { usePurchase } from '@/features/purchase/core/use-transactions';
-import { CancelPurchaseButton } from '@/features/purchase/ui/components/CancelPurchaseButton';
-import { SavePurchaseButton } from '@/features/purchase/ui/components/SavePurchaseButton';
 import { PurchaseFormContent } from '@/features/purchase/ui/PurchaseFormContent';
+import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { goBack } from '@/features/shared/utils/navigation';
 import { showAlert } from '@/features/shared/utils/show-alert';
+import { AppIcons } from '@/types/icons';
 
 interface PurchaseFormProps {
   accounts: Account[];
@@ -47,13 +47,13 @@ export const PurchaseForm = ({ accounts, categories, tags }: PurchaseFormProps) 
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <CancelPurchaseButton onCancel={handleCancel} />,
+      headerLeft: () => <AppButton icon={AppIcons.back} style={{ width: 35, height: 35 }} onPress={handleCancel} />,
     });
   }, [handleCancel, navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <SavePurchaseButton onSave={handleSave} />,
+      headerRight: () => <AppButton icon={AppIcons.save} style={{ width: 35, height: 35 }} onPress={handleSave} />,
     });
   }, [handleSave, navigation]);
 

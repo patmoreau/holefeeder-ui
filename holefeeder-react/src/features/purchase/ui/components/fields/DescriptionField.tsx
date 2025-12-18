@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native';
 import { AppField } from '@/features/shared/ui/AppField';
+import { AppTextInput } from '@/features/shared/ui/components/AppTextInput';
 import { tk } from '@/i18n/translations';
 import { AppIcons } from '@/types/icons';
 
@@ -14,13 +14,8 @@ export const DescriptionField = ({ description, onDescriptionChange }: Props) =>
   const { t } = useTranslation();
 
   return (
-    <AppField label={t(tk.purchase.transferSection.description)} icon={AppIcons.description}>
-      <TextInput
-        placeholder={t(tk.purchase.basicSection.description)}
-        defaultValue={description}
-        onChangeText={onDescriptionChange}
-        style={{ flex: 1, width: '100%' }}
-      />
+    <AppField icon={AppIcons.description}>
+      <AppTextInput placeholder={t(tk.purchase.basicSection.description)} value={description} onChangeText={onDescriptionChange} />
     </AppField>
   );
 };

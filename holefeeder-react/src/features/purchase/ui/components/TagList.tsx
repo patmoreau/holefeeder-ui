@@ -1,64 +1,74 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Tag } from '@/features/purchase/core/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
 import { AppField } from '@/features/shared/ui/AppField';
+import { AppText } from '@/features/shared/ui/components/AppText';
+import { AppTextInput } from '@/features/shared/ui/components/AppTextInput';
 import { tk } from '@/i18n/translations';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
-import { TagItem } from './TagItem';
+import { Theme } from '@/types/theme/theme';
+import { AppChip } from '../../../shared/ui/components/AppChip';
 
 export type TagListProps = {
   tags: Tag[];
   selected: Tag[];
   onChange: (next: Tag[]) => void;
-  showIcon?: boolean;
 };
 
-export function TagList({ tags, selected, onChange, showIcon = true }: TagListProps) {
+const createStyles = (theme: Theme) => ({
+  container: {
+    width: '100%' as const,
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    marginBottom: 8,
+  },
+  row: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    gap: 8,
+  },
+  noTags: {
+    color: theme.colors.primary + '60', // More transparent
+    fontStyle: 'italic' as const,
+  },
+});
+
+export function TagList({ tags, selected, onChange }: TagListProps) {
   const { t } = useTranslation();
+  const styles = useStyles(createStyles);
   const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
+  const [scrollViewHeight, setScrollViewHeight] = useState(36);
+
+  const buildList = () =>
+    filtered.map((tag) => (
+      <AppChip key={tag.id} label={`#${tag.tag}`} selected={selected.some((t) => t.id === tag.id)} onPress={() => toggleTag(tag)} />
+    ));
 
   return (
     <AppField label={t(tk.purchase.basicSection.tags)} icon={AppIcons.tag} variant="large">
       <View style={styles.container}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
-          {filtered.map((tag) => (
-            <TagItem
-              key={tag.id}
-              label={tag.tag}
-              selected={selected.some((t) => t.id === tag.id)}
-              onPress={() => toggleTag(tag)}
-              showIcon={showIcon}
-            />
-          ))}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.row}
+          style={[styles.scrollView, { height: scrollViewHeight }]}
+          onLayout={(event) => setScrollViewHeight(event.nativeEvent.layout.height)}
+        >
+          {filtered.length > 0 ? (
+            buildList()
+          ) : (
+            <AppText variant="footnote" style={styles.noTags}>
+              {t(tk.tagList.noTags)}
+            </AppText>
+          )}
         </ScrollView>
-        <TextInput
-          value={filter}
-          onChangeText={setFilter}
-          onSubmitEditing={onSubmit}
-          placeholder={t(tk.tagList.placeHolder)}
-          style={styles.input}
-        />
+        <AppTextInput value={filter} onChangeText={setFilter} icon={AppIcons.add} onSubmit={onSubmit} placeholder={t(tk.tagList.placeHolder)} />
       </View>
     </AppField>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#DADCE3',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    marginBottom: 8,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 8,
-  },
-});

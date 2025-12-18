@@ -35,6 +35,7 @@ const createStyles = (theme: Theme) => ({
   },
   largeCardContainer: {
     position: 'absolute' as const,
+    paddingTop: 20,
     bottom: 20,
     left: 20,
     right: 20,

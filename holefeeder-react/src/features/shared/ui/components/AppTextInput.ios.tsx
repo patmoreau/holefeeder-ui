@@ -1,20 +1,18 @@
-import { HStack, Image, TextField, TextFieldRef } from '@expo/ui/swift-ui';
+import { Host, HStack, Image, TextField, TextFieldRef } from '@expo/ui/swift-ui';
 import { padding } from '@expo/ui/swift-ui/modifiers';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
+import { AppTextInputProps } from '@/features/shared/ui/components/AppTextInput';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
-
-type FilterTextFieldProps = {
-  filter: string;
-  setFilter: (filter: string) => void;
-  onSubmit: () => void;
-  placeholder: string;
-};
 
 const useComponentStyles = () =>
   useStyles((theme) => ({
     container: {
+      flex: 1,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      marginBottom: 8,
       width: '100%',
       flexDirection: 'column',
     },
@@ -29,32 +27,33 @@ const useComponentStyles = () =>
     },
   }));
 
-export const FilterTextField = ({ filter, setFilter, onSubmit, placeholder }: FilterTextFieldProps) => {
+export const AppTextInput = ({ placeholder, value, onChangeText, icon, onSubmit }: AppTextInputProps) => {
   const styles = useComponentStyles();
   const textFieldRef = useRef<TextFieldRef>(null);
 
   useEffect(() => {
     const updateText = async () => {
-      // Add a small delay to ensure view is mounted
       await new Promise((resolve) => setTimeout(resolve, 0));
       if (textFieldRef.current) {
-        await textFieldRef.current.setText(filter);
+        await textFieldRef.current.setText(value);
       }
     };
 
     updateText().then();
-  }, [filter]);
+  }, [value]);
 
   return (
-    <HStack>
-      <TextField
-        ref={textFieldRef}
-        autocorrection={false}
-        onChangeText={setFilter}
-        placeholder={placeholder}
-        modifiers={[padding({ all: 4 })]}
-      />
-      <Image systemName={AppIcons.add} onPress={onSubmit} color={styles.icon.color} />
-    </HStack>
+    <Host matchContents style={styles.container}>
+      <HStack>
+        <TextField
+          ref={textFieldRef}
+          autocorrection={false}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          modifiers={[padding({ all: 4 })]}
+        />
+        {icon && onSubmit && <Image systemName={AppIcons.add} onPress={onSubmit} color={styles.icon.color} />}
+      </HStack>
+    </Host>
   );
 };

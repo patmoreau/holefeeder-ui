@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Credentials, useAuth0 } from 'react-native-auth0';
 import { config } from '@/config/config';
 import { TokenInfo } from '@/types/token-info';
@@ -49,21 +49,25 @@ export function useAuth() {
 
       setIsLoading(true);
       try {
-        const credentials = await getCredentials();
+        const credentials = await getCredentials(config.auth0.scope, 0, {
+          audience: config.auth0.audience,
+        });
+
         if (!credentials?.accessToken) {
           resetTokenInfo();
         } else {
           updateTokenInfo(credentials);
         }
       } catch (error: any) {
-        resetTokenInfo(error.message);
+        console.error('[useAuth] Error getting credentials:', error.message);
+        resetTokenInfo();
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchTokenInfo();
-  }, [memoizedUser, authLoading, resetTokenInfo, getCredentials, updateTokenInfo]); // Remove getCredentials from deps
+  }, [memoizedUser, authLoading, resetTokenInfo, getCredentials, updateTokenInfo]);
 
   const login = useCallback(async () => {
     await authorize({

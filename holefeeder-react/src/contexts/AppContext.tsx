@@ -41,7 +41,6 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
   const [systemColorScheme, setSystemColorScheme] = useState(Appearance.getColorScheme());
   const [currentLanguage, setCurrentLanguage] = useState<LanguageType>((i18n.language as LanguageType) || 'en');
 
-  // Listen for system appearance changes
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
       setSystemColorScheme(colorScheme);
@@ -49,7 +48,6 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
     return () => subscription?.remove();
   }, []);
 
-  // Update profile when a user changes
   useEffect(() => {
     if (user) {
       setProfile({
@@ -70,7 +68,6 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
     return settings.themeMode === 'dark' ? darkTheme : lightTheme;
   }, [settings.themeMode, systemColorScheme]);
 
-  // Update system UI when theme changes
   useEffect(() => {
     SystemUI.setBackgroundColorAsync(getCurrentTheme().colors.background).then((_) => {});
   }, [settings.themeMode, systemColorScheme, getCurrentTheme]);
@@ -87,7 +84,9 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
   const changeThemeMode = useCallback(
     async (themeMode: ThemeMode) => {
       try {
-        Appearance.setColorScheme(themeMode === 'system' ? undefined : themeMode);
+        if (Appearance.setColorScheme) {
+          Appearance.setColorScheme(themeMode === 'system' ? undefined : themeMode);
+        }
         await updateSettings({ themeMode });
       } catch (error) {
         console.error('Error changing theme:', error);
@@ -150,8 +149,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         // Initialize i18n
         await initI18n(loadedSettings.language);
 
-        // Set theme
-        Appearance.setColorScheme(loadedSettings.themeMode === 'system' ? undefined : loadedSettings.themeMode);
+        if (Appearance.setColorScheme) {
+          Appearance.setColorScheme(loadedSettings.themeMode === 'system' ? undefined : loadedSettings.themeMode);
+        }
 
         setLoadedSettings(loadedSettings);
         setIsInitialized(true);

@@ -5,8 +5,8 @@ import { DashboardHeaderExpenseTrend } from '@/features/dashboard/ui/DashboardHe
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { Theme } from '@/types/theme/theme';
-import { formatCurrency } from '@/utils/format-currency';
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -21,6 +21,7 @@ const createStyles = (theme: Theme) => ({
 
 export const DashboardHeaderSmallCard = ({ summary }: { summary: DashboardComputedSummary }) => {
   const { t } = useTranslation();
+  const { formatCurrency } = useLocaleFormatter();
   const styles = useStyles(createStyles);
 
   return (

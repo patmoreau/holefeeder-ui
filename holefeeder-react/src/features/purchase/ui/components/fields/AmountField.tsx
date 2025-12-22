@@ -1,8 +1,8 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { Theme } from '@/types/theme/theme';
-import { formatCurrency } from '@/utils/format-currency';
 
 type Props = {
   amount: number;
@@ -27,6 +27,7 @@ const createStyles = (theme: Theme) => ({
 });
 
 export const AmountField = React.forwardRef<AmountFieldRef, Props>(({ amount, onAmountChange }, ref) => {
+  const { formatCurrency } = useLocaleFormatter();
   const styles = useStyles(createStyles);
   const inputRef = useRef<TextInput>(null);
 
@@ -51,13 +52,11 @@ export const AmountField = React.forwardRef<AmountFieldRef, Props>(({ amount, on
   }, [enteringFocus, displayAmount.length]);
 
   useEffect(() => {
-    if (!isEditing) {
-      const formatted = formatCurrency(amount);
-      if (formatted !== displayAmount) {
-        setDisplayAmount(formatted);
-      }
+    const formatted = formatCurrency(amount, { isEditing: isEditing });
+    if (formatted !== displayAmount) {
+      setDisplayAmount(formatted);
     }
-  }, [amount, isEditing, displayAmount]);
+  }, [amount, isEditing, displayAmount, formatCurrency]);
 
   const handleChangeText = (text: string) => {
     const digits = text.replace(/\D/g, '');
@@ -66,14 +65,14 @@ export const AmountField = React.forwardRef<AmountFieldRef, Props>(({ amount, on
 
     setSelection(undefined);
 
-    setDisplayAmount(formatCurrency(amount, true));
+    setDisplayAmount(formatCurrency(amount, { isEditing: isEditing }));
 
     onAmountChange(amount);
   };
 
   const handleFocus = () => {
     setIsEditing(true);
-    const newDisplayAmount = formatCurrency(amount, true);
+    const newDisplayAmount = formatCurrency(amount, { isEditing: isEditing });
     setDisplayAmount(newDisplayAmount);
 
     requestAnimationFrame(() => {

@@ -6,6 +6,7 @@ import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
@@ -33,10 +34,9 @@ const createStyles = (theme: Theme) => ({
 
 export const DashboardHeaderLargeCard = ({ summary }: { summary: DashboardComputedSummary }) => {
   const { t } = useTranslation();
+  const { formatCurrency } = useLocaleFormatter();
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
-
-  const formatCurrency = (val: number) => `$${val.toFixed(2)}`;
 
   const netFlow = summary.netFlow;
   const netFlowText = netFlow.isOver ? `+ ${formatCurrency(netFlow.amount)}` : `- ${formatCurrency(Math.abs(netFlow.amount))}`;

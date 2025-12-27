@@ -1,5 +1,5 @@
 import { type AxiosResponse } from 'axios';
-import { Account } from '@/features/purchase/core/account';
+import { Account } from '@/features/shared/core/account';
 import { apiService } from '@/shared/services/api-service';
 
 export const accountApi = (token: string | null) => {

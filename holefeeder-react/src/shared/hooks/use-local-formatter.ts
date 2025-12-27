@@ -1,6 +1,8 @@
 import { getLocales } from 'expo-localization';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AppState, AppStateStatus } from 'react-native';
+import { tk } from '@/i18n/translations';
 
 type FormatterHook = {
   currentLocale: string;
@@ -11,6 +13,7 @@ type FormatterHook = {
 };
 
 export const useLocaleFormatter = (): FormatterHook => {
+  const { t } = useTranslation();
   const [localeInfo, setLocaleInfo] = useState(getLocales()[0]);
   const appState = useRef(AppState.currentState);
 
@@ -51,17 +54,29 @@ export const useLocaleFormatter = (): FormatterHook => {
       formatDate: (date: Date | string | number, options?: Intl.DateTimeFormatOptions) => {
         const dateObj = new Date(date);
         try {
-          return new Intl.DateTimeFormat(localeInfo.languageTag, {
-            dateStyle: 'medium',
-            ...options,
-          }).format(dateObj);
+          const now = new Date();
+          const diffTime = Math.abs(now.getTime() - dateObj.getTime());
+          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+          if (diffDays === 0) {
+            return t(tk.common.today);
+          } else if (diffDays === 1) {
+            return t(tk.common.yesterday);
+          } else if (diffDays < 7) {
+            return t(tk.common.last7Days, { count: diffDays });
+          } else {
+            return new Intl.DateTimeFormat(localeInfo.languageTag, {
+              dateStyle: 'medium',
+              ...options,
+            }).format(dateObj);
+          }
         } catch {
           return dateObj.toDateString();
         }
       },
       formatPercentage: (val: number) => `${val.toFixed(2)}%`,
     }),
-    [localeInfo]
+    [localeInfo, t]
   );
 
   return {

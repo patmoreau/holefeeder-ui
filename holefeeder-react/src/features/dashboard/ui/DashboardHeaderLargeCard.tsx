@@ -57,19 +57,25 @@ export const DashboardHeaderLargeCard = ({ summary }: { summary: DashboardComput
           <AppText variant={'subtitle'} style={styles.subtitle}>
             {t(tk.dashboard.largeHeader.netFlow)}
           </AppText>
-          <AppText style={[{ color: netFlowColor }]}>{netFlowText}</AppText>
+          <AppText style={[{ color: netFlowColor }]} adjustsFontSizeToFit>
+            {netFlowText}
+          </AppText>
         </View>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <AppText variant={'subtitle'} style={styles.subtitle}>
             {t(tk.dashboard.largeHeader.totalIncome)}
           </AppText>
-          <AppText style={[styles.textColor]}>{formatCurrency(summary.totalIncome)}</AppText>
+          <AppText style={[styles.textColor]} adjustsFontSizeToFit>
+            {formatCurrency(summary.totalIncome)}
+          </AppText>
         </View>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <AppText variant={'subtitle'} style={styles.subtitle}>
             {t(tk.dashboard.largeHeader.avgSpending)}
           </AppText>
-          <AppText style={[styles.textColor]}>{formatCurrency(summary.averageSpending)}</AppText>
+          <AppText style={[styles.textColor]} adjustsFontSizeToFit>
+            {formatCurrency(summary.averageSpending)}
+          </AppText>
         </View>
       </View>
     </>

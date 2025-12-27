@@ -1,5 +1,5 @@
 import React from 'react';
-import { Account } from '@/features/purchase/core/account';
+import { Account } from '@/features/shared/core/account';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker } from '@/features/shared/ui/components/AppPicker';
 import { AppIcons } from '@/types/icons';

@@ -38,21 +38,10 @@ const computeDashboardData = (summary: Summary): DashboardComputedSummary => {
   };
 };
 
-const dashboardSummaryQuery = createSingletonQueryHook<Summary>('dashboard', (token) =>
+const dashboardSummaryQuery = createSingletonQueryHook<DashboardComputedSummary>('dashboard-computed', (token) =>
   dashboardApi(token)
     .query()
-    .then((res) => res.data)
+    .then((res) => computeDashboardData(res.data))
 );
 
-export const { useSingleton: useDashboardSummary, keys: dashboardSummaryKeys } = dashboardSummaryQuery;
-
-export const useDashboardComputedSummary = () => {
-  const queryResult = useDashboardSummary();
-
-  const computedData = queryResult.data ? computeDashboardData(queryResult.data) : undefined;
-
-  return {
-    ...queryResult,
-    summary: computedData,
-  };
-};
+export const { useSingleton: useDashboardComputedSummary } = dashboardSummaryQuery;

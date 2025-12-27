@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useDashboardComputedSummary } from '@/features/dashboard/core/use-dashboard-summary';
+import { AccountCardList } from '@/features/dashboard/ui/components/AccountCardList';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeaderSmallCard';
+import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { AppView } from '@/features/shared/ui/AppView';
 import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
@@ -58,14 +60,14 @@ const createStyles = (theme: Theme) => ({
 });
 
 const DashboardScreen = () => {
+  const accountsQuery = useAccounts();
+  const dashboardQuery = useDashboardComputedSummary();
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
-  const dashboardQuery = useDashboardComputedSummary();
 
-  const { isLoading, errorSheetProps } = useDataFetchingErrorHandler(dashboardQuery);
-  const summary = dashboardQuery.summary;
+  const { isLoading, data, errorSheetProps } = useDataFetchingErrorHandler(accountsQuery, dashboardQuery);
 
-  if (isLoading || !summary) {
+  if (isLoading || !data) {
     return (
       <AppView style={styles.container}>
         <LoadingIndicator />
@@ -74,13 +76,16 @@ const DashboardScreen = () => {
     );
   }
 
-  // Get comparison to use (prefer average, fallback to last)
+  const [accounts, summary] = data!;
+
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
-      largeCard={<DashboardHeaderLargeCard summary={summary} />}
-      smallCard={<DashboardHeaderSmallCard summary={summary} />}
+      largeCard={<DashboardHeaderLargeCard summary={summary!} />}
+      smallCard={<DashboardHeaderSmallCard summary={summary!} />}
     >
+      <AccountCardList accounts={accounts!} cardWidth={300} />
+
       {Array.from({ length: 20 }).map((_, i) => (
         <View key={i} style={styles.contentCard}>
           <Text style={styles.contentTitle}>Item {i + 1}</Text>

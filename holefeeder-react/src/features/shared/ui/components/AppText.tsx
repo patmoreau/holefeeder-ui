@@ -4,6 +4,7 @@ import { Theme } from '@/types/theme/theme';
 
 export type ThemedTextProps = TextProps & {
   variant?: 'default' | 'largeTitle' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'footnote';
+  adjustsFontSizeToFit?: boolean;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -37,7 +38,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const AppText = ({ style, variant = 'default', ...props }: ThemedTextProps) => {
+export const AppText = ({ style, variant = 'default', adjustsFontSizeToFit, ...props }: ThemedTextProps) => {
   const styles = useStyles(createStyles);
 
   return (
@@ -52,6 +53,9 @@ export const AppText = ({ style, variant = 'default', ...props }: ThemedTextProp
         variant === 'link' && styles.link,
         style,
       ]}
+      adjustsFontSizeToFit={adjustsFontSizeToFit}
+      minimumFontScale={adjustsFontSizeToFit ? 0.5 : undefined}
+      numberOfLines={adjustsFontSizeToFit ? 1 : undefined}
       {...props}
     />
   );

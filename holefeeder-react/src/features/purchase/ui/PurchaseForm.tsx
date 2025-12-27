@@ -1,12 +1,12 @@
 import { useNavigation } from 'expo-router';
 import React, { useCallback, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { usePurchase } from '@/features/purchase/core/use-transactions';
 import { PurchaseFormContent } from '@/features/purchase/ui/PurchaseFormContent';
+import { Account } from '@/features/shared/core/account';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { goBack } from '@/features/shared/utils/navigation';
 import { showAlert } from '@/features/shared/utils/show-alert';

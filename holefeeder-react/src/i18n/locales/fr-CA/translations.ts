@@ -1,6 +1,11 @@
 import { TranslationStructure } from '@/i18n/translations';
 
 export const fr: TranslationStructure = {
+  accountCard: {
+    currentBalance: 'Solde actuel',
+    projected: 'Projeté',
+    updated: 'Mis à jour',
+  },
   alert: {
     discard: {
       title: 'Annuler les modifications ?',
@@ -27,6 +32,9 @@ export const fr: TranslationStructure = {
     logoutSuccess: 'Déconnexion réussie',
   },
   common: {
+    today: "Aujourd'hui",
+    yesterday: 'Hier',
+    last7Days: '{{count}} jrs passés',
     welcome: 'Bienvenue',
     login: 'Connexion',
     logout: 'Déconnexion',

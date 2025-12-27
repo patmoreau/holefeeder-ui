@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { AccountType } from '@/features/purchase/core/account-type';
 import { CategoryType } from '@/features/purchase/core/category-type';
+import { AccountType } from '@/features/shared/core/account-type';
 import { DateIntervalType } from '@/features/shared/core/date-interval-type';
 
 export const anAccountType = (): AccountType => faker.helpers.arrayElement(Object.values(AccountType)) as AccountType;

@@ -1,4 +1,9 @@
 export const en = {
+  accountCard: {
+    currentBalance: 'Current Balance',
+    projected: 'Projected',
+    updated: 'Updated',
+  },
   alert: {
     discard: {
       title: 'Discard changes?',
@@ -25,6 +30,9 @@ export const en = {
     logoutSuccess: 'Logged out successfully',
   },
   common: {
+    today: 'Today',
+    yesterday: 'Yesterday',
+    last7Days: '{{count}} days ago',
     welcome: 'Welcome',
     login: 'Login',
     logout: 'Logout',

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { CategoryType } from '@/features/purchase/core/category-type';
 import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
@@ -11,6 +10,7 @@ import { CategoryField } from '@/features/purchase/ui/components/fields/Category
 import { DateField } from '@/features/purchase/ui/components/fields/DateField';
 import { DescriptionField } from '@/features/purchase/ui/components/fields/DescriptionField';
 import { TagList } from '@/features/purchase/ui/components/TagList';
+import { Account } from '@/features/shared/core/account';
 import { AppSection } from '@/features/shared/ui/AppSection';
 import { tk } from '@/i18n/translations';
 

@@ -1,6 +1,6 @@
-import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { Tag } from '@/features/purchase/core/tag';
+import { Account } from '@/features/shared/core/account';
 import { DateIntervalType } from '@/features/shared/core/date-interval-type';
 
 export const PurchaseType = {

@@ -3,6 +3,7 @@ import { ViewProps } from 'react-native';
 import { AppView } from '@/features/shared/ui/AppView';
 import { AppText, ThemedTextProps } from '@/features/shared/ui/components/AppText';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { spacing } from '@/types/theme/design-tokens';
 
 type ScreenTitleProps = {
   title: string;
@@ -14,8 +15,8 @@ const createStyles = () => ({
   titleContainer: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    gap: 16,
-    padding: 32,
+    gap: spacing.lg,
+    padding: spacing['3xl'],
   },
 });
 

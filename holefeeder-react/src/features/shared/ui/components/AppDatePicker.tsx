@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleProp, Text, ViewStyle } from 'react-native';
 import DateTimePicker, { DateType, useDefaultStyles } from 'react-native-ui-datepicker';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { borderRadius, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 export type DatePickerProps = {
@@ -17,7 +18,7 @@ const createStyles = (theme: Theme) => ({
     backgroundColor: 'transparent',
     borderWidth: 0,
     outline: 'none',
-    padding: 8,
+    padding: spacing.sm,
     minWidth: 120,
     textAlign: 'right' as const,
   },
@@ -29,8 +30,8 @@ const createStyles = (theme: Theme) => ({
   },
   modalContent: {
     backgroundColor: theme.colors.background,
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: borderRadius.lg,
+    padding: spacing.xl,
     width: '90%',
     maxWidth: 400,
     shadowColor: '#000',

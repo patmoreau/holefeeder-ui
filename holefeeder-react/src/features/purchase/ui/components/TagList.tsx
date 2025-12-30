@@ -9,6 +9,7 @@ import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
+import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 import { AppChip } from '../../../shared/ui/components/AppChip';
 
@@ -25,12 +26,12 @@ const createStyles = (theme: Theme) => ({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   row: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    gap: 8,
+    gap: spacing.sm,
   },
   noTags: {
     color: theme.colors.primary + '60', // More transparent

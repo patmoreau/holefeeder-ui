@@ -5,25 +5,26 @@ import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppIcons } from '@/types/icons';
+import { borderRadius, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
   container: {
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
   },
   defaultContainer: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    gap: 8,
+    gap: spacing.sm,
   },
   largeContainer: {
     flexDirection: 'column' as const,
-    gap: 8,
+    gap: spacing.sm,
   },
   iconCircle: {
     width: 36,
     height: 36,
-    borderRadius: 16,
+    borderRadius: borderRadius.xl,
     backgroundColor: `${theme.colors.primary}20`,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,

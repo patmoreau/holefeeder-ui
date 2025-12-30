@@ -8,16 +8,17 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { AppIcons } from '@/types/icons';
+import { borderRadius, spacing } from '@/types/theme/design-tokens';
 
 const createStyles = () => ({
   container: {
     alignSelf: 'flex-start' as const,
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    gap: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.xl,
     borderWidth: 1,
   },
 });

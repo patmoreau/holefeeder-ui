@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { borderRadius, spacing } from '@/types/theme/design-tokens';
 
 export type AppChipProps = {
   label: string;
@@ -11,11 +12,11 @@ export type AppChipProps = {
 const useTagItemStyles = () =>
   useStyles((theme) => ({
     chip: {
-      borderRadius: 16,
+      borderRadius: borderRadius.xl,
       paddingVertical: 6,
       paddingHorizontal: 10,
       borderWidth: 1,
-      marginRight: 8,
+      marginRight: spacing.sm,
       marginVertical: 6,
     },
     chipDefault: {

@@ -1,5 +1,6 @@
 import { Text, type TextProps } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { fontWeight } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 export type ThemedTextProps = TextProps & {
@@ -22,7 +23,7 @@ const createStyles = (theme: Theme) => ({
   },
   defaultSemiBold: {
     ...theme.typography.body,
-    fontWeight: '600' as const,
+    fontWeight: fontWeight.semiBold,
     color: theme.colors.text,
   },
   subtitle: {

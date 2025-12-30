@@ -5,6 +5,7 @@ import { AppButtonVariant } from '@/features/shared/ui/components/AppButtonVaria
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppIcons } from '@/types/icons';
+import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 export type ButtonProps = {
@@ -69,7 +70,7 @@ export const AppButton = ({ label, icon, variant = AppButtonVariant.secondary, o
   }
 
   return (
-    <AppHost style={{ margin: 8 }} testID={testID}>
+    <AppHost style={{ margin: spacing.sm }} testID={testID}>
       <Button
         systemImage={icon}
         role={variant === AppButtonVariant.destructive ? 'destructive' : undefined}

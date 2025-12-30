@@ -7,6 +7,7 @@ import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { fontSize, fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
@@ -14,21 +15,21 @@ const createStyles = (theme: Theme) => ({
     color: theme.colors.primaryText,
   },
   largeTitle: {
-    fontSize: 34,
-    fontWeight: 'bold' as const,
+    fontSize: fontSize!['3xl'],
+    fontWeight: fontWeight.bold,
     color: theme.colors.primaryText,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   divider: {
     height: 1,
     backgroundColor: theme.colors.primaryText,
     opacity: 0.2,
-    marginVertical: 16,
+    marginVertical: spacing.lg,
   },
   subtitle: {
     color: theme.colors.primaryText,
     opacity: 0.5,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
 });
 

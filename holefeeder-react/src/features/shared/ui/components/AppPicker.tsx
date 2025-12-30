@@ -3,6 +3,7 @@ import React from 'react';
 import { Platform, StyleProp, ViewStyle } from 'react-native';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { borderRadius, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 export type PickerOption = {
@@ -22,8 +23,8 @@ export type PickerProps<T extends PickerOption> = {
 const createStyles = (theme: Theme) => ({
   picker: {
     borderWidth: 1,
-    borderRadius: 8,
-    padding: Platform.select({ web: 4, default: 8 }),
+    borderRadius: borderRadius.md,
+    padding: Platform.select({ web: spacing.xs, default: spacing.sm }),
     minHeight: 40,
     backgroundColor: theme.colors.secondaryBackground,
     borderColor: theme.colors.separator,

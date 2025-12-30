@@ -2,6 +2,7 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 type Props = {
@@ -19,9 +20,9 @@ const createStyles = (theme: Theme) => ({
   },
   input: {
     color: theme.colors.secondary,
-    fontSize: 48 as const,
-    fontWeight: 600 as const,
-    paddingVertical: 16 as const,
+    fontSize: 48,
+    fontWeight: fontWeight.semiBold,
+    paddingVertical: spacing.lg,
     textAlign: 'center' as const,
   },
 });

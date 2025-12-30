@@ -12,6 +12,7 @@ import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicat
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
+import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
@@ -19,41 +20,36 @@ const createStyles = (theme: Theme) => ({
     ...theme.styles.containers.center,
   },
   largeTitle: {
-    fontSize: 34,
-    fontWeight: 'bold' as const,
+    ...theme.typography.largeTitle,
     color: theme.colors.primaryText,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: fontSize!.md,
     color: theme.colors.secondaryText,
     opacity: 0.8,
   },
   smallTitle: {
-    fontSize: 17,
-    fontWeight: '600' as const,
+    fontSize: fontSize!.lg,
+    fontWeight: fontWeight.semiBold,
     color: theme.colors.primaryText,
   },
   contentCard: {
     backgroundColor: theme.colors.secondaryBackground,
-    marginHorizontal: 16,
-    marginVertical: 8,
-    padding: 16,
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+    marginHorizontal: spacing.lg,
+    marginVertical: spacing.sm,
+    padding: spacing.lg,
+    borderRadius: borderRadius.xl,
+    ...shadows.base,
   },
   contentTitle: {
-    fontSize: 18,
-    fontWeight: '600' as const,
-    marginBottom: 8,
+    fontSize: fontSize!.lg,
+    fontWeight: fontWeight.semiBold,
+    marginBottom: spacing.sm,
     color: '#333',
   },
   contentText: {
-    fontSize: 14,
+    fontSize: fontSize!.base,
     color: '#666',
     lineHeight: 20,
   },

@@ -1,4 +1,5 @@
-import { Platform, TextStyle, ViewStyle } from 'react-native';
+import { Platform, TextStyle } from 'react-native';
+import { createBaseStyles } from '@/types/theme/base-styles';
 
 export const ThemeMode = {
   light: 'light',
@@ -53,31 +54,7 @@ export interface Theme {
     footnote: TextStyle;
     chip: TextStyle;
   };
-  styles: {
-    view: {
-      center: ViewStyle;
-    };
-    text: {
-      link: TextStyle;
-    };
-    buttons: {
-      primary: ViewStyle;
-      secondary: ViewStyle;
-      destructive: ViewStyle;
-      link: ViewStyle;
-    };
-    components: {
-      picker: TextStyle;
-      pickerItem: TextStyle;
-      chip: ViewStyle;
-    };
-    containers: {
-      page: ViewStyle;
-      center: ViewStyle;
-      section: ViewStyle;
-      host: ViewStyle;
-    };
-  };
+  styles: ReturnType<typeof createBaseStyles> & {};
 }
 
 export const Fonts = Platform.select({

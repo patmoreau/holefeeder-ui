@@ -9,6 +9,7 @@ import { DescriptionField } from '@/features/purchase/ui/components/fields/Descr
 import { Account } from '@/features/shared/core/account';
 import { AppSection } from '@/features/shared/ui/AppSection';
 import { tk } from '@/i18n/translations';
+import { fontSize, spacing } from '@/types/theme/design-tokens';
 
 const tkErrors: Record<PurchaseFormError, string> = {
   [PurchaseFormError.accountRequired]: tk.purchase.errors.accountRequired,
@@ -76,9 +77,9 @@ export const TransferSection = ({ accounts }: Props) => {
 const styles = StyleSheet.create({
   errorText: {
     color: '#FF3B30',
-    fontSize: 13,
-    marginTop: 4,
-    marginLeft: 16,
-    marginBottom: 8,
+    fontSize: fontSize!.sm,
+    marginTop: spacing.xs,
+    marginLeft: spacing.lg,
+    marginBottom: spacing.sm,
   },
 });

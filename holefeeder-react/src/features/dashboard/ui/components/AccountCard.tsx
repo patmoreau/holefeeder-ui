@@ -5,6 +5,7 @@ import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 export type AccountCardProps = ViewProps & {
@@ -16,55 +17,52 @@ const createStyles = (theme: Theme) =>
   StyleSheet.create({
     card: {
       backgroundColor: theme.colors.secondaryBackground,
-      borderRadius: 16,
-      padding: 16,
-      marginRight: 16,
+      borderRadius: borderRadius.xl,
+      padding: spacing.lg,
+      marginRight: spacing.lg,
       shadowColor: theme.colors.text,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 4,
+      ...shadows.base,
     },
     header: {
-      marginBottom: 16,
+      marginBottom: spacing.lg,
     },
     accountName: {
       ...theme.typography.title,
       color: theme.colors.text,
-      marginBottom: 4,
+      marginBottom: spacing.xs,
     },
     lastUpdated: {
       color: theme.colors.secondaryText,
     },
     balanceSection: {
-      marginBottom: 16,
+      marginBottom: spacing.lg,
     },
     balanceLabel: {
       ...theme.typography.footnote,
       color: theme.colors.secondaryText,
-      marginBottom: 4,
+      marginBottom: spacing.xs,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
     },
     balanceAmount: {
       ...theme.typography.largeTitle,
       color: theme.colors.text,
-      fontWeight: '700',
+      fontWeight: fontWeight.bold,
     },
     projectedSection: {
       flexDirection: 'row',
-      paddingTop: 16,
+      paddingTop: spacing.lg,
       borderTopWidth: 1,
       borderTopColor: theme.colors.separator,
     },
     projectedLabel: {
       ...theme.typography.footnote,
       color: theme.colors.secondaryText,
-      marginBottom: 4,
+      marginBottom: spacing.xs,
     },
     projectedAmount: {
       ...theme.typography.title,
-      fontWeight: '600',
+      fontWeight: fontWeight.semiBold,
     },
     positiveAmount: {
       color: theme.colors.positive,
@@ -115,7 +113,11 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
           {account.upcomingVariation !== 0 && (
             <AppText
               variant={'default'}
-              style={[styles.lastUpdated, { marginTop: 4 }, account.upcomingVariation >= 0 ? styles.positiveAmount : styles.negativeAmount]}
+              style={[
+                styles.lastUpdated,
+                { marginTop: spacing.xs },
+                account.upcomingVariation >= 0 ? styles.positiveAmount : styles.negativeAmount,
+              ]}
             >
               {account.upcomingVariation >= 0 ? '+' : ''}
               {formatCurrency(account.upcomingVariation)}

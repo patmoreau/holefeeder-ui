@@ -2,6 +2,7 @@ import { ScrollView, View, type ViewProps } from 'react-native';
 import { AccountCard } from '@/features/dashboard/ui/components/AccountCard';
 import { Account } from '@/features/shared/core/account';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { spacing } from '@/types/theme/design-tokens';
 
 export type AccountCardListProps = ViewProps & {
   accounts: Account[];
@@ -10,8 +11,8 @@ export type AccountCardListProps = ViewProps & {
 
 const createStyles = () => ({
   scrollContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
   },
 });
 
@@ -25,7 +26,7 @@ export const AccountCardList = ({ accounts, cardWidth = 300, style, ...props }: 
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
         decelerationRate="fast"
-        snapToInterval={cardWidth + 16} // card width + margin
+        snapToInterval={cardWidth + spacing.lg} // card width + margin
         snapToAlignment="start"
       >
         {accounts.map((account) => (

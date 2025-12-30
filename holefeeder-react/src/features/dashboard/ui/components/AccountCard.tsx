@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View, type ViewProps } from 'react-native';
+import { View, type ViewProps } from 'react-native';
+import Animated, { AnimatedProps } from 'react-native-reanimated';
 import { Account } from '@/features/shared/core/account';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
@@ -8,71 +9,69 @@ import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
-export type AccountCardProps = ViewProps & {
+export type AccountCardProps = AnimatedProps<ViewProps> & {
   account: Account;
-  width?: number;
 };
 
-const createStyles = (theme: Theme) =>
-  StyleSheet.create({
-    card: {
-      backgroundColor: theme.colors.secondaryBackground,
-      borderRadius: borderRadius.xl,
-      padding: spacing.lg,
-      marginRight: spacing.lg,
-      shadowColor: theme.colors.text,
-      ...shadows.base,
-    },
-    header: {
-      marginBottom: spacing.lg,
-    },
-    accountName: {
-      ...theme.typography.title,
-      color: theme.colors.text,
-      marginBottom: spacing.xs,
-    },
-    lastUpdated: {
-      color: theme.colors.secondaryText,
-    },
-    balanceSection: {
-      marginBottom: spacing.lg,
-    },
-    balanceLabel: {
-      ...theme.typography.footnote,
-      color: theme.colors.secondaryText,
-      marginBottom: spacing.xs,
-      textTransform: 'uppercase',
-      letterSpacing: 0.5,
-    },
-    balanceAmount: {
-      ...theme.typography.largeTitle,
-      color: theme.colors.text,
-      fontWeight: fontWeight.bold,
-    },
-    projectedSection: {
-      flexDirection: 'row',
-      paddingTop: spacing.lg,
-      borderTopWidth: 1,
-      borderTopColor: theme.colors.separator,
-    },
-    projectedLabel: {
-      ...theme.typography.footnote,
-      color: theme.colors.secondaryText,
-      marginBottom: spacing.xs,
-    },
-    projectedAmount: {
-      ...theme.typography.title,
-      fontWeight: fontWeight.semiBold,
-    },
-    positiveAmount: {
-      color: theme.colors.positive,
-    },
-    negativeAmount: {
-      color: theme.colors.negative,
-    },
-  });
+const createStyles = (theme: Theme) => ({
+  card: {
+    backgroundColor: theme.colors.secondaryBackground,
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    marginRight: spacing.lg,
+    shadowColor: theme.colors.text,
+    ...shadows.base,
+  },
+  header: {
+    marginBottom: spacing.lg,
+  },
+  accountName: {
+    ...theme.typography.title,
+    color: theme.colors.text,
+    marginBottom: spacing.xs,
+  },
+  lastUpdated: {
+    color: theme.colors.secondaryText,
+  },
+  balanceSection: {
+    marginBottom: spacing.lg,
+  },
+  balanceLabel: {
+    ...theme.typography.footnote,
+    color: theme.colors.secondaryText,
+    marginBottom: spacing.xs,
+    textTransform: 'uppercase' as const,
+    letterSpacing: 0.5,
+  },
+  balanceAmount: {
+    ...theme.typography.largeTitle,
+    color: theme.colors.text,
+    fontWeight: fontWeight.bold,
+  },
+  projectedSection: {
+    flexDirection: 'row' as const,
+    paddingTop: spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.separator,
+  },
+  projectedLabel: {
+    ...theme.typography.footnote,
+    color: theme.colors.secondaryText,
+    marginBottom: spacing.xs,
+  },
+  projectedAmount: {
+    ...theme.typography.title,
+    fontWeight: fontWeight.semiBold,
+  },
+  positiveAmount: {
+    color: theme.colors.positive,
+  },
+  negativeAmount: {
+    color: theme.colors.negative,
+  },
+});
 
-export const AccountCard = ({ account, width = 300, style, ...props }: AccountCardProps) => {
+export const AccountCard = ({ account, style, ...props }: AccountCardProps) => {
   const { t } = useTranslation();
   const { formatCurrency, formatDate } = useLocaleFormatter();
   const styles = useStyles(createStyles);
@@ -80,7 +79,7 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
   const projectedSign = account.balance >= 0 ? '' : '-';
 
   return (
-    <View style={[styles.card, { width }, style]} {...props}>
+    <Animated.View style={[styles.card, style]} {...props}>
       <View style={styles.header}>
         <AppText variant={'title'} adjustsFontSizeToFit>
           {account.name}
@@ -125,6 +124,6 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
           )}
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 };

@@ -1,10 +1,17 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { type ViewProps } from 'react-native';
-import Animated, { Extrapolation, interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
+import { RefreshControl, type ViewProps } from 'react-native';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollOffset
+} from 'react-native-reanimated';
 import { AppView } from '@/features/shared/ui/AppView';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { Theme } from '@/types/theme/theme';
 
 const DEFAULT_HEADER_HEIGHT = 300;
@@ -14,6 +21,8 @@ type Props = ViewProps & {
   smallCard: ReactNode;
   headerBackgroundColor?: string;
   children: ReactNode;
+  onRefresh?: () => void;
+  refreshing?: boolean;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -56,8 +65,17 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const CardHeaderScrollView = ({ largeCard, smallCard, headerBackgroundColor = '#007AFF', children, ...otherProps }: Props) => {
+export const CardHeaderScrollView = ({
+  largeCard,
+  smallCard,
+  headerBackgroundColor = '#007AFF',
+  children,
+  onRefresh,
+  refreshing = false,
+  ...otherProps
+}: Props) => {
   const styles = useStyles(createStyles);
+  const { theme } = useTheme();
   const [largeCardHeight, setLargeCardHeight] = useState(0);
 
   const HEADER_MIN_HEIGHT = useHeaderHeight();
@@ -115,8 +133,26 @@ export const CardHeaderScrollView = ({ largeCard, smallCard, headerBackgroundCol
         <Animated.View style={[styles.smallCardContainer, smallCardAnimatedStyle]}>{smallCard}</Animated.View>
       </Animated.View>
 
-      <Animated.ScrollView ref={scrollRef} style={styles.scrollArea} scrollEventThrottle={8} removeClippedSubviews={false}>
-        <AppView style={[styles.content, { paddingTop: HEADER_MAX_HEIGHT }]} {...otherProps}>
+      <Animated.ScrollView
+        ref={scrollRef}
+        style={styles.scrollArea}
+        scrollEventThrottle={8}
+        removeClippedSubviews={false}
+        contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT }}
+        refreshControl={
+          onRefresh ? (
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              progressViewOffset={HEADER_MAX_HEIGHT}
+              tintColor={theme.colors.text}
+              colors={[theme.colors.text]}
+              progressBackgroundColor={theme.colors.secondaryBackground}
+            />
+          ) : undefined
+        }
+      >
+        <AppView style={[styles.content]} {...otherProps}>
           {children}
         </AppView>
       </Animated.ScrollView>

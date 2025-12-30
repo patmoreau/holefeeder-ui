@@ -74,11 +74,20 @@ const DashboardScreen = () => {
 
   const [accounts, summary] = data!;
 
+  const handleRefresh = () => {
+    accountsQuery.refetch();
+    dashboardQuery.refetch();
+  };
+
+  const isRefreshing = accountsQuery.isFetching || dashboardQuery.isFetching;
+
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
       largeCard={<DashboardHeaderLargeCard summary={summary!} />}
       smallCard={<DashboardHeaderSmallCard summary={summary!} />}
+      onRefresh={handleRefresh}
+      refreshing={isRefreshing}
     >
       <AccountCardList accounts={accounts!} cardWidth={300} />
 

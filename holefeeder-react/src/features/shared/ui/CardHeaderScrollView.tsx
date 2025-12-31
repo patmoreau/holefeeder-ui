@@ -2,7 +2,13 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { RefreshControl, type ViewProps } from 'react-native';
-import Animated, { Extrapolation, interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollOffset
+} from 'react-native-reanimated';
 import { AppView } from '@/features/shared/ui/AppView';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';

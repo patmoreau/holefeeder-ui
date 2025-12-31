@@ -89,7 +89,7 @@ const DashboardScreen = () => {
       onRefresh={handleRefresh}
       refreshing={isRefreshing}
     >
-      <AccountCardList accounts={accounts!} />
+      <AccountCardList accounts={accounts!} cardWidth={300} />
 
       {Array.from({ length: 20 }).map((_, i) => (
         <View key={i} style={styles.contentCard}>

@@ -1,5 +1,5 @@
 import { DateIntervalType } from '@/features/shared/core/date-interval-type';
-import { withDate } from '@/features/shared/utils/with-date';
+import { fromDateOnly, withDate } from '@/features/shared/utils/with-date';
 import { Result } from '@/shared/core/result';
 
 export type Settings = {
@@ -22,24 +22,20 @@ export const fromJson = (jsonString: string): Result<Settings> => {
   try {
     const parsed = JSON.parse(jsonString);
 
-    // Validate structure
     if (!parsed || typeof parsed !== 'object') {
       return Result.failure(['Invalid JSON: expected an object']);
     }
 
     const errors: string[] = [];
 
-    // Validate effectiveDate
     if (typeof parsed.effectiveDate !== 'string' || parsed.effectiveDate.trim() === '') {
       errors.push('effectiveDate must be a non-empty string');
     }
 
-    // Validate intervalType
     if (!isValidDateIntervalType(parsed.intervalType)) {
       errors.push(`intervalType must be one of: ${Object.values(DateIntervalType).join(', ')}`);
     }
 
-    // Validate frequency
     if (typeof parsed.frequency !== 'number' || parsed.frequency < 1) {
       errors.push('frequency must be a positive number');
     }
@@ -48,8 +44,10 @@ export const fromJson = (jsonString: string): Result<Settings> => {
       return Result.failure(errors);
     }
 
+    const dateString = parsed.effectiveDate.includes('T') ? parsed.effectiveDate.split('T')[0] : parsed.effectiveDate;
+
     return Result.success({
-      effectiveDate: parsed.effectiveDate,
+      effectiveDate: withDate(fromDateOnly(dateString)).toDateOnly(),
       intervalType: parsed.intervalType,
       frequency: parsed.frequency,
     });

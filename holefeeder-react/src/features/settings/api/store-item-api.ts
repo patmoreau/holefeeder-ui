@@ -1,5 +1,5 @@
 import { type AxiosResponse } from 'axios';
-import { StoreItem } from '@/features/dashboard/core/store-item';
+import { StoreItem } from '@/features/settings/core/store-item';
 import { PaginatedQueryParams } from '@/shared/hooks/queries/use-query';
 import { apiService } from '@/shared/services/api-service';
 

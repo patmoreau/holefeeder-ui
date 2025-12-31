@@ -10,6 +10,7 @@ import { Theme } from '@/types/theme/theme';
 export type ButtonProps = Omit<PressableProps, 'onPress'> & {
   label?: string;
   icon?: AppIcons;
+  iconPosition?: 'left' | 'right';
   variant?: AppButtonVariant;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
@@ -42,6 +43,7 @@ const createStyles = (theme: Theme) => ({
 export function AppButton({
   label,
   icon,
+  iconPosition = 'left',
   variant = AppButtonVariant.secondary,
   onPress = () => {},
   color,
@@ -71,12 +73,13 @@ export function AppButton({
   return (
     <Pressable style={[variantStyle, style]} onPress={onPress} accessibilityRole="button" {...props}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {icon && <IconSymbol name={icon} color={buttonColor} />}
+        {icon && iconPosition === 'left' && <IconSymbol name={icon} color={buttonColor} />}
         {label && (
           <AppText style={{ color: buttonColor }} variant="default">
             {label}
           </AppText>
         )}
+        {icon && iconPosition === 'right' && <IconSymbol name={icon} color={buttonColor} />}
       </View>
     </Pressable>
   );

@@ -31,6 +31,16 @@ export const fr: TranslationStructure = {
     loginErrorMessage: 'Échec de la connexion. Veuillez réessayer.',
     logoutSuccess: 'Déconnexion réussie',
   },
+  budgetSection: {
+    title: 'Holefeeder',
+    budget: 'Budget',
+    settings: 'Paramètres',
+  },
+  budgetSettings: {
+    title: 'Holefeeder',
+    section: 'Paramètres du budget',
+    date: 'Date effective',
+  },
   common: {
     today: "Aujourd'hui",
     yesterday: 'Hier',

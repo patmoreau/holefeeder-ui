@@ -7,11 +7,11 @@ import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { AccountField } from '@/features/purchase/ui/components/fields/AccountField';
 import { CategoryField } from '@/features/purchase/ui/components/fields/CategoryField';
-import { DateField } from '@/features/purchase/ui/components/fields/DateField';
 import { DescriptionField } from '@/features/purchase/ui/components/fields/DescriptionField';
 import { TagList } from '@/features/purchase/ui/components/TagList';
 import { Account } from '@/features/shared/core/account';
 import { AppSection } from '@/features/shared/ui/AppSection';
+import { DateField } from '@/features/shared/ui/fields/DateField';
 import { tk } from '@/i18n/translations';
 
 type Props = {

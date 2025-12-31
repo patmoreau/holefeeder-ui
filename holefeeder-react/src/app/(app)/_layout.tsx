@@ -30,6 +30,14 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
+        name="budgetSettings"
+        options={{
+          title: t(tk.budgetSection.title),
+          headerTransparent: true,
+          headerTintColor: theme.colors.tint,
+        }}
+      />
+      <Stack.Screen
         name="modal"
         options={{
           presentation: 'modal',

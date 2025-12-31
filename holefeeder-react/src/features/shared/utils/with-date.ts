@@ -10,3 +10,12 @@ export const withDate = (date: Date) => {
     toDateOnly,
   };
 };
+
+/**
+ * Creates a Date object from a date string (YYYY-MM-DD) in local timezone,
+ * disregarding any timezone conversions.
+ */
+export const fromDateOnly = (dateString: string): Date => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};

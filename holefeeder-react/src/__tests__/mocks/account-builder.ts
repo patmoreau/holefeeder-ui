@@ -10,6 +10,8 @@ const defaultData = (): Account => ({
   transactionCount: aCount(),
   balance: anAmount(),
   updated: aRecentDate(),
+  upcomingVariation: anAmount(),
+  projectedBalance: anAmount(),
   description: aString(),
   favorite: aBoolean(),
   inactive: aBoolean(),

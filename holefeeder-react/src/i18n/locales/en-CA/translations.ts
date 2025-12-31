@@ -29,6 +29,16 @@ export const en = {
     loginErrorMessage: 'Failed to login. Please try again.',
     logoutSuccess: 'Logged out successfully',
   },
+  budgetSection: {
+    title: 'Holefeeder',
+    budget: 'Budget',
+    settings: 'Settings',
+  },
+  budgetSettings: {
+    title: 'Holefeeder',
+    section: 'Budget Settings',
+    date: 'Effective Date',
+  },
   common: {
     today: 'Today',
     yesterday: 'Yesterday',

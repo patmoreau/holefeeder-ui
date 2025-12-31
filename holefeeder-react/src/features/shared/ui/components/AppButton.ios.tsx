@@ -1,5 +1,6 @@
-import { Button, ButtonVariant, Image } from '@expo/ui/swift-ui';
+import { Button, ButtonVariant, HStack, Image } from '@expo/ui/swift-ui';
 import { fixedSize, frame } from '@expo/ui/swift-ui/modifiers';
+import React from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { AppButtonVariant } from '@/features/shared/ui/components/AppButtonVariant';
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
@@ -11,6 +12,7 @@ import { Theme } from '@/types/theme/theme';
 export type ButtonProps = {
   label?: string;
   icon?: AppIcons;
+  iconPosition?: 'left' | 'right';
   variant?: AppButtonVariant;
   onPress?: () => void;
   children?: React.ReactNode;
@@ -42,7 +44,16 @@ const variantColor = (variant: AppButtonVariant, theme: Theme) => {
   }
 };
 
-export const AppButton = ({ label, icon, variant = AppButtonVariant.secondary, onPress = () => {}, style, disabled, testID }: ButtonProps) => {
+export const AppButton = ({
+  label,
+  icon,
+  iconPosition = 'left',
+  variant = AppButtonVariant.secondary,
+  onPress = () => {},
+  style,
+  disabled,
+  testID,
+}: ButtonProps) => {
   const { theme } = useTheme();
   const handlePress = () => {
     if (!disabled) {
@@ -69,18 +80,23 @@ export const AppButton = ({ label, icon, variant = AppButtonVariant.secondary, o
     modifiers.push(frame({ alignment: 'center' }));
   }
 
+  const buttonIcon = iconPosition === 'left' ? icon : undefined;
+
   return (
     <AppHost style={{ margin: spacing.sm }} testID={testID}>
-      <Button
-        systemImage={icon}
-        role={variant === AppButtonVariant.destructive ? 'destructive' : undefined}
-        variant={variantMapping[variant]}
-        color={variantColor(variant, theme)}
-        onPress={handlePress}
-        modifiers={modifiers}
-      >
-        {label}
-      </Button>
+      <HStack>
+        <Button
+          systemImage={buttonIcon}
+          role={variant === AppButtonVariant.destructive ? 'destructive' : undefined}
+          variant={variantMapping[variant]}
+          color={variantColor(variant, theme)}
+          onPress={handlePress}
+          modifiers={modifiers}
+        >
+          {label}
+        </Button>
+        {icon && iconPosition === 'right' && <Image systemName={icon} color={variantColor(variant, theme)} />}
+      </HStack>
     </AppHost>
   );
 };

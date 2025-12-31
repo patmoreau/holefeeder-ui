@@ -1,11 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
-import { DateField } from '@/features/purchase/ui/components/fields/DateField';
-import { DateIntervalTypeField } from '@/features/purchase/ui/components/fields/DateIntervalTypeField';
-import { FrequencyField } from '@/features/purchase/ui/components/fields/FrequencyField';
 import { HasCashflowField } from '@/features/purchase/ui/components/fields/HasCashflowField';
 import { AppSection } from '@/features/shared/ui/AppSection';
+import { DateField } from '@/features/shared/ui/fields/DateField';
+import { DateIntervalTypeField } from '@/features/shared/ui/fields/DateIntervalTypeField';
+import { FrequencyField } from '@/features/shared/ui/fields/FrequencyField';
 import { tk } from '@/i18n/translations';
 
 export const CashflowSection = () => {

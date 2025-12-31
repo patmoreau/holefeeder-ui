@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { config } from '@/config/config';
 import { useAuth } from '@/shared/hooks/use-auth';
 
 type ListQueryKeys<P> = {
@@ -23,6 +24,17 @@ export type PaginatedQueryParams<F = Record<string, any>> = {
   filter?: F;
 };
 
+// Cache configuration based on config.api.cacheRequests
+const getCacheOptions = () => {
+  if (!config.api.cacheRequests) {
+    return {
+      staleTime: 0,
+      gcTime: 0,
+    };
+  }
+  return {};
+};
+
 export const createListQueryHook = <T extends { id: string | number }, P = void>(
   resourceName: string,
   getList: (authToken: string | null, queryParams: P | null) => Promise<T[]>,
@@ -41,6 +53,7 @@ export const createListQueryHook = <T extends { id: string | number }, P = void>
       queryKey: keys.list(queryParams),
       queryFn: () => getList(token, queryParams),
       enabled: withAuth ? !!token : true,
+      ...getCacheOptions(),
     });
   };
 
@@ -69,6 +82,7 @@ export const createPaginatedQueryHook = <
       queryKey: keys.paginated(queryParams),
       queryFn: () => getList(queryParams, token),
       enabled: withAuth ? !!token : true,
+      ...getCacheOptions(),
     });
   };
 
@@ -93,6 +107,7 @@ export const createOneQueryHook = <T extends { id: string | number }>(
       queryKey: keys.detail(id),
       queryFn: () => getOne(id, token),
       enabled: withAuth ? !!token && !!id : true,
+      ...getCacheOptions(),
     });
   };
 

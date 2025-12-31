@@ -3,12 +3,13 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { PropsWithChildren } from 'react';
+import { config } from '@/config/config';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      staleTime: config.api.cacheRequests ? 5 * 60 * 1000 : 0, // 5 minutes or 0
+      gcTime: config.api.cacheRequests ? 10 * 60 * 1000 : 0, // 10 minutes or 0 (formerly cacheTime)
       retry: (failureCount, error: any) => {
         if (error?.response?.status >= 400 && error?.response?.status < 500) {
           return false;

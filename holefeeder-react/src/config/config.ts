@@ -24,5 +24,6 @@ export const config = {
     timeout: Number(process.env.EXPO_PUBLIC_API_TIMEOUT) || 10000,
     logRequest: process.env.EXPO_PUBLIC_API_LOG_REQUEST === 'true',
     simulateNetworkDelay: Number(process.env.EXPO_PUBLIC_SIMULATE_NETWORK_DELAY) || 0,
+    cacheRequests: process.env.EXPO_PUBLIC_CACHE_REQUESTS !== 'false',
   },
 };

@@ -1,4 +1,4 @@
-import { render, act } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 import React, { useEffect } from 'react';
 import { anAppState } from '@/__tests__';
 import { useAppContext } from '@/contexts/AppContext';
@@ -120,5 +120,30 @@ describe('useDataFetchingErrorHandler', () => {
     expect(refetch1).toHaveBeenCalledTimes(1);
     expect(refetch2).toHaveBeenCalledTimes(1);
     expect(current.errorSheetProps.showError).toBe(false);
+  });
+
+  it('returns unwrapped data for a single query', () => {
+    const q = createQuery({ data: { id: 1, name: 'test' } });
+
+    const received: any[] = [];
+    render(<Harness queries={[q]} onResult={(r) => received.push(r)} />);
+
+    const last = received.at(-1);
+    expect(last.isLoading).toBe(false);
+    expect(last.data).toEqual({ id: 1, name: 'test' });
+    expect(last.errorSheetProps.showError).toBe(false);
+  });
+
+  it('returns array of data for multiple queries', () => {
+    const q1 = createQuery({ data: 'first' });
+    const q2 = createQuery({ data: 'second' });
+
+    const received: any[] = [];
+    render(<Harness queries={[q1, q2]} onResult={(r) => received.push(r)} />);
+
+    const last = received.at(-1);
+    expect(last.isLoading).toBe(false);
+    expect(last.data).toEqual(['first', 'second']);
+    expect(last.errorSheetProps.showError).toBe(false);
   });
 });

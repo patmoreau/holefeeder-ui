@@ -5,14 +5,48 @@ import { isNetworkError } from '@/shared/utils/is-network-error';
 
 type AnyQueryResult = UseQueryResult<any, unknown>;
 
-export function useDataFetchingErrorHandler<T extends AnyQueryResult[]>(...queries: T) {
+// Overload for single query - returns unwrapped data
+export function useDataFetchingErrorHandler<T extends AnyQueryResult>(
+  query: T
+): {
+  isLoading: boolean;
+  data: T['data'] | null;
+  errorSheetProps: {
+    showError: boolean;
+    setShowError: (show: boolean) => void;
+    error: ErrorKey;
+    onRetry: () => void;
+  };
+};
+
+// Overload for multiple queries - returns tuple of data
+export function useDataFetchingErrorHandler<T extends AnyQueryResult[]>(
+  ...queries: T
+): {
+  isLoading: boolean;
+  data: { [K in keyof T]: T[K]['data'] } | null;
+  errorSheetProps: {
+    showError: boolean;
+    setShowError: (show: boolean) => void;
+    error: ErrorKey;
+    onRetry: () => void;
+  };
+};
+
+// Implementation
+export function useDataFetchingErrorHandler<T extends AnyQueryResult | AnyQueryResult[]>(
+  ...queries: T extends AnyQueryResult ? [T] : T extends AnyQueryResult[] ? T : never
+) {
   const [showError, setShowError] = useState(false);
 
-  const isLoading = useMemo(() => queries.some((q) => q.isLoading), [queries]);
-  const isError = useMemo(() => queries.some((q) => q.isError), [queries]);
-  const errors = useMemo(() => queries.map((q) => q.error).filter(Boolean), [queries]);
+  const queryArray = queries as AnyQueryResult[];
+  const isSingleQuery = queryArray.length === 1;
 
-  const allQueriesHaveData = useMemo(() => queries.every((q) => q.data !== undefined), [queries]);
+  const isLoading = useMemo(() => queryArray.some((q) => q.isLoading), [queryArray]);
+  const isError = useMemo(() => queryArray.some((q) => q.isError), [queryArray]);
+  const errors = useMemo(() => queryArray.map((q) => q.error).filter(Boolean), [queryArray]);
+
+  const allQueriesHaveData = useMemo(() => queryArray.every((q) => q.data !== undefined), [queryArray]);
 
   useEffect(() => {
     if (isError) {
@@ -24,10 +58,10 @@ export function useDataFetchingErrorHandler<T extends AnyQueryResult[]>(...queri
 
   const onRetry = useCallback(() => {
     setShowError(false);
-    queries.forEach((query) => {
+    queryArray.forEach((query) => {
       void query.refetch();
     });
-  }, [queries]);
+  }, [queryArray]);
 
   const errorSheetProps = {
     showError,
@@ -36,7 +70,8 @@ export function useDataFetchingErrorHandler<T extends AnyQueryResult[]>(...queri
     onRetry,
   };
 
-  const data = !isLoading && !isError && allQueriesHaveData ? (queries.map((q) => q.data) as { [K in keyof T]: T[K]['data'] }) : null;
+  const data =
+    !isLoading && !isError && allQueriesHaveData ? (isSingleQuery ? queryArray[0].data : (queryArray.map((q) => q.data) as any)) : null;
 
   return {
     isLoading: isLoading || !allQueriesHaveData,

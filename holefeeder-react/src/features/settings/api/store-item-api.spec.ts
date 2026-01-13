@@ -11,12 +11,14 @@ const mockApiService = jest.mocked(apiService);
 describe('store-item-api', () => {
   const mockToken = 'test-token';
   const mockGetWithAuth = jest.fn();
+  const mockPostWithAuth = jest.fn();
   const mockData = [aStoreItem(), aStoreItem()];
   let service: ReturnType<typeof storeItemApi>;
 
   beforeEach(() => {
     mockApiService.mockReturnValue({
       getWithAuth: mockGetWithAuth,
+      postWithAuth: mockPostWithAuth,
     } as any);
     service = storeItemApi(mockToken);
   });
@@ -80,6 +82,76 @@ describe('store-item-api', () => {
       expect(response.status).toBe(200);
       expect(response.data).toEqual(mockData);
       expect(mockGetWithAuth).toHaveBeenCalledWith('/api/v2/store-items', { params: {} });
+    });
+  });
+
+  describe('create', () => {
+    it('should create a store item with code and data', async () => {
+      const mockResponse = anAxiosResponse({ id: 'test-id' }, { status: 201 });
+      mockPostWithAuth.mockResolvedValue(mockResponse);
+
+      const code = 'test-code';
+      const data = 'test-data';
+
+      const response = await service.create(code, data);
+
+      expect(response.status).toBe(201);
+      expect(response.data).toEqual({ id: 'test-id' });
+      expect(mockPostWithAuth).toHaveBeenCalledWith('/api/v2/store-items/create-store-item', {
+        code,
+        data,
+      });
+    });
+
+    it('should make request with auth header', async () => {
+      const mockResponse = anAxiosResponse({}, { status: 201 });
+      mockPostWithAuth.mockResolvedValue(mockResponse);
+
+      await service.create('code', 'data');
+
+      expect(mockPostWithAuth).toHaveBeenCalled();
+    });
+
+    it('should handle API errors', async () => {
+      const aServerError = anAxiosResponse({ error: 'Server error' }, { status: 500 });
+      mockPostWithAuth.mockRejectedValue(aServerError);
+
+      await expect(service.create('code', 'data')).rejects.toEqual(aServerError);
+    });
+  });
+
+  describe('modify', () => {
+    it('should modify a store item with id and data', async () => {
+      const mockResponse = anAxiosResponse({ success: true }, { status: 200 });
+      mockPostWithAuth.mockResolvedValue(mockResponse);
+
+      const id = 'test-id';
+      const data = 'updated-data';
+
+      const response = await service.modify(id, data);
+
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual({ success: true });
+      expect(mockPostWithAuth).toHaveBeenCalledWith('/api/v2/store-items/modify-store-item', {
+        id,
+        data,
+      });
+    });
+
+    it('should make request with auth header', async () => {
+      const mockResponse = anAxiosResponse({}, { status: 200 });
+      mockPostWithAuth.mockResolvedValue(mockResponse);
+
+      await service.modify('id', 'data');
+
+      expect(mockPostWithAuth).toHaveBeenCalled();
+    });
+
+    it('should handle API errors', async () => {
+      const aServerError = anAxiosResponse({ error: 'Server error' }, { status: 500 });
+      mockPostWithAuth.mockRejectedValue(aServerError);
+
+      await expect(service.modify('id', 'data')).rejects.toEqual(aServerError);
     });
   });
 });

@@ -20,7 +20,14 @@ export const storeItemApi = (token: string | null) => {
     return api.getWithAuth<StoreItem[]>('/api/v2/store-items', { params });
   };
 
+  const create = (code: string, data: string): Promise<AxiosResponse> =>
+    api.postWithAuth('/api/v2/store-items/create-store-item', { code, data });
+
+  const modify = (id: string, data: string): Promise<AxiosResponse> => api.postWithAuth('/api/v2/store-items/modify-store-item', { id, data });
+
   return {
     query,
+    create,
+    modify,
   };
 };

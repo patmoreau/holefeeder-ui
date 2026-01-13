@@ -3,6 +3,7 @@ import { fromDateOnly, withDate } from '@/features/shared/utils/with-date';
 import { Result } from '@/shared/core/result';
 
 export type Settings = {
+  storeItemId?: string;
   effectiveDate: string;
   intervalType: DateIntervalType;
   frequency: number;

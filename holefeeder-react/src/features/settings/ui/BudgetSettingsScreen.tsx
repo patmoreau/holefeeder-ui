@@ -33,6 +33,7 @@ const BudgetSettingsScreen = () => {
   }
 
   const initialData: SettingsFormData = {
+    storeItemId: data.storeItemId,
     effectiveDate: data.effectiveDate,
     frequency: data.frequency,
     intervalType: data.intervalType,

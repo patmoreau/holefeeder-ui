@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 import { ExternalLink } from '@/components/external-link';
-import { Collapsible } from '@/components/ui/collapsible';
+import { AppCollapsible } from '@/features/shared/ui/components/AppCollapsible';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
@@ -20,7 +20,7 @@ export default function AccountsScreen() {
     >
       <ScreenTitle title={'Explore'} />
       <AppText>This app includes example code to help you get started.</AppText>
-      <Collapsible title="File-based routing">
+      <AppCollapsible title="File-based routing">
         <AppText>
           This app has two screens: <AppText variant="defaultSemiBold">app/(tabs)/index.tsx</AppText> and{' '}
           <AppText variant="defaultSemiBold">app/(tabs)/explore.tsx</AppText>
@@ -31,14 +31,14 @@ export default function AccountsScreen() {
         <ExternalLink href="https://docs.expo.dev/router/introduction">
           <AppText variant="link">Learn more</AppText>
         </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
+      </AppCollapsible>
+      <AppCollapsible title="Android, iOS, and web support">
         <AppText>
           You can open this project on Android, iOS, and the web. To open the web version, press <AppText variant="defaultSemiBold">w</AppText>{' '}
           in the terminal running this project.
         </AppText>
-      </Collapsible>
-      <Collapsible title="Images">
+      </AppCollapsible>
+      <AppCollapsible title="Images">
         <AppText>
           For static images, you can use the <AppText variant="defaultSemiBold">@2x</AppText> and{' '}
           <AppText variant="defaultSemiBold">@3x</AppText> suffixes to provide files for different screen densities
@@ -47,8 +47,8 @@ export default function AccountsScreen() {
         <ExternalLink href="https://reactnative.dev/docs/images">
           <AppText variant="link">Learn more</AppText>
         </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
+      </AppCollapsible>
+      <AppCollapsible title="Light and dark mode components">
         <AppText>
           This template has light and dark mode support. The <AppText variant="defaultSemiBold">useColorScheme()</AppText> hook lets you inspect
           what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
@@ -56,8 +56,8 @@ export default function AccountsScreen() {
         <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
           <AppText variant="link">Learn more</AppText>
         </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
+      </AppCollapsible>
+      <AppCollapsible title="Animations">
         <AppText>
           This template includes an example of an animated component. The <AppText variant="defaultSemiBold">components/HelloWave.tsx</AppText>{' '}
           component uses the powerful{' '}
@@ -74,7 +74,7 @@ export default function AccountsScreen() {
             </AppText>
           ),
         })}
-      </Collapsible>
+      </AppCollapsible>
     </ParallaxScrollView>
   );
 }

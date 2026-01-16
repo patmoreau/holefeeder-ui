@@ -1,10 +1,13 @@
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
+// Polyfill required for PowerSync/SQLite to handle async allows (Symbol.asyncIterator) correctly in React Native
+import '@azure/core-asynciterator-polyfill';
 import { useEffect } from 'react';
 import { Auth0Provider } from 'react-native-auth0';
 import ErrorBoundary from 'react-native-error-boundary';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
+import { PowerSyncProvider } from '@/contexts/PowersyncProvider';
 import { QueryProvider } from '@/contexts/query-provider';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
@@ -103,7 +106,9 @@ export default function RootLayout() {
       <Auth0Provider domain={config.auth0.domain} clientId={config.auth0.clientId}>
         <QueryProvider>
           <AppProvider>
-            <AppContent />
+            <PowerSyncProvider>
+              <AppContent />
+            </PowerSyncProvider>
           </AppProvider>
         </QueryProvider>
       </Auth0Provider>

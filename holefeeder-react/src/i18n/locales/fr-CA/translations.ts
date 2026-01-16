@@ -173,6 +173,20 @@ export const fr: TranslationStructure = {
   settings: {
     title: 'Paramètres',
     parameters: 'Paramètres',
+    syncSection: {
+      title: 'Synchronisation',
+      connected: 'Connecté',
+      lastSync: 'Dernière synchronisation',
+      never: 'Jamais',
+      downloading: 'Téléchargement',
+      uploading: 'Envoi',
+      syncedData: 'Données synchronisées',
+      accounts: 'Comptes',
+      cashflows: 'Flux de trésorerie',
+      categories: 'Catégories',
+      storeItems: 'Articles de stockage',
+      transactions: 'Transactions',
+    },
   },
   tabs: {
     dashboard: 'Tableau de bord',

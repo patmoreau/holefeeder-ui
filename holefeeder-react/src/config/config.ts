@@ -26,4 +26,7 @@ export const config = {
     simulateNetworkDelay: Number(process.env.EXPO_PUBLIC_SIMULATE_NETWORK_DELAY) || 0,
     cacheRequests: process.env.EXPO_PUBLIC_CACHE_REQUESTS !== 'false',
   },
+  powersync: {
+    url: process.env.EXPO_PUBLIC_POWERSYNC_URL || 'https://foo.powersync.journeyapps.com',
+  },
 };

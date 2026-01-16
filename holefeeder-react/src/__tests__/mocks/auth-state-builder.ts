@@ -8,6 +8,7 @@ const defaultAuthState = (): AuthState => ({
   user: null,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
+  getCredentials: () => Promise.resolve({ accessToken: 'mock-token' } as any),
 });
 
 export const aAuthState = (overrides: Partial<AuthState> = {}) => ({

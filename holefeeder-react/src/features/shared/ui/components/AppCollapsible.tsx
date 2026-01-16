@@ -1,18 +1,35 @@
 import { PropsWithChildren, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import { AppView } from '@/features/shared/ui/AppView';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppIcons } from '@/types/icons';
+import { spacing, Theme } from '@/types/theme';
 
-export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
+const createStyles = (theme: Theme) => ({
+  heading: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    justifyContent: 'space-between' as const,
+    gap: 6,
+    marginHorizontal: spacing.lg,
+  },
+  content: {
+    marginTop: 6,
+  },
+});
+
+export function AppCollapsible({ children, title, style }: PropsWithChildren & { title: string; style?: StyleProp<ViewStyle> }) {
+  const styles = useStyles(createStyles);
   const [isOpen, setIsOpen] = useState(false);
   const { theme } = useTheme();
 
   return (
-    <AppView>
+    <AppView style={style}>
       <TouchableOpacity style={styles.heading} onPress={() => setIsOpen((value) => !value)} activeOpacity={0.8}>
+        <AppText variant="defaultSemiBold">{title}</AppText>
         <IconSymbol
           name={AppIcons.expand}
           size={18}
@@ -20,22 +37,8 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
           color={theme.colors.icon}
           style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
         />
-
-        <AppText variant="defaultSemiBold">{title}</AppText>
       </TouchableOpacity>
       {isOpen && <AppView style={styles.content}>{children}</AppView>}
     </AppView>
   );
 }
-
-const styles = StyleSheet.create({
-  heading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  content: {
-    marginTop: 6,
-    marginLeft: 24,
-  },
-});

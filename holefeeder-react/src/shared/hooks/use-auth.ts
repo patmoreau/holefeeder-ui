@@ -88,5 +88,6 @@ export function useAuth() {
     user: memoizedUser,
     login,
     logout,
+    getCredentials,
   };
 }

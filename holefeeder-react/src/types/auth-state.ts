@@ -1,4 +1,4 @@
-import { User } from 'react-native-auth0';
+import { Credentials, User } from 'react-native-auth0';
 import { TokenInfo } from '@/types/token-info';
 
 export interface AuthState {
@@ -8,4 +8,5 @@ export interface AuthState {
   user: User | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;
+  getCredentials: (scope?: string, minTtl?: number, parameters?: Record<string, any>) => Promise<Credentials | undefined>;
 }

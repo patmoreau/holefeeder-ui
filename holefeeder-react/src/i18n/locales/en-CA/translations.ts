@@ -170,6 +170,20 @@ export const en = {
   settings: {
     title: 'Settings',
     parameters: 'Parameters',
+    syncSection: {
+      title: 'Synchronization',
+      connected: 'Connected',
+      lastSync: 'Last Synced',
+      never: 'Never',
+      downloading: 'Downloading',
+      uploading: 'Uploading',
+      syncedData: 'Synced Data',
+      accounts: 'Accounts',
+      cashflows: 'Cashflows',
+      categories: 'Categories',
+      storeItems: 'Store Items',
+      transactions: 'Transactions',
+    },
   },
   tabs: {
     dashboard: 'Dashboard',

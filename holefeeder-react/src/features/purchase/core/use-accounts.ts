@@ -1,11 +1,27 @@
-import { Account } from '@/features/shared/core/account';
-import { createListQueryHook } from '@/shared/hooks/queries/use-query';
-import { accountApi } from '../api/account-api';
+import { Account } from '@/features/purchase/core/account';
+import { Id } from '@/features/purchase/core/id';
+import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';
+import { UseQueryResult } from '@/shared/hooks/use-query-result';
 
-const accountQueries = createListQueryHook<Account>('accounts', (token) =>
-  accountApi(token)
-    .getAll()
-    .then((r) => r.data)
-);
+type UseAccountsResult = UseQueryResult<Account[]>;
 
-export const { useList: useAccounts, keys: accountKeys } = accountQueries;
+type AccountRow = {
+  id: string;
+  name: string;
+};
+
+export const useAccounts = (): UseAccountsResult => {
+  return usePowerSyncWatchedQuery<AccountRow, Account>(
+    'purchase-use-accounts',
+    `SELECT id, name FROM accounts WHERE inactive = 0 ORDER BY favorite DESC, name`,
+    [],
+    (row) => ({
+      id: row.id as Id,
+      name: row.name,
+    })
+  );
+};
+
+export const accountKeys = {
+  all: ['accounts'] as const,
+};

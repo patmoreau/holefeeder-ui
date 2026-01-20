@@ -1,53 +1,105 @@
-import { waitFor } from '@testing-library/react-native';
-import { aCategory, aTokenInfo } from '@/__tests__';
-import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
-import { mockQueryClient, renderQueryHook } from '@/__tests__/mocks/mock-query-client';
-import { categoryApi } from '@/features/purchase/api/category-api';
-import { useCategories, useCategory } from '@/features/purchase/core/use-categories';
-import { useAuth } from '@/shared/hooks/use-auth';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
+import { aCategory } from '@/__tests__';
+import { createMockPowerSyncContext, createTestPowerSyncDb } from '@/__tests__/utils/test-powersync-provider';
+import { usePowerSync } from '@/contexts/PowersyncProvider';
+import { useCategories } from '@/features/purchase/core/use-categories';
 
-jest.mock('@/features/purchase/api/category-api');
-jest.mock('@/shared/hooks/use-auth');
+jest.mock('@/contexts/PowersyncProvider');
 
-const mockService = jest.mocked(categoryApi);
-const mockUseAuth = jest.mocked(useAuth);
+const mockUsePowerSync = jest.mocked(usePowerSync);
 
-describe('categoryQueries', () => {
-  const tokenInfo = aTokenInfo();
-  const mockCategories = [aCategory()];
-  const mockCategory = aCategory();
-  const mockGetCategories = jest.fn();
-  const mockGetCategory = jest.fn();
+describe('useCategories', () => {
+  let testDb: any;
+  const mockCategories = [aCategory({ name: 'Category 1' }), aCategory({ name: 'Category 2' })];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
-    mockUseAuth.mockReturnValue({ tokenInfo } as any);
-    mockGetCategories.mockResolvedValue(anAxiosResponse(mockCategories));
-    mockGetCategory.mockResolvedValue(anAxiosResponse(mockCategory));
-    mockService.mockReturnValue({
-      getAll: mockGetCategories,
-      getById: mockGetCategory,
-    } as any);
+
+    // Create a fresh mock database for each test
+    testDb = createTestPowerSyncDb();
+
+    // Mock usePowerSync to return our test database
+    mockUsePowerSync.mockReturnValue(createMockPowerSyncContext(testDb));
+
+    // Insert test data into the in-memory database
+    for (const category of mockCategories) {
+      await testDb.execute('INSERT INTO categories (id, type, name, color, budget_amount, favorite) VALUES (?, ?, ?, ?, ?, ?)', [
+        category.id,
+        category.type,
+        category.name,
+        category.color,
+        category.budgetAmount,
+        category.favorite ? 1 : 0,
+      ]);
+    }
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     jest.clearAllMocks();
-    mockQueryClient.clear();
+    // Clean up the database
+    if (testDb) {
+      await testDb.disconnectAndClear();
+      await testDb.close();
+    }
   });
 
-  describe('createListQueryHook', () => {
-    it('should create a working list query hook', async () => {
-      const { result } = renderQueryHook(() => useCategories());
-      await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(result.current.data).toEqual(mockCategories);
+  it('should fetch categories from PowerSync database', async () => {
+    const { result } = renderHook(() => useCategories());
+
+    // Initially loading
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toEqual([]);
+
+    // Wait for data to load
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.data).toEqual(mockCategories);
+    expect(result.current.error).toBeNull();
+  });
+
+  it('should handle errors when fetching categories', async () => {
+    // Suppress expected console.error
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    // Close the database to cause an error
+    await testDb.close();
+
+    const { result } = renderHook(() => useCategories());
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.data).toEqual([]);
+    expect(result.current.error).not.toBeNull();
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it('should provide a refetch function', async () => {
+    const { result } = renderHook(() => useCategories());
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.refetch).toBeInstanceOf(Function);
+
+    // Insert a new category
+    const newCategory = aCategory({ name: 'New Category' });
+    await testDb.execute('INSERT INTO categories (id, type, name, color, budget_amount, favorite) VALUES (?, ?, ?, ?, ?, ?)', [
+      newCategory.id,
+      newCategory.type,
+      newCategory.name,
+      newCategory.color,
+      newCategory.budgetAmount,
+      newCategory.favorite ? 1 : 0,
+    ]);
+
+    // Refetch
+    await act(async () => {
+      await result.current.refetch();
     });
-  });
 
-  describe('createOneQueryHook', () => {
-    it('should create a working detail query hook', async () => {
-      const { result } = renderQueryHook(() => useCategory('1'));
-      await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(result.current.data).toEqual(mockCategory);
+    await waitFor(() => {
+      expect(result.current.data.length).toBe(3);
+      expect(result.current.data).toContainEqual(newCategory);
     });
   });
 });

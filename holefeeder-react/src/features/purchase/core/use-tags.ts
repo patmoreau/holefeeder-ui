@@ -1,11 +1,33 @@
-import { tagApi } from '@/features/purchase/api/tag-api';
-import { Tag, toTag } from '@/features/purchase/core/tag';
-import { createListQueryHook } from '@/shared/hooks/queries/use-query';
+import { Tag, TagResponse, toTag } from '@/features/purchase/core/tag';
+import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';
+import { UseQueryResult } from '@/shared/hooks/use-query-result';
 
-const tagQueries = createListQueryHook<Tag>('tags', (token) =>
-  tagApi(token)
-    .getAll()
-    .then((r) => r.data.map(toTag))
-);
+type UseTagsResult = UseQueryResult<Tag[]>;
 
-export const { useList: useTags, keys: tagKeys } = tagQueries;
+export const useTags = (): UseTagsResult => {
+  return usePowerSyncWatchedQuery<TagResponse, Tag>(
+    'purchase-use-tags',
+    `
+    WITH RECURSIVE split(tag, remainder) AS
+                     (SELECT
+                             Ltrim(Substr(tags || ',', 1, Instr(tags || ',', ',') - 1)) AS tag,
+                             Substr(tags || ',', Instr(tags || ',', ',') + 1)           AS remainder
+                      FROM transactions
+                      WHERE tags IS NOT NULL AND tags <> ''
+                      UNION ALL
+                      SELECT
+                             Ltrim(Substr(remainder, 1, Instr(remainder, ',') - 1)) AS tag,
+                             Substr(remainder, Instr(remainder, ',') + 1)           AS remainder
+                      FROM split
+                      WHERE remainder <> '')
+    SELECT tag,
+           COUNT(*) AS count
+    FROM split
+    WHERE tag <> ''
+    GROUP BY tag
+    ORDER BY count DESC, tag ASC;
+  `,
+    [],
+    toTag
+  );
+};

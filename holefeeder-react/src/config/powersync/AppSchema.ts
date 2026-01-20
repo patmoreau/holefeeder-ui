@@ -73,6 +73,7 @@ export const AppSchema = new Schema({
         transactions_account: ['account_id'],
         transactions_category: ['category_id'],
         transactions_cashflow: ['cashflow_id'],
+        transactions_tags: ['tags'],
       },
     }
   ),

@@ -1,19 +1,32 @@
-import { categoryApi } from '@/features/purchase/api/category-api';
 import { Category } from '@/features/purchase/core/category';
-import { createListQueryHook, createOneQueryHook } from '@/shared/hooks/queries/use-query';
+import { normalizeCategoryType } from '@/features/purchase/core/category-type';
+import { Id } from '@/features/purchase/core/id';
+import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';
+import { UseQueryResult } from '@/shared/hooks/use-query-result';
 
-const categoryQueries = createListQueryHook<Category>('categories', (token) =>
-  categoryApi(token)
-    .getAll()
-    .then((r) => r.data)
-);
+type UseCategoriesResult = UseQueryResult<Category[]>;
 
-const categoryDetailQueries = createOneQueryHook<Category>('categories', (id, token) =>
-  categoryApi(token)
-    .getById(id as string)
-    .then((r) => r.data)
-);
+type CategoryRow = {
+  id: string;
+  type: string;
+  name: string;
+  color: string;
+  budget_amount: number;
+  favorite: number;
+};
 
-export const { useList: useCategories, keys: categoryKeys } = categoryQueries;
-
-export const { useOne: useCategory, keys: categoryDetailKeys } = categoryDetailQueries;
+export const useCategories = (): UseCategoriesResult => {
+  return usePowerSyncWatchedQuery<CategoryRow, Category>(
+    'purchase-use-categories',
+    'SELECT id, type, name, color, budget_amount, favorite FROM categories ORDER BY favorite DESC, name',
+    [],
+    (row) => ({
+      id: row.id as Id,
+      type: normalizeCategoryType(row.type),
+      name: row.name,
+      color: row.color,
+      budgetAmount: row.budget_amount,
+      favorite: row.favorite === 1,
+    })
+  );
+};

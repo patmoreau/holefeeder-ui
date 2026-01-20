@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { Tag } from '@/features/purchase/core/tag';
@@ -8,7 +9,6 @@ import { CashflowSection } from '@/features/purchase/ui/CashflowSection';
 import { AmountField, AmountFieldRef } from '@/features/purchase/ui/components/fields/AmountField';
 import { PurchaseTransferSection } from '@/features/purchase/ui/PurchaseTransferSection';
 import { TransferSection } from '@/features/purchase/ui/TransferSection';
-import { Account } from '@/features/shared/core/account';
 import { AppForm } from '@/features/shared/ui/AppForm';
 
 type PurchaseFormProps = {

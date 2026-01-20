@@ -1,9 +1,10 @@
 import { UseQueryResult } from '@tanstack/react-query';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ErrorKey } from '@/features/shared/core/error-key';
+import { UseQueryResult as LocalUseQueryResult } from '@/shared/hooks/use-query-result';
 import { isNetworkError } from '@/shared/utils/is-network-error';
 
-type AnyQueryResult = UseQueryResult<any, unknown>;
+type AnyQueryResult = UseQueryResult<any, unknown> | LocalUseQueryResult<any>;
 
 // Overload for single query - returns unwrapped data
 export function useDataFetchingErrorHandler<T extends AnyQueryResult>(

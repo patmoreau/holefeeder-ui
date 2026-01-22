@@ -1,7 +1,7 @@
 import { Id } from '@/features/purchase/core/id';
 import { AccountType } from '@/features/shared/core/account-type';
 
-export interface Account {
+export type Account = {
   id: Id;
   type: AccountType;
   name: string;
@@ -15,4 +15,4 @@ export interface Account {
   description: string;
   favorite: boolean;
   inactive: boolean;
-}
+};

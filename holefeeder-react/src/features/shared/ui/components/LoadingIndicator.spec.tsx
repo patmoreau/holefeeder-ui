@@ -1,4 +1,6 @@
 /* eslint-disable import/first */
+import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
+
 jest.mock('@/shared/hooks/theme/use-theme', () => ({
   useTheme: jest.fn(),
 }));
@@ -7,7 +9,6 @@ jest.mock('@/shared/hooks/use-language', () => ({
 }));
 
 import { render, screen } from '@testing-library/react-native';
-import { aLightThemeState } from '@/__tests__';
 import { aLanguageState } from '@/__tests__/mocks/language-state-builder';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';

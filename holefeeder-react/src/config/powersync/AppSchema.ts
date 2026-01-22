@@ -1,4 +1,4 @@
-import { column, Schema, Table } from '@powersync/react-native';
+import { column, Schema, Table } from '@powersync/common';
 
 export const AppSchema = new Schema({
   accounts: new Table(
@@ -6,7 +6,7 @@ export const AppSchema = new Schema({
       type: column.text,
       name: column.text,
       favorite: column.integer,
-      open_balance: column.real,
+      open_balance: column.integer,
       open_date: column.text,
       description: column.text,
       inactive: column.integer,
@@ -40,7 +40,7 @@ export const AppSchema = new Schema({
       type: column.text,
       name: column.text,
       color: column.text,
-      budget_amount: column.real,
+      budget_amount: column.integer,
       favorite: column.integer,
       system: column.integer,
       user_id: column.text,
@@ -58,7 +58,7 @@ export const AppSchema = new Schema({
   transactions: new Table(
     {
       date: column.text,
-      amount: column.real,
+      amount: column.integer,
       description: column.text,
       account_id: column.text,
       category_id: column.text,

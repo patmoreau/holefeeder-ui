@@ -1,4 +1,4 @@
-import { Id } from '@/features/purchase/core/id';
+import { Id } from '@/shared/core/id';
 
 export type Account = {
   id: Id;

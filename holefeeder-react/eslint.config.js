@@ -9,11 +9,22 @@ export default defineConfig([
   ...pluginQuery.configs['flat/recommended'],
   expoConfig,
   eslintPluginPrettierRecommended,
+  pluginImport.flatConfigs.recommended,
   {
     ignores: ['node_modules/*', 'dist/*', '.expo/*'],
   },
-  pluginImport.flatConfigs.recommended,
   {
+    settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+        },
+      },
+    },
     rules: {
       '@typescript-eslint/no-redeclare': 'off',
       'max-len': ['error', { code: 255 }],

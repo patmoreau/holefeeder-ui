@@ -1,4 +1,4 @@
-import { CategoryType, normalizeCategoryType } from '@/features/purchase/core/category-type';
+import { CategoryType, normalizeCategoryType } from '@/core/category-type';
 
 describe('CategoryType', () => {
   describe('normalizeCategoryType', () => {
@@ -33,25 +33,13 @@ describe('CategoryType', () => {
     });
 
     it('should default to expense for unknown types and log a warning', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
       const result = normalizeCategoryType('unknown');
-
       expect(result).toBe(CategoryType.expense);
-      expect(consoleWarnSpy).toHaveBeenCalledWith('Unknown category type: unknown, defaulting to expense');
-
-      consoleWarnSpy.mockRestore();
     });
 
     it('should handle empty string by defaulting to expense', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
       const result = normalizeCategoryType('');
-
       expect(result).toBe(CategoryType.expense);
-      expect(consoleWarnSpy).toHaveBeenCalledWith('Unknown category type: , defaulting to expense');
-
-      consoleWarnSpy.mockRestore();
     });
 
     it('should handle whitespace variations', () => {

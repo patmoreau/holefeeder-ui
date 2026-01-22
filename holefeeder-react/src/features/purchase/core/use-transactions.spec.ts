@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react-native';
-import { aTokenInfo } from '@/__tests__';
+import { aTokenInfo } from '@/__tests__/mocks/token-info-builder';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { mockQueryClient, renderQueryHook } from '@/__tests__/mocks/mock-query-client';
 import { aPurchase } from '@/__tests__/mocks/purchase-builder';

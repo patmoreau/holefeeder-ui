@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import React, { useState } from 'react';
-import { aLightThemeState } from '@/__tests__';
 import { aTag } from '@/__tests__/mocks/tag-builder';
+import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
 import { Tag } from '@/features/purchase/core/tag';
 import { TagList } from '@/features/purchase/ui/components/TagList';
 import { useTheme } from '@/shared/hooks/theme/use-theme';

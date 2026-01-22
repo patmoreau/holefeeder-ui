@@ -1,13 +1,13 @@
-import { act, renderHook, waitFor } from '@testing-library/react-native';
+import { renderHook, waitFor, act } from '@testing-library/react-native';
 import { usePowerSync } from '@/contexts/PowersyncProvider';
+import { useSyncInfo } from '@/features/settings/core/use-sync-info';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
-import { useHelpScreen } from './use-help-screen';
 
 // Mock the dependencies
 jest.mock('@/contexts/PowersyncProvider');
 jest.mock('@/shared/hooks/use-sync-status');
 
-describe('useHelpScreen', () => {
+describe('useSyncInfo', () => {
   const mockDb = {
     getAll: jest.fn(),
   };
@@ -36,7 +36,7 @@ describe('useHelpScreen', () => {
   it('should initialize with default counts', async () => {
     mockDb.getAll.mockResolvedValue([]);
 
-    const { result } = renderHook(() => useHelpScreen());
+    const { result } = renderHook(() => useSyncInfo());
 
     expect(result.current.counts).toEqual({
       accounts: 0,
@@ -53,7 +53,7 @@ describe('useHelpScreen', () => {
   it('should return sync status from useSyncStatus', () => {
     mockDb.getAll.mockResolvedValue([]);
 
-    const { result } = renderHook(() => useHelpScreen());
+    const { result } = renderHook(() => useSyncInfo());
 
     expect(result.current.connected).toBe(true);
     expect(result.current.lastSyncedAt).toEqual(mockSyncStatus.lastSyncedAt);
@@ -68,7 +68,7 @@ describe('useHelpScreen', () => {
       .mockResolvedValueOnce([{ count: 40 }]) // store_items
       .mockResolvedValueOnce([{ count: 50 }]); // transactions
 
-    const { result } = renderHook(() => useHelpScreen());
+    const { result } = renderHook(() => useSyncInfo());
 
     await waitFor(() => {
       expect(result.current.counts).toEqual({
@@ -89,7 +89,7 @@ describe('useHelpScreen', () => {
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     mockDb.getAll.mockRejectedValue(new Error('DB Error'));
 
-    const { result } = renderHook(() => useHelpScreen());
+    const { result } = renderHook(() => useSyncInfo());
 
     await waitFor(() => {
       expect(mockDb.getAll).toHaveBeenCalled();
@@ -111,7 +111,7 @@ describe('useHelpScreen', () => {
   it('should refresh counts every 5 seconds', async () => {
     mockDb.getAll.mockResolvedValue([{ count: 1 }]);
 
-    renderHook(() => useHelpScreen());
+    renderHook(() => useSyncInfo());
 
     // Initial fetch
     await waitFor(() => {

@@ -1,4 +1,4 @@
-import { aCategoryType } from '@/__tests__';
+import { aCategoryType } from '@/__tests__/mocks/enum-builder';
 import { aBoolean } from '@/__tests__/mocks/boolean-builder';
 import { anAmount } from '@/__tests__/mocks/number-builder';
 import { aColor, anId, aString } from '@/__tests__/mocks/string-builder';

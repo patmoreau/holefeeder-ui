@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { CategoryType } from '@/features/purchase/core/category-type';
+import { CategoryType } from '@/core/category-type';
 import { AccountType } from '@/features/shared/core/account-type';
 import { DateIntervalType } from '@/features/shared/core/date-interval-type';
 

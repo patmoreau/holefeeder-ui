@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react-native';
-import { anEmptyTokenInfo, aTokenInfo } from '@/__tests__';
+import { anEmptyTokenInfo, aTokenInfo } from '@/__tests__/mocks/token-info-builder';
 import { mockQueryClient, renderQueryHook } from '@/__tests__/mocks/mock-query-client';
 import { createMutationHook } from '@/shared/hooks/queries/use-mutation';
 import { useAuth } from '@/shared/hooks/use-auth';

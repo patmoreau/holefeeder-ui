@@ -17,6 +17,12 @@ const validate = <T>(schema: Schema, value: unknown): Result<T> => {
   return validateFunction(value) ? Result.success(value as T) : Result.failure(buildErrors(validateFunction.errors));
 };
 
+const validateWithErrors = <T>(schema: Schema, value: unknown, errors: string[]): Result<T> => {
+  const validateFunction = getValidateFunctionFor(schema);
+
+  return validateFunction(value) ? Result.success(value as T) : Result.failure(errors);
+};
+
 const getValidateFunctionFor = (schema: Schema) => {
   return ajv.getSchema(schema.$id) ?? addValidateFunction(schema);
 };
@@ -27,7 +33,7 @@ const addValidateFunction = (schema: Schema) => {
 };
 
 const buildErrors = (errors: ErrorObject[] | null | undefined): string[] => {
-  return (errors ?? []).map((error) => error.message ?? 'Unknown validation error');
+  return (errors ?? []).map((error) => error.message ?? 'unknown-error');
 };
 
-export const Validate = { validate };
+export const Validate = { validate: validate, validateWithErrors: validateWithErrors } as const;

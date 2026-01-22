@@ -1,5 +1,5 @@
 import { Account } from '@/features/purchase/core/account';
-import { Id } from '@/features/purchase/core/id';
+import { Id } from '@/shared/core/id';
 import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';
 import { UseQueryResult } from '@/shared/hooks/use-query-result';
 
@@ -16,7 +16,7 @@ export const useAccounts = (): UseAccountsResult => {
     `SELECT id, name FROM accounts WHERE inactive = 0 ORDER BY favorite DESC, name`,
     [],
     (row) => ({
-      id: row.id as Id,
+      id: Id.valid(row.id),
       name: row.name,
     })
   );

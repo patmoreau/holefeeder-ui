@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Category } from '@/features/purchase/core/category';
-import { CategoryType } from '@/features/purchase/core/category-type';
+import { CategoryType } from '@/core/category-type';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker } from '@/features/shared/ui/components/AppPicker';
 import { tk } from '@/i18n/translations';

@@ -1,4 +1,4 @@
-import { anAmount } from '@/__tests__';
+import { anAmount } from '@/__tests__/mocks/number-builder';
 import { Summary } from '@/features/dashboard/core/summary';
 
 const defaultSummary = (): Summary => ({

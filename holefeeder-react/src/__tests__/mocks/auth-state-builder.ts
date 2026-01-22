@@ -1,4 +1,5 @@
-import { aBoolean, aTokenInfo } from '@/__tests__';
+import { aBoolean } from '@/__tests__/mocks/boolean-builder';
+import { aTokenInfo } from '@/__tests__/mocks/token-info-builder';
 import { AuthState } from '@/types/auth-state';
 
 const defaultAuthState = (): AuthState => ({

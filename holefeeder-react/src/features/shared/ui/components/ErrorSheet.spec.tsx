@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import React from 'react';
-import { anAppState } from '@/__tests__';
+import { anAppState } from '@/__tests__/mocks/app-state-builder';
 import { useAppContext } from '@/contexts/AppContext';
 import { ErrorKey } from '@/features/shared/core/error-key';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';

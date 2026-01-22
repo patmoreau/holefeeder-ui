@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
-import { Id } from '@/features/purchase/core/id';
+import { Id } from '@/shared/core/id';
 
 export const aColor = () => faker.color.rgb();
 
-export const anId = () => faker.string.uuid() as Id;
+export const anId = () => Id.valid(faker.string.uuid());
 
 export const aString = () => faker.lorem.words(3);

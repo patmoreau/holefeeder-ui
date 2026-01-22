@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
-import { aTokenInfo } from '@/__tests__';
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { mockQueryClient, renderQueryHook } from '@/__tests__/mocks/mock-query-client';
+import { aTokenInfo } from '@/__tests__/mocks/token-info-builder';
 import { storeItemApi } from '@/features/settings/api/store-item-api';
 import { Settings } from '@/features/settings/core/settings';
 import { useUpdateSettings } from '@/features/settings/core/use-settings';

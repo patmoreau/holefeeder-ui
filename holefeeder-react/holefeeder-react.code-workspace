@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "eslint.runtime": "node",
+    "sqltools.connections": [
+      {
+        "previewLimit": 50,
+        "driver": "SQLite",
+        "database": "./.debug.sqlite",
+        "name": "debug sqlite",
+      },
+    ],
+  },
+}

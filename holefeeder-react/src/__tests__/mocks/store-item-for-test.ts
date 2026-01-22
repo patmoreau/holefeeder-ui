@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { anId } from '@/__tests__';
+import { anId } from '@/__tests__/mocks/string-builder';
 import { StoreItem } from '@/features/settings/core/store-item';
 
 const defaultStoreItem = () => ({

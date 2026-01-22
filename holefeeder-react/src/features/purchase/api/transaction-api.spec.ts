@@ -1,4 +1,4 @@
-import { anAxiosResponse } from '@/__tests__';
+import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { aPurchase, aTransfer } from '@/__tests__/mocks/purchase-builder';
 import { transactionApi } from '@/features/purchase/api/transaction-api';
 import { apiService } from '@/shared/services/api-service';

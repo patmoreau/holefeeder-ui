@@ -14,4 +14,4 @@ const success = <T>(value: T): Success<T> => ({ isFailure: false, value });
 
 const failure = (errors: string[]): Failure => ({ isFailure: true, errors });
 
-export const Result = { success, failure } as const;
+export const Result = { success: success, failure: failure } as const;

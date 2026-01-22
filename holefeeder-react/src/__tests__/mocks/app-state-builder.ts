@@ -1,5 +1,6 @@
-import { aLightThemeState, aUserProfile } from '@/__tests__';
 import { aLanguageState } from '@/__tests__/mocks/language-state-builder';
+import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
+import { aUserProfile } from '@/__tests__/mocks/user-profil-builder';
 import { AppState, LanguageType } from '@/types/app-state';
 import { ThemeMode } from '@/types/theme/theme';
 
@@ -18,4 +19,4 @@ const defaultAppState = (): AppState => ({
   ...aLanguageState(),
 });
 
-export const anAppState = (data: Partial<AppState> = {}): AppState => ({ ...defaultAppState(), ...data });
+export const anAppState = (overrides?: Partial<AppState>): AppState => ({ ...defaultAppState(), ...overrides });

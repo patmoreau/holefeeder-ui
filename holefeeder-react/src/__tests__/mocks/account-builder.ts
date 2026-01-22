@@ -1,4 +1,8 @@
-import { aBoolean, aCount, anAccountType, anAmount, anId, aPastDate, aRecentDate, aString } from '@/__tests__';
+import { aBoolean } from '@/__tests__/mocks/boolean-builder';
+import { aCount, anAmount } from '@/__tests__/mocks/number-builder';
+import { anAccountType } from '@/__tests__/mocks/enum-builder';
+import { anId, aString } from '@/__tests__/mocks/string-builder';
+import { aPastDate, aRecentDate } from '@/__tests__/mocks/date-builder';
 import { Account } from '@/features/shared/core/account';
 
 const defaultData = (): Account => ({

@@ -1,17 +1,24 @@
+import { AbstractPowerSyncDatabase } from '@powersync/common';
+import { OPSqliteOpenFactory } from '@powersync/op-sqlite';
 import { PowerSyncDatabase, SyncStatus } from '@powersync/react-native';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AppSchema } from '@/config/powersync/AppSchema';
 import { PowerSyncConnector } from '@/config/powersync/PowerSyncConnector';
 import { useAuth } from '@/shared/hooks/use-auth';
 
+type PowerSyncProviderProps = {
+  children: ReactNode;
+  db?: AbstractPowerSyncDatabase;
+};
+
 interface PowerSyncContextType {
-  db: PowerSyncDatabase;
+  db: AbstractPowerSyncDatabase;
   syncStatus: SyncStatus | null;
 }
 
 const PowerSyncContext = createContext<PowerSyncContextType | null>(null);
 
-export const PowerSyncProvider = ({ children }: { children: ReactNode }) => {
+export const PowerSyncProvider = ({ children, db: externalDb }: PowerSyncProviderProps) => {
   const { getCredentials } = useAuth();
 
   // Use a ref to access the current getCredentials without re-triggering effects
@@ -21,10 +28,7 @@ export const PowerSyncProvider = ({ children }: { children: ReactNode }) => {
   }, [getCredentials]);
 
   const [db] = useState(() => {
-    return new PowerSyncDatabase({
-      schema: AppSchema,
-      database: { dbFilename: 'holefeeder.db' },
-    });
+    return externalDb ?? createPowersyncDatabase();
   });
 
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
@@ -61,4 +65,15 @@ export const usePowerSync = () => {
     throw new Error('usePowerSync must be used within a PowerSyncProvider');
   }
   return context;
+};
+
+const createPowersyncDatabase = () => {
+  const opSqlite = new OPSqliteOpenFactory({
+    dbFilename: 'holefeeder.db',
+  });
+
+  return new PowerSyncDatabase({
+    schema: AppSchema,
+    database: opSqlite,
+  });
 };

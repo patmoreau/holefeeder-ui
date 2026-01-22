@@ -1,4 +1,4 @@
-import { anAxiosResponse } from '@/__tests__';
+import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { aSummary } from '@/__tests__/mocks/summary-for-test';
 import { dashboardApi } from '@/features/dashboard/api/dashboard-api';
 import { apiService } from '@/shared/services/api-service';

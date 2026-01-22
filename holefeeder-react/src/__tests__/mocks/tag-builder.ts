@@ -1,4 +1,5 @@
-import { aCount, aString } from '@/__tests__';
+import { aCount } from '@/__tests__/mocks/number-builder';
+import { aString } from '@/__tests__/mocks/string-builder';
 import { Tag, TagResponse, toTag } from '@/features/purchase/core/tag';
 
 const defaultData = (): TagResponse => ({

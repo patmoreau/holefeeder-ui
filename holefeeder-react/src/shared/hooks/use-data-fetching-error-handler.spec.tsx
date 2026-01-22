@@ -1,6 +1,6 @@
 import { act, render } from '@testing-library/react-native';
 import React, { useEffect } from 'react';
-import { anAppState } from '@/__tests__';
+import { anAppState } from '@/__tests__/mocks/app-state-builder';
 import { useAppContext } from '@/contexts/AppContext';
 import { ErrorKey } from '@/features/shared/core/error-key';
 import { useDataFetchingErrorHandler } from './use-data-fetching-error-handler';

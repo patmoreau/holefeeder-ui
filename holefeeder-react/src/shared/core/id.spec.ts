@@ -1,4 +1,4 @@
-import { Id } from '@/features/purchase/core/id';
+import { Id, IdErrors } from '@/shared/core/id';
 
 // A small set of canonical UUIDs for testing
 const validUuids = [
@@ -27,27 +27,15 @@ const invalidUuids = [
   '123e4567e89b12d3a456426614174000', // no dashes
 ];
 
-describe('Id.create', () => {
-  it('returns Success for valid canonical UUIDs (versions 1–5, variant 8|9|a|b)', () => {
-    for (const uuid of validUuids) {
-      const result = Id.create(uuid);
-      expect(result.isFailure).toBe(false);
-      if (!result.isFailure) {
-        expect(result.value).toBe(uuid);
-      }
-    }
+describe('Id', () => {
+  it.each(validUuids)('accepts a uuid (%s)', (uuid) => {
+    const result = Id.create(uuid);
+    expect(result).toBeSuccessWithValue(uuid);
   });
 
-  it('returns Failure for invalid UUID strings', () => {
-    for (const uuid of invalidUuids) {
-      const result = Id.create(uuid as string);
-      expect(result.isFailure).toBe(true);
-      if (result.isFailure) {
-        // Ensure we get at least one error message from validation
-        expect(Array.isArray(result.errors)).toBe(true);
-        expect(result.errors.length).toBeGreaterThan(0);
-      }
-    }
+  it.each(invalidUuids)('fails for invalid UUID (%s)', (uuid) => {
+    const result = Id.create(uuid as string);
+    expect(result).toBeFailureWithErrors([IdErrors.invalid]);
   });
 
   it('is case-insensitive for hex digits', () => {
@@ -55,13 +43,13 @@ describe('Id.create', () => {
     const upper = lower.toUpperCase();
 
     // Both should fail because variant nibble is 'c', which is not allowed by the schema
-    expect(Id.create(lower).isFailure).toBe(true);
-    expect(Id.create(upper).isFailure).toBe(true);
+    expect(Id.create(lower)).toBeFailureWithErrors([IdErrors.invalid]);
+    expect(Id.create(upper)).toBeFailureWithErrors([IdErrors.invalid]);
 
     // A valid lowercase and uppercase should both pass
     const lowerValid = 'a987fbc9-4bed-3078-8f07-9141ba07c9f3'.toLowerCase(); // v3, variant 8
     const upperValid = lowerValid.toUpperCase();
-    expect(Id.create(lowerValid).isFailure).toBe(false);
-    expect(Id.create(upperValid).isFailure).toBe(false);
+    expect(Id.create(lowerValid)).toBeSuccessWithValue(lowerValid);
+    expect(Id.create(upperValid)).toBeSuccessWithValue(upperValid);
   });
 });

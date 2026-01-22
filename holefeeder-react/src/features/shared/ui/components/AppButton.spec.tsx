@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { aLightThemeState } from '@/__tests__';
+import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 

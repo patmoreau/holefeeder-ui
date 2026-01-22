@@ -4,7 +4,7 @@ jest.mock('@/contexts/AppContext', () => ({
 }));
 
 import { renderHook } from '@testing-library/react-native';
-import { anAppState } from '@/__tests__';
+import { anAppState } from '@/__tests__/mocks/app-state-builder';
 import { useAppContext } from '@/contexts/AppContext';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 

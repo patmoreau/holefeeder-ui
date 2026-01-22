@@ -5,7 +5,9 @@ export interface TagResponse {
 
 export type Tag = TagResponse & { id: string };
 
-export const toTag = (response: TagResponse): Tag => ({
-  ...response,
-  id: response.tag,
-});
+export const toTag = (response: TagResponse): Tag => {
+  return {
+    ...response,
+    id: response.tag,
+  };
+};

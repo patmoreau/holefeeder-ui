@@ -1,4 +1,4 @@
-import { anAxiosResponse } from '@/__tests__';
+import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { aStoreItem } from '@/__tests__/mocks/store-item-for-test';
 import { storeItemApi } from '@/features/settings/api/store-item-api';
 import { PaginatedQueryParams } from '@/shared/hooks/queries/use-query';

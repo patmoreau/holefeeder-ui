@@ -1,4 +1,4 @@
-import { CategoryType } from '@/core/category-type';
+import { CategoryType } from '@/shared/core/category-type';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 

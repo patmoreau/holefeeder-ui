@@ -1,18 +1,18 @@
 import fs from 'fs';
 import {
   AbstractPowerSyncDatabase,
-  SqliteBucketStorage,
-  PowerSyncBackendConnector,
   CreateSyncImplementationOptions,
-  RequiredAdditionalConnectionOptions,
-  StreamingSyncImplementation,
   DBAdapter,
+  PowerSyncBackendConnector,
   PowerSyncDatabaseOptionsWithSettings,
+  RequiredAdditionalConnectionOptions,
   Schema,
+  SqliteBucketStorage,
+  StreamingSyncImplementation,
 } from '@powersync/react-native';
 import Database from 'better-sqlite3';
 import { DatabaseAdapterForTest } from '@/__tests__/persistence/database-adapter-for-test';
-import { AppSchema } from '@/config/powersync/AppSchema';
+import { AppSchema } from '@/shared/persistence/app-schema';
 
 export class DatabaseForTest extends AbstractPowerSyncDatabase {
   async _initialize(): Promise<void> {

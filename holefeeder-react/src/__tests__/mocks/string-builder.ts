@@ -6,3 +6,5 @@ export const aColor = () => faker.color.rgb();
 export const anId = () => Id.valid(faker.string.uuid());
 
 export const aString = () => faker.lorem.words(3);
+
+export const aWord = () => faker.lorem.word();

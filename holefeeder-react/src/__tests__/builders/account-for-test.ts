@@ -1,5 +1,5 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
-import { Account } from '@/core/account';
+import { Account } from '@/shared/core/account';
 import { Money } from '@/shared/core/money';
 import { aPastDate } from '../mocks/date-builder';
 import { anAccountType } from '../mocks/enum-builder';

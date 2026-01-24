@@ -1,4 +1,4 @@
-import { CategoryType, normalizeCategoryType } from '@/core/category-type';
+import { CategoryType, normalizeCategoryType } from '@/shared/core/category-type';
 
 describe('CategoryType', () => {
   describe('normalizeCategoryType', () => {

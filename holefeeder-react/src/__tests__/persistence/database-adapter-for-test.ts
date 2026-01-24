@@ -121,6 +121,10 @@ export class DatabaseAdapterForTest extends BaseObserver<any> implements DBAdapt
 
   async refreshSchema(): Promise<void> {}
 
+  async commit(): Promise<void> {}
+
+  async rollback(): Promise<void> {}
+
   close(): void {
     this.db.close();
   }

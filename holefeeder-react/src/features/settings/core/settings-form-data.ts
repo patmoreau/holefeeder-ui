@@ -1,4 +1,4 @@
-import { DateIntervalType } from '@/features/shared/core/date-interval-type';
+import { DateIntervalType } from '@/shared/core/date-interval-type';
 
 export type SettingsFormData = {
   storeItemId?: string;

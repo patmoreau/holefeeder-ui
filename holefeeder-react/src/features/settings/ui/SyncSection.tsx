@@ -43,6 +43,9 @@ export function SyncSection() {
         <AppField label={t(tk.settings.syncSection.uploading)} icon={AppIcons.upload}>
           <AppSwitch value={dataFlowStatus.uploading} readonly={true} />
         </AppField>
+        <AppField label={t(tk.settings.syncSection.outstanding)} icon={AppIcons.uploadOutstanding}>
+          <AppText>{counts.outstandingTransactions}</AppText>
+        </AppField>
       </AppSection>
       <AppSection title={t(tk.settings.syncSection.syncedData)} style={styles.section}>
         <AppField label={t(tk.settings.syncSection.accounts)} icon={AppIcons.accounts}>

@@ -1,6 +1,6 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
-import { Transaction } from '@/core/transaction';
 import { Money } from '@/shared/core/money';
+import { Transaction } from '@/use-cases/core/flows/transaction';
 import { aPastDate } from '../mocks/date-builder';
 import { anAmount } from '../mocks/number-builder';
 import { anId, aString } from '../mocks/string-builder';

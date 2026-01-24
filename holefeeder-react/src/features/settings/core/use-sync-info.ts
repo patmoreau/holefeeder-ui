@@ -11,12 +11,14 @@ export const useSyncInfo = () => {
     categories: number;
     storeItems: number;
     transactions: number;
+    outstandingTransactions: number;
   }>({
     accounts: 0,
     cashflows: 0,
     categories: 0,
     storeItems: 0,
     transactions: 0,
+    outstandingTransactions: 0,
   });
 
   useEffect(() => {
@@ -27,12 +29,14 @@ export const useSyncInfo = () => {
         const categoriesResult = await db.getAll<{ count: number }>('SELECT count(*) as count FROM categories');
         const storeItemsResult = await db.getAll<{ count: number }>('SELECT count(*) as count FROM store_items');
         const transactionsResult = await db.getAll<{ count: number }>('SELECT count(*) as count FROM transactions');
+        const outstandingTransactionsResult = await db.getAll<{ count: number }>('SELECT count(*) as count FROM ps_crud');
         setCounts({
           accounts: accountsResult[0]?.count || 0,
           cashflows: cashflowsResult[0]?.count || 0,
           categories: categoriesResult[0]?.count || 0,
           storeItems: storeItemsResult[0]?.count || 0,
           transactions: transactionsResult[0]?.count || 0,
+          outstandingTransactions: outstandingTransactionsResult[0]?.count || 0,
         });
       } catch (e) {
         console.error('Failed to fetch counts', e);

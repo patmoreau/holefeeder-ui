@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { config } from '@/config/config';
-import { apiService } from '@/shared/services/api-service';
+import { apiService } from '@/shared/api/api-service';
 
 // Mock the config
 jest.mock('@/config/config', () => ({

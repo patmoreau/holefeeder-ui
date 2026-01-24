@@ -1,6 +1,6 @@
 import { type AxiosResponse } from 'axios';
 import { Summary } from '@/features/dashboard/core/summary';
-import { apiService } from '@/shared/services/api-service';
+import { apiService } from '@/shared/api/api-service';
 
 export const dashboardApi = (token: string | null) => {
   const api = apiService(token);

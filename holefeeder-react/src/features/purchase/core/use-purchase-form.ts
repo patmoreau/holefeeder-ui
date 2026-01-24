@@ -1,5 +1,9 @@
-import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
+import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { createFormDataContext, ValidationFunction } from '@/features/shared/core/use-form-context';
+import { Money } from '@/shared/core/money';
+import { Result } from '@/shared/core/result';
+import { CreateFlowForm } from '@/use-cases/forms/flows/create-flow/create-flow-form';
 
 export const PurchaseFormError = {
   sameAccount: 'sameAccount',
@@ -21,7 +25,7 @@ export const validatePurchaseForm: ValidationFunction<PurchaseFormData, Purchase
     }
   }
 
-  if (formData.amount <= 0) {
+  if (Money.create(formData.amount).isFailure) {
     errors.amount = PurchaseFormError.amountRequired;
   }
 
@@ -36,7 +40,28 @@ export const validatePurchaseForm: ValidationFunction<PurchaseFormData, Purchase
   return errors;
 };
 
+const savePurchase = async (db: AbstractPowerSyncDatabase, formData: PurchaseFormData): Promise<Result<unknown>> => {
+  const purchase = async (formData: PurchaseFormData): Promise<Result<unknown>> => {
+    const useCase = CreateFlowForm(db);
+    return useCase.createFlow({
+      date: formData.date,
+      amount: formData.amount,
+      description: formData.description,
+      accountId: formData.sourceAccount.id,
+      categoryId: formData.category.id,
+      tags: formData.tags.map((tag) => tag.tag),
+    });
+  };
+
+  const transfer = async (formData: PurchaseFormData): Promise<Result<unknown>> => {
+    return Promise.resolve(Result.failure(['not-implemented']));
+  };
+
+  if (formData.purchaseType === PurchaseType.transfer) return transfer(formData);
+  return purchase(formData);
+};
+
 export const { FormDataProvider: PurchaseFormProvider, useFormDataContext: usePurchaseForm } = createFormDataContext<
   PurchaseFormData,
   PurchaseFormError
->('Purchase');
+>('Purchase', savePurchase);

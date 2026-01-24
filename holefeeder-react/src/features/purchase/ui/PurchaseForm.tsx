@@ -5,7 +5,6 @@ import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
-import { usePurchase } from '@/features/purchase/core/use-transactions';
 import { PurchaseFormContent } from '@/features/purchase/ui/PurchaseFormContent';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { goBack } from '@/features/shared/utils/navigation';
@@ -19,8 +18,7 @@ interface PurchaseFormProps {
 }
 
 export const PurchaseForm = ({ accounts, categories, tags }: PurchaseFormProps) => {
-  const { formData, isDirty, hasErrors, getErrorCount, errors } = usePurchaseForm();
-  const purchaseMutation = usePurchase();
+  const { saveForm, isDirty, hasErrors, getErrorCount, errors, generalError } = usePurchaseForm();
 
   const { t } = useTranslation();
   const { showDiscardAlert, showFormErrorAlert } = showAlert(t);
@@ -32,10 +30,12 @@ export const PurchaseForm = ({ accounts, categories, tags }: PurchaseFormProps) 
       return;
     }
     if (isDirty) {
-      await purchaseMutation.mutateAsync(formData);
+      await saveForm();
     }
-    goBack();
-  }, [errors, formData, getErrorCount, hasErrors, isDirty, purchaseMutation, showFormErrorAlert]);
+    if (generalError === null) {
+      goBack();
+    }
+  }, [errors, getErrorCount, hasErrors, isDirty, saveForm, showFormErrorAlert, generalError]);
 
   const handleCancel = useCallback(() => {
     if (!isDirty) {

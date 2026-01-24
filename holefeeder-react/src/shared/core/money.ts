@@ -13,9 +13,14 @@ const schema = {
   minimum: 0,
 };
 
-const create = (value: number): Result<Money> => {
-  const rounded = Math.round(value * 100) / 100;
-  return Validate.validateWithErrors<Money>(schema, rounded, [MoneyErrors.invalid]);
+const create = (value: unknown): Result<Money> => {
+  const moneyResult = Validate.validateWithErrors<Money>(schema, value, [MoneyErrors.invalid]);
+  if (moneyResult.isFailure) return moneyResult;
+
+  const money = moneyResult.value;
+
+  const rounded = Math.round(money * 100) / 100;
+  return Result.success(rounded as Money);
 };
 
 const valid = (value: number): Money => value as Money;

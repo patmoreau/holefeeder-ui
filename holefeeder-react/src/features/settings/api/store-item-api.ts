@@ -1,7 +1,7 @@
 import { type AxiosResponse } from 'axios';
 import { StoreItem } from '@/features/settings/core/store-item';
+import { apiService } from '@/shared/api/api-service';
 import { PaginatedQueryParams } from '@/shared/hooks/queries/use-query';
-import { apiService } from '@/shared/services/api-service';
 
 export type StoreItemFilter = {
   code?: string;

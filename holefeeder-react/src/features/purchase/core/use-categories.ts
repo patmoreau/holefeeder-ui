@@ -1,5 +1,5 @@
-import { Category } from '@/core/category';
-import { normalizeCategoryType } from '@/core/category-type';
+import { Category } from '@/shared/core/category';
+import { normalizeCategoryType } from '@/shared/core/category-type';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';

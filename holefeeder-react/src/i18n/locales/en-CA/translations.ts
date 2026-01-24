@@ -92,6 +92,10 @@ export const en = {
       title: 'Cannot reach the server',
       message: 'We are unable to reach the backend right now. Please try again in a moment.',
     },
+    saveFailed: {
+      title: 'Save Error',
+      message: 'Failed to save changes. Please try again.',
+    },
   },
   errorSheet: {
     retry: 'Retry',
@@ -183,6 +187,7 @@ export const en = {
       categories: 'Categories',
       storeItems: 'Store Items',
       transactions: 'Transactions',
+      outstanding: 'Not synced',
     },
   },
   tabs: {

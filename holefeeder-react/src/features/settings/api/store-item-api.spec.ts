@@ -1,10 +1,10 @@
 import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { aStoreItem } from '@/__tests__/mocks/store-item-for-test';
 import { storeItemApi } from '@/features/settings/api/store-item-api';
+import { apiService } from '@/shared/api/api-service';
 import { PaginatedQueryParams } from '@/shared/hooks/queries/use-query';
-import { apiService } from '@/shared/services/api-service';
 
-jest.mock('@/shared/services/api-service');
+jest.mock('@/shared/api/api-service');
 
 const mockApiService = jest.mocked(apiService);
 

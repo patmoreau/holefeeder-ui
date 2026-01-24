@@ -1,33 +1,57 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Button, Text } from 'react-native';
+import { ErrorKey } from '@/features/shared/core/error-key';
 import { createFormDataContext } from '@/features/shared/core/use-form-context';
+import { Result } from '@/shared/core/result';
+
+// Mock usePowerSync
+const mockDb = {
+  execute: jest.fn(),
+} as unknown as AbstractPowerSyncDatabase;
+
+jest.mock('@/contexts/PowersyncProvider', () => ({
+  usePowerSync: () => ({
+    db: mockDb,
+  }),
+}));
 
 type TestFormData = {
   id: string;
   name: string;
 };
 
-const { FormDataProvider, useFormDataContext } = createFormDataContext<TestFormData, string>('Test');
+const mockSave = jest.fn();
+
+const { FormDataProvider, useFormDataContext } = createFormDataContext<TestFormData, string>('Test', mockSave);
 
 const INITIAL_VALUE: TestFormData = { id: '1', name: 'Initial' };
 
 function Consumer() {
-  const { formData, isDirty, updateFormField, resetForm, setFormData } = useFormDataContext();
+  const { formData, isDirty, updateFormField, resetForm, setFormData, saveForm, generalError, clearGeneralError } = useFormDataContext();
 
   return (
     <>
       <Text testID="data">{JSON.stringify(formData)}</Text>
       <Text testID="dirty">{isDirty ? 'true' : 'false'}</Text>
+      <Text testID="generalError">{generalError || 'null'}</Text>
       <Button title="setName" onPress={() => updateFormField('name', 'Alice')} />
       <Button title="reset" onPress={() => resetForm()} />
       <Button title="setAll" onPress={() => setFormData({ id: '2', name: 'Bob' })} />
       <Button title="setSameName" onPress={() => updateFormField('name', 'Initial')} />
+      <Button title="save" onPress={() => saveForm()} />
+      <Button title="clearGeneralError" onPress={() => clearGeneralError()} />
     </>
   );
 }
 
 describe('createFormDataContext / useFormDataContext', () => {
+  beforeEach(() => {
+    mockSave.mockReset();
+    mockSave.mockResolvedValue(Result.success({}));
+  });
+
   const renderWithProvider = () =>
     render(
       <FormDataProvider initialValue={INITIAL_VALUE}>
@@ -97,6 +121,36 @@ describe('createFormDataContext / useFormDataContext', () => {
     expect(() => render(<OutsideConsumer />)).toThrow(new Error('useFormDataContext must be used within a TestProvider'));
   });
 
+  describe('persistence', () => {
+    it('calls the save function with the current database and form data', async () => {
+      const { getByText } = renderWithProvider();
+
+      fireEvent.press(getByText('setName')); // Change name to Alice
+      fireEvent.press(getByText('save'));
+
+      await waitFor(() => {
+        expect(mockSave).toHaveBeenCalledWith(mockDb, { id: '1', name: 'Alice' });
+      });
+    });
+
+    it('handles save failure gracefully', async () => {
+      mockSave.mockResolvedValue(Result.failure(['Save failed']));
+      const { getByText, getByTestId } = renderWithProvider();
+
+      fireEvent.press(getByText('save'));
+
+      await waitFor(() => {
+        expect(mockSave).toHaveBeenCalled();
+      });
+
+      expect(getByTestId('generalError').props.children).toBe(ErrorKey.saveFailed);
+
+      // Clear error
+      fireEvent.press(getByText('clearGeneralError'));
+      expect(getByTestId('generalError').props.children).toBe('null');
+    });
+  });
+
   describe('validation', () => {
     const validateFn = (formData: TestFormData) => {
       const errors: Partial<Record<keyof TestFormData, string>> = {};
@@ -113,8 +167,19 @@ describe('createFormDataContext / useFormDataContext', () => {
     };
 
     function ValidationConsumer() {
-      const { formData, errors, updateFormField, validateField, validateForm, clearError, clearErrors, hasErrors, getFieldError, resetForm } =
-        useFormDataContext();
+      const {
+        formData,
+        errors,
+        updateFormField,
+        validateField,
+        validateForm,
+        clearError,
+        clearErrors,
+        hasErrors,
+        getFieldError,
+        resetForm,
+        saveForm,
+      } = useFormDataContext();
 
       return (
         <>
@@ -130,6 +195,7 @@ describe('createFormDataContext / useFormDataContext', () => {
           <Button title="clearNameError" onPress={() => clearError('name')} />
           <Button title="clearErrors" onPress={() => clearErrors()} />
           <Button title="reset" onPress={() => resetForm()} />
+          <Button title="save" onPress={() => saveForm()} />
         </>
       );
     }

@@ -4,11 +4,14 @@ import { Tag, toTag } from '@/features/purchase/core/tag';
 export const useTagList = ({ tags, selected, onChange }: { tags: Tag[]; selected: Tag[]; onChange: (next: Tag[]) => void }) => {
   const [filter, setFilter] = useState('');
 
+  console.log('tags', tags);
+  console.log('selected', selected);
+
   const ordered = useMemo(() => {
     if (!selected?.length) return tags;
-    const set = new Set(selected);
+    const set = new Set(selected.map((t) => t.id));
     const selectedFirst = [...selected];
-    const unselected = tags.filter((t) => !set.has(t));
+    const unselected = tags.filter((t) => !set.has(t.id));
     return [...selectedFirst, ...unselected];
   }, [tags, selected]);
 

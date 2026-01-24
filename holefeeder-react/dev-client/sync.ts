@@ -209,7 +209,7 @@ class PowerSyncToSQLiteSync extends EventEmitter {
 // Example usage
 async function main() {
   // Import schema (adjust path as needed)
-  const { AppSchema } = await import('./AppSchema.js');
+  const { AppSchema } = await import('./app-schema.js');
 
   // Validate required environment variables
   if (!process.env.POWERSYNC_URL) {

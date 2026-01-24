@@ -5,3 +5,7 @@ import './result-matcher';
 // import '@testing-library/jest-native/extend-expect';
 
 jest.mock('module');
+
+jest.mock('expo-crypto', () => ({
+  randomUUID: () => require('crypto').randomUUID(),
+}));

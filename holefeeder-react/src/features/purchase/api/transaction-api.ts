@@ -1,7 +1,7 @@
 import { type AxiosResponse } from 'axios';
 import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
-import { DateIntervalType } from '@/features/shared/core/date-interval-type';
-import { apiService } from '@/shared/services/api-service';
+import { apiService } from '@/shared/api/api-service';
+import { DateIntervalType } from '@/shared/core/date-interval-type';
 
 type PurchaseApi = {
   date: string;

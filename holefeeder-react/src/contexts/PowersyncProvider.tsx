@@ -2,9 +2,9 @@ import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { OPSqliteOpenFactory } from '@powersync/op-sqlite';
 import { PowerSyncDatabase, SyncStatus } from '@powersync/react-native';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { AppSchema } from '@/config/powersync/AppSchema';
-import { PowerSyncConnector } from '@/config/powersync/PowerSyncConnector';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { AppSchema } from '@/shared/persistence/app-schema';
+import { PowerSyncConnector } from '@/shared/persistence/powersync-connector';
 
 type PowerSyncProviderProps = {
   children: ReactNode;

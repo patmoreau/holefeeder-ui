@@ -8,7 +8,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
 import { PowerSyncProvider } from '@/contexts/PowersyncProvider';
-import { QueryProvider } from '@/contexts/query-provider';
+import { QueryProvider } from '@/contexts/QueryProvider';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';

@@ -94,6 +94,10 @@ export const fr: TranslationStructure = {
       title: 'Impossible de joindre le serveur',
       message: 'Nous ne pouvons pas joindre le backend pour le moment. Veuillez réessayer dans un instant.',
     },
+    createFailed: {
+      title: "Erreur d'enregistrement",
+      message: "Échec de l'enregistrement des modifications. Veuillez réessayer.",
+    },
   },
   errorSheet: {
     retry: 'Réessayer',
@@ -129,7 +133,7 @@ export const fr: TranslationStructure = {
     expiresAt: 'Expire le',
     noExpiresAt: "Pas d'information d'expiration",
   },
-  purchase: {
+  createFlow: {
     title: 'Achat',
     basicSection: {
       account: 'Compte',
@@ -186,6 +190,7 @@ export const fr: TranslationStructure = {
       categories: 'Catégories',
       storeItems: 'Articles de stockage',
       transactions: 'Transactions',
+      outstanding: 'Non synchronisé',
     },
   },
   tabs: {

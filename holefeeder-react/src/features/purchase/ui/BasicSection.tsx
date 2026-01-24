@@ -2,7 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
-import { CategoryType } from '@/core/category-type';
 import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
@@ -13,6 +12,7 @@ import { TagList } from '@/features/purchase/ui/components/TagList';
 import { AppSection } from '@/features/shared/ui/AppSection';
 import { DateField } from '@/features/shared/ui/fields/DateField';
 import { tk } from '@/i18n/translations';
+import { CategoryType } from '@/shared/core/category-type';
 
 type Props = {
   accounts: Account[];

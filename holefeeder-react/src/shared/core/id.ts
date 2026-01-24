@@ -1,3 +1,4 @@
+import * as Crypto from 'expo-crypto';
 import { Result } from '@/shared/core/result';
 import { Validate } from '@/shared/core/validate';
 
@@ -10,13 +11,13 @@ export const IdErrors = {
 const schema = {
   $id: 'id',
   type: 'string',
-  pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
+  pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
 };
 
-const create = (value: string): Result<Id> => {
-  return Validate.validateWithErrors<Id>(schema, value, [IdErrors.invalid]);
-};
+const newId = (): Id => Crypto.randomUUID() as Id;
+
+const create = (value: unknown): Result<Id> => Validate.validateWithErrors<Id>(schema, value, [IdErrors.invalid]);
 
 const valid = (value: string): Id => value as Id;
 
-export const Id = { create: create, valid: valid } as const;
+export const Id = { newId: newId, create: create, valid: valid } as const;

@@ -183,5 +183,30 @@ describe('useTagList', () => {
       expect(hookResult.result.current.filtered).toStrictEqual([newTag, selectedTag, firstTag, middleTag, lastTag]);
       expect(hookResult.result.current.filter).toBe('');
     });
+
+    it('handles tag list updates with same IDs but different references (database refresh)', () => {
+      // simulating database refresh where we get new objects for the same tags
+      const newRefMiddleTag = { ...middleTag };
+      const newRefFirstTag = { ...firstTag };
+      const newRefSelectedTag = { ...selectedTag };
+
+      hookResult.rerender({
+        tags: [newRefFirstTag, newRefMiddleTag, lastTag, newRefSelectedTag],
+        selected: [selectedTag], // selected stays the same (from local state usually)
+        onChange: mockOnChange,
+      });
+
+      // Should still be unique by ID
+      // If deduplication fails, we might see duplicates here
+      const seenIds = new Set();
+      const duplicates = hookResult.result.current.filtered.filter((t) => {
+        if (seenIds.has(t.id)) return true;
+        seenIds.add(t.id);
+        return false;
+      });
+
+      expect(duplicates).toHaveLength(0);
+      expect(hookResult.result.current.filtered).toHaveLength(4);
+    });
   });
 });

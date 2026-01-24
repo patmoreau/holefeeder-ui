@@ -44,6 +44,7 @@ describe('useSyncInfo', () => {
       categories: 0,
       storeItems: 0,
       transactions: 0,
+      outstandingTransactions: 0,
     });
 
     // Wait for the async effect to complete effectively
@@ -66,7 +67,8 @@ describe('useSyncInfo', () => {
       .mockResolvedValueOnce([{ count: 20 }]) // cashflows
       .mockResolvedValueOnce([{ count: 30 }]) // categories
       .mockResolvedValueOnce([{ count: 40 }]) // store_items
-      .mockResolvedValueOnce([{ count: 50 }]); // transactions
+      .mockResolvedValueOnce([{ count: 50 }]) // transactions
+      .mockResolvedValueOnce([{ count: 60 }]); // outstanding_transactions
 
     const { result } = renderHook(() => useSyncInfo());
 
@@ -77,10 +79,11 @@ describe('useSyncInfo', () => {
         categories: 30,
         storeItems: 40,
         transactions: 50,
+        outstandingTransactions: 60,
       });
     });
 
-    expect(mockDb.getAll).toHaveBeenCalledTimes(5);
+    expect(mockDb.getAll).toHaveBeenCalledTimes(6);
     expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM accounts');
     expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM transactions');
   });
@@ -102,6 +105,7 @@ describe('useSyncInfo', () => {
       categories: 0,
       storeItems: 0,
       transactions: 0,
+      outstandingTransactions: 0,
     });
 
     expect(consoleSpy).toHaveBeenCalledWith('Failed to fetch counts', expect.any(Error));
@@ -115,7 +119,7 @@ describe('useSyncInfo', () => {
 
     // Initial fetch
     await waitFor(() => {
-      expect(mockDb.getAll).toHaveBeenCalledTimes(5);
+      expect(mockDb.getAll).toHaveBeenCalledTimes(6);
     });
 
     // Fast-forward 5 seconds
@@ -125,7 +129,7 @@ describe('useSyncInfo', () => {
 
     // Second fetch
     await waitFor(() => {
-      expect(mockDb.getAll).toHaveBeenCalledTimes(10);
+      expect(mockDb.getAll).toHaveBeenCalledTimes(12);
     });
   });
 });

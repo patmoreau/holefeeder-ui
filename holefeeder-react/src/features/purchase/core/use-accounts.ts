@@ -1,7 +1,7 @@
 import { Account } from '@/features/purchase/core/account';
 import { Id } from '@/shared/core/id';
 import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';
-import { UseQueryResult } from '@/shared/hooks/use-query-result';
+import { UseQueryResult } from '@/use-cases/hooks/use-query-result';
 
 type UseAccountsResult = UseQueryResult<Account[]>;
 

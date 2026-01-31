@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
-import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/features/shared/core/error-key';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { tk } from '@/i18n/translations';
+import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/shared/core/error-key';
 import { fontSize, fontWeight, spacing } from '@/types/theme/design-tokens';
 
 type Props = {

@@ -2,8 +2,8 @@ import { AbstractPowerSyncDatabase } from '@powersync/react-native';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Button, Text } from 'react-native';
-import { ErrorKey } from '@/features/shared/core/error-key';
 import { createFormDataContext } from '@/features/shared/core/use-form-context';
+import { ErrorKey } from '@/shared/core/error-key';
 import { Result } from '@/shared/core/result';
 
 // Mock usePowerSync
@@ -11,10 +11,9 @@ const mockDb = {
   execute: jest.fn(),
 } as unknown as AbstractPowerSyncDatabase;
 
-jest.mock('@/contexts/PowersyncProvider', () => ({
-  usePowerSync: () => ({
-    db: mockDb,
-  }),
+jest.mock('@powersync/react-native', () => ({
+  usePowerSync: jest.fn(() => mockDb),
+  AbstractPowerSyncDatabase: jest.fn(),
 }));
 
 type TestFormData = {

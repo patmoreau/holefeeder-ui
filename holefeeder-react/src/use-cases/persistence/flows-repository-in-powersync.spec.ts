@@ -32,7 +32,7 @@ describe('FlowsRepository', () => {
     const result = await repository.create(purchase);
 
     expect(result.isFailure).toBe(false);
-    if (result.isFailure) return;
+    if (result.isFailure || result.isLoading) return;
 
     const transaction = result.value;
     expect(transaction.id).toBeDefined();

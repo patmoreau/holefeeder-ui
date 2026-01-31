@@ -2,7 +2,7 @@
   "name": "holefeeder-react",
   "main": "expo-router/entry",
   "version": "1.0.0",
-  "packageManager": "pnpm@10.28.1",
+  "packageManager": "pnpm@10.28.2",
   "scripts": {
     "start": "APP_ENV=development expo start",
     "android": "APP_ENV=development expo run:android",

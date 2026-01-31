@@ -1,10 +1,10 @@
+import { usePowerSync } from '@powersync/react-native';
 import { useEffect, useState } from 'react';
-import { usePowerSync } from '@/contexts/PowersyncProvider';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 
 export const useSyncInfo = () => {
   const { connected, lastSyncedAt, dataFlowStatus } = useSyncStatus();
-  const { db } = usePowerSync();
+  const db = usePowerSync();
   const [counts, setCounts] = useState<{
     accounts: number;
     cashflows: number;

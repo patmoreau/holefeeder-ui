@@ -1,14 +1,14 @@
+import { usePowerSync } from '@powersync/react-native';
 import { useCallback, useEffect, useState } from 'react';
-import { usePowerSync } from '@/contexts/PowersyncProvider';
-import { UseQueryResult } from '@/shared/hooks/use-query-result';
+import { UseQueryResult } from '@/use-cases/hooks/use-queries-handler';
 
 export const usePowerSyncWatchedQuery = <T, R = T>(
   queryName: string,
   sql: string,
   params: any[] = [],
   mapFn?: (data: T) => R
-): UseQueryResult<R[]> => {
-  const { db } = usePowerSync();
+): UseQueryResult<R[]> & { refetch: () => Promise<void> } => {
+  const db = usePowerSync();
   const [data, setData] = useState<R[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -70,8 +70,6 @@ export const usePowerSyncWatchedQuery = <T, R = T>(
     data,
     isLoading,
     isError: !!error,
-    isSuccess: !isLoading && !error,
-    isFetching: isLoading,
     error,
     refetch: async () => {
       // Re-triggering the watch is not straightforward with just a function call unless we change the key,

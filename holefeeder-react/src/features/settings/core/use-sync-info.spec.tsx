@@ -1,10 +1,12 @@
+import { usePowerSync } from '@powersync/react-native';
 import { renderHook, waitFor, act } from '@testing-library/react-native';
-import { usePowerSync } from '@/contexts/PowersyncProvider';
 import { useSyncInfo } from '@/features/settings/core/use-sync-info';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 
 // Mock the dependencies
-jest.mock('@/contexts/PowersyncProvider');
+jest.mock('@powersync/react-native', () => ({
+  usePowerSync: jest.fn(),
+}));
 jest.mock('@/shared/hooks/use-sync-status');
 
 describe('useSyncInfo', () => {
@@ -25,7 +27,7 @@ describe('useSyncInfo', () => {
     jest.clearAllMocks();
     jest.useFakeTimers();
 
-    (usePowerSync as jest.Mock).mockReturnValue({ db: mockDb });
+    (usePowerSync as jest.Mock).mockReturnValue(mockDb);
     (useSyncStatus as jest.Mock).mockReturnValue(mockSyncStatus);
   });
 
@@ -85,7 +87,11 @@ describe('useSyncInfo', () => {
 
     expect(mockDb.getAll).toHaveBeenCalledTimes(6);
     expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM accounts');
+    expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM cashflows');
+    expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM categories');
+    expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM store_items');
     expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM transactions');
+    expect(mockDb.getAll).toHaveBeenCalledWith('SELECT count(*) as count FROM ps_crud');
   });
 
   it('should handle fetch errors gracefully', async () => {

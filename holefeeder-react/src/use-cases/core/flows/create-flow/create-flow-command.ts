@@ -26,8 +26,8 @@ const schema = {
   minimum: 1,
 };
 
-const create = (purchase: Record<string, unknown>): Result<CreateFlowCommand> => {
-  return Result.combine<CreateFlowCommand>({
+const create = (purchase: Record<string, unknown>): Result<CreateFlowCommand> =>
+  Result.combine<CreateFlowCommand>({
     date: DateOnly.create(purchase.date),
     amount: Money.create(purchase.amount),
     description: Result.success(purchase.description as string),
@@ -36,7 +36,6 @@ const create = (purchase: Record<string, unknown>): Result<CreateFlowCommand> =>
     tags: TagList.create(purchase.tags),
     cashflow: createCashflow(purchase.cashflow as Record<string, unknown>),
   });
-};
 
 const createCashflow = (cashflow?: Record<string, unknown>): Result<CreateFlowCommand['cashflow']> => {
   if (!cashflow) return Result.success(undefined);

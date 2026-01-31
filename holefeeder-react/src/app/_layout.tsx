@@ -1,3 +1,4 @@
+import { PowerSyncContext } from '@powersync/react';
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 // Polyfill required for PowerSync/SQLite to handle async allows (Symbol.asyncIterator) correctly in React Native
@@ -7,12 +8,13 @@ import { Auth0Provider } from 'react-native-auth0';
 import ErrorBoundary from 'react-native-error-boundary';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
-import { PowerSyncProvider } from '@/contexts/PowersyncProvider';
 import { QueryProvider } from '@/contexts/QueryProvider';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useQuickActions } from '@/shared/hooks/use-quick-actions';
+import { db } from '@/shared/persistence/db';
+import { PowerSyncConnection } from '@/shared/persistence/PowerSyncConnection';
 
 (function addConsoleTimestamp() {
   const methods: (keyof Console)[] = ['log', 'info', 'warn', 'error', 'debug'];
@@ -106,9 +108,11 @@ export default function RootLayout() {
       <Auth0Provider domain={config.auth0.domain} clientId={config.auth0.clientId}>
         <QueryProvider>
           <AppProvider>
-            <PowerSyncProvider>
-              <AppContent />
-            </PowerSyncProvider>
+            <PowerSyncContext.Provider value={db}>
+              <PowerSyncConnection>
+                <AppContent />
+              </PowerSyncConnection>
+            </PowerSyncContext.Provider>
           </AppProvider>
         </QueryProvider>
       </Auth0Provider>

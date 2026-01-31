@@ -5,6 +5,7 @@ declare global {
     interface Matchers<R> {
       toBeSuccessWithValue(expected: any): R;
       toBeFailureWithErrors(expected: any): R;
+      toBeLoading(): R;
     }
   }
 }
@@ -37,6 +38,13 @@ expect.extend({
       };
     }
 
+    if (received.isLoading) {
+      return {
+        pass: false,
+        message: () => `expected ${this.utils.printReceived(received)} to be a success`,
+      };
+    }
+
     const valueMatches = this.equals(received.value, expected);
     const diff = this.utils.diff(expected, received.value, {
       expand: this.expand,
@@ -62,6 +70,20 @@ expect.extend({
     return {
       pass: errorsMatch,
       message: () => `expected failure to be ${this.utils.printReceived(expected)} but got ${this.utils.printReceived(received.errors)}`,
+    };
+  },
+
+  toBeLoading(received: Result<any>, expected: any) {
+    if (!received.isLoading) {
+      return {
+        pass: false,
+        message: () => `expected ${this.utils.printReceived(received)} to be loading`,
+      };
+    }
+
+    return {
+      pass: true,
+      message: () => ``,
     };
   },
 });

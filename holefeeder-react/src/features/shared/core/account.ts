@@ -1,5 +1,5 @@
-import { Id } from '@/features/purchase/core/id';
 import { AccountType } from '@/features/shared/core/account-type';
+import { Id } from '@/shared/core/id';
 
 export type Account = {
   id: Id;

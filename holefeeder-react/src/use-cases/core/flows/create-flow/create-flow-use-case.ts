@@ -22,7 +22,7 @@ export type PurchaseForm = {
 };
 
 export const CreateFlowUseCase = (repository: FlowsRepository) => {
-  const handler = async (flow: CreateFlowCommand): Promise<Result<Transaction>> => {
+  const execute = async (flow: CreateFlowCommand): Promise<Result<Transaction>> => {
     return await repository.create(flow);
   };
 
@@ -42,7 +42,7 @@ export const CreateFlowUseCase = (repository: FlowsRepository) => {
         false,
         flow.tags
       );
-      if (cashflowResult.isFailure) {
+      if (cashflowResult.isFailure || cashflowResult.isLoading) {
         return cashflowResult;
       }
       cashflow = cashflowResult.value;
@@ -51,6 +51,6 @@ export const CreateFlowUseCase = (repository: FlowsRepository) => {
   };
 
   return {
-    handle: handler,
+    execute: execute,
   };
 };

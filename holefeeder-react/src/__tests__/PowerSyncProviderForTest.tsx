@@ -1,6 +1,6 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
-import { PowerSyncProvider } from '@/contexts/PowersyncProvider';
+import { AbstractPowerSyncDatabase, PowerSyncContext } from '@powersync/react-native';
+import React from 'react';
 
 export const PowerSyncProviderForTest = ({ db, children }: { db: AbstractPowerSyncDatabase; children: React.ReactNode }) => {
-  return <PowerSyncProvider db={db}>{children}</PowerSyncProvider>;
+  return <PowerSyncContext.Provider value={db}>{children}</PowerSyncContext.Provider>;
 };

@@ -1,6 +1,6 @@
 import { Tag, TagResponse, toTag } from '@/features/purchase/core/tag';
 import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';
-import { UseQueryResult } from '@/shared/hooks/use-query-result';
+import { UseQueryResult } from '@/use-cases/hooks/use-queries-handler';
 
 type UseTagsResult = UseQueryResult<Tag[]>;
 

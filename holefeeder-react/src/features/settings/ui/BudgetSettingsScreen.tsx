@@ -1,6 +1,5 @@
 import React from 'react';
 import { SettingsFormData } from '@/features/settings/core/settings-form-data';
-import { useSettings } from '@/features/settings/core/use-settings';
 import { SettingsFormProvider, validateSettingsForm } from '@/features/settings/core/use-settings-form';
 import { BudgetSettingsForm } from '@/features/settings/ui/BudgetSettingsForm';
 import { AppScreen } from '@/features/shared/ui/AppScreen';
@@ -8,8 +7,9 @@ import { AppView } from '@/features/shared/ui/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
 import { Theme } from '@/types/theme/theme';
+import { useSettings } from '@/use-cases/hooks/store-items/use-settings';
+import { useMultipleWatches } from '@/use-cases/hooks/use-multiple-watches';
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -21,22 +21,25 @@ const BudgetSettingsScreen = () => {
   const settingsQuery = useSettings();
   const styles = useStyles(createStyles);
 
-  const { isLoading, data, errorSheetProps } = useDataFetchingErrorHandler(settingsQuery);
+  const { data, isLoading, errors } = useMultipleWatches({
+    settings: () => settingsQuery,
+  });
 
   if (isLoading || !data) {
     return (
       <AppView style={styles.container}>
         <LoadingIndicator />
-        <ErrorSheet {...errorSheetProps} />
+        <ErrorSheet {...errors} />
       </AppView>
     );
   }
 
+  const { settings } = data;
+
   const initialData: SettingsFormData = {
-    storeItemId: data.storeItemId,
-    effectiveDate: data.effectiveDate,
-    frequency: data.frequency,
-    intervalType: data.intervalType,
+    effectiveDate: settings.effectiveDate,
+    frequency: settings.frequency,
+    intervalType: settings.intervalType,
   };
 
   return (
@@ -44,7 +47,7 @@ const BudgetSettingsScreen = () => {
       <SettingsFormProvider initialValue={initialData} validate={validateSettingsForm} validateOnChange>
         <BudgetSettingsForm />
       </SettingsFormProvider>
-      <ErrorSheet {...errorSheetProps} />
+      <ErrorSheet {...errors} />
     </AppScreen>
   );
 };

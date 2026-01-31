@@ -3,7 +3,7 @@ import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchas
 import { createFormDataContext, ValidationFunction } from '@/features/shared/core/use-form-context';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
-import { CreateFlowForm } from '@/use-cases/forms/flows/create-flow/create-flow-form';
+import { CreateFlowForm } from '@/use-cases/hooks/flows/create-flow/create-flow-form';
 
 export const PurchaseFormError = {
   sameAccount: 'sameAccount',
@@ -43,7 +43,7 @@ export const validatePurchaseForm: ValidationFunction<PurchaseFormData, Purchase
 const savePurchase = async (db: AbstractPowerSyncDatabase, formData: PurchaseFormData): Promise<Result<unknown>> => {
   const purchase = async (formData: PurchaseFormData): Promise<Result<unknown>> => {
     const useCase = CreateFlowForm(db);
-    return useCase.createFlow({
+    return useCase.execute({
       date: formData.date,
       amount: formData.amount,
       description: formData.description,

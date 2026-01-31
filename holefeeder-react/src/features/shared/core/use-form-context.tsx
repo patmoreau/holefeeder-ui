@@ -1,8 +1,7 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase, usePowerSync } from '@powersync/react-native';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { usePowerSync } from '@/contexts/PowersyncProvider';
-import { ErrorKey } from '@/features/shared/core/error-key';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
+import { ErrorKey } from '@/shared/core/error-key';
 import { Result } from '@/shared/core/result';
 
 export type ValidationFunction<T, E extends string> = (formData: T) => Partial<Record<keyof T, E>>;
@@ -45,7 +44,7 @@ export function createFormDataContext<T, E extends string>(displayName: string, 
     const [errors, setErrors] = useState<Partial<Record<keyof T, E>>>({});
     const [generalError, setGeneralError] = useState<ErrorKey | null>(null);
     const [showErrorSheet, setShowErrorSheet] = useState(false);
-    const { db } = usePowerSync();
+    const db = usePowerSync();
 
     const updateFormField = <K extends keyof T>(field: K, value: T[K]) => {
       setFormData((prev) => {

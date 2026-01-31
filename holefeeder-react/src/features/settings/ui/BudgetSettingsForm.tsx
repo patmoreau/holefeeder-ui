@@ -1,7 +1,6 @@
 import { useNavigation } from 'expo-router';
 import React, { useCallback, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUpdateSettings } from '@/features/settings/core/use-settings';
 import { useSettingsForm } from '@/features/settings/core/use-settings-form';
 import { BudgetSettingsFormContent } from '@/features/settings/ui/BudgetSettingsFormContent';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
@@ -10,8 +9,7 @@ import { showAlert } from '@/features/shared/utils/show-alert';
 import { AppIcons } from '@/types/icons';
 
 export const BudgetSettingsForm = () => {
-  const { formData, isDirty, hasErrors, getErrorCount, errors } = useSettingsForm();
-  const updateSettings = useUpdateSettings();
+  const { saveForm, isDirty, hasErrors, getErrorCount, errors } = useSettingsForm();
 
   const { t } = useTranslation();
   const { showDiscardAlert, showFormErrorAlert } = showAlert(t);
@@ -23,10 +21,10 @@ export const BudgetSettingsForm = () => {
       return;
     }
     if (isDirty) {
-      await updateSettings.mutateAsync(formData);
+      await saveForm();
     }
     goBack();
-  }, [errors, formData, getErrorCount, hasErrors, isDirty, showFormErrorAlert, updateSettings]);
+  }, [errors, getErrorCount, hasErrors, isDirty, showFormErrorAlert, saveForm]);
 
   const handleCancel = useCallback(() => {
     if (!isDirty) {

@@ -1,4 +1,3 @@
-import { DateIntervalType } from '@/shared/core/date-interval-type';
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
@@ -11,5 +10,6 @@ export type Transaction = {
   accountId: Id;
   categoryId: Id;
   tags: string[];
-  cashflow?: { effectiveDate: DateOnly; intervalType: DateIntervalType; frequency: number; recurrence: number };
+  cashflowId?: Id;
+  cashflowDate?: DateOnly;
 };

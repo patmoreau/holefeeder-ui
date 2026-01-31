@@ -1,4 +1,4 @@
-import { usePowerSync } from '@/contexts/PowersyncProvider';
+import { useStatus } from '@powersync/react-native';
 
 export interface SyncStatusInfo {
   connected: boolean;
@@ -12,13 +12,13 @@ export interface SyncStatusInfo {
 }
 
 export function useSyncStatus(): SyncStatusInfo {
-  const { syncStatus } = usePowerSync();
+  const status = useStatus();
 
   return {
-    connected: syncStatus?.connected ?? false,
-    lastSyncedAt: syncStatus?.lastSyncedAt ?? null,
-    dataFlowStatus: syncStatus?.dataFlowStatus
-      ? { downloading: syncStatus.dataFlowStatus.downloading ?? false, uploading: syncStatus.dataFlowStatus.uploading ?? false }
+    connected: status.connected ?? false,
+    lastSyncedAt: status?.lastSyncedAt ?? null,
+    dataFlowStatus: status?.dataFlowStatus
+      ? { downloading: status.dataFlowStatus.downloading ?? false, uploading: status.dataFlowStatus.uploading ?? false }
       : { downloading: false, uploading: false },
   };
 }

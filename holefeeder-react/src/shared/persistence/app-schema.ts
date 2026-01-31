@@ -53,7 +53,7 @@ export const AppSchema = new Schema({
       data: column.text,
       user_id: column.text,
     },
-    { indexes: { store_items_code: ['code'] } }
+    { indexes: { store_items_code_unique: ['code'] } }
   ),
   transactions: new Table(
     {

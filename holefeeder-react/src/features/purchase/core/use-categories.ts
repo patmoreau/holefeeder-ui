@@ -3,7 +3,7 @@ import { normalizeCategoryType } from '@/shared/core/category-type';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { usePowerSyncWatchedQuery } from '@/shared/hooks/use-powersync-watched-query';
-import { UseQueryResult } from '@/shared/hooks/use-query-result';
+import { UseQueryResult } from '@/use-cases/hooks/use-query-result';
 
 type UseCategoriesResult = UseQueryResult<Category[]>;
 

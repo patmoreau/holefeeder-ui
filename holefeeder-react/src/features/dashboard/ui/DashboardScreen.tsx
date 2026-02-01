@@ -4,7 +4,6 @@ import { useDashboardComputedSummary } from '@/features/dashboard/core/use-dashb
 import { AccountCardList } from '@/features/dashboard/ui/components/AccountCardList';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeaderSmallCard';
-import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { AppView } from '@/features/shared/ui/AppView';
 import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
@@ -14,6 +13,8 @@ import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
 import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { useAccounts } from '@/use-cases/hooks/accounts/use-accounts';
+import { useMultipleWatches } from '@/use-cases/hooks/use-multiple-watches';
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -61,31 +62,34 @@ const DashboardScreen = () => {
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
 
-  const { isLoading, data, errorSheetProps } = useDataFetchingErrorHandler(accountsQuery, dashboardQuery);
+  const { isLoading: isLoadingOld, data: dataOld, errorSheetProps: errorSheetPropsOld } = useDataFetchingErrorHandler(dashboardQuery);
+
+  const { data, isLoading, errors } = useMultipleWatches({
+    accounts: () => accountsQuery,
+  });
 
   if (isLoading || !data) {
     return (
       <AppView style={styles.container}>
         <LoadingIndicator />
-        <ErrorSheet {...errorSheetProps} />
+        <ErrorSheet {...errors} />
       </AppView>
     );
   }
 
-  const [accounts, summary] = data!;
+  const { accounts } = data;
 
   const handleRefresh = () => {
-    accountsQuery.refetch();
     dashboardQuery.refetch();
   };
 
-  const isRefreshing = accountsQuery.isFetching || dashboardQuery.isFetching;
+  const isRefreshing = dashboardQuery.isFetching;
 
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
-      largeCard={<DashboardHeaderLargeCard summary={summary!} />}
-      smallCard={<DashboardHeaderSmallCard summary={summary!} />}
+      largeCard={<DashboardHeaderLargeCard summary={dataOld!} />}
+      smallCard={<DashboardHeaderSmallCard summary={dataOld!} />}
       onRefresh={handleRefresh}
       refreshing={isRefreshing}
     >

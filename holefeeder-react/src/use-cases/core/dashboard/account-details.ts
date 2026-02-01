@@ -1,7 +1,7 @@
-import { AccountType } from '@/features/shared/core/account-type';
 import { Id } from '@/shared/core/id';
+import { AccountType } from '@/use-cases/core/accounts/account-type';
 
-export type Account = {
+export type AccountDetails = {
   id: Id;
   type: AccountType;
   name: string;

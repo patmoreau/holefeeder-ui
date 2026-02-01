@@ -1,8 +1,8 @@
 import React from 'react';
-import { Account } from '@/features/purchase/core/account';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker } from '@/features/shared/ui/components/AppPicker';
 import { AppIcons } from '@/types/icons';
+import { Account } from '@/use-cases/core/accounts/account';
 
 type Props = {
   label: string;

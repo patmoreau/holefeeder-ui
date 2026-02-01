@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, type ViewProps } from 'react-native';
-import { Account } from '@/features/shared/core/account';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { AccountDetails } from '@/use-cases/core/dashboard/account-details';
 
 export type AccountCardProps = ViewProps & {
-  account: Account;
+  account: AccountDetails;
   width?: number;
 };
 

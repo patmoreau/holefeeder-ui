@@ -1,7 +1,6 @@
 import { useNavigation } from 'expo-router';
 import React, { useCallback, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Account } from '@/features/purchase/core/account';
 import { Category } from '@/features/purchase/core/category';
 import { Tag } from '@/features/purchase/core/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
@@ -10,6 +9,7 @@ import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { goBack } from '@/features/shared/utils/navigation';
 import { showAlert } from '@/features/shared/utils/show-alert';
 import { AppIcons } from '@/types/icons';
+import { Account } from '@/use-cases/core/accounts/account';
 
 interface PurchaseFormProps {
   accounts: Account[];

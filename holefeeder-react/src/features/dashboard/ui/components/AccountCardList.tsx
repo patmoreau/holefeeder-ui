@@ -1,11 +1,11 @@
 import { ScrollView, View, type ViewProps } from 'react-native';
 import { AccountCard } from '@/features/dashboard/ui/components/AccountCard';
-import { Account } from '@/features/shared/core/account';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { spacing } from '@/types/theme/design-tokens';
+import { AccountDetails } from '@/use-cases/core/dashboard/account-details';
 
 export type AccountCardListProps = ViewProps & {
-  accounts: Account[];
+  accounts: AccountDetails[];
   cardWidth?: number;
 };
 

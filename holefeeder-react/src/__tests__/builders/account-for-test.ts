@@ -1,9 +1,10 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
-import { Account } from '@/shared/core/account';
 import { Money } from '@/shared/core/money';
 import { aPastDate } from '../mocks/date-builder';
 import { anAccountType } from '../mocks/enum-builder';
+import { anAmount } from '../mocks/number-builder';
 import { anId, aString } from '../mocks/string-builder';
+import { Account } from '@/use-cases/core/accounts/account';
 
 export type AccountForTest = Account & {
   times: (count: number) => AccountForTest[];
@@ -16,7 +17,7 @@ const defaultAccount = (): Account => ({
   type: anAccountType(),
   name: aString(),
   favorite: false,
-  openBalance: Money.ZERO,
+  openBalance: anAmount(),
   openDate: aPastDate(),
   description: aString(),
   inactive: false,
@@ -56,3 +57,4 @@ export const anAccount = (overrides?: Partial<Account>): AccountForTest => {
   };
   return accountForTest;
 };
+export const toAccount = ({ times, store, remove, ...account }: AccountForTest): Account => account;

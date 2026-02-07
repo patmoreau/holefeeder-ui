@@ -1,6 +1,6 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
-import { Category } from '@/shared/core/category';
 import { Money } from '@/shared/core/money';
+import { Category } from '@/use-cases/core/categories/category';
 import { aCategoryType } from '../mocks/enum-builder';
 import { aColor, anId, aString } from '../mocks/string-builder';
 

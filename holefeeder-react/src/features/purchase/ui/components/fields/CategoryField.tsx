@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Category } from '@/features/purchase/core/category';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker } from '@/features/shared/ui/components/AppPicker';
 import { tk } from '@/i18n/translations';
-import { CategoryType } from '@/shared/core/category-type';
 import { AppIcons } from '@/types/icons';
+import { Category } from '@/use-cases/core/categories/category';
+import { CategoryType } from '@/use-cases/core/categories/category-type';
 
 type Props = {
   categories: Category[];

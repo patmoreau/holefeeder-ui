@@ -1,8 +1,6 @@
 import React from 'react';
 import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
-import { useCategories } from '@/features/purchase/core/use-categories';
 import { PurchaseFormProvider, validatePurchaseForm } from '@/features/purchase/core/use-purchase-form';
-import { useTags } from '@/features/purchase/core/use-tags';
 import { PurchaseForm } from '@/features/purchase/ui/PurchaseForm';
 import { AppScreen } from '@/features/shared/ui/AppScreen';
 import { AppView } from '@/features/shared/ui/AppView';
@@ -10,9 +8,10 @@ import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { withDate } from '@/features/shared/utils/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
 import { Theme } from '@/types/theme/theme';
 import { useAccounts } from '@/use-cases/hooks/accounts/use-accounts';
+import { useCategories } from '@/use-cases/hooks/categories/use-categories';
+import { useTags } from '@/use-cases/hooks/flows/use-tags';
 import { useMultipleWatches } from '@/use-cases/hooks/use-multiple-watches';
 
 const createStyles = (theme: Theme) => ({
@@ -27,17 +26,13 @@ const PurchaseScreen = () => {
   const tagsQuery = useTags();
   const styles = useStyles(createStyles);
 
-  const {
-    isLoading: isLoadingOld,
-    data: oldData,
-    errorSheetProps: oldErrorSheetProps,
-  } = useDataFetchingErrorHandler(categoriesQuery, tagsQuery);
-
   const { data, isLoading, errors } = useMultipleWatches({
     accounts: () => accountsQuery,
+    categories: () => categoriesQuery,
+    tags: () => tagsQuery,
   });
 
-  if (isLoadingOld || !oldData || isLoading || !data) {
+  if (isLoading || !data) {
     return (
       <AppView style={styles.container}>
         <LoadingIndicator />
@@ -46,8 +41,7 @@ const PurchaseScreen = () => {
     );
   }
 
-  const [categories, tags] = oldData;
-  const { accounts } = data;
+  const { accounts, categories, tags } = data;
 
   const initialData: PurchaseFormData = {
     purchaseType: PurchaseType.expense,

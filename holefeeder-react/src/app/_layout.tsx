@@ -8,7 +8,6 @@ import { Auth0Provider } from 'react-native-auth0';
 import ErrorBoundary from 'react-native-error-boundary';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
-import { QueryProvider } from '@/contexts/QueryProvider';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -106,15 +105,13 @@ export default function RootLayout() {
   return (
     <ErrorBoundary onError={errorHandler}>
       <Auth0Provider domain={config.auth0.domain} clientId={config.auth0.clientId}>
-        <QueryProvider>
-          <AppProvider>
-            <PowerSyncContext.Provider value={db}>
-              <PowerSyncConnection>
-                <AppContent />
-              </PowerSyncConnection>
-            </PowerSyncContext.Provider>
-          </AppProvider>
-        </QueryProvider>
+        <AppProvider>
+          <PowerSyncContext.Provider value={db}>
+            <PowerSyncConnection>
+              <AppContent />
+            </PowerSyncConnection>
+          </PowerSyncContext.Provider>
+        </AppProvider>
       </Auth0Provider>
     </ErrorBoundary>
   );

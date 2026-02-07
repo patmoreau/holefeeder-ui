@@ -1,12 +1,12 @@
-import { renderHook, RenderHookResult, act } from '@testing-library/react-native';
-import { aTag } from '@/__tests__/mocks/tag-builder';
-import { Tag } from '@/features/purchase/core/tag';
-import { useTagList } from '@/features/purchase/core/use-tag-list';
+import { act, renderHook, RenderHookResult } from '@testing-library/react-native';
+import { aTag } from '@/__tests__/builders/tag-for-test';
+import { Tag } from '@/use-cases/core/flows/tag';
+import { useTagList } from './use-tag-list';
 
-const firstTag = aTag({ tag: 'first-tag' });
-const middleTag = aTag({ tag: 'middle-tag' });
-const lastTag = aTag({ tag: 'last-tag' });
-const selectedTag = aTag({ tag: 'selected-tag' });
+const firstTag = aTag({ tag: 'first-tag', count: 1 });
+const middleTag = aTag({ tag: 'middle-tag', count: 2 });
+const lastTag = aTag({ tag: 'last-tag', count: 3 });
+const selectedTag = aTag({ tag: 'selected-tag', count: 4 });
 const newTag = aTag({ tag: 'new-tag', count: 0 });
 const dTag = aTag({ tag: 'd', count: 0 });
 
@@ -200,8 +200,8 @@ describe('useTagList', () => {
       // If deduplication fails, we might see duplicates here
       const seenIds = new Set();
       const duplicates = hookResult.result.current.filtered.filter((t) => {
-        if (seenIds.has(t.id)) return true;
-        seenIds.add(t.id);
+        if (seenIds.has(t.tag)) return true;
+        seenIds.add(t.tag);
         return false;
       });
 

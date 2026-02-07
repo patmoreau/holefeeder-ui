@@ -5,9 +5,15 @@ import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
 import { CreateFlowCommand } from '@/use-cases/core/flows/create-flow/create-flow-command';
 import { FlowsRepository, FlowsRepositoryErrors } from '@/use-cases/core/flows/flows-repository';
+import { Tag } from '@/use-cases/core/flows/tag';
 import { Transaction } from '@/use-cases/core/flows/transaction';
 
-export const flowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
+type TagRow = {
+  tag: string;
+  count: number;
+};
+
+export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Transaction>> => {
     const transaction: Transaction = {
       id: Id.newId(),
@@ -81,5 +87,41 @@ export const flowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  return { create: create };
+  const watchTags = (onDataChange: (result: Result<Tag[]>) => void) => {
+    const query = db.query<TagRow>({
+      sql: `
+          WITH RECURSIVE split(tag, remainder) AS
+                     (SELECT
+                             Ltrim(Substr(tags || ',', 1, Instr(tags || ',', ',') - 1)) AS tag,
+                             Substr(tags || ',', Instr(tags || ',', ',') + 1)           AS remainder
+                      FROM transactions
+                      WHERE tags IS NOT NULL AND tags <> ''
+                      UNION ALL
+                      SELECT
+                             Ltrim(Substr(remainder, 1, Instr(remainder, ',') - 1)) AS tag,
+                             Substr(remainder, Instr(remainder, ',') + 1)           AS remainder
+                      FROM split
+                      WHERE remainder <> '')
+          SELECT tag,
+                COUNT(*) AS count
+          FROM split
+          WHERE tag <> ''
+          GROUP BY tag
+          ORDER BY count DESC, tag ASC;
+      `,
+      parameters: [],
+    });
+
+    const watcher = query.watch();
+
+    return watcher.registerListener({
+      onData: (data) =>
+        !data || data.length === 0
+          ? onDataChange(Result.failure([FlowsRepositoryErrors.noTags]))
+          : onDataChange(Result.success(data.map((row) => Tag.valid(row)))),
+      onError: (error) => onDataChange(Result.failure([error.message])),
+    });
+  };
+
+  return { create: create, watchTags: watchTags };
 };

@@ -1,8 +1,8 @@
 import { DateOnlyErrors } from '@/shared/core/date-only';
 import { IdErrors } from '@/shared/core/id';
 import { MoneyErrors } from '@/shared/core/money';
-import { AccountTypes } from '@/use-cases/core/accounts/account-type';
 import { Account, AccountErrors } from '@/use-cases/core/accounts/account';
+import { AccountTypes } from '@/use-cases/core/accounts/account-type';
 
 describe('Account', () => {
   const validAccount = {

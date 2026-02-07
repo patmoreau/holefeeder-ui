@@ -10,9 +10,9 @@ import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { useDataFetchingErrorHandler } from '@/shared/hooks/use-data-fetching-error-handler';
 import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { AccountDetails } from '@/use-cases/core/dashboard/account-details';
 import { useAccounts } from '@/use-cases/hooks/accounts/use-accounts';
 import { useMultipleWatches } from '@/use-cases/hooks/use-multiple-watches';
 
@@ -62,7 +62,7 @@ const DashboardScreen = () => {
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
 
-  const { isLoading: isLoadingOld, data: dataOld, errorSheetProps: errorSheetPropsOld } = useDataFetchingErrorHandler(dashboardQuery);
+  const { isLoading: isLoadingOld, data: dataOld, errorSheetProps: errorSheetPropsOld } = dashboardQuery;
 
   const { data, isLoading, errors } = useMultipleWatches({
     accounts: () => accountsQuery,
@@ -85,6 +85,18 @@ const DashboardScreen = () => {
 
   const isRefreshing = dashboardQuery.isFetching;
 
+  const accountsDetails: AccountDetails[] = accounts?.map((account) => {
+    return {
+      ...account,
+      netFlow: 0,
+      projectedBalance: 0,
+      upcomingVariation: 0,
+      transactionCount: 0,
+      updated: '',
+      balance: 0,
+    };
+  });
+
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
@@ -93,7 +105,7 @@ const DashboardScreen = () => {
       onRefresh={handleRefresh}
       refreshing={isRefreshing}
     >
-      <AccountCardList accounts={accounts!} cardWidth={300} />
+      <AccountCardList accounts={accountsDetails!} cardWidth={300} />
 
       {Array.from({ length: 20 }).map((_, i) => (
         <View key={i} style={styles.contentCard}>

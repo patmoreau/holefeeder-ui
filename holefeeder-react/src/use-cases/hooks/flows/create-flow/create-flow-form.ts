@@ -3,10 +3,10 @@ import { CreateFlowCommand } from '@/use-cases/core/flows/create-flow/create-flo
 import { CreateFlowUseCase } from '@/use-cases/core/flows/create-flow/create-flow-use-case';
 import { Transaction } from '@/use-cases/core/flows/transaction';
 import { Command } from '@/use-cases/core/use-cases';
-import { flowsRepositoryInPowersync } from '@/use-cases/persistence/flows-repository-in-powersync';
+import { FlowsRepositoryInPowersync } from '@/use-cases/persistence/flows-repository-in-powersync';
 
 export const CreateFlowForm = (db: AbstractPowerSyncDatabase): Command<Transaction, Record<string, unknown>> => {
-  const repository = flowsRepositoryInPowersync(db);
+  const repository = FlowsRepositoryInPowersync(db);
 
   const execute = async (form: Record<string, unknown>) => {
     const result = CreateFlowCommand.create(form);

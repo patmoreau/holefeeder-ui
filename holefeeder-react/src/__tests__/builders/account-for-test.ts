@@ -1,10 +1,10 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
 import { Money } from '@/shared/core/money';
+import { Account } from '@/use-cases/core/accounts/account';
 import { aPastDate } from '../mocks/date-builder';
 import { anAccountType } from '../mocks/enum-builder';
 import { anAmount } from '../mocks/number-builder';
 import { anId, aString } from '../mocks/string-builder';
-import { Account } from '@/use-cases/core/accounts/account';
 
 export type AccountForTest = Account & {
   times: (count: number) => AccountForTest[];

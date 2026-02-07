@@ -1,17 +1,15 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Tag, toTag } from '@/features/purchase/core/tag';
+import { Result } from '@/shared/core/result';
+import { Tag } from '@/use-cases/core/flows/tag';
 
 export const useTagList = ({ tags, selected, onChange }: { tags: Tag[]; selected: Tag[]; onChange: (next: Tag[]) => void }) => {
   const [filter, setFilter] = useState('');
 
-  console.log('tags', tags);
-  console.log('selected', selected);
-
   const ordered = useMemo(() => {
     if (!selected?.length) return tags;
-    const set = new Set(selected.map((t) => t.id));
+    const set = new Set(selected.map((t) => t.tag));
     const selectedFirst = [...selected];
-    const unselected = tags.filter((t) => !set.has(t.id));
+    const unselected = tags.filter((t) => !set.has(t.tag));
     return [...selectedFirst, ...unselected];
   }, [tags, selected]);
 
@@ -40,13 +38,13 @@ export const useTagList = ({ tags, selected, onChange }: { tags: Tag[]; selected
     let nextSelected = selected;
     if (matches.length === 1) {
       const tag = matches[0];
-      if (!selected.some((t) => t.id === tag.id)) {
+      if (!selected.some((t) => t.tag === tag.tag)) {
         nextSelected = [tag, ...selected];
       }
     } else {
-      const newTag: Tag = toTag({ tag: q, count: 0 });
-      if (!selected.some((t) => t.id === newTag.id)) {
-        nextSelected = [newTag, ...selected];
+      const newTag = Tag.create({ tag: q, count: 0 });
+      if (Result.isSuccess(newTag) && !selected.some((t) => t.tag === newTag.value.tag)) {
+        nextSelected = [newTag.value, ...selected];
       }
     }
 

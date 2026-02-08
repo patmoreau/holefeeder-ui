@@ -1,7 +1,11 @@
+import { addDays, addMonths, addWeeks, addYears, subDays } from 'date-fns';
+import { withDate } from '@/features/shared/utils/with-date';
 import { Result } from '@/shared/core/result';
 import { Validate } from '@/shared/core/validate';
+import { DateOnly } from './date-only';
 
 export const DateIntervalTypes = {
+  daily: 'daily',
   weekly: 'weekly',
   monthly: 'monthly',
   yearly: 'yearly',
@@ -19,8 +23,91 @@ const schema = {
   enum: Object.values(DateIntervalTypes),
 };
 
-const create = (value: unknown): Result<DateIntervalType> => Validate.validateWithErrors(schema, value, [DateIntervalTypeErrors.invalid]);
+export const normalizeDateIntervalType = (type: string): DateIntervalType => {
+  const normalized = type.trim().toLowerCase();
+  switch (normalized) {
+    case 'daily':
+      return DateIntervalTypes.daily;
+    case 'weekly':
+      return DateIntervalTypes.weekly;
+    case 'monthly':
+      return DateIntervalTypes.monthly;
+    case 'yearly':
+      return DateIntervalTypes.yearly;
+    case 'onetime':
+    case 'one_time':
+    case 'one-time':
+      return DateIntervalTypes.oneTime;
+    default:
+      return DateIntervalTypes.oneTime;
+  }
+};
+
+const create = (value: unknown): Result<DateIntervalType> => {
+  let normalized = value;
+  if (typeof value === 'string') {
+    const potential = normalizeDateIntervalType(value);
+    if (potential !== DateIntervalTypes.oneTime) {
+      normalized = potential;
+    } else if (['onetime', 'one_time', 'one-time'].includes(value.trim().toLowerCase())) {
+      normalized = potential;
+    }
+  }
+
+  const result = Validate.validateWithErrors(schema, normalized, [DateIntervalTypeErrors.invalid]);
+  if (Result.isSuccess(result)) {
+    return Result.success(normalized as DateIntervalType);
+  }
+  return result;
+};
+
+const valid = (value: unknown): DateIntervalType => {
+  return normalizeDateIntervalType(value as string);
+};
+
+const addIteration = (effectiveDate: DateOnly, iteration: number, intervalType: DateIntervalType): DateOnly => {
+  switch (intervalType) {
+    case DateIntervalTypes.daily:
+      return withDate(effectiveDate).toDateOnly((date) => addDays(date, iteration));
+    case DateIntervalTypes.weekly:
+      return withDate(effectiveDate).toDateOnly((date) => addWeeks(date, iteration));
+    case DateIntervalTypes.monthly:
+      return withDate(effectiveDate).toDateOnly((date) => addMonths(date, iteration));
+    case DateIntervalTypes.yearly:
+      return withDate(effectiveDate).toDateOnly((date) => addYears(date, iteration));
+    case DateIntervalTypes.oneTime:
+    default:
+      return effectiveDate;
+  }
+};
+
+const interval = (
+  effectiveDate: DateOnly,
+  lookupDate: DateOnly,
+  frequency: number,
+  intervalType: DateIntervalType
+): { from: DateOnly; to: DateOnly } => {
+  if (intervalType === DateIntervalTypes.oneTime) {
+    return { from: effectiveDate, to: effectiveDate };
+  }
+
+  const next = lookupDate > effectiveDate;
+  let start = effectiveDate;
+  let end = withDate(addIteration(start, frequency, intervalType)).toDateOnly((date) => subDays(date, 1));
+  let iteration = 1;
+
+  while (start > lookupDate || end < lookupDate) {
+    start = addIteration(effectiveDate, (next ? frequency : -frequency) * iteration, intervalType);
+    end = withDate(addIteration(start, frequency, intervalType)).toDateOnly((date) => subDays(date, 1));
+    iteration++;
+  }
+
+  return { from: start, to: end };
+};
 
 export const DateIntervalType = {
   create: create,
+  valid: valid,
+  addIteration: addIteration,
+  interval: interval,
 };

@@ -1,25 +1,43 @@
-import { fromDateOnly, withDate } from '@/features/shared/utils/with-date';
+import { addMonths } from 'date-fns';
+import { withDate } from '@/features/shared/utils/with-date';
+import { DateOnly } from '@/shared/core/date-only';
 
 describe('with-date', () => {
   describe('toDateOnly', () => {
-    it('returns date in YYYY-MM-DD format', () => {
+    it('accepts Date', () => {
       const date = new Date(2025, 6, 13);
       expect(withDate(date).toDateOnly()).toBe('2025-07-13');
     });
-  });
 
-  describe('fromDateOnly', () => {
-    it('creates a date from YYYY-MM-DD string in local timezone', () => {
-      const date = fromDateOnly('2025-07-13');
-      expect(date.getFullYear()).toBe(2025);
-      expect(date.getMonth()).toBe(6); // 0-indexed
-      expect(date.getDate()).toBe(13);
+    it('accepts DateOnly', () => {
+      const date = DateOnly.valid('2025-07-13');
+      expect(withDate(date).toDateOnly()).toBe(date);
     });
 
-    it('round-trips correctly with toDateOnly', () => {
-      const dateString = '2025-12-31';
-      const date = fromDateOnly(dateString);
-      expect(withDate(date).toDateOnly()).toBe(dateString);
+    it('transforms the date when a transform function is provided', () => {
+      const date = new Date(2025, 6, 13);
+      const transform = (d: Date) => addMonths(d, 1);
+      expect(withDate(date).toDateOnly(transform)).toBe('2025-08-13');
+    });
+  });
+
+  describe('toDate', () => {
+    it('accepts Date', () => {
+      const date = new Date(2025, 6, 13);
+      expect(withDate(date).toDate()).toBe(date);
+    });
+
+    it('accepts DateOnly', () => {
+      const dateString = '2025-07-13';
+      const date = DateOnly.valid(dateString);
+      const expected = new Date(2025, 6, 13);
+      expect(withDate(date).toDate()).toEqual(expected);
+    });
+
+    it('transforms the date when a transform function is provided', () => {
+      const date = new Date(2025, 6, 13);
+      const transform = (d: Date) => addMonths(d, 1);
+      expect(withDate(date).toDate(transform)).toEqual(new Date(2025, 7, 13));
     });
   });
 });

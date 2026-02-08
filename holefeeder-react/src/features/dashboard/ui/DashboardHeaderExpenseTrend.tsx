@@ -8,7 +8,7 @@ import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { AppIcons } from '@/types/icons';
 import { borderRadius, spacing } from '@/types/theme/design-tokens';
-import { DashboardComputedSummary } from '../core/use-dashboard-summary';
+import { DashboardComputedSummary } from '@/use-cases/core/dashboard/watch-summary-use-case';
 
 const createStyles = () => ({
   container: {

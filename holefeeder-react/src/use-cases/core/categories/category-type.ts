@@ -12,7 +12,7 @@ export const CategoryTypeErrors = {
   invalid: 'category-type-invalid',
 };
 
-export const normalizeCategoryType = (type: string): CategoryType => {
+const normalizeCategoryType = (type: string): CategoryType => {
   const normalized = type.trim().toLowerCase();
   if (normalized === 'expense') return CategoryTypes.expense;
   if (normalized === 'gain') return CategoryTypes.gain;
@@ -24,10 +24,24 @@ const schema = {
   enum: Object.values(CategoryTypes),
 };
 
-const create = (value: unknown): Result<CategoryType> => Validate.validateWithErrors(schema, value, [CategoryTypeErrors.invalid]);
+const create = (value: unknown): Result<CategoryType> => {
+  let normalized = value;
+  if (typeof value === 'string') {
+    const candidate = value.trim().toLowerCase();
+    if (Object.values(CategoryTypes).includes(candidate as CategoryType)) {
+      normalized = candidate;
+    }
+  }
+
+  const result = Validate.validateWithErrors(schema, normalized, [CategoryTypeErrors.invalid]);
+  if (Result.isSuccess(result)) {
+    return Result.success(normalized as CategoryType);
+  }
+  return result;
+};
 
 const valid = (value: unknown): CategoryType => {
-  return value as CategoryType;
+  return normalizeCategoryType(value as string);
 };
 
 export const CategoryType = {

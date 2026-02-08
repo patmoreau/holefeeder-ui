@@ -23,7 +23,7 @@ describe('Settings', () => {
   it('fails for invalid intervalType', () => {
     const jsonString: Record<string, unknown> = {
       effectiveDate: '2023-01-15',
-      intervalType: 'daily',
+      intervalType: 'invalid',
       frequency: 1,
     };
 

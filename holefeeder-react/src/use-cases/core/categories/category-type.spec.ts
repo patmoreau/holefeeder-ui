@@ -26,4 +26,14 @@ describe('CategoryType', () => {
     const result = CategoryType.valid(value);
     expect(result).toBe(value);
   });
+
+  it('valid returns normalized value', () => {
+    expect(CategoryType.valid(' Expense ')).toBe(CategoryTypes.expense);
+    expect(CategoryType.valid(' GAIN ')).toBe(CategoryTypes.gain);
+  });
+
+  it('create returns normalized value', () => {
+    expect(CategoryType.create(' Expense ')).toBeSuccessWithValue(CategoryTypes.expense);
+    expect(CategoryType.create(' GAIN ')).toBeSuccessWithValue(CategoryTypes.gain);
+  });
 });

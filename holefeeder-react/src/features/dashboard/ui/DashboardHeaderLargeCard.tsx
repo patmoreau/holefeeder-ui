@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { DashboardComputedSummary } from '@/features/dashboard/core/use-dashboard-summary';
 import { DashboardHeaderExpenseTrend } from '@/features/dashboard/ui/DashboardHeaderExpenseTrend';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
@@ -9,6 +8,7 @@ import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { fontSize, fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { DashboardComputedSummary } from '@/use-cases/core/dashboard/watch-summary-use-case';
 
 const createStyles = (theme: Theme) => ({
   textColor: {

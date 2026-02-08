@@ -1,9 +1,9 @@
 import { usePowerSync } from '@powersync/react-native';
 import { useEffect, useState, useMemo } from 'react';
 import { Result } from '@/shared/core/result';
+import type { Account } from '@/use-cases/core/accounts/account';
 import { WatchAccountsUseCase } from '@/use-cases/core/accounts/watch-accounts-use-case';
 import { AccountsRepositoryInPowersync } from '@/use-cases/persistence/accounts-repository-in-powersync';
-import type { Account } from '@/use-cases/core/accounts/account';
 
 export const useAccounts = (): Result<Account[]> => {
   const db = usePowerSync();

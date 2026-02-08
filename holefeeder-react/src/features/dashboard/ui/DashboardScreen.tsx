@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { useDashboardComputedSummary } from '@/features/dashboard/core/use-dashboard-summary';
 import { AccountCardList } from '@/features/dashboard/ui/components/AccountCardList';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeaderSmallCard';
@@ -14,6 +13,7 @@ import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/th
 import { Theme } from '@/types/theme/theme';
 import { AccountDetails } from '@/use-cases/core/dashboard/account-details';
 import { useAccounts } from '@/use-cases/hooks/accounts/use-accounts';
+import { useDashboard } from '@/use-cases/hooks/dashboard/use-dashboard';
 import { useMultipleWatches } from '@/use-cases/hooks/use-multiple-watches';
 
 const createStyles = (theme: Theme) => ({
@@ -58,14 +58,13 @@ const createStyles = (theme: Theme) => ({
 
 const DashboardScreen = () => {
   const accountsQuery = useAccounts();
-  const dashboardQuery = useDashboardComputedSummary();
+  const dashboardQuery = useDashboard();
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
 
-  const { isLoading: isLoadingOld, data: dataOld, errorSheetProps: errorSheetPropsOld } = dashboardQuery;
-
   const { data, isLoading, errors } = useMultipleWatches({
     accounts: () => accountsQuery,
+    dashboard: () => dashboardQuery,
   });
 
   if (isLoading || !data) {
@@ -77,13 +76,7 @@ const DashboardScreen = () => {
     );
   }
 
-  const { accounts } = data;
-
-  const handleRefresh = () => {
-    dashboardQuery.refetch();
-  };
-
-  const isRefreshing = dashboardQuery.isFetching;
+  const { accounts, dashboard } = data;
 
   const accountsDetails: AccountDetails[] = accounts?.map((account) => {
     return {
@@ -100,10 +93,8 @@ const DashboardScreen = () => {
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
-      largeCard={<DashboardHeaderLargeCard summary={dataOld!} />}
-      smallCard={<DashboardHeaderSmallCard summary={dataOld!} />}
-      onRefresh={handleRefresh}
-      refreshing={isRefreshing}
+      largeCard={<DashboardHeaderLargeCard summary={dashboard!} />}
+      smallCard={<DashboardHeaderSmallCard summary={dashboard!} />}
     >
       <AccountCardList accounts={accountsDetails!} cardWidth={300} />
 

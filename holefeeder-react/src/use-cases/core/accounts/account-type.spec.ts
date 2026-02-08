@@ -26,4 +26,14 @@ describe('AccountType', () => {
     const result = AccountType.valid(value);
     expect(result).toBe(value);
   });
+
+  it('valid returns normalized value', () => {
+    expect(AccountType.valid(' Checking ')).toBe(AccountTypes.checking);
+    expect(AccountType.valid(' Credit_Card ')).toBe(AccountTypes.creditCard);
+  });
+
+  it('create returns normalized value', () => {
+    expect(AccountType.create(' Checking ')).toBeSuccessWithValue(AccountTypes.checking);
+    expect(AccountType.create(' Credit_Card ')).toBeSuccessWithValue(AccountTypes.creditCard);
+  });
 });

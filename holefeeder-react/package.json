@@ -31,6 +31,7 @@
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
     "axios": "^1.13.2",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "expo": "^54.0.33",
     "expo-build-properties": "^1.0.10",

@@ -46,10 +46,26 @@ const schema = {
   enum: Object.values(AccountTypes),
 };
 
-const create = (value: unknown): Result<AccountType> => Validate.validateWithErrors(schema, value, [AccountTypeErrors.invalid]);
+const create = (value: unknown): Result<AccountType> => {
+  let normalized = value;
+  if (typeof value === 'string') {
+    const potential = normalizeAccountType(value);
+    if (potential !== AccountTypes.checking) {
+      normalized = potential;
+    } else if (value.trim().toLowerCase() === 'checking') {
+      normalized = potential;
+    }
+  }
+
+  const result = Validate.validateWithErrors(schema, normalized, [AccountTypeErrors.invalid]);
+  if (Result.isSuccess(result)) {
+    return Result.success(normalized as AccountType);
+  }
+  return result;
+};
 
 const valid = (value: unknown): AccountType => {
-  return value as AccountType;
+  return normalizeAccountType(value as string);
 };
 
 export const AccountType = {

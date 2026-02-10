@@ -1,7 +1,7 @@
 import { anAmount } from '@/__tests__/mocks/number-builder';
-import { Summary } from '@/features/dashboard/core/summary';
+import { SummaryResult } from '../../use-cases/core/dashboard/calculate-summary';
 
-const defaultSummary = (): Summary => ({
+const defaultSummary = (): SummaryResult => ({
   currentExpenses: anAmount(),
   expenseVariation: anAmount(),
   expenseVariationPercentage: anAmount(),
@@ -10,4 +10,4 @@ const defaultSummary = (): Summary => ({
   averageExpenses: anAmount(),
 });
 
-export const aSummary = (overrides: Partial<Summary> = {}): Summary => ({ ...defaultSummary(), ...overrides });
+export const aSummary = (overrides: Partial<SummaryResult> = {}): SummaryResult => ({ ...defaultSummary(), ...overrides });

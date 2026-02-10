@@ -1,22 +1,22 @@
-import { anAccountDetails } from '@/__tests__/mocks/account-builder';
 import { aBoolean } from '@/__tests__/mocks/boolean-builder';
-import { aCategory } from '@/__tests__/mocks/category-builder';
 import { aDateIntervalType } from '@/__tests__/mocks/enum-builder';
 import { aCount, anAmount } from '@/__tests__/mocks/number-builder';
 import { aString } from '@/__tests__/mocks/string-builder';
 import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
+import { aTagList } from '../../use-cases/__tests__/tag-list-for-test';
 import { anAccount } from '../builders/account-for-test';
-import { aTag } from './tag-builder';
+import { aCategory } from '../builders/category-for-test';
+import { aRecentDate } from './date-builder';
 
 const defaultPurchase = (): PurchaseFormData => ({
-  date: new Date().toISOString(),
+  date: aRecentDate(),
   amount: anAmount(),
   description: aString(),
-  sourceAccount: anAccountDetails(),
+  sourceAccount: anAccount(),
   category: aCategory(),
-  tags: [aTag()],
+  tags: aTagList(),
   hasCashflow: aBoolean(),
-  cashflowEffectiveDate: new Date().toISOString(),
+  cashflowEffectiveDate: aRecentDate(),
   cashflowIntervalType: aDateIntervalType(),
   cashflowFrequency: aCount(),
   purchaseType: PurchaseType.expense,

@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
-import { anId } from '@/__tests__/mocks/string-builder';
 import { AppContextForTest } from '@/__tests__/AppContextForTest';
 import { AuthContextForTest } from '@/__tests__/AuthContextForTest';
+import { anId } from '@/__tests__/mocks/string-builder';
 import { AuthButton } from '@/features/shared/ui/AuthButton';
 
 describe('<AuthButton />', () => {

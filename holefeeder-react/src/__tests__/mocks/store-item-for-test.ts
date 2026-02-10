@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { anId } from '@/__tests__/mocks/string-builder';
-import { StoreItem } from '@/features/settings/core/store-item';
+import { StoreItem } from '@/use-cases/core/store-items/store-item';
 
 const defaultStoreItem = () => ({
   id: anId(),

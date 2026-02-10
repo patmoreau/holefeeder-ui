@@ -1,11 +1,10 @@
-import { addMonths, addYears } from 'date-fns';
-import { aRecentDate } from '@/__tests__/mocks/date-builder';
+import { addMonths } from 'date-fns';
 import { withDate } from '@/features/shared/utils/with-date';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { DateOnly } from '@/shared/core/date-only';
 import { Money } from '@/shared/core/money';
 import { CategoryType, CategoryTypes } from '@/use-cases/core/categories/category-type';
-import { calculateSummary, SummaryResult } from './calculate-summary';
+import { calculateSummary } from './calculate-summary';
 import { SummaryData } from './summary-data';
 
 describe('calculateSummary', () => {

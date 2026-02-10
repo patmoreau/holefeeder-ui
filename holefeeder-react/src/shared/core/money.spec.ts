@@ -71,6 +71,27 @@ describe('Money', () => {
     });
   });
 
+  describe('sum', () => {
+    it('should sum values', () => {
+      const variation = Money.sum(Money.valid(123.45), Money.valid(56.78));
+      expect(variation).toBe(180.23);
+    });
+  });
+
+  describe('subtract', () => {
+    it('should subtract values', () => {
+      const variation = Money.subtract(Money.valid(123.45), Money.valid(56.78));
+      expect(variation).toBe(66.67);
+    });
+  });
+
+  describe('multiply', () => {
+    it('should multiply values', () => {
+      const variation = Money.multiply(Money.valid(123.45), Money.valid(56.78));
+      expect(variation).toBe(7009.49);
+    });
+  });
+
   describe('Equality (Strict)', () => {
     it('should return true for equal Money values', () => {
       const money1 = Money.valid(100);

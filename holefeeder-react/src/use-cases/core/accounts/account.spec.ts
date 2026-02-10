@@ -1,7 +1,7 @@
 import { anAccount, toAccount } from '@/__tests__/builders/account-for-test';
 import { DateOnlyErrors } from '@/shared/core/date-only';
 import { IdErrors } from '@/shared/core/id';
-import { MoneyErrors } from '@/shared/core/money';
+import { VariationErrors } from '@/shared/core/variation';
 import { Account, AccountErrors } from '@/use-cases/core/accounts/account';
 
 describe('Account', () => {
@@ -24,8 +24,8 @@ describe('Account', () => {
   });
 
   it('rejects invalid openBalance', () => {
-    const result = Account.create({ ...validAccount, openBalance: -100 });
-    expect(result).toBeFailureWithErrors([MoneyErrors.invalid]);
+    const result = Account.create({ ...validAccount, openBalance: NaN });
+    expect(result).toBeFailureWithErrors([VariationErrors.invalid]);
   });
 
   it('rejects invalid openDate', () => {

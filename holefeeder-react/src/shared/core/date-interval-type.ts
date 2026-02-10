@@ -105,9 +105,42 @@ const interval = (
   return { from: start, to: end };
 };
 
+const datesInRange = (
+  effectiveDate: DateOnly,
+  fromDate: DateOnly,
+  toDate: DateOnly,
+  frequency: number,
+  intervalType: DateIntervalType
+): DateOnly[] => {
+  if (intervalType === DateIntervalTypes.oneTime) {
+    if (effectiveDate >= fromDate && effectiveDate <= toDate) {
+      return [effectiveDate];
+    }
+    return [];
+  }
+
+  const dates: DateOnly[] = [];
+  let start = effectiveDate;
+
+  let iteration = 1;
+  while (start < fromDate) {
+    start = addIteration(effectiveDate, frequency * iteration, intervalType);
+    iteration++;
+  }
+
+  while (start <= toDate) {
+    dates.push(start);
+    start = addIteration(effectiveDate, frequency * iteration, intervalType);
+    iteration++;
+  }
+
+  return dates;
+};
+
 export const DateIntervalType = {
   create: create,
   valid: valid,
   addIteration: addIteration,
   interval: interval,
+  datesInRange: datesInRange,
 };

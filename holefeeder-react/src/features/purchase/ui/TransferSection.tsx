@@ -24,12 +24,12 @@ type Props = {
 
 export const TransferSection = ({ accounts }: Props) => {
   const { t } = useTranslation();
-  const { formData, updateFormField, getFieldError, clearError } = usePurchaseForm();
+  const { formData, updateFormField, errors, clearErrors } = usePurchaseForm();
 
   const updateSourceAccount = (account: Account) => {
     updateFormField('sourceAccount', account);
-    if (getFieldError('targetAccount')) {
-      clearError('targetAccount');
+    if (errors.targetAccount) {
+      clearErrors('targetAccount');
     }
   };
 
@@ -42,7 +42,7 @@ export const TransferSection = ({ accounts }: Props) => {
 
   const updateDescription = (value: string) => updateFormField('description', value);
 
-  const accountToErrorKey = getFieldError('targetAccount') as PurchaseFormError;
+  const accountToErrorKey = errors.targetAccount as PurchaseFormError;
 
   return (
     <AppSection>

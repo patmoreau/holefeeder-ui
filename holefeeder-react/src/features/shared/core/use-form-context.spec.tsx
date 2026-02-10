@@ -2,6 +2,7 @@ import { AbstractPowerSyncDatabase } from '@powersync/react-native';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Button, Text } from 'react-native';
+import { Repositories, RepositoryContext } from '@/contexts/RepositoryContext';
 import { createFormDataContext } from '@/features/shared/core/use-form-context';
 import { ErrorKey } from '@/shared/core/error-key';
 import { Result } from '@/shared/core/result';
@@ -15,6 +16,15 @@ jest.mock('@powersync/react-native', () => ({
   usePowerSync: jest.fn(() => mockDb),
   AbstractPowerSyncDatabase: jest.fn(),
 }));
+
+// Mock repositories
+const mockRepositories: Repositories = {
+  accountRepository: {} as any,
+  categoryRepository: {} as any,
+  dashboardRepository: {} as any,
+  flowRepository: {} as any,
+  storeItemRepository: {} as any,
+};
 
 type TestFormData = {
   id: string;
@@ -53,9 +63,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
   const renderWithProvider = () =>
     render(
-      <FormDataProvider initialValue={INITIAL_VALUE}>
-        <Consumer />
-      </FormDataProvider>
+      <RepositoryContext.Provider value={mockRepositories}>
+        <FormDataProvider initialValue={INITIAL_VALUE}>
+          <Consumer />
+        </FormDataProvider>
+      </RepositoryContext.Provider>
     );
 
   it('provides the initial value and isDirty=false', () => {
@@ -128,7 +140,7 @@ describe('createFormDataContext / useFormDataContext', () => {
       fireEvent.press(getByText('save'));
 
       await waitFor(() => {
-        expect(mockSave).toHaveBeenCalledWith(mockDb, { id: '1', name: 'Alice' });
+        expect(mockSave).toHaveBeenCalledWith(mockRepositories, { id: '1', name: 'Alice' });
       });
     });
 
@@ -166,32 +178,22 @@ describe('createFormDataContext / useFormDataContext', () => {
     };
 
     function ValidationConsumer() {
-      const {
-        formData,
-        errors,
-        updateFormField,
-        validateField,
-        validateForm,
-        clearError,
-        clearErrors,
-        hasErrors,
-        getFieldError,
-        resetForm,
-        saveForm,
-      } = useFormDataContext();
+      const { formData, errors, updateFormField, validateForm, clearErrors, resetForm, saveForm } = useFormDataContext();
+
+      const hasErrors = Object.keys(errors).length > 0;
+      const nameError = errors.name;
 
       return (
         <>
           <Text testID="data">{JSON.stringify(formData)}</Text>
           <Text testID="errors">{JSON.stringify(errors)}</Text>
-          <Text testID="hasErrors">{hasErrors() ? 'true' : 'false'}</Text>
-          <Text testID="nameError">{getFieldError('name') || 'none'}</Text>
+          <Text testID="hasErrors">{hasErrors ? 'true' : 'false'}</Text>
+          <Text testID="nameError">{nameError || 'none'}</Text>
           <Button title="setName" onPress={() => updateFormField('name', 'Alice')} />
           <Button title="setLongName" onPress={() => updateFormField('name', 'VeryLongName123')} />
           <Button title="setEmptyName" onPress={() => updateFormField('name', '')} />
-          <Button title="validateName" onPress={() => validateField('name')} />
           <Button title="validateForm" onPress={() => validateForm()} />
-          <Button title="clearNameError" onPress={() => clearError('name')} />
+          <Button title="clearNameError" onPress={() => clearErrors('name')} />
           <Button title="clearErrors" onPress={() => clearErrors()} />
           <Button title="reset" onPress={() => resetForm()} />
           <Button title="save" onPress={() => saveForm()} />
@@ -201,39 +203,25 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('provides empty errors object by default', () => {
       const { getByTestId } = render(
-        <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       expect(getByTestId('errors').props.children).toBe('{}');
       expect(getByTestId('hasErrors').props.children).toBe('false');
     });
 
-    it('validates a single field and sets error', () => {
-      const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
-      );
-
-      // Set name to empty
-      fireEvent.press(getByText('setEmptyName'));
-
-      // Validate name field
-      fireEvent.press(getByText('validateName'));
-
-      expect(getByTestId('errors').props.children).toBe(JSON.stringify({ name: 'Name is required' }));
-      expect(getByTestId('hasErrors').props.children).toBe('true');
-      expect(getByTestId('nameError').props.children).toBe('Name is required');
-    });
-
     it('validates entire form and sets all errors', () => {
       const emptyData = { id: '', name: '' };
       const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={emptyData} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={emptyData} validate={validateFn}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       fireEvent.press(getByText('validateForm'));
@@ -246,9 +234,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('clears a single field error', () => {
       const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={{ id: '', name: '' }} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={{ id: '', name: '' }} validate={validateFn}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       // Validate to set errors
@@ -266,9 +256,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('clears all errors', () => {
       const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={{ id: '', name: '' }} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={{ id: '', name: '' }} validate={validateFn}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       // Validate to set errors
@@ -284,9 +276,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('auto-validates on field change when validateOnChange is enabled', () => {
       const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn} validateOnChange>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn} validateOnChange>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       // Initially no errors
@@ -302,9 +296,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('does not auto-validate when validateOnChange is false', () => {
       const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn} validateOnChange={false}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn} validateOnChange={false}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       // Set a too-long name
@@ -317,9 +313,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('clears errors when resetForm is called', () => {
       const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       // Set empty name and validate
@@ -338,9 +336,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('returns true from validateForm when no errors', () => {
       const { getByText } = render(
-        <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={INITIAL_VALUE} validate={validateFn}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       // Initial value is valid, so validateForm should return true
@@ -350,9 +350,11 @@ describe('createFormDataContext / useFormDataContext', () => {
 
     it('returns false from validateForm when errors exist', () => {
       const { getByTestId, getByText } = render(
-        <FormDataProvider initialValue={{ id: '', name: '' }} validate={validateFn}>
-          <ValidationConsumer />
-        </FormDataProvider>
+        <RepositoryContext.Provider value={mockRepositories}>
+          <FormDataProvider initialValue={{ id: '', name: '' }} validate={validateFn}>
+            <ValidationConsumer />
+          </FormDataProvider>
+        </RepositoryContext.Provider>
       );
 
       // Validate with empty fields

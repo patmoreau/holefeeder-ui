@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { Repositories } from '@/contexts/RepositoryContext';
 import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { createFormDataContext, ValidationFunction } from '@/features/shared/core/use-form-context';
 import { Money } from '@/shared/core/money';
@@ -40,9 +40,9 @@ export const validatePurchaseForm: ValidationFunction<PurchaseFormData, Purchase
   return errors;
 };
 
-const savePurchase = async (db: AbstractPowerSyncDatabase, formData: PurchaseFormData): Promise<Result<unknown>> => {
+const savePurchase = async (repositories: Repositories, formData: PurchaseFormData): Promise<Result<unknown>> => {
   const purchase = async (formData: PurchaseFormData): Promise<Result<unknown>> => {
-    const useCase = CreateFlowForm(db);
+    const useCase = CreateFlowForm(repositories);
     return useCase.execute({
       date: formData.date,
       amount: formData.amount,

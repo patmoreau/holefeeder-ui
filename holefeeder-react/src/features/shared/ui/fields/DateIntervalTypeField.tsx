@@ -7,6 +7,7 @@ import { DateIntervalType, DateIntervalTypes } from '@/shared/core/date-interval
 import { AppIcons } from '@/types/icons';
 
 const tkTypes: Record<DateIntervalType, string> = {
+  [DateIntervalTypes.daily]: tk.dateIntervalTypePicker.daily,
   [DateIntervalTypes.weekly]: tk.dateIntervalTypePicker.weekly,
   [DateIntervalTypes.monthly]: tk.dateIntervalTypePicker.monthly,
   [DateIntervalTypes.yearly]: tk.dateIntervalTypePicker.yearly,
@@ -32,7 +33,7 @@ export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIn
       value: type,
     }));
   }, []);
-
+  console.log(options);
   const selectedOption = options.find((opt) => opt.value === selectedDateIntervalType) ?? options[0];
 
   return (

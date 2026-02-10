@@ -134,4 +134,225 @@ describe('DateIntervalType', () => {
       }
     );
   });
+
+  describe('datesInRange', () => {
+    const testCases: {
+      intervalType: DateIntervalType;
+      frequency: number;
+      effectiveDate: DateOnly;
+      fromDate: DateOnly;
+      toDate: DateOnly;
+      expected: DateOnly[];
+    }[] = [
+      {
+        intervalType: DateIntervalTypes.oneTime,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-03-01'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.oneTime,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.oneTime,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-03-01'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.oneTime,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.oneTime,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-01-01'),
+        expected: [],
+      },
+      {
+        intervalType: DateIntervalTypes.oneTime,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-03-01'),
+        toDate: DateOnly.valid('2014-04-01'),
+        expected: [],
+      },
+      {
+        intervalType: DateIntervalTypes.weekly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-03-01'),
+        expected: [DateOnly.valid('2014-02-02'), DateOnly.valid('2014-02-09'), DateOnly.valid('2014-02-16'), DateOnly.valid('2014-02-23')],
+      },
+      {
+        intervalType: DateIntervalTypes.weekly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.weekly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-03-01'),
+        expected: [DateOnly.valid('2014-02-02'), DateOnly.valid('2014-02-09'), DateOnly.valid('2014-02-16'), DateOnly.valid('2014-02-23')],
+      },
+      {
+        intervalType: DateIntervalTypes.weekly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.weekly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-02-01'),
+        expected: [],
+      },
+      {
+        intervalType: DateIntervalTypes.monthly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-04-01'),
+        expected: [DateOnly.valid('2014-02-02'), DateOnly.valid('2014-03-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.monthly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.monthly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-04-01'),
+        expected: [DateOnly.valid('2014-02-02'), DateOnly.valid('2014-03-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.monthly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.monthly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-02-01'),
+        expected: [],
+      },
+      {
+        intervalType: DateIntervalTypes.yearly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2016-04-01'),
+        expected: [DateOnly.valid('2014-02-02'), DateOnly.valid('2015-02-02'), DateOnly.valid('2016-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.yearly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.yearly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2016-04-01'),
+        expected: [DateOnly.valid('2014-02-02'), DateOnly.valid('2015-02-02'), DateOnly.valid('2016-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.yearly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2013-01-01'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.yearly,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2013-01-01'),
+        toDate: DateOnly.valid('2014-02-01'),
+        expected: [],
+      },
+      {
+        intervalType: DateIntervalTypes.daily,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-01-01'),
+        toDate: DateOnly.valid('2014-02-10'),
+        expected: [
+          DateOnly.valid('2014-02-02'),
+          DateOnly.valid('2014-02-03'),
+          DateOnly.valid('2014-02-04'),
+          DateOnly.valid('2014-02-05'),
+          DateOnly.valid('2014-02-06'),
+          DateOnly.valid('2014-02-07'),
+          DateOnly.valid('2014-02-08'),
+          DateOnly.valid('2014-02-09'),
+          DateOnly.valid('2014-02-10'),
+        ],
+      },
+      {
+        intervalType: DateIntervalTypes.daily,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2014-02-02'),
+        toDate: DateOnly.valid('2014-02-02'),
+        expected: [DateOnly.valid('2014-02-02')],
+      },
+      {
+        intervalType: DateIntervalTypes.daily,
+        frequency: 1,
+        effectiveDate: DateOnly.valid('2014-02-02'),
+        fromDate: DateOnly.valid('2013-01-01'),
+        toDate: DateOnly.valid('2014-02-01'),
+        expected: [],
+      },
+    ];
+
+    testCases.forEach(({ intervalType, frequency, effectiveDate, fromDate, toDate, expected }) => {
+      it(`should return ${expected.length === 0 ? 'empty array' : `${expected.length} date(s)`} for ${intervalType} interval from ${fromDate} to ${toDate} with effective date ${effectiveDate}`, () => {
+        const result = DateIntervalType.datesInRange(effectiveDate, fromDate, toDate, frequency, intervalType);
+        expect(result).toEqual(expected);
+      });
+    });
+  });
 });

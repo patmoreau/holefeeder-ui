@@ -8,6 +8,7 @@ import { Auth0Provider } from 'react-native-auth0';
 import ErrorBoundary from 'react-native-error-boundary';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
+import { RepositoryProvider } from '@/contexts/RepositoryContext';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -108,7 +109,9 @@ export default function RootLayout() {
         <AppProvider>
           <PowerSyncContext.Provider value={db}>
             <PowerSyncConnection>
-              <AppContent />
+              <RepositoryProvider>
+                <AppContent />
+              </RepositoryProvider>
             </PowerSyncConnection>
           </PowerSyncContext.Provider>
         </AppProvider>

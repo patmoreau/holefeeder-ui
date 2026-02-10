@@ -1,6 +1,6 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
-import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
+import { Variation } from '@/shared/core/variation';
 import { Account } from '../core/accounts/account';
 import { AccountsRepository, AccountsRepositoryErrors } from '../core/accounts/accounts-repository';
 
@@ -33,7 +33,7 @@ export const AccountsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Ac
                 data.map((row) =>
                   Account.valid({
                     ...row,
-                    openBalance: Money.fromCents(row.openBalance),
+                    openBalance: Variation.fromCents(row.openBalance),
                     favorite: row.favorite === 1,
                     inactive: row.inactive === 1,
                   })

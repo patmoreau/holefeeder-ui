@@ -17,6 +17,7 @@ const createMockAccountsRepository = (result: Result<Account[]>): AccountsReposi
 const createMockFlowsRepository = (result: Result<Transaction[]>): FlowsRepository => ({
   create: jest.fn(),
   watchTags: jest.fn(),
+  watchCashflows: jest.fn(),
   watchTransactions: jest.fn((onDataChange) => {
     onDataChange(result);
     return jest.fn();

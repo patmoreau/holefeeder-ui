@@ -46,7 +46,6 @@ const store = async (db: AbstractPowerSyncDatabase, transaction: TransactionForT
       anId(),
     ]
   );
-  console.log('Transaction stored:', result);
   return transaction;
 };
 

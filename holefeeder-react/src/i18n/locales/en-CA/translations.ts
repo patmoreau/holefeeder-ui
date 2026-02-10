@@ -68,6 +68,7 @@ export const en = {
     },
   },
   dateIntervalTypePicker: {
+    daily: 'Daily',
     weekly: 'Weekly',
     monthly: 'Monthly',
     yearly: 'Yearly',

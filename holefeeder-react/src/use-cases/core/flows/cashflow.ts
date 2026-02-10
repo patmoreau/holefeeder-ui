@@ -1,8 +1,14 @@
+import { max } from 'date-fns';
+import { withDate } from '@/features/shared/utils/with-date';
 import { DateIntervalType } from '@/shared/core/date-interval-type';
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
+import { Validate } from '@/shared/core/validate';
+import { Variation } from '@/shared/core/variation';
+import { CategoryType } from '@/use-cases/core/categories/category-type';
+import { Transaction } from '@/use-cases/core/flows/transaction';
 import { TagList } from './tag-list';
 
 export type Cashflow = {
@@ -15,46 +21,124 @@ export type Cashflow = {
   description: string;
   accountId: Id;
   categoryId: Id;
+  categoryType: CategoryType;
   inactive: boolean;
   tags: TagList;
 };
 
 export const CashflowErrors = {
   invalid: 'cashflow-invalid',
+  neverPaid: 'cashflow-never-paid',
 };
 
-const create = (
-  id: Id,
-  effectiveDate: DateOnly,
-  amount: Money,
-  intervalType: DateIntervalType,
-  frequency: number,
-  recurrence: number,
-  description: string,
-  accountId: Id,
-  categoryId: Id,
-  inactive: boolean = false,
-  tags: TagList
-): Result<Cashflow> => {
-  if (frequency <= 0) return Result.failure([CashflowErrors.invalid]);
+const schemaPositiveNumber = {
+  $id: 'cashflow-positive-number',
+  type: 'number',
+  minimum: 1,
+};
 
-  if (recurrence < 0) return Result.failure([CashflowErrors.invalid]);
+const schemaBoolean = {
+  $id: 'cashflow-boolean',
+  type: 'boolean',
+};
 
-  return Result.success({
-    id: id,
-    effectiveDate: effectiveDate,
-    amount: amount,
-    intervalType: intervalType,
-    frequency: frequency,
-    recurrence: recurrence,
-    description: description,
-    accountId: accountId,
-    categoryId: categoryId,
-    inactive: inactive,
-    tags: tags,
+const create = (value: Record<string, unknown>): Result<Cashflow> =>
+  Result.combine<Cashflow>({
+    id: Id.create(value.id),
+    effectiveDate: DateOnly.create(value.effectiveDate),
+    amount: Money.create(value.amount),
+    intervalType: DateIntervalType.create(value.intervalType),
+    frequency: Validate.validateWithErrors(schemaPositiveNumber, value.frequency, [CashflowErrors.invalid]),
+    recurrence: Validate.validateWithErrors(schemaPositiveNumber, value.recurrence, [CashflowErrors.invalid]),
+    description: Result.success(value.description as string),
+    accountId: Id.create(value.accountId),
+    categoryId: Id.create(value.categoryId),
+    categoryType: CategoryType.create(value.categoryType),
+    inactive: Validate.validateWithErrors(schemaBoolean, value.inactive, [CashflowErrors.invalid]),
+    tags: TagList.create(value.tags),
   });
+
+const valid = (value: Record<string, unknown>): Cashflow => ({
+  id: Id.valid(value.id as string),
+  effectiveDate: DateOnly.valid(value.effectiveDate as string),
+  amount: Money.valid(value.amount as number),
+  intervalType: DateIntervalType.valid(value.intervalType),
+  frequency: value.frequency as number,
+  recurrence: value.recurrence as number,
+  description: value.description as string,
+  accountId: Id.valid(value.accountId as string),
+  categoryId: Id.valid(value.categoryId as string),
+  categoryType: CategoryType.valid(value.categoryType),
+  inactive: value.inactive as boolean,
+  tags: TagList.valid(value.tags as string[]),
+});
+
+const forTransactions = (transactions: Transaction[]) => {
+  // Group transactions by cashflowId (Map.groupBy is not available in React Native)
+  const txMap = new Map<Id, Transaction[]>();
+  for (const transaction of transactions.filter((t) => t.cashflowId)) {
+    const cashflowId = transaction.cashflowId!;
+    if (!txMap.has(cashflowId)) {
+      txMap.set(cashflowId, []);
+    }
+    txMap.get(cashflowId)!.push(transaction);
+  }
+
+  const lastPaidDate = (cashflow: Cashflow): Result<DateOnly> => {
+    const filtered = txMap.get(cashflow.id) ?? [];
+    if (filtered.length === 0) return Result.failure([CashflowErrors.neverPaid]);
+
+    const maxDate = max(filtered.map((t) => withDate(t.date).toDate()));
+    return Result.success(withDate(maxDate).toDateOnly());
+  };
+
+  const lastCashflowDate = (cashflow: Cashflow): Result<DateOnly> => {
+    const filtered = txMap.get(cashflow.id) ?? [];
+    if (filtered.length === 0) return Result.failure([CashflowErrors.neverPaid]);
+
+    const maxDate = max(filtered.filter((t) => t.cashflowDate).map((t) => withDate(t.cashflowDate!).toDate()));
+    return Result.success(withDate(maxDate).toDateOnly());
+  };
+
+  const isNotPaid = (cashflow: Cashflow, nextDate: DateOnly): boolean => {
+    const lastPaidDateResult = lastPaidDate(cashflow);
+    const lastCashflowDateResult = lastCashflowDate(cashflow);
+    if (!lastPaidDateResult.isSuccess) {
+      return nextDate >= cashflow.effectiveDate;
+    }
+    return nextDate > lastPaidDateResult.value && lastCashflowDateResult.isSuccess && nextDate > lastCashflowDateResult.value;
+  };
+
+  const getUpcomingDates = (cashflow: Cashflow, toDate: DateOnly): DateOnly[] => {
+    if (cashflow.inactive) return [];
+
+    const dates = DateIntervalType.datesInRange(
+      cashflow.effectiveDate,
+      cashflow.effectiveDate,
+      toDate,
+      cashflow.frequency,
+      cashflow.intervalType
+    );
+    return dates.filter((futureDate) => isNotPaid(cashflow, futureDate));
+  };
+
+  const calculateUpcomingVariation = (cashflow: Cashflow, toDate: DateOnly): Variation =>
+    Variation.multiply(
+      Variation.multiply(Variation.valid(cashflow.amount), CategoryType.multiplier[cashflow.categoryType]),
+      getUpcomingDates(cashflow, toDate).length
+    );
+
+  return {
+    lastPaidDate: lastPaidDate,
+    lastCashflowDate: lastCashflowDate,
+    isNotPaid: isNotPaid,
+    getUpcomingDates: getUpcomingDates,
+    calculateUpcomingVariation: calculateUpcomingVariation,
+  };
 };
 
 export const Cashflow = {
   create: create,
+  valid: valid,
+  forTransactions: forTransactions,
 };

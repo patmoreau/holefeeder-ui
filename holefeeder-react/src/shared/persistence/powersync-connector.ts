@@ -29,13 +29,13 @@ export class PowerSyncConnector implements PowerSyncBackendConnector {
         throw new Error('No auth token available for upload');
       }
 
-      console.debug(
-        'uploadData',
-        JSON.stringify({
-          transaction_id: transaction.transactionId,
-          operations: transaction.crud,
-        })
-      );
+      // console.debug(
+      //   'uploadData',
+      //   JSON.stringify({
+      //     transaction_id: transaction.transactionId,
+      //     operations: transaction.crud,
+      //   })
+      // );
 
       await syncApi(token).upload({
         transactionId: transaction.transactionId ? Number(transaction.transactionId) : undefined,
@@ -44,7 +44,7 @@ export class PowerSyncConnector implements PowerSyncBackendConnector {
 
       await transaction.complete();
     } catch (error) {
-      console.error('Upload failed:', error);
+      // console.error('Upload failed:', error);
       // PowerSync will automatically retry if we don't complete the transaction
       // Throwing the error ensures PowerSync knows it failed
       throw error;

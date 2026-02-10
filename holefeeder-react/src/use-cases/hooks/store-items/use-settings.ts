@@ -1,15 +1,14 @@
-import { usePowerSync } from '@powersync/react-native';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useRepositories } from '@/contexts/RepositoryContext';
 import { Result } from '@/shared/core/result';
 import { GetSettingsUseCase } from '@/use-cases/core/store-items/get-settings/get-settings-use-case';
 import type { Settings } from '@/use-cases/core/store-items/settings';
-import { StoreItemsRepositoryInPowersync } from '@/use-cases/persistence/store-items-repository-in-powersync';
 
 export const useSettings = (): Result<Settings> => {
-  const db = usePowerSync();
+  const { storeItemRepository } = useRepositories();
   const [settings, setSettings] = useState<Result<Settings>>(Result.loading());
 
-  const useCase = useMemo(() => GetSettingsUseCase(StoreItemsRepositoryInPowersync(db)), [db]);
+  const useCase = useMemo(() => GetSettingsUseCase(storeItemRepository), [storeItemRepository]);
 
   useEffect(() => {
     const unsubscribe = useCase.query(setSettings);

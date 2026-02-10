@@ -1,9 +1,9 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
-import { Money } from '@/shared/core/money';
+import { Variation } from '@/shared/core/variation';
 import { Account } from '@/use-cases/core/accounts/account';
 import { aPastDate } from '../mocks/date-builder';
 import { anAccountType } from '../mocks/enum-builder';
-import { anAmount } from '../mocks/number-builder';
+import { aVariation } from '../mocks/number-builder';
 import { anId, aString } from '../mocks/string-builder';
 
 export type AccountForTest = Account & {
@@ -17,7 +17,7 @@ const defaultAccount = (): Account => ({
   type: anAccountType(),
   name: aString(),
   favorite: false,
-  openBalance: anAmount(),
+  openBalance: aVariation(),
   openDate: aPastDate(),
   description: aString(),
   inactive: false,
@@ -33,7 +33,7 @@ const store = async (db: AbstractPowerSyncDatabase, account: AccountForTest): Pr
       account.type,
       account.name,
       account.favorite ? 1 : 0,
-      Money.toCents(account.openBalance),
+      Variation.toCents(account.openBalance),
       account.openDate,
       account.description,
       account.inactive ? 1 : 0,

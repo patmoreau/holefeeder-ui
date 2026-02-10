@@ -1,12 +1,12 @@
-import { AbstractPowerSyncDatabase, usePowerSync } from '@powersync/react-native';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { Repositories, useRepositories } from '@/contexts/RepositoryContext';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { ErrorKey } from '@/shared/core/error-key';
 import { Result } from '@/shared/core/result';
 
 export type ValidationFunction<T, E extends string> = (formData: T) => Partial<Record<keyof T, E>>;
 
-export type SaveFunction<T> = (db: AbstractPowerSyncDatabase, formData: T) => Promise<Result<unknown>>;
+export type SaveFunction<T> = (repositories: Repositories, formData: T) => Promise<Result<unknown>>;
 
 export function createFormDataContext<T, E extends string>(displayName: string, save: SaveFunction<T>) {
   type FormContextType = {
@@ -16,14 +16,9 @@ export function createFormDataContext<T, E extends string>(displayName: string, 
     updateFormField: <K extends keyof T>(field: K, value: T[K]) => void;
     resetForm: () => void;
     setFormData: React.Dispatch<React.SetStateAction<T>>;
-    validateField: (field: keyof T) => boolean;
     validateForm: () => boolean;
-    saveForm: () => Promise<void>;
-    clearError: (field: keyof T) => void;
-    clearErrors: () => void;
-    hasErrors: () => boolean;
-    getErrorCount: () => number;
-    getFieldError: (field: keyof T) => string | undefined;
+    saveForm: () => Promise<boolean>;
+    clearErrors: (field?: keyof T) => void;
     generalError: ErrorKey | null;
     clearGeneralError: () => void;
   };
@@ -44,7 +39,7 @@ export function createFormDataContext<T, E extends string>(displayName: string, 
     const [errors, setErrors] = useState<Partial<Record<keyof T, E>>>({});
     const [generalError, setGeneralError] = useState<ErrorKey | null>(null);
     const [showErrorSheet, setShowErrorSheet] = useState(false);
-    const db = usePowerSync();
+    const repositories = useRepositories();
 
     const updateFormField = <K extends keyof T>(field: K, value: T[K]) => {
       setFormData((prev) => {
@@ -54,33 +49,24 @@ export function createFormDataContext<T, E extends string>(displayName: string, 
           setIsDirty(true);
         }
 
-        // Auto-validate if enabled
+        // Auto-validate only the changed field if enabled
         if (validateOnChange && validate) {
           const validationErrors = validate(newData);
-          setErrors(validationErrors);
+          const fieldError = validationErrors[field];
+
+          setErrors((prevErrors) => {
+            if (fieldError) {
+              return { ...prevErrors, [field]: fieldError };
+            } else {
+              const newErrors = { ...prevErrors };
+              delete newErrors[field];
+              return newErrors;
+            }
+          });
         }
 
         return newData;
       });
-    };
-
-    const validateField = (field: keyof T): boolean => {
-      if (!validate) return true;
-
-      const validationErrors = validate(formData);
-      const fieldError = validationErrors[field];
-
-      if (fieldError) {
-        setErrors((prev) => ({ ...prev, [field]: fieldError }));
-        return false;
-      } else {
-        setErrors((prev) => {
-          const newErrors = { ...prev };
-          delete newErrors[field];
-          return newErrors;
-        });
-        return true;
-      }
     };
 
     const validateForm = (): boolean => {
@@ -91,13 +77,19 @@ export function createFormDataContext<T, E extends string>(displayName: string, 
       return Object.keys(validationErrors).length === 0;
     };
 
-    const saveForm = async (): Promise<void> => {
-      const result = await save(db, formData);
-      console.log(result);
+    const saveForm = async (): Promise<boolean> => {
+      // Auto-validate before saving
+      if (validate && !validateForm()) {
+        return false;
+      }
+
+      const result = await save(repositories, formData);
       if (result.isFailure) {
         setGeneralError(ErrorKey.saveFailed);
         setShowErrorSheet(true);
+        return false;
       }
+      return true;
     };
 
     const clearGeneralError = () => {
@@ -105,28 +97,16 @@ export function createFormDataContext<T, E extends string>(displayName: string, 
       setShowErrorSheet(false);
     };
 
-    const clearError = (field: keyof T) => {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    };
-
-    const clearErrors = () => {
-      setErrors({});
-    };
-
-    const hasErrors = (): boolean => {
-      return Object.keys(errors).length > 0;
-    };
-
-    const getErrorCount = (): number => {
-      return Object.keys(errors).length;
-    };
-
-    const getFieldError = (field: keyof T): E | undefined => {
-      return errors[field];
+    const clearErrors = (field?: keyof T) => {
+      if (field) {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[field];
+          return newErrors;
+        });
+      } else {
+        setErrors({});
+      }
     };
 
     const resetForm = () => {
@@ -142,14 +122,9 @@ export function createFormDataContext<T, E extends string>(displayName: string, 
       updateFormField,
       resetForm,
       setFormData,
-      validateField,
       validateForm,
       saveForm,
-      clearError,
       clearErrors,
-      hasErrors,
-      getErrorCount,
-      getFieldError,
       generalError,
       clearGeneralError,
     };

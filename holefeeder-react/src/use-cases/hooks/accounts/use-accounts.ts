@@ -1,15 +1,14 @@
-import { usePowerSync } from '@powersync/react-native';
 import { useEffect, useMemo, useState } from 'react';
+import { useRepositories } from '@/contexts/RepositoryContext';
 import { Result } from '@/shared/core/result';
 import type { Account } from '@/use-cases/core/accounts/account';
 import { WatchAccountsUseCase } from '@/use-cases/core/accounts/watch-accounts-use-case';
-import { AccountsRepositoryInPowersync } from '@/use-cases/persistence/accounts-repository-in-powersync';
 
 export const useAccounts = (): Result<Account[]> => {
-  const db = usePowerSync();
+  const { accountRepository } = useRepositories();
   const [accounts, setAccounts] = useState<Result<Account[]>>(Result.loading());
 
-  const useCase = useMemo(() => WatchAccountsUseCase(AccountsRepositoryInPowersync(db)), [db]);
+  const useCase = useMemo(() => WatchAccountsUseCase(accountRepository), [accountRepository]);
 
   useEffect(() => {
     const unsubscribe = useCase.query(setAccounts);

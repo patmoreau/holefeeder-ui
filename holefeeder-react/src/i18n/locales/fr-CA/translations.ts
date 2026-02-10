@@ -70,6 +70,7 @@ export const fr: TranslationStructure = {
     },
   },
   dateIntervalTypePicker: {
+    daily: 'Journalier',
     weekly: 'Hebdomadaire',
     monthly: 'Mensuel',
     yearly: 'Annuel',
@@ -94,7 +95,7 @@ export const fr: TranslationStructure = {
       title: 'Impossible de joindre le serveur',
       message: 'Nous ne pouvons pas joindre le backend pour le moment. Veuillez réessayer dans un instant.',
     },
-    createFailed: {
+    saveFailed: {
       title: "Erreur d'enregistrement",
       message: "Échec de l'enregistrement des modifications. Veuillez réessayer.",
     },
@@ -133,7 +134,7 @@ export const fr: TranslationStructure = {
     expiresAt: 'Expire le',
     noExpiresAt: "Pas d'information d'expiration",
   },
-  createFlow: {
+  purchase: {
     title: 'Achat',
     basicSection: {
       account: 'Compte',

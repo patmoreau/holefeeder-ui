@@ -1,23 +1,23 @@
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
-import { Money } from '@/shared/core/money';
+import { Variation } from '@/shared/core/variation';
 
 export type AccountDetail = {
   id: Id;
   name: string;
-  balance: Money;
+  balance: Variation;
   lastTransactionDate: DateOnly;
-  projectedBalance: Money;
-  upcomingVariation: Money;
+  projectedBalance: Variation;
+  upcomingVariation: Variation;
 };
 
 const valid = (value: Record<string, unknown>): AccountDetail => ({
   id: Id.valid(value.id as string),
   name: value.name as string,
-  balance: Money.valid(value.balance as number),
+  balance: Variation.valid(value.balance as number),
   lastTransactionDate: DateOnly.valid(value.lastTransactionDate as string),
-  projectedBalance: Money.valid(value.projectedBalance as number),
-  upcomingVariation: Money.valid(value.upcomingVariation as number),
+  projectedBalance: Variation.valid(value.projectedBalance as number),
+  upcomingVariation: Variation.valid(value.upcomingVariation as number),
 });
 
 export const AccountDetail = {

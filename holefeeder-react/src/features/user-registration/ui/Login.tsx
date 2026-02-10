@@ -41,13 +41,7 @@ const LoginScreen = () => {
       <AppText variant={'subtitle'}>{t(tk.auth.loginSubtitle)}</AppText>
       <AuthButton />
       <View style={{ paddingTop: 16 }}>
-        <AppButton
-          icon={AppIcons.warning}
-          onPress={() => {
-            console.log('Test');
-            router.push('/test');
-          }}
-        />
+        <AppButton icon={AppIcons.warning} onPress={() => router.push('/test')} />
       </View>
     </AppView>
   );

@@ -1,7 +1,7 @@
 import { DateIntervalType } from '@/shared/core/date-interval-type';
 import { Account } from '@/use-cases/core/accounts/account';
 import { Category } from '@/use-cases/core/categories/category';
-import { TagList } from '@/use-cases/core/flows/tag-list';
+import { Tag } from '@/use-cases/core/flows/tag';
 
 export const PurchaseType = {
   expense: 'expense',
@@ -19,7 +19,7 @@ export type PurchaseFormData = {
   sourceAccount: Account;
   targetAccount: Account;
   category: Category;
-  tags: TagList;
+  tags: Tag[];
   hasCashflow: boolean;
   cashflowEffectiveDate: string;
   cashflowIntervalType: DateIntervalType;

@@ -1,21 +1,20 @@
-import { usePowerSync } from '@powersync/react-native';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useRepositories } from '@/contexts/RepositoryContext';
 import { Result } from '@/shared/core/result';
 import { DashboardComputedSummary, WatchSummaryUseCase } from '@/use-cases/core/dashboard/watch-summary-use-case';
-import { DashboardRepositoryInPowersync } from '@/use-cases/persistence/dashboard-repository-in-powersync';
 import { useSettings } from '../store-items/use-settings';
 
 export const useDashboard = (): Result<DashboardComputedSummary> => {
-  const db = usePowerSync();
+  const { dashboardRepository } = useRepositories();
   const settings = useSettings();
   const [summary, setSummary] = useState<Result<DashboardComputedSummary>>(Result.loading());
 
   const useCase = useMemo(() => {
     if (Result.isSuccess(settings)) {
-      return WatchSummaryUseCase(settings.value, DashboardRepositoryInPowersync(db));
+      return WatchSummaryUseCase(settings.value, dashboardRepository);
     }
     return undefined;
-  }, [db, settings]);
+  }, [dashboardRepository, settings]);
 
   useEffect(() => {
     if (!useCase) {

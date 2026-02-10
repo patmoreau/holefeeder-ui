@@ -7,13 +7,14 @@ import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/d
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { DateOnly } from '@/shared/core/date-only';
 import { Money } from '@/shared/core/money';
+import { Variation } from '@/shared/core/variation';
 import { AccountTypes } from '@/use-cases/core/accounts/account-type';
 import { CategoryTypes } from '@/use-cases/core/categories/category-type';
 import { useAccountDetails } from '@/use-cases/hooks/accounts/use-account-details';
 
 describe('useAccountDetails', () => {
   let db: DatabaseForTest;
-  const account = anAccount({ openBalance: Money.valid(100), type: AccountTypes.creditCard });
+  const account = anAccount({ openBalance: Variation.valid(100), type: AccountTypes.creditCard });
   const category = aCategory({ type: CategoryTypes.expense });
   const transaction = aTransaction({ amount: Money.valid(123.45), date: DateOnly.valid('2025-01-01') }, account, category);
 
@@ -47,10 +48,10 @@ describe('useAccountDetails', () => {
       {
         id: account.id,
         name: account.name,
-        balance: Money.valid(223.45),
+        balance: Variation.valid(223.45),
         lastTransactionDate: DateOnly.valid('2025-01-01'),
-        projectedBalance: Money.ZERO,
-        upcomingVariation: Money.ZERO,
+        projectedBalance: Variation.ZERO,
+        upcomingVariation: Variation.ZERO,
       },
     ]);
   });

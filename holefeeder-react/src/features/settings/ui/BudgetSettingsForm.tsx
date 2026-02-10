@@ -1,38 +1,15 @@
 import { useNavigation } from 'expo-router';
-import React, { useCallback, useLayoutEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useLayoutEffect } from 'react';
 import { useSettingsForm } from '@/features/settings/core/use-settings-form';
 import { BudgetSettingsFormContent } from '@/features/settings/ui/BudgetSettingsFormContent';
+import { useFormActions } from '@/features/shared/core/use-form-actions';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
-import { goBack } from '@/features/shared/utils/navigation';
-import { showAlert } from '@/features/shared/utils/show-alert';
 import { AppIcons } from '@/types/icons';
 
 export const BudgetSettingsForm = () => {
-  const { saveForm, isDirty, hasErrors, getErrorCount, errors } = useSettingsForm();
-
-  const { t } = useTranslation();
-  const { showDiscardAlert, showFormErrorAlert } = showAlert(t);
+  const { saveForm, isDirty, errors } = useSettingsForm();
+  const { handleSave, handleCancel } = useFormActions({ saveForm, isDirty, errors });
   const navigation = useNavigation();
-
-  const handleSave = useCallback(async () => {
-    if (hasErrors()) {
-      showFormErrorAlert({ errors: errors, errorCount: getErrorCount() });
-      return;
-    }
-    if (isDirty) {
-      await saveForm();
-    }
-    goBack();
-  }, [errors, getErrorCount, hasErrors, isDirty, showFormErrorAlert, saveForm]);
-
-  const handleCancel = useCallback(() => {
-    if (!isDirty) {
-      goBack();
-      return;
-    }
-    showDiscardAlert({ onConfirm: goBack });
-  }, [isDirty, showDiscardAlert]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

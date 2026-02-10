@@ -36,7 +36,6 @@ const store = async (db: AbstractPowerSyncDatabase, category: CategoryForTest): 
       anId(),
     ]
   );
-  console.log('Category stored:', result);
   return category;
 };
 

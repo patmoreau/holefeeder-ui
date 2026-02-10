@@ -6,6 +6,8 @@ import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
+import { aCashflow, toCashflow } from '@/use-cases/core/flows/__tests__/cashflow-for-test';
+import { Cashflow } from '@/use-cases/core/flows/cashflow';
 import { CreateFlowCommand } from '@/use-cases/core/flows/create-flow/create-flow-command';
 import { TagList } from '@/use-cases/core/flows/tag-list';
 import { Transaction } from '@/use-cases/core/flows/transaction';
@@ -83,6 +85,65 @@ describe('FlowsRepository', () => {
     // // Credit
     // expect(transactions[1].amount).toBe(10000);
     // expect(transactions[1].account_id).toBe('acc-savings');
+  });
+
+  describe('watchCashflows', () => {
+    it('retrieves cashflows', async () => {
+      const cashflow1 = await aCashflow().store(db);
+      const cashflow2 = await aCashflow().store(db);
+
+      const repo = FlowsRepositoryInPowersync(db);
+
+      let result: Result<Cashflow[]> | undefined;
+      const unsubscribe = repo.watchCashflows((data) => {
+        result = data;
+      });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeSuccessWithValue([toCashflow(cashflow1), toCashflow(cashflow2)]);
+
+      unsubscribe();
+    });
+
+    it('returns empty list when no cashflow exist', async () => {
+      const repo = FlowsRepositoryInPowersync(db);
+
+      let result: Result<Cashflow[]> | undefined;
+      const unsubscribe = repo.watchCashflows((data) => {
+        result = data;
+      });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeSuccessWithValue([]);
+
+      unsubscribe();
+    });
+
+    it('handles database errors', async () => {
+      const repo = FlowsRepositoryInPowersync(db);
+
+      // Close the database to trigger an error
+      await db.close();
+
+      let result: Result<Cashflow[]> | undefined;
+      const unsubscribe = repo.watchCashflows((data) => {
+        result = data;
+      });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeFailureWithErrors(['The database connection is not open']);
+
+      unsubscribe();
+    });
   });
 
   describe('watchTransactions', () => {

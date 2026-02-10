@@ -1,10 +1,9 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { Repositories } from '@/contexts/RepositoryContext';
 import { SettingsFormData } from '@/features/settings/core/settings-form-data';
 import { createFormDataContext, ValidationFunction } from '@/features/shared/core/use-form-context';
 import { Result } from '@/shared/core/result';
 import { SaveSettingsCommand } from '@/use-cases/core/store-items/save-settings/save-settings-command';
 import { SaveSettingsUseCase } from '@/use-cases/core/store-items/save-settings/save-settings-use-case';
-import { StoreItemsRepositoryInPowersync } from '@/use-cases/persistence/store-items-repository-in-powersync';
 
 export const SettingsFormError = {
   effectiveDateRequired: 'effectiveDateRequired',
@@ -27,9 +26,8 @@ export const validateSettingsForm: ValidationFunction<SettingsFormData, Settings
   return errors;
 };
 
-const save = async (db: AbstractPowerSyncDatabase, formData: SettingsFormData): Promise<Result<unknown>> => {
-  const repository = StoreItemsRepositoryInPowersync(db);
-  const useCase = SaveSettingsUseCase(repository);
+const save = async (repositories: Repositories, formData: SettingsFormData): Promise<Result<unknown>> => {
+  const useCase = SaveSettingsUseCase(repositories.storeItemRepository);
   const command = SaveSettingsCommand.create(formData);
   if (command.isFailure || command.isLoading) return command;
   return useCase.execute(command.value);

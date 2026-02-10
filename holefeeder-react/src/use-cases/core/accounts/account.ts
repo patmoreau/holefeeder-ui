@@ -1,15 +1,15 @@
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
-import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
 import { Validate } from '@/shared/core/validate';
+import { Variation } from '@/shared/core/variation';
 import { AccountType } from '@/use-cases/core/accounts/account-type';
 
 export type Account = {
   id: Id;
   type: AccountType;
   name: string;
-  openBalance: Money;
+  openBalance: Variation;
   openDate: string;
   description: string;
   favorite: boolean;
@@ -46,7 +46,7 @@ const create = (value: Record<string, unknown>): Result<Account> => {
     id: Id.create(value.id),
     type: AccountType.create(value.type),
     name: Validate.validateWithErrors(schema, value.name, [AccountErrors.invalidName]),
-    openBalance: Money.create(value.openBalance),
+    openBalance: Variation.create(value.openBalance),
     openDate: DateOnly.create(value.openDate),
     description: Validate.validateWithErrors(schemaDescription, value.description, [AccountErrors.invalidDescription]),
     favorite: Validate.validateWithErrors(schemaBoolean, value.favorite, [AccountErrors.invalidFavorite]),
@@ -58,7 +58,7 @@ const valid = (value: Record<string, unknown>): Account => ({
   id: Id.valid(value.id as string),
   type: AccountType.valid(value.type as string),
   name: value.name as string,
-  openBalance: Money.valid(value.openBalance as number),
+  openBalance: Variation.valid(value.openBalance as number),
   openDate: DateOnly.valid(value.openDate as string),
   description: value.description as string,
   favorite: value.favorite as boolean,

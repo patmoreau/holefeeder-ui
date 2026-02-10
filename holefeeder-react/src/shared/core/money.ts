@@ -15,20 +15,45 @@ const schema = {
 
 const create = (value: unknown): Result<Money> => {
   const moneyResult = Validate.validateWithErrors<Money>(schema, value, [MoneyErrors.invalid]);
-  if (moneyResult.isFailure) return moneyResult;
+  if (!moneyResult.isSuccess) return moneyResult;
 
-  const money = moneyResult.value;
+  const money = toCents(moneyResult.value);
 
-  const rounded = Math.round(money * 100) / 100;
-  return Result.success(rounded as Money);
+  return Result.success(fromCents(money));
 };
 
 const valid = (value: number): Money => value as Money;
 
 const toCents = (money: Money): number => Math.round(money * 100);
 
-const fromCents = (cents: number): Money => (cents / 100) as Money;
+const fromCents = (cents: number): Money => {
+  const value = cents / 100;
+  return (Math.round(value * 100) / 100) as Money;
+};
 
 const ZERO: Money = 0 as Money;
 
-export const Money = { create: create, valid: valid, toCents: toCents, fromCents: fromCents, ZERO: ZERO } as const;
+const sum = (...values: Money[]): Money => {
+  const totalCents = values.reduce((acc, curr) => acc + toCents(curr), 0);
+  return fromCents(totalCents);
+};
+
+const subtract = (a: Money, b: Money): Money => {
+  return fromCents(toCents(a) - toCents(b));
+};
+
+const multiply = (value: Money, factor: number): Money => {
+  const resultCents = Math.round(toCents(value) * factor);
+  return fromCents(resultCents);
+};
+
+export const Money = {
+  create: create,
+  valid: valid,
+  toCents: toCents,
+  fromCents: fromCents,
+  ZERO: ZERO,
+  sum: sum,
+  subtract: subtract,
+  multiply: multiply,
+} as const;

@@ -16,7 +16,6 @@ type Props = {
 
 export function CategoryField({ categories, selectedCategory, onSelectCategory, variant }: Props) {
   const { t } = useTranslation();
-  console.log('CategoryField:', categories);
   const filteredCategories = variant ? categories.filter((category) => category.type === variant) : categories;
   const isSelectedCategoryInFiltered = filteredCategories.some((category) => category.id === selectedCategory.id);
 

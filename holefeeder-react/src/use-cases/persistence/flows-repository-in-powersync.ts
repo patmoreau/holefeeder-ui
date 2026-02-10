@@ -3,10 +3,26 @@ import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
+import { Cashflow } from '@/use-cases/core/flows/cashflow';
 import { CreateFlowCommand } from '@/use-cases/core/flows/create-flow/create-flow-command';
 import { FlowsRepository, FlowsRepositoryErrors } from '@/use-cases/core/flows/flows-repository';
 import { Tag } from '@/use-cases/core/flows/tag';
 import { Transaction } from '@/use-cases/core/flows/transaction';
+
+type CashflowRow = {
+  id: string;
+  effectiveDate: string;
+  amount: number;
+  intervalType: string;
+  frequency: number;
+  recurrence: number;
+  description: string;
+  accountId: string;
+  categoryId: string;
+  categoryType: string;
+  inactive: number;
+  tags: string;
+};
 
 type TransactionRow = {
   id: string;
@@ -37,7 +53,6 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       categoryId: purchase.categoryId,
       tags: purchase.tags,
     };
-
     try {
       await db.execute(
         `INSERT INTO transactions (
@@ -98,6 +113,50 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       }
       return Result.failure(['Failed to save transfer']);
     }
+  };
+
+  const watchCashflows = (onDataChange: (result: Result<Cashflow[]>) => void) => {
+    const query = db.query<CashflowRow>({
+      sql: `
+        SELECT
+          c.id,
+          c.effective_date as effectiveDate,
+          c.amount,
+          c.interval_type as intervalType,
+          c.frequency,
+          c.recurrence,
+          c.description,
+          c.account_id as accountId,
+          c.category_id as categoryId,
+          cc.type as categoryType,
+          c.inactive,
+          c.tags
+        FROM cashflows c
+               INNER JOIN categories cc ON cc.id = c.category_id;
+      `,
+      parameters: [],
+    });
+
+    const watcher = query.watch();
+
+    return watcher.registerListener({
+      onData: (data) =>
+        !data || data.length === 0
+          ? onDataChange(Result.success([]))
+          : onDataChange(
+              Result.success(
+                data.map((row) =>
+                  Cashflow.valid({
+                    ...row,
+                    amount: Money.fromCents(row.amount),
+                    inactive: row.inactive === 1,
+                    tags: row.tags.split(',').filter((tag) => tag !== '') as string[],
+                  })
+                )
+              )
+            ),
+      onError: (error) => onDataChange(Result.failure([error.message])),
+    });
   };
 
   const watchTransactions = (onDataChange: (result: Result<Transaction[]>) => void) => {
@@ -177,5 +236,5 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     });
   };
 
-  return { create: create, watchTransactions: watchTransactions, watchTags: watchTags };
+  return { create: create, watchCashflows: watchCashflows, watchTransactions: watchTransactions, watchTags: watchTags };
 };

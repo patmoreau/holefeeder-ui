@@ -1,15 +1,14 @@
-import { usePowerSync } from '@powersync/react-native';
 import { useEffect, useMemo, useState } from 'react';
+import { useRepositories } from '@/contexts/RepositoryContext';
 import { Result } from '@/shared/core/result';
 import type { Category } from '@/use-cases/core/categories/category';
 import { WatchCategoriesUseCase } from '@/use-cases/core/categories/watch-categories-use-case';
-import { CategoriesRepositoryInPowersync } from '@/use-cases/persistence/categories-repository-in-powersync';
 
 export const useCategories = (): Result<Category[]> => {
-  const db = usePowerSync();
+  const { categoryRepository } = useRepositories();
   const [categories, setCategories] = useState<Result<Category[]>>(Result.loading());
 
-  const useCase = useMemo(() => WatchCategoriesUseCase(CategoriesRepositoryInPowersync(db)), [db]);
+  const useCase = useMemo(() => WatchCategoriesUseCase(categoryRepository), [categoryRepository]);
 
   useEffect(() => {
     const unsubscribe = useCase.query(setCategories);

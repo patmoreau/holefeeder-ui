@@ -1,5 +1,5 @@
 import { usePowerSync } from '@powersync/react-native';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Result } from '@/shared/core/result';
 import type { Account } from '@/use-cases/core/accounts/account';
 import { WatchAccountsUseCase } from '@/use-cases/core/accounts/watch-accounts-use-case';

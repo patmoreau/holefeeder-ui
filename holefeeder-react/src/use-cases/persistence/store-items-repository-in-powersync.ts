@@ -1,7 +1,7 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
 import { Result } from '@/shared/core/result';
 import { StoreItem } from '@/use-cases/core/store-items/store-item';
-import { StoreItemsRepositoryErrors, StoreItemsRepository } from '@/use-cases/core/store-items/store-items-repository';
+import { StoreItemsRepository, StoreItemsRepositoryErrors } from '@/use-cases/core/store-items/store-items-repository';
 
 type StoreItemRow = { id: number; code: string; data: string };
 
@@ -47,7 +47,7 @@ export const StoreItemsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): 
       } else {
         await db.execute('INSERT INTO store_items (id, code, data) VALUES (?, ?, ?)', [storeItem.id, storeItem.code, storeItem.data]);
       }
-      return Result.success(undefined);
+      return Result.success();
     } catch (error) {
       if (error instanceof Error) {
         console.error(`${StoreItemsRepositoryErrors.saveStoreItemFailed}: `, error.message);

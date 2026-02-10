@@ -42,6 +42,24 @@ describe('Result', () => {
       expect(result.isLoading).toBe(false);
       expect((result as Success<undefined>).value).toBeUndefined();
     });
+
+    it('should create a success result with void using no arguments', () => {
+      const result = Result.success();
+
+      expect(result.isFailure).toBe(false);
+      expect(result.isLoading).toBe(false);
+      expect((result as Success<void>).value).toBeUndefined();
+    });
+
+    it('should infer Result<void> type when called without arguments', () => {
+      const voidFunction = (): Result<void> => {
+        return Result.success();
+      };
+
+      const result = voidFunction();
+      expect(result.isFailure).toBe(false);
+      expect((result as Success<void>).value).toBeUndefined();
+    });
   });
 
   describe('failure', () => {

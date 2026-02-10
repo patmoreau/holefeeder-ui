@@ -1,27 +1,34 @@
 export type Result<T> = Success<T> | Failure | Loading;
 
 export type Success<T> = {
+  readonly isSuccess: true;
   readonly isFailure: false;
   readonly isLoading: false;
   readonly value: T;
 };
 
 export type Failure = {
+  readonly isSuccess: false;
   readonly isFailure: true;
   readonly isLoading: false;
   readonly errors: string[];
 };
 
 export type Loading = {
+  readonly isSuccess: false;
   readonly isFailure: false;
   readonly isLoading: true;
 };
 
-const success = <T>(value: T): Success<T> => ({ isFailure: false, isLoading: false, value });
+function success(): Success<void>;
+function success<T>(value: T): Success<T>;
+function success<T>(value?: T): Success<T> | Success<void> {
+  return { isSuccess: true, isFailure: false, isLoading: false, value: value as T };
+}
 
-const failure = (errors: string[]): Failure => ({ isFailure: true, isLoading: false, errors });
+const failure = (errors: string[]): Failure => ({ isSuccess: false, isFailure: true, isLoading: false, errors });
 
-const loading = (): Loading => ({ isFailure: false, isLoading: true });
+const loading = (): Loading => ({ isSuccess: false, isFailure: false, isLoading: true });
 
 const combine = <T extends Record<string, unknown>>(results: {
   [K in keyof T]: Result<T[K]>;

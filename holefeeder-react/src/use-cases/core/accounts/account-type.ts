@@ -68,7 +68,18 @@ const valid = (value: unknown): AccountType => {
   return normalizeAccountType(value as string);
 };
 
+const multiplier = {
+  [AccountTypes.checking]: 1,
+  [AccountTypes.creditCard]: -1,
+  [AccountTypes.creditLine]: -1,
+  [AccountTypes.investment]: 1,
+  [AccountTypes.loan]: -1,
+  [AccountTypes.mortgage]: -1,
+  [AccountTypes.savings]: 1,
+};
+
 export const AccountType = {
   create: create,
   valid: valid,
+  multiplier: multiplier,
 };

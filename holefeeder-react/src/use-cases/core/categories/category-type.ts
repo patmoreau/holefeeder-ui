@@ -44,7 +44,13 @@ const valid = (value: unknown): CategoryType => {
   return normalizeCategoryType(value as string);
 };
 
+const multiplier = {
+  [CategoryTypes.expense]: -1,
+  [CategoryTypes.gain]: 1,
+};
+
 export const CategoryType = {
   create: create,
   valid: valid,
+  multiplier: multiplier,
 };

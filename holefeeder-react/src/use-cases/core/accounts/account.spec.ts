@@ -1,35 +1,16 @@
+import { anAccount, toAccount } from '@/__tests__/builders/account-for-test';
 import { DateOnlyErrors } from '@/shared/core/date-only';
 import { IdErrors } from '@/shared/core/id';
 import { MoneyErrors } from '@/shared/core/money';
 import { Account, AccountErrors } from '@/use-cases/core/accounts/account';
-import { AccountTypes } from '@/use-cases/core/accounts/account-type';
 
 describe('Account', () => {
-  const validAccount = {
-    id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-    type: AccountTypes.checking,
-    name: 'My Account',
-    openBalance: 100,
-    openDate: '2023-01-01',
-    description: 'A description',
-    favorite: false,
-    inactive: false,
-  };
+  const validAccount = anAccount();
 
   it('create a valid account', () => {
     const result = Account.create(validAccount);
 
-    expect(result).toBeSuccessWithValue(
-      expect.objectContaining({
-        name: validAccount.name,
-        type: validAccount.type,
-        openBalance: validAccount.openBalance,
-        openDate: validAccount.openDate,
-        description: validAccount.description,
-        favorite: validAccount.favorite,
-        inactive: validAccount.inactive,
-      })
-    );
+    expect(result).toBeSuccessWithValue(toAccount(validAccount));
   });
 
   it('rejects invalid name (empty)', () => {

@@ -15,6 +15,12 @@
         "database": "./.debug.sqlite",
         "name": "debug sqlite",
       },
+      {
+        "previewLimit": 50,
+        "driver": "SQLite",
+        "name": "powersync-db",
+        "database": "./dev-client/debug-data/powersync-cache.db",
+      },
     ],
   },
 }

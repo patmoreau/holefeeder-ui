@@ -1,5 +1,8 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AccountForTest, anAccount } from '@/__tests__/builders/account-for-test';
+import { aCategory, CategoryForTest } from '@/__tests__/builders/category-for-test';
 import { Money } from '@/shared/core/money';
+import { aTagList } from '@/use-cases/__tests__/tag-list-for-test';
 import { Transaction } from '@/use-cases/core/flows/transaction';
 import { aPastDate } from '../mocks/date-builder';
 import { anAmount } from '../mocks/number-builder';
@@ -11,16 +14,17 @@ export type TransactionForTest = Transaction & {
   remove: (db: AbstractPowerSyncDatabase) => Promise<void>;
 };
 
-const defaultTransaction = (): Transaction => ({
+const defaultTransaction = (account: AccountForTest, category: CategoryForTest): Transaction => ({
   id: anId(),
   date: aPastDate(),
   amount: anAmount(),
   description: aString(),
-  accountId: anId(),
-  categoryId: anId(),
+  accountId: account.id,
+  categoryId: category.id,
+  categoryType: category.type,
   cashflowId: anId(),
   cashflowDate: aPastDate(),
-  tags: [],
+  tags: aTagList(),
 });
 
 const times = (count: number, overrides?: Partial<Transaction>): TransactionForTest[] =>
@@ -50,12 +54,18 @@ const remove = async (db: AbstractPowerSyncDatabase, transaction: Transaction): 
   await db.execute('DELETE FROM transactions WHERE id = ?', [transaction.id]);
 };
 
-export const aTransaction = (overrides?: Partial<Transaction>): TransactionForTest => {
+export const aTransaction = (overrides?: Partial<Transaction>, account?: AccountForTest, category?: CategoryForTest): TransactionForTest => {
+  const a = account ?? anAccount();
+  const c = category ?? aCategory();
   const transactionForTest: TransactionForTest = {
-    ...defaultTransaction(),
+    ...defaultTransaction(a, c),
     ...overrides,
     times: (count: number) => times(count, overrides),
-    store: (db: AbstractPowerSyncDatabase) => store(db, transactionForTest),
+    store: async (db: AbstractPowerSyncDatabase) => {
+      await a.store(db);
+      await c.store(db);
+      return store(db, transactionForTest);
+    },
     remove: (db: AbstractPowerSyncDatabase) => remove(db, transactionForTest),
   };
   return transactionForTest;

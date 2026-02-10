@@ -8,14 +8,27 @@ import { FlowsRepository, FlowsRepositoryErrors } from '@/use-cases/core/flows/f
 import { Tag } from '@/use-cases/core/flows/tag';
 import { Transaction } from '@/use-cases/core/flows/transaction';
 
+type TransactionRow = {
+  id: string;
+  date: string;
+  amount: number;
+  description: string;
+  accountId: string;
+  categoryId: string;
+  categoryType: string;
+  cashflowId: string | null;
+  cashflowDate: string | null;
+  tags: string;
+};
+
 type TagRow = {
   tag: string;
   count: number;
 };
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
-  const create = async (purchase: CreateFlowCommand): Promise<Result<Transaction>> => {
-    const transaction: Transaction = {
+  const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
+    const transaction = {
       id: Id.newId(),
       date: purchase.date,
       amount: purchase.amount,
@@ -44,7 +57,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
         ]
       );
 
-      return Result.success(transaction);
+      return Result.success(transaction.id);
     } catch (error) {
       if (error instanceof Error) {
         console.error(`${FlowsRepositoryErrors.createFlowCommandFailed}: `, error.message);
@@ -53,7 +66,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  const saveTransfer = async (formData: PurchaseFormData): Promise<Result<string>> => {
+  const saveTransfer = async (formData: PurchaseFormData): Promise<Result<void>> => {
     const transferId = Id.newId();
     const amountInCents = Math.round(formData.amount * 100);
 
@@ -77,7 +90,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
         );
       });
 
-      return Result.success(transferId);
+      return Result.success();
     } catch (error) {
       if (error instanceof Error) {
         console.error('Failed to save transfer:', error.message);
@@ -85,6 +98,47 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       }
       return Result.failure(['Failed to save transfer']);
     }
+  };
+
+  const watchTransactions = (onDataChange: (result: Result<Transaction[]>) => void) => {
+    const query = db.query<TransactionRow>({
+      sql: `
+          SELECT
+            t.id,
+            t.date,
+            t.amount,
+            t.description,
+            t.account_id as accountId,
+            t.category_id as categoryId,
+            c.type as categoryType,
+            t.cashflow_id as cashflowId,
+            t.cashflow_date as cashflowDate,
+            t.tags
+          FROM transactions t
+          INNER JOIN categories c ON c.id = category_id;
+      `,
+      parameters: [],
+    });
+
+    const watcher = query.watch();
+
+    return watcher.registerListener({
+      onData: (data) =>
+        !data || data.length === 0
+          ? onDataChange(Result.success([]))
+          : onDataChange(
+              Result.success(
+                data.map((row) =>
+                  Transaction.valid({
+                    ...row,
+                    amount: Money.fromCents(row.amount),
+                    tags: row.tags.split(',').filter((tag) => tag !== '') as string[],
+                  })
+                )
+              )
+            ),
+      onError: (error) => onDataChange(Result.failure([error.message])),
+    });
   };
 
   const watchTags = (onDataChange: (result: Result<Tag[]>) => void) => {
@@ -107,7 +161,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           FROM split
           WHERE tag <> ''
           GROUP BY tag
-          ORDER BY count DESC, tag ASC;
+          ORDER BY count DESC, tag;
       `,
       parameters: [],
     });
@@ -123,5 +177,5 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     });
   };
 
-  return { create: create, watchTags: watchTags };
+  return { create: create, watchTransactions: watchTransactions, watchTags: watchTags };
 };

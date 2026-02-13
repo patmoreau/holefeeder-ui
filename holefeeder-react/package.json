@@ -2,7 +2,7 @@
   "name": "holefeeder-react",
   "main": "expo-router/entry",
   "version": "1.0.0",
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.29.3",
   "scripts": {
     "start": "APP_ENV=development expo start",
     "android": "APP_ENV=development expo run:android",
@@ -39,7 +39,7 @@
     "expo-crypto": "^15.0.8",
     "expo-dev-client": "^6.0.20",
     "expo-font": "^14.0.10",
-    "expo-glass-effect": "^0.1.8",
+    "expo-glass-effect": "^0.1.9",
     "expo-haptics": "^15.0.8",
     "expo-image": "^3.0.11",
     "expo-linking": "^8.0.11",

@@ -16,12 +16,10 @@ export const useAccountDetails = (): Result<AccountDetail[]> => {
 
   const settings = settingsResult.isSuccess ? settingsResult.value : DefaultSettings;
 
-  const dateIntervalResult = DateInterval.createFrom(
-    withDate(startOfToday()).toDateOnly(),
-    0,
-    settings.effectiveDate,
-    settings.intervalType,
-    settings.frequency
+  const today = withDate(startOfToday()).toDateOnly();
+  const dateIntervalResult = useMemo(
+    () => DateInterval.createFrom(today, 0, settings.effectiveDate, settings.intervalType, settings.frequency),
+    [today, settings.effectiveDate, settings.intervalType, settings.frequency]
   );
 
   const useCase = useMemo(() => {

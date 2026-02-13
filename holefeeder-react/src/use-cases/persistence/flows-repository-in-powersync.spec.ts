@@ -1,16 +1,19 @@
 import { waitFor } from '@testing-library/react-native';
+import { anAccount } from '@/__tests__/builders/account-for-test';
+import { aCategory } from '@/__tests__/builders/category-for-test';
 import { aTag } from '@/__tests__/builders/tag-for-test';
-import { aTransaction, toTransaction } from '@/__tests__/builders/transaction-for-test';
+import { aTransaction } from '@/__tests__/builders/transaction-for-test';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
-import { aCashflow, toCashflow } from '@/use-cases/core/flows/__tests__/cashflow-for-test';
-import { Cashflow } from '@/use-cases/core/flows/cashflow';
+import { AccountVariation } from '@/use-cases/core/accounts/account-variation';
+import { CategoryTypes } from '@/use-cases/core/categories/category-type';
+import { aCashflow } from '@/use-cases/core/flows/__tests__/cashflow-for-test';
+import { CashflowVariation } from '@/use-cases/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/use-cases/core/flows/create-flow/create-flow-command';
 import { TagList } from '@/use-cases/core/flows/tag-list';
-import { Transaction } from '@/use-cases/core/flows/transaction';
 import { FlowsRepositoryErrors } from '../core/flows/flows-repository';
 import { Tag } from '../core/flows/tag';
 import { FlowsRepositoryInPowersync } from './flows-repository-in-powersync';
@@ -28,74 +31,54 @@ describe('FlowsRepository', () => {
     await db.cleanupTestDb();
   });
 
-  it('should save a purchase transaction', async () => {
-    const purchase: CreateFlowCommand = {
-      date: DateOnly.valid('2026-01-23'),
-      amount: Money.valid(50.25),
-      description: 'Groceries',
-      accountId: Id.valid('acc-123'),
-      categoryId: Id.valid('cat-456'),
-      tags: TagList.valid(['tag-1']),
-    };
+  describe('create', () => {
+    it('should save a purchase transaction', async () => {
+      const purchase: CreateFlowCommand = {
+        date: DateOnly.valid('2026-01-23'),
+        amount: Money.valid(50.25),
+        description: 'Groceries',
+        accountId: Id.valid('acc-123'),
+        categoryId: Id.valid('cat-456'),
+        tags: TagList.valid(['tag-1']),
+      };
 
-    const result = await repository.create(purchase);
+      const result = await repository.create(purchase);
 
-    expect(result.isSuccess).toBe(true);
+      expect(result.isSuccess).toBe(true);
 
-    if (result.isFailure || result.isLoading) return;
+      if (result.isFailure || result.isLoading) return;
 
-    const dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE id = ?', [result.value]);
+      const dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE id = ?', [result.value]);
 
-    expect(dbResult).toHaveLength(1);
-    expect(dbResult[0].amount).toBe(5025); // 50.25 * 100
-    expect(dbResult[0].description).toBe('Groceries');
-    expect(dbResult[0].tags).toBe('tag-1');
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].amount).toBe(5025); // 50.25 * 100
+      expect(dbResult[0].description).toBe('Groceries');
+      expect(dbResult[0].tags).toBe('tag-1');
+    });
   });
 
-  xit('should save a transfer as two transactions', async () => {
-    // const formData: PurchaseFormData = {
-    //   purchaseType: PurchaseType.transfer,
-    //   date: '2026-01-23',
-    //   amount: 100,
-    //   description: 'Transfer to savings',
-    //   sourceAccount: { id: 'acc-checking', name: 'Checking' } as any,
-    //   targetAccount: { id: 'acc-savings', name: 'Savings' } as any,
-    //   category: { id: '', name: '', color: '', icon: '' } as any,
-    //   tags: [],
-    //   hasCashflow: false,
-    //   cashflowEffectiveDate: '',
-    //   cashflowIntervalType: 'monthly',
-    //   cashflowFrequency: 0,
-    // };
-    //
-    // const result = await repository.create(formData);
-    //
-    // expect(result.isFailure).toBe(false);
-    // if (result.isFailure) return;
-    //
-    // const transferId = result.value;
-    // expect(transferId).toBeDefined();
-    //
-    // const transactions = await db.getAll<any>('SELECT * FROM transactions WHERE description = ? ORDER BY amount', ['Transfer to savings']);
-    //
-    // expect(transactions).toHaveLength(2);
-    // // Debit
-    // expect(transactions[0].amount).toBe(-10000);
-    // expect(transactions[0].account_id).toBe('acc-checking');
-    // // Credit
-    // expect(transactions[1].amount).toBe(10000);
-    // expect(transactions[1].account_id).toBe('acc-savings');
-  });
-
-  describe('watchCashflows', () => {
-    it('retrieves cashflows', async () => {
-      const cashflow1 = await aCashflow().store(db);
-      const cashflow2 = await aCashflow().store(db);
+  describe('watchAccountVariations', () => {
+    it('retrieves account variations', async () => {
+      const account = await anAccount().store(db);
+      const expense = await aCategory({ type: CategoryTypes.expense }).store(db);
+      const gains = await aCategory({ type: CategoryTypes.gain }).store(db);
+      await aTransaction({
+        accountId: account.id,
+        categoryId: expense.id,
+        amount: Money.valid(123.45),
+        date: DateOnly.valid('2026-02-12'),
+      }).store(db);
+      await aTransaction({
+        accountId: account.id,
+        categoryId: gains.id,
+        amount: Money.valid(1000.0),
+        date: DateOnly.valid('2026-02-01'),
+      }).store(db);
 
       const repo = FlowsRepositoryInPowersync(db);
 
-      let result: Result<Cashflow[]> | undefined;
-      const unsubscribe = repo.watchCashflows((data) => {
+      let result: Result<AccountVariation[]> | undefined;
+      const unsubscribe = repo.watchAccountVariations((data) => {
         result = data;
       });
 
@@ -103,16 +86,23 @@ describe('FlowsRepository', () => {
         expect(result).toBeDefined();
       });
 
-      expect(result).toBeSuccessWithValue([toCashflow(cashflow1), toCashflow(cashflow2)]);
+      expect(result).toBeSuccessWithValue([
+        {
+          accountId: account.id,
+          gains: Money.valid(1000.0),
+          expenses: Money.valid(123.45),
+          lastTransactionDate: DateOnly.valid('2026-02-12'),
+        },
+      ]);
 
       unsubscribe();
     });
 
-    it('returns empty list when no cashflow exist', async () => {
+    it('returns empty list when no transaction exist', async () => {
       const repo = FlowsRepositoryInPowersync(db);
 
-      let result: Result<Cashflow[]> | undefined;
-      const unsubscribe = repo.watchCashflows((data) => {
+      let result: Result<AccountVariation[]> | undefined;
+      const unsubscribe = repo.watchAccountVariations((data) => {
         result = data;
       });
 
@@ -131,8 +121,8 @@ describe('FlowsRepository', () => {
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<Cashflow[]> | undefined;
-      const unsubscribe = repo.watchCashflows((data) => {
+      let result: Result<AccountVariation[]> | undefined;
+      const unsubscribe = repo.watchAccountVariations((data) => {
         result = data;
       });
 
@@ -146,15 +136,15 @@ describe('FlowsRepository', () => {
     });
   });
 
-  describe('watchTransactions', () => {
-    it('retrieves transactions', async () => {
-      const tx1 = await aTransaction().store(db);
-      const tx2 = await aTransaction().store(db);
+  describe('watchCashflows', () => {
+    it('retrieves cashflows never paid', async () => {
+      const category = await aCategory({ type: CategoryTypes.expense }).store(db);
+      const cashflow = await aCashflow({ categoryId: category.id, amount: Money.valid(100) }).store(db);
 
       const repo = FlowsRepositoryInPowersync(db);
 
-      let result: Result<Transaction[]> | undefined;
-      const unsubscribe = repo.watchTransactions((data) => {
+      let result: Result<CashflowVariation[]> | undefined;
+      const unsubscribe = repo.watchCashflowVariations((data) => {
         result = data;
       });
 
@@ -162,16 +152,67 @@ describe('FlowsRepository', () => {
         expect(result).toBeDefined();
       });
 
-      expect(result).toBeSuccessWithValue([toTransaction(tx1), toTransaction(tx2)]);
+      expect(result).toBeSuccessWithValue([
+        {
+          cashflowId: cashflow.id,
+          accountId: cashflow.accountId,
+          categoryType: category.type,
+          amount: Money.valid(100),
+          effectiveDate: cashflow.effectiveDate,
+          frequency: cashflow.frequency,
+          intervalType: cashflow.intervalType,
+          lastPaidDate: undefined,
+          lastCashflowDate: undefined,
+        },
+      ]);
 
       unsubscribe();
     });
 
-    it('returns empty list when no transaction exist', async () => {
+    it('retrieves cashflows paid', async () => {
+      const category = await aCategory({ type: CategoryTypes.expense }).store(db);
+      const cashflow = await aCashflow({ categoryId: category.id, amount: Money.valid(100) }).store(db);
+      const transaction = await aTransaction({
+        accountId: cashflow.accountId,
+        categoryId: cashflow.categoryId,
+        amount: Money.valid(100),
+        cashflowDate: DateOnly.valid('2025-12-31'),
+        cashflowId: cashflow.id,
+      }).store(db);
+
       const repo = FlowsRepositoryInPowersync(db);
 
-      let result: Result<Transaction[]> | undefined;
-      const unsubscribe = repo.watchTransactions((data) => {
+      let result: Result<CashflowVariation[]> | undefined;
+      const unsubscribe = repo.watchCashflowVariations((data) => {
+        result = data;
+      });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeSuccessWithValue([
+        {
+          cashflowId: cashflow.id,
+          accountId: cashflow.accountId,
+          categoryType: category.type,
+          amount: Money.valid(100),
+          effectiveDate: cashflow.effectiveDate,
+          frequency: cashflow.frequency,
+          intervalType: cashflow.intervalType,
+          lastPaidDate: transaction.date,
+          lastCashflowDate: transaction.cashflowDate,
+        },
+      ]);
+
+      unsubscribe();
+    });
+
+    it('returns empty list when no cashflow exist', async () => {
+      const repo = FlowsRepositoryInPowersync(db);
+
+      let result: Result<CashflowVariation[]> | undefined;
+      const unsubscribe = repo.watchCashflowVariations((data) => {
         result = data;
       });
 
@@ -190,8 +231,8 @@ describe('FlowsRepository', () => {
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<Transaction[]> | undefined;
-      const unsubscribe = repo.watchTransactions((data) => {
+      let result: Result<CashflowVariation[]> | undefined;
+      const unsubscribe = repo.watchCashflowVariations((data) => {
         result = data;
       });
 

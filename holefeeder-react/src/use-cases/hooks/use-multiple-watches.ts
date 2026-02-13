@@ -28,6 +28,7 @@ export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchRe
   const isLoading = Object.values(results).some((r: any) => r.isLoading);
 
   const errors = Object.values(results).flatMap((r: any) => (r.isFailure ? r.errors : []));
+  if (errors.length > 0) console.error(errors);
 
   const hasErrors = errors.length > 0;
 

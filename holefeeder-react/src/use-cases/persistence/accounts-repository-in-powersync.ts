@@ -18,7 +18,20 @@ type AccountRow = {
 export const AccountsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): AccountsRepository => {
   const watch = (onDataChange: (result: Result<Account[]>) => void) => {
     const query = db.query<AccountRow>({
-      sql: 'SELECT id, type, name, open_balance as openBalance, open_date as openDate, description, favorite, inactive FROM accounts',
+      sql: `
+        SELECT 
+          id, 
+          type, 
+          name, 
+          open_balance as openBalance, 
+          open_date as openDate, 
+          description, 
+          favorite, 
+          inactive 
+        FROM accounts
+        WHERE inactive = 0
+        ORDER BY favorite DESC, name ASC
+      `,
       parameters: [],
     });
 

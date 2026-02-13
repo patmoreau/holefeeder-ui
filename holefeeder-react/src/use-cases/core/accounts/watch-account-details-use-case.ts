@@ -2,10 +2,12 @@ import { Result } from '@/shared/core/result';
 import { Variation } from '@/shared/core/variation';
 import { combineWatchers } from '@/shared/core/watch-utils';
 import { AccountDetail } from '@/use-cases/core/accounts/account-detail';
+import { AccountType } from '@/use-cases/core/accounts/account-type';
+import { AccountVariation } from '@/use-cases/core/accounts/account-variation';
 import { DateInterval } from '@/use-cases/core/date-interval';
-import { Cashflow } from '@/use-cases/core/flows/cashflow';
+import { CashflowVariation } from '@/use-cases/core/flows/cashflow-variation';
 import { FlowsRepository } from '@/use-cases/core/flows/flows-repository';
-import { Transaction } from '@/use-cases/core/flows/transaction';
+import { CategoryType, CategoryTypes } from '../categories/category-type';
 import { Account } from './account';
 import { AccountsRepository } from './accounts-repository';
 
@@ -14,38 +16,51 @@ export const WatchAccountDetailsUseCase = (
   accountsRepository: AccountsRepository,
   flowsRepository: FlowsRepository
 ) => {
+  const mapToAccountDetail = (accountVariations: AccountVariation[], cashflowVariations: CashflowVariation[], dateInterval: DateInterval) => {
+    return (account: Account) => {
+      const accountBenchmark = accountVariations.find((benchmark) => benchmark.accountId === account.id);
+      const lastTransactionDate = accountBenchmark ? accountBenchmark.lastTransactionDate : account.openDate;
+      const expenses = Variation.valid(accountBenchmark ? accountBenchmark.expenses : 0);
+      const gains = Variation.valid(accountBenchmark ? accountBenchmark.gains : 0);
+
+      const net = Variation.sum(
+        Variation.multiply(gains, CategoryType.multiplier[CategoryTypes.gain]),
+        Variation.multiply(expenses, CategoryType.multiplier[CategoryTypes.expense])
+      );
+      const balance = Variation.sum(account.openBalance, Variation.multiply(net, AccountType.multiplier[account.type]));
+
+      const accountCashflows = cashflowVariations.filter((cashflow) => cashflow.accountId === account.id);
+
+      const upcomingVariation = accountCashflows.reduce(
+        (acc, curr) => Variation.sum(acc, CashflowVariation.forVariation(curr).calculateUpcomingVariation(dateInterval.end)),
+        Variation.ZERO
+      );
+
+      return AccountDetail.valid({
+        id: account.id,
+        name: account.name,
+        balance: balance,
+        lastTransactionDate: lastTransactionDate,
+        projectedBalance: Variation.sum(balance, upcomingVariation),
+        upcomingVariation: upcomingVariation,
+      });
+    };
+  };
+
   const watchAccounts = (onDataChange: (result: Result<Account[]>) => void) => accountsRepository.watch((result) => onDataChange(result));
 
-  const watchCashflows = (onDataChange: (result: Result<Cashflow[]>) => void) =>
-    flowsRepository.watchCashflows((result) => onDataChange(result));
+  const watchAccountVariations = (onDataChange: (result: Result<AccountVariation[]>) => void) =>
+    flowsRepository.watchAccountVariations((result) => onDataChange(result));
 
-  const watchTransactions = (onDataChange: (result: Result<Transaction[]>) => void) =>
-    flowsRepository.watchTransactions((result) => onDataChange(result));
+  const watchCashflowVariations = (onDataChange: (result: Result<CashflowVariation[]>) => void) =>
+    flowsRepository.watchCashflowVariations((result) => onDataChange(result));
 
-  const queryDetails = (onDataChange: (result: Result<AccountDetail[]>) => void) => {
-    return combineWatchers(
-      [watchAccounts, watchCashflows, watchTransactions],
-      (accounts: Account[], cashflows: Cashflow[], transactions: Transaction[]) =>
-        accounts.map((account) => {
-          const accountCashflows = cashflows.filter((cashflow) => cashflow.accountId === account.id);
-          const accountTransactions = transactions.filter((transaction) => transaction.accountId === account.id);
-          const forTransactions = Cashflow.forTransactions(accountTransactions);
-          const upcomingVariation = accountCashflows.reduce(
-            (acc, curr) => Variation.sum(acc, forTransactions.calculateUpcomingVariation(curr, dateInterval.end)),
-            Variation.ZERO
-          );
-          const balance = Transaction.calculateBalance(account, accountTransactions);
-          return AccountDetail.valid({
-            id: account.id,
-            name: account.name,
-            balance: balance,
-            lastTransactionDate: Transaction.calculateUpdatedDate(account, accountTransactions),
-            projectedBalance: Variation.sum(balance, upcomingVariation),
-            upcomingVariation: upcomingVariation,
-          });
-        })
+  const queryDetails = (onDataChange: (result: Result<AccountDetail[]>) => void) =>
+    combineWatchers(
+      [watchAccounts, watchAccountVariations, watchCashflowVariations],
+      (accounts: Account[], accountVariations: AccountVariation[], cashflowVariations: CashflowVariation[]) =>
+        accounts.map(mapToAccountDetail(accountVariations, cashflowVariations, dateInterval))
     )(onDataChange);
-  };
 
   return {
     queryDetails: queryDetails,

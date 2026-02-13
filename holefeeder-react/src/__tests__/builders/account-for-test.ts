@@ -26,7 +26,7 @@ const defaultAccount = (): Account => ({
 const times = (count: number, overrides?: Partial<Account>): AccountForTest[] => Array.from({ length: count }, () => anAccount(overrides));
 
 const store = async (db: AbstractPowerSyncDatabase, account: AccountForTest): Promise<AccountForTest> => {
-  await db.execute(
+  const result = await db.execute(
     'INSERT INTO accounts (id, type, name, favorite, open_balance, open_date, description, inactive, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
       account.id,

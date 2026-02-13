@@ -2,18 +2,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
 import { Result } from '@/shared/core/result';
 import { DashboardComputedSummary, WatchSummaryUseCase } from '@/use-cases/core/dashboard/watch-summary-use-case';
+import { DefaultSettings } from '@/use-cases/core/store-items/settings';
 import { useSettings } from '../store-items/use-settings';
 
 export const useDashboard = (): Result<DashboardComputedSummary> => {
   const { dashboardRepository } = useRepositories();
-  const settings = useSettings();
+  const settingsResult = useSettings();
   const [summary, setSummary] = useState<Result<DashboardComputedSummary>>(Result.loading());
 
+  const settings = Result.isSuccess(settingsResult) ? settingsResult.value : DefaultSettings;
+
   const useCase = useMemo(() => {
-    if (Result.isSuccess(settings)) {
-      return WatchSummaryUseCase(settings.value, dashboardRepository);
-    }
-    return undefined;
+    return WatchSummaryUseCase(settings, dashboardRepository);
   }, [dashboardRepository, settings]);
 
   useEffect(() => {
@@ -23,14 +23,6 @@ export const useDashboard = (): Result<DashboardComputedSummary> => {
     const unsubscribe = useCase.query(setSummary);
     return () => unsubscribe();
   }, [useCase]);
-
-  if (Result.isLoading(settings)) {
-    return Result.loading();
-  }
-
-  if (Result.isFailure(settings)) {
-    return Result.failure(settings.errors);
-  }
 
   return summary;
 };

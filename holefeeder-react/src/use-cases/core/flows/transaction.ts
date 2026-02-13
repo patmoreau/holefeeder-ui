@@ -1,9 +1,6 @@
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
-import { Variation } from '@/shared/core/variation';
-import { Account } from '@/use-cases/core/accounts/account';
-import { AccountType } from '@/use-cases/core/accounts/account-type';
 import { CategoryType } from '@/use-cases/core/categories/category-type';
 import { TagList } from './tag-list';
 
@@ -33,19 +30,4 @@ const valid = (value: Record<string, unknown>): Transaction => ({
   cashflowDate: value.cashflowDate ? DateOnly.valid(value.cashflowDate as DateOnly) : undefined,
 });
 
-const calculateBalance = (account: Account, transactions: Transaction[]) =>
-  transactions.reduce((acc, curr) => {
-    return Variation.sum(
-      acc,
-      Variation.multiply(
-        Variation.multiply(Variation.valid(curr.amount), CategoryType.multiplier[curr.categoryType]),
-        AccountType.multiplier[account.type]
-      )
-    );
-  }, account.openBalance);
-
-const calculateUpdatedDate = (account: Account, transactions: Transaction[]) => {
-  return transactions.length > 0 ? transactions.reduce((acc, curr) => (acc > curr.date ? acc : curr.date), '') : account.openDate;
-};
-
-export const Transaction = { valid: valid, calculateBalance: calculateBalance, calculateUpdatedDate: calculateUpdatedDate };
+export const Transaction = { valid: valid };

@@ -3,44 +3,11 @@ import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
-import { Cashflow } from '@/use-cases/core/flows/cashflow';
+import { AccountVariation } from '@/use-cases/core/accounts/account-variation';
+import { CashflowVariation } from '@/use-cases/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/use-cases/core/flows/create-flow/create-flow-command';
 import { FlowsRepository, FlowsRepositoryErrors } from '@/use-cases/core/flows/flows-repository';
 import { Tag } from '@/use-cases/core/flows/tag';
-import { Transaction } from '@/use-cases/core/flows/transaction';
-
-type CashflowRow = {
-  id: string;
-  effectiveDate: string;
-  amount: number;
-  intervalType: string;
-  frequency: number;
-  recurrence: number;
-  description: string;
-  accountId: string;
-  categoryId: string;
-  categoryType: string;
-  inactive: number;
-  tags: string;
-};
-
-type TransactionRow = {
-  id: string;
-  date: string;
-  amount: number;
-  description: string;
-  accountId: string;
-  categoryId: string;
-  categoryType: string;
-  cashflowId: string | null;
-  cashflowDate: string | null;
-  tags: string;
-};
-
-type TagRow = {
-  tag: string;
-  count: number;
-};
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
@@ -115,24 +82,19 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  const watchCashflows = (onDataChange: (result: Result<Cashflow[]>) => void) => {
-    const query = db.query<CashflowRow>({
+  const watchAccountVariations = (onDataChange: (result: Result<AccountVariation[]>) => void) => {
+    const query = db.query<{ accountId: string; lastTransactionDate: string; expenses: number; gains: number }>({
       sql: `
         SELECT
-          c.id,
-          c.effective_date as effectiveDate,
-          c.amount,
-          c.interval_type as intervalType,
-          c.frequency,
-          c.recurrence,
-          c.description,
-          c.account_id as accountId,
-          c.category_id as categoryId,
-          cc.type as categoryType,
-          c.inactive,
-          c.tags
-        FROM cashflows c
-               INNER JOIN categories cc ON cc.id = c.category_id;
+          t.account_id as accountId,
+          MAX(t.date) as lastTransactionDate,
+          SUM(CASE WHEN lower(c.type) = 'expense' THEN t.amount ELSE 0 END) as expenses,
+          SUM(CASE WHEN lower(c.type) = 'gain' THEN t.amount ELSE 0 END) as gains
+        FROM transactions t
+        JOIN categories c ON t.category_id = c.id
+        JOIN accounts a ON a.id = t.account_id
+        WHERE a.inactive = 0
+        GROUP BY t.account_id
       `,
       parameters: [],
     });
@@ -146,11 +108,10 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           : onDataChange(
               Result.success(
                 data.map((row) =>
-                  Cashflow.valid({
+                  AccountVariation.valid({
                     ...row,
-                    amount: Money.fromCents(row.amount),
-                    inactive: row.inactive === 1,
-                    tags: row.tags.split(',').filter((tag) => tag !== '') as string[],
+                    expenses: Money.fromCents(row.expenses),
+                    gains: Money.fromCents(row.gains),
                   })
                 )
               )
@@ -159,22 +120,34 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     });
   };
 
-  const watchTransactions = (onDataChange: (result: Result<Transaction[]>) => void) => {
-    const query = db.query<TransactionRow>({
+  const watchCashflowVariations = (onDataChange: (result: Result<CashflowVariation[]>) => void) => {
+    const query = db.query<{
+      accountId: string;
+      cashflowId: string;
+      lastPaidDate: string;
+      lastCashflowDate: string;
+      amount: number;
+      effectiveDate: string;
+      frequency: number;
+      intervalType: string;
+      categoryType: string;
+    }>({
       sql: `
-          SELECT
-            t.id,
-            t.date,
-            t.amount,
-            t.description,
-            t.account_id as accountId,
-            t.category_id as categoryId,
-            c.type as categoryType,
-            t.cashflow_id as cashflowId,
-            t.cashflow_date as cashflowDate,
-            t.tags
-          FROM transactions t
-          INNER JOIN categories c ON c.id = category_id;
+        SELECT
+          c.account_id as accountId,
+          c.id as cashflowId,
+          MAX(t.date) as lastPaidDate,
+          MAX(t.cashflow_date) as lastCashflowDate,
+          c.amount,
+          c.effective_date as effectiveDate,
+          c.frequency,
+          c.interval_type as intervalType,
+          cc.type as categoryType
+        FROM cashflows c
+        LEFT JOIN transactions t ON t.cashflow_id = c.id
+        JOIN categories cc ON cc.id = c.category_id
+        WHERE c.inactive = 0
+        GROUP BY c.id, c.account_id, c.amount, c.effective_date, c.frequency, c.interval_type, cc.type
       `,
       parameters: [],
     });
@@ -188,10 +161,9 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           : onDataChange(
               Result.success(
                 data.map((row) =>
-                  Transaction.valid({
+                  CashflowVariation.valid({
                     ...row,
                     amount: Money.fromCents(row.amount),
-                    tags: row.tags.split(',').filter((tag) => tag !== '') as string[],
                   })
                 )
               )
@@ -201,7 +173,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
   };
 
   const watchTags = (onDataChange: (result: Result<Tag[]>) => void) => {
-    const query = db.query<TagRow>({
+    const query = db.query<{ tag: string; count: number }>({
       sql: `
           WITH RECURSIVE split(tag, remainder) AS
                      (SELECT
@@ -236,5 +208,10 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     });
   };
 
-  return { create: create, watchCashflows: watchCashflows, watchTransactions: watchTransactions, watchTags: watchTags };
+  return {
+    create: create,
+    watchTags: watchTags,
+    watchAccountVariations: watchAccountVariations,
+    watchCashflowVariations: watchCashflowVariations,
+  };
 };

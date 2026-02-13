@@ -97,9 +97,13 @@ describe('DashboardRepositoryInPowersync', () => {
       const repo = DashboardRepositoryInPowersync(db);
 
       let result: Result<any> | undefined;
-      const unsubscribe = repo.watch((data) => {
-        result = data;
-      });
+      const unsubscribe = repo.watch(
+        (data) => {
+          result = data;
+        },
+        'daily',
+        1
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -150,9 +154,13 @@ describe('DashboardRepositoryInPowersync', () => {
       const repo = DashboardRepositoryInPowersync(db);
 
       let result: Result<any> | undefined;
-      const unsubscribe = repo.watch((data) => {
-        result = data;
-      });
+      const unsubscribe = repo.watch(
+        (data) => {
+          result = data;
+        },
+        'daily',
+        1
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -170,9 +178,13 @@ describe('DashboardRepositoryInPowersync', () => {
       await db.close();
 
       let result: Result<any> | undefined;
-      const unsubscribe = repo.watch((data) => {
-        result = data;
-      });
+      const unsubscribe = repo.watch(
+        (data) => {
+          result = data;
+        },
+        'daily',
+        1
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();

@@ -10,13 +10,27 @@ import { Money } from '@/shared/core/money';
 import { Variation } from '@/shared/core/variation';
 import { AccountTypes } from '@/use-cases/core/accounts/account-type';
 import { CategoryTypes } from '@/use-cases/core/categories/category-type';
+import { aCashflow } from '@/use-cases/core/flows/__tests__/cashflow-for-test';
 import { useAccountDetails } from '@/use-cases/hooks/accounts/use-account-details';
 
 describe('useAccountDetails', () => {
   let db: DatabaseForTest;
   const account = anAccount({ openBalance: Variation.valid(100), type: AccountTypes.creditCard });
   const category = aCategory({ type: CategoryTypes.expense });
-  const transaction = aTransaction({ amount: Money.valid(123.45), date: DateOnly.valid('2025-01-01') }, account, category);
+  const cashflow = aCashflow({
+    accountId: account.id,
+    categoryId: category.id,
+    amount: Money.valid(123.45),
+    effectiveDate: DateOnly.valid('2025-01-01'),
+  });
+  const transaction = aTransaction({
+    accountId: account.id,
+    categoryId: category.id,
+    amount: Money.valid(123.45),
+    date: DateOnly.valid('2025-01-01'),
+    cashflowId: cashflow.id,
+    cashflowDate: cashflow.effectiveDate,
+  });
 
   const createHook = async () =>
     await waitFor(() =>
@@ -28,6 +42,9 @@ describe('useAccountDetails', () => {
   beforeEach(async () => {
     db = await setupDatabaseForTest();
 
+    await account.store(db);
+    await category.store(db);
+    await cashflow.store(db);
     await transaction.store(db);
   });
 
@@ -50,8 +67,8 @@ describe('useAccountDetails', () => {
         name: account.name,
         balance: Variation.valid(223.45),
         lastTransactionDate: DateOnly.valid('2025-01-01'),
-        projectedBalance: Variation.ZERO,
-        upcomingVariation: Variation.ZERO,
+        projectedBalance: Variation.valid(223.45),
+        upcomingVariation: Variation.valid(0),
       },
     ]);
   });

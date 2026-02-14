@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
+import { Tag } from '@/domain/core/flows/tag';
 import { useTagList } from '@/features/purchase/core/use-tag-list';
 import { FilterField } from '@/features/purchase/ui/components/fields/FilterField';
 import { AppField } from '@/features/shared/ui/AppField';
@@ -11,7 +12,6 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { Tag } from '@/use-cases/core/flows/tag';
 
 export type TagListProps = {
   tags: Tag[];

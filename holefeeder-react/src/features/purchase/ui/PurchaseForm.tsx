@@ -1,13 +1,13 @@
 import { useNavigation } from 'expo-router';
 import React, { useLayoutEffect } from 'react';
+import { Account } from '@/domain/core/accounts/account';
+import { Category } from '@/domain/core/categories/category';
+import { Tag } from '@/domain/core/flows/tag';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { PurchaseFormContent } from '@/features/purchase/ui/PurchaseFormContent';
 import { useFormActions } from '@/features/shared/core/use-form-actions';
 import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { AppIcons } from '@/types/icons';
-import { Account } from '@/use-cases/core/accounts/account';
-import { Category } from '@/use-cases/core/categories/category';
-import { Tag } from '@/use-cases/core/flows/tag';
 
 interface PurchaseFormProps {
   accounts: Account[];

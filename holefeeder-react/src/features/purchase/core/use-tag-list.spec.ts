@@ -1,6 +1,6 @@
 import { act, renderHook, RenderHookResult } from '@testing-library/react-native';
-import { aTag } from '@/__tests__/builders/tag-for-test';
-import { Tag } from '@/use-cases/core/flows/tag';
+import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
+import { Tag } from '@/domain/core/flows/tag';
 import { useTagList } from './use-tag-list';
 
 const firstTag = aTag({ tag: 'first-tag', count: 1 });

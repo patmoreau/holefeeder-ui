@@ -1,4 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import { Account } from '@/domain/core/accounts/account';
+import { Category } from '@/domain/core/categories/category';
+import { Tag } from '@/domain/core/flows/tag';
 import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { BasicSection } from '@/features/purchase/ui/BasicSection';
@@ -7,9 +10,6 @@ import { AmountField, AmountFieldRef } from '@/features/purchase/ui/components/f
 import { PurchaseTransferSection } from '@/features/purchase/ui/PurchaseTransferSection';
 import { TransferSection } from '@/features/purchase/ui/TransferSection';
 import { AppForm } from '@/features/shared/ui/AppForm';
-import { Account } from '@/use-cases/core/accounts/account';
-import { Category } from '@/use-cases/core/categories/category';
-import { Tag } from '@/use-cases/core/flows/tag';
 
 type PurchaseFormProps = {
   accounts: Account[];

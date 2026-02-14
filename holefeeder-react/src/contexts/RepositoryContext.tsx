@@ -1,15 +1,15 @@
 import { usePowerSync } from '@powersync/react-native';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
-import { AccountsRepository } from '@/use-cases/core/accounts/accounts-repository';
-import { CategoriesRepository } from '@/use-cases/core/categories/categories-repository';
-import { DashboardRepository } from '@/use-cases/core/dashboard/dashboard-repository';
-import { FlowsRepository } from '@/use-cases/core/flows/flows-repository';
-import { StoreItemsRepository } from '@/use-cases/core/store-items/store-items-repository';
-import { AccountsRepositoryInPowersync } from '@/use-cases/persistence/accounts-repository-in-powersync';
-import { CategoriesRepositoryInPowersync } from '@/use-cases/persistence/categories-repository-in-powersync';
-import { DashboardRepositoryInPowersync } from '@/use-cases/persistence/dashboard-repository-in-powersync';
-import { FlowsRepositoryInPowersync } from '@/use-cases/persistence/flows-repository-in-powersync';
-import { StoreItemsRepositoryInPowersync } from '@/use-cases/persistence/store-items-repository-in-powersync';
+import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
+import { CategoriesRepository } from '@/domain/core/categories/categories-repository';
+import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
+import { FlowsRepository } from '@/domain/core/flows/flows-repository';
+import { StoreItemsRepository } from '@/domain/core/store-items/store-items-repository';
+import { AccountsRepositoryInPowersync } from '@/domain/persistence/accounts/accounts-repository-in-powersync';
+import { CategoriesRepositoryInPowersync } from '@/domain/persistence/categories/categories-repository-in-powersync';
+import { DashboardRepositoryInPowersync } from '@/domain/persistence/dashboard/dashboard-repository-in-powersync';
+import { FlowsRepositoryInPowersync } from '@/domain/persistence/flows/flows-repository-in-powersync';
+import { StoreItemsRepositoryInPowersync } from '@/domain/persistence/store-items/store-items-repository-in-powersync';
 
 export type Repositories = {
   accountRepository: AccountsRepository;

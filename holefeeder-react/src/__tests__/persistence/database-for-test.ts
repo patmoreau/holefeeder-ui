@@ -12,7 +12,7 @@ import {
 } from '@powersync/react-native';
 import Database from 'better-sqlite3';
 import { DatabaseAdapterForTest } from '@/__tests__/persistence/database-adapter-for-test';
-import { AppSchema } from '@/shared/persistence/app-schema';
+import { AppSchema } from '@/domain/persistence/app-schema';
 
 export class DatabaseForTest extends AbstractPowerSyncDatabase {
   async _initialize(): Promise<void> {

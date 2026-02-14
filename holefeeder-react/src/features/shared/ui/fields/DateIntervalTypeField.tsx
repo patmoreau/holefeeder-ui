@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { DateIntervalType, DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppPicker, PickerOption } from '@/features/shared/ui/components/AppPicker';
 import { tk } from '@/i18n/translations';
-import { DateIntervalType, DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { AppIcons } from '@/types/icons';
 
 const tkTypes: Record<DateIntervalType, string> = {

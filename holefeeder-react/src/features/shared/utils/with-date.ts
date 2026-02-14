@@ -1,5 +1,5 @@
 import { format, parse, startOfDay } from 'date-fns';
-import { DateOnly } from '@/shared/core/date-only';
+import { DateOnly } from '@/domain/core/date-only';
 
 export const withDate = (date: Date | DateOnly) => {
   const fromDateOnly = (dateOnly: DateOnly): Date => {

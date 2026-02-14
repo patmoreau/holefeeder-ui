@@ -1,8 +1,8 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { Repositories, useRepositories } from '@/contexts/RepositoryContext';
+import { ErrorKey } from '@/domain/core/error-key';
+import { Result } from '@/domain/core/result';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
-import { ErrorKey } from '@/shared/core/error-key';
-import { Result } from '@/shared/core/result';
 
 export type ValidationFunction<T, E extends string> = (formData: T) => Partial<Record<keyof T, E>>;
 

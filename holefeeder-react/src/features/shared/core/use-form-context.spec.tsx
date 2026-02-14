@@ -3,9 +3,9 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Button, Text } from 'react-native';
 import { Repositories, RepositoryContext } from '@/contexts/RepositoryContext';
+import { ErrorKey } from '@/domain/core/error-key';
+import { Result } from '@/domain/core/result';
 import { createFormDataContext } from '@/features/shared/core/use-form-context';
-import { ErrorKey } from '@/shared/core/error-key';
-import { Result } from '@/shared/core/result';
 
 // Mock usePowerSync
 const mockDb = {

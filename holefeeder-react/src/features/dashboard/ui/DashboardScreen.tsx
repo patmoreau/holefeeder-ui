@@ -7,13 +7,13 @@ import { AppView } from '@/features/shared/ui/AppView';
 import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
+import { useAccountDetails } from '@/presentation/hooks/accounts/use-account-details';
+import { useDashboard } from '@/presentation/hooks/dashboard/use-dashboard';
+import { useMultipleWatches } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { useAccountDetails } from '@/use-cases/hooks/accounts/use-account-details';
-import { useDashboard } from '@/use-cases/hooks/dashboard/use-dashboard';
-import { useMultipleWatches } from '@/use-cases/hooks/use-multiple-watches';
 
 const createStyles = (theme: Theme) => ({
   container: {

@@ -1,4 +1,4 @@
-import { Result, Success } from '@/shared/core/result';
+import { Result, Success } from '@/domain/core/result';
 
 declare global {
   namespace jest {

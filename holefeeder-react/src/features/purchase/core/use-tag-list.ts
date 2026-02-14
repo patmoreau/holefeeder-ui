@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Result } from '@/shared/core/result';
-import { Tag } from '@/use-cases/core/flows/tag';
+import { Tag } from '@/domain/core/flows/tag';
+import { Result } from '@/domain/core/result';
 
 export const useTagList = ({ tags, selected, onChange }: { tags: Tag[]; selected: Tag[]; onChange: (next: Tag[]) => void }) => {
   const [filter, setFilter] = useState('');

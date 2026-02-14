@@ -1,6 +1,6 @@
 import { addMonths } from 'date-fns';
+import { DateOnly } from '@/domain/core/date-only';
 import { withDate } from '@/features/shared/utils/with-date';
-import { DateOnly } from '@/shared/core/date-only';
 
 describe('with-date', () => {
   describe('toDateOnly', () => {

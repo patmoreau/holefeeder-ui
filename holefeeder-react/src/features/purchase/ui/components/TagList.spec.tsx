@@ -1,10 +1,10 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import React, { useState } from 'react';
-import { aTag } from '@/__tests__/builders/tag-for-test';
 import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
+import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
+import { Tag } from '@/domain/core/flows/tag';
 import { TagList } from '@/features/purchase/ui/components/TagList';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { Tag } from '@/use-cases/core/flows/tag';
 
 jest.mock('@/shared/hooks/theme/use-theme', () => ({
   useTheme: jest.fn(),

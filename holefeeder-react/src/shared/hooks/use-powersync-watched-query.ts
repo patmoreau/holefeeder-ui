@@ -1,6 +1,6 @@
 import { usePowerSync } from '@powersync/react-native';
 import { useCallback, useEffect, useState } from 'react';
-import { UseQueryResult } from '@/use-cases/hooks/use-queries-handler';
+import { UseQueryResult } from '@/presentation/hooks/use-queries-handler';
 
 export const usePowerSyncWatchedQuery = <T, R = T>(
   queryName: string,

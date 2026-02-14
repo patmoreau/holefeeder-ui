@@ -2,6 +2,7 @@ import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text } from 'react-native';
+import { Account } from '@/domain/core/accounts/account';
 import { PurchaseFormError, usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
 import { AccountField } from '@/features/purchase/ui/components/fields/AccountField';
 import { DescriptionField } from '@/features/purchase/ui/components/fields/DescriptionField';
@@ -9,7 +10,6 @@ import { AppSection } from '@/features/shared/ui/AppSection';
 import { DateField } from '@/features/shared/ui/fields/DateField';
 import { tk } from '@/i18n/translations';
 import { fontSize, spacing } from '@/types/theme/design-tokens';
-import { Account } from '@/use-cases/core/accounts/account';
 
 const tkErrors: Record<PurchaseFormError, string> = {
   [PurchaseFormError.accountRequired]: tk.purchase.errors.accountRequired,

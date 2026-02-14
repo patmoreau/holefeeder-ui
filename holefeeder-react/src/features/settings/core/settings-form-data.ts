@@ -1,4 +1,4 @@
-import { DateIntervalType } from '@/shared/core/date-interval-type';
+import { DateIntervalType } from '@/domain/core/date-interval-type';
 
 export type SettingsFormData = {
   effectiveDate: string;

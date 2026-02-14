@@ -2,8 +2,8 @@ import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import React from 'react';
 import { anAppState } from '@/__tests__/mocks/app-state-builder';
 import { useAppContext } from '@/contexts/AppContext';
+import { ErrorKey } from '@/domain/core/error-key';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
-import { ErrorKey } from '@/shared/core/error-key';
 
 jest.mock('@/contexts/AppContext');
 const mockUseAppContext = jest.mocked(useAppContext);

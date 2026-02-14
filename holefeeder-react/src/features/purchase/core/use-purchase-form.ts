@@ -1,9 +1,9 @@
 import { Repositories } from '@/contexts/RepositoryContext';
+import { Money } from '@/domain/core/money';
+import { Result } from '@/domain/core/result';
 import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { createFormDataContext, ValidationFunction } from '@/features/shared/core/use-form-context';
-import { Money } from '@/shared/core/money';
-import { Result } from '@/shared/core/result';
-import { CreateFlowForm } from '@/use-cases/hooks/flows/create-flow/create-flow-form';
+import { CreateFlowForm } from '@/presentation/hooks/flows/create-flow/create-flow-form';
 
 export const PurchaseFormError = {
   sameAccount: 'sameAccount',

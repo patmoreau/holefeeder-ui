@@ -1,7 +1,7 @@
-import { DateIntervalType } from '@/shared/core/date-interval-type';
-import { Account } from '@/use-cases/core/accounts/account';
-import { Category } from '@/use-cases/core/categories/category';
-import { Tag } from '@/use-cases/core/flows/tag';
+import { Account } from '@/domain/core/accounts/account';
+import { Category } from '@/domain/core/categories/category';
+import { DateIntervalType } from '@/domain/core/date-interval-type';
+import { Tag } from '@/domain/core/flows/tag';
 
 export const PurchaseType = {
   expense: 'expense',

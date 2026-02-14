@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, type ViewProps } from 'react-native';
+import { AccountDetail } from '@/domain/core/accounts/account-detail';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { AccountDetail } from '@/use-cases/core/accounts/account-detail';
 
 export type AccountCardProps = ViewProps & {
   account: AccountDetail;

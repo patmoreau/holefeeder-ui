@@ -9,12 +9,12 @@ import ErrorBoundary from 'react-native-error-boundary';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
 import { RepositoryProvider } from '@/contexts/RepositoryContext';
+import { db } from '@/domain/persistence/db';
+import { PowerSyncConnection } from '@/domain/persistence/PowerSyncConnection';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useQuickActions } from '@/shared/hooks/use-quick-actions';
-import { db } from '@/shared/persistence/db';
-import { PowerSyncConnection } from '@/shared/persistence/PowerSyncConnection';
 
 (function addConsoleTimestamp() {
   const methods: (keyof Console)[] = ['log', 'info', 'warn', 'error', 'debug'];

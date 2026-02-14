@@ -6,10 +6,10 @@ import { AppScreen } from '@/features/shared/ui/AppScreen';
 import { AppView } from '@/features/shared/ui/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
+import { useSettings } from '@/presentation/hooks/store-items/use-settings';
+import { useMultipleWatches } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
-import { useSettings } from '@/use-cases/hooks/store-items/use-settings';
-import { useMultipleWatches } from '@/use-cases/hooks/use-multiple-watches';
 
 const createStyles = (theme: Theme) => ({
   container: {

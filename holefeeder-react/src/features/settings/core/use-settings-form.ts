@@ -1,9 +1,9 @@
 import { Repositories } from '@/contexts/RepositoryContext';
+import { Result } from '@/domain/core/result';
+import { SaveSettingsCommand } from '@/domain/core/store-items/save-settings/save-settings-command';
+import { SaveSettingsUseCase } from '@/domain/core/store-items/save-settings/save-settings-use-case';
 import { SettingsFormData } from '@/features/settings/core/settings-form-data';
 import { createFormDataContext, ValidationFunction } from '@/features/shared/core/use-form-context';
-import { Result } from '@/shared/core/result';
-import { SaveSettingsCommand } from '@/use-cases/core/store-items/save-settings/save-settings-command';
-import { SaveSettingsUseCase } from '@/use-cases/core/store-items/save-settings/save-settings-use-case';
 
 export const SettingsFormError = {
   effectiveDateRequired: 'effectiveDateRequired',

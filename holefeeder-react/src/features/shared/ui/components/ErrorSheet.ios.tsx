@@ -3,9 +3,9 @@ import { frame, padding } from '@expo/ui/swift-ui/modifiers';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowDimensions } from 'react-native';
+import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/domain/core/error-key';
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
 import { tk } from '@/i18n/translations';
-import { ErrorKey, tkErrorMessages, tkErrorTitles } from '@/shared/core/error-key';
 
 type Props = {
   showError: boolean;

@@ -1,5 +1,5 @@
-import { aStoreItem, toStoreItem } from '@/domain/core/__tests__/store-item-for-test';
 import { Id, IdErrors } from '@/domain/core/id';
+import { aStoreItem, toStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { StoreItem, StoreItemErrors } from './store-item';
 
 describe('StoreItem', () => {

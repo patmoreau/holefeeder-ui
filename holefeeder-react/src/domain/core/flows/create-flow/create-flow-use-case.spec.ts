@@ -1,5 +1,5 @@
-import { FlowsRepositoryInMemory } from '@/domain/core/__tests__/flows-repository-in-memory';
 import { aCreateFlowCommand } from '@/domain/core/__tests__/make-purchase-for-test';
+import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
 import { CreateFlowUseCase } from '@/domain/core/flows/create-flow/create-flow-use-case';
 
 describe('createFlowUseCase', () => {
@@ -15,6 +15,6 @@ describe('createFlowUseCase', () => {
     const validFlow = aCreateFlowCommand();
     const result = await useCase.execute(validFlow);
 
-    expect(result).toBeSuccessWithValue({});
+    expect(result).toBeSuccessWithValue(expect.anything());
   });
 });

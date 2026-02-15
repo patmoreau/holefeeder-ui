@@ -1,22 +1,21 @@
 import { waitFor } from '@testing-library/react-native';
+import { CategoriesRepositoryInMemory } from '@/domain/core/categories/__tests__/categories-repository-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
 import { Result } from '@/domain/core/result';
-import { CategoriesRepository } from '../categories-repository';
-import { Category } from '../category';
 import { WatchCategoriesUseCase } from './watch-categories-use-case';
 
-const createMockRepository = (result: Result<Category[]>): CategoriesRepository => ({
-  watch: jest.fn((onDataChange) => {
-    onDataChange(result);
-    return jest.fn(); // Return unsubscribe function
-  }),
-});
-
 describe('WatchCategoriesUseCase', () => {
-  it('should return categories when repository succeeds', async () => {
-    const categories = [aCategory()];
-    const repository = createMockRepository(Result.success(categories));
-    const useCase = WatchCategoriesUseCase(repository);
+  let repository: CategoriesRepositoryInMemory;
+  let useCase: ReturnType<typeof WatchCategoriesUseCase>;
+
+  beforeEach(() => {
+    repository = CategoriesRepositoryInMemory();
+    useCase = WatchCategoriesUseCase(repository);
+  });
+
+  it('returns categories when repository succeeds', async () => {
+    const category = aCategory();
+    repository.add(category);
 
     let result: Result<any> | undefined;
     const unsubscribe = useCase.query((data) => {
@@ -25,14 +24,13 @@ describe('WatchCategoriesUseCase', () => {
 
     await waitFor(() => expect(result).toBeDefined());
 
-    expect(result).toBeSuccessWithValue(categories);
+    expect(result).toBeSuccessWithValue([category]);
 
     unsubscribe();
   });
 
-  it('should return failure when repository fails', async () => {
-    const repository = createMockRepository(Result.failure(['error']));
-    const useCase = WatchCategoriesUseCase(repository);
+  it('returns failure when repository fails', async () => {
+    repository.isFailing(['error']);
 
     let result: Result<any> | undefined;
     const unsubscribe = useCase.query((data) => {
@@ -46,9 +44,8 @@ describe('WatchCategoriesUseCase', () => {
     unsubscribe();
   });
 
-  it('should return loading when repository is loading', async () => {
-    const repository = createMockRepository(Result.loading());
-    const useCase = WatchCategoriesUseCase(repository);
+  it('returns loading when repository is loading', async () => {
+    repository.isLoading();
 
     let result: Result<any> | undefined;
     const unsubscribe = useCase.query((data) => {
@@ -57,17 +54,8 @@ describe('WatchCategoriesUseCase', () => {
 
     await waitFor(() => expect(result).toBeDefined());
 
-    expect(result?.isLoading).toBe(true);
+    expect(result).toBeLoading();
 
     unsubscribe();
-  });
-
-  it('should call repository.watchForCode with correct code', () => {
-    const repository = createMockRepository(Result.loading());
-    const useCase = WatchCategoriesUseCase(repository);
-
-    useCase.query(jest.fn());
-
-    expect(repository.watch).toHaveBeenCalledWith(expect.any(Function));
   });
 });

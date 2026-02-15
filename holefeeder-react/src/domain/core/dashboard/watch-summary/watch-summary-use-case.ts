@@ -42,7 +42,6 @@ export const WatchSummaryUseCase = (settings: Settings, repository: DashboardRep
 };
 
 export type DashboardComputedSummary = {
-  raw: SummaryResult;
   currentSpending: number;
   variation: {
     amount: number;
@@ -61,7 +60,6 @@ const computeDashboardData = (summary: SummaryResult): DashboardComputedSummary 
   const isOver = summary.expenseVariation > 0;
 
   return {
-    raw: summary,
     currentSpending: summary.currentExpenses,
     variation: {
       amount: Math.abs(summary.expenseVariation),

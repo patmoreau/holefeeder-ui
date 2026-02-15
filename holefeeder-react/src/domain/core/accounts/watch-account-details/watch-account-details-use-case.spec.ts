@@ -1,147 +1,128 @@
 import { waitFor } from '@testing-library/react-native';
+import { aDateInterval } from '@/domain/core/__tests__/date-interval-for-test';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
-import { AccountVariation } from '@/domain/core/accounts/account-variation';
+import { anAccountVariation } from '@/domain/core/accounts/__tests__/account-variation-for-test';
+import { AccountsRepositoryInMemory } from '@/domain/core/accounts/__tests__/accounts-repository-for-test';
+import { AccountTypes } from '@/domain/core/accounts/account-type';
+import { CategoryTypes } from '@/domain/core/categories/category-type';
+import { DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { DateOnly } from '@/domain/core/date-only';
-import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
-import { FlowsRepository, FlowsRepositoryErrors } from '@/domain/core/flows/flows-repository';
+import { aCashflowVariation } from '@/domain/core/flows/__tests__/cashflow-variation-for-test';
+import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
+import { Money } from '@/domain/core/money';
 import { Result } from '@/domain/core/result';
-import { Account } from '../account';
-import { AccountsRepository } from '../accounts-repository';
+import { Variation } from '@/domain/core/variation';
 import { WatchAccountDetailsUseCase } from './watch-account-details-use-case';
 
-const createMockAccountsRepository = (result: Result<Account[]>): AccountsRepository => ({
-  watch: jest.fn((onDataChange) => {
-    onDataChange(result);
-    return jest.fn();
-  }),
-});
-
-const createMockFlowsRepository = (
-  accountVariations: Result<AccountVariation[]>,
-  cashflowVariations: Result<CashflowVariation[]> = Result.success([])
-): FlowsRepository => ({
-  create: jest.fn(),
-  watchTags: jest.fn(() => jest.fn()),
-  watchAccountVariations: jest.fn((onDataChange) => {
-    onDataChange(accountVariations);
-    return jest.fn();
-  }),
-  watchCashflowVariations: jest.fn((onDataChange) => {
-    onDataChange(cashflowVariations);
-    return jest.fn();
-  }),
-});
-
 describe('WatchAccountDetailsUseCase', () => {
-  it('should return account details when both repositories succeed', async () => {
-    const accounts = [anAccount()];
-    const accountsRepo = createMockAccountsRepository(Result.success(accounts));
-    const flowsRepo = createMockFlowsRepository(Result.success([]));
-    const dateInterval = { start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-12-31') };
-    const useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
+  const account = anAccount({ openBalance: Variation.valid(10), type: AccountTypes.checking });
+  const accountVariation = anAccountVariation({ accountId: account.id, expenses: Money.valid(111), gains: Money.valid(222) });
+  const cashflow = aCashflowVariation({
+    accountId: account.id,
+    lastPaidDate: DateOnly.valid('2023-01-01'),
+    lastCashflowDate: DateOnly.valid('2023-01-01'),
+    amount: Money.valid(200),
+    effectiveDate: DateOnly.valid('2023-01-01'),
+    intervalType: DateIntervalTypes.monthly,
+    frequency: 1,
+    categoryType: CategoryTypes.expense,
+  });
+  const dateInterval = aDateInterval({ start: DateOnly.valid('2023-02-01'), end: DateOnly.valid('2023-02-28') });
+  let accountsRepo: AccountsRepositoryInMemory;
+  let flowsRepo: FlowsRepositoryInMemory;
+  let useCase: ReturnType<typeof WatchAccountDetailsUseCase>;
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.queryDetails((data) => {
-      result = data;
-    });
-
-    await waitFor(() => expect(result).toBeDefined());
-
-    expect(result?.isSuccess).toBe(true);
-    if (result?.isSuccess) {
-      expect(result.value).toHaveLength(1);
-    }
-
-    unsubscribe();
+  beforeEach(() => {
+    accountsRepo = AccountsRepositoryInMemory();
+    flowsRepo = FlowsRepositoryInMemory();
+    useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
   });
 
-  it('should return failure when accounts repository fails', async () => {
-    const accountsRepo = createMockAccountsRepository(Result.failure(['error']));
-    const flowsRepo = createMockFlowsRepository(Result.success([]));
-    const dateInterval = { start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-12-31') };
-    const useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
+  describe('queryDetails', () => {
+    it('returns account details when both repositories returns data', async () => {
+      accountsRepo.add(account);
+      flowsRepo.addAccountVariations(accountVariation);
+      flowsRepo.addCashflowVariations(cashflow);
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.queryDetails((data) => {
-      result = data;
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.queryDetails((data) => {
+        result = data;
+      });
+
+      await waitFor(() => expect(result).toBeDefined());
+
+      expect(result).toBeSuccessWithValue([
+        {
+          id: account.id,
+          name: account.name,
+          balance: Money.valid(121),
+          lastTransactionDate: accountVariation.lastTransactionDate,
+          projectedBalance: Variation.valid(-79),
+          upcomingVariation: Variation.valid(-200),
+        },
+      ]);
+
+      unsubscribe();
     });
 
-    await waitFor(() => expect(result).toBeDefined());
+    it('should return failure when accounts repository fails', async () => {
+      accountsRepo.isFailing(['error']);
 
-    expect(result).toBeFailureWithErrors(['error']);
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.queryDetails((data) => {
+        result = data;
+      });
 
-    unsubscribe();
-  });
+      await waitFor(() => expect(result).toBeDefined());
 
-  it('should return failure when flows repository fails with other error', async () => {
-    const accountsRepo = createMockAccountsRepository(Result.success([]));
-    const flowsRepo = createMockFlowsRepository(Result.failure(['other-error']));
-    const dateInterval = { start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-12-31') };
-    const useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
+      expect(result).toBeFailureWithErrors(['error']);
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.queryDetails((data) => {
-      result = data;
+      unsubscribe();
     });
 
-    await waitFor(() => expect(result).toBeDefined());
+    it('should return failure when flows repository fails with other error', async () => {
+      flowsRepo.isFailing(['other-error']);
 
-    expect(result).toBeFailureWithErrors(['other-error']);
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.queryDetails((data) => {
+        result = data;
+      });
 
-    unsubscribe();
-  });
+      await waitFor(() => expect(result).toBeDefined());
 
-  it('should return failure when flows repository fails with no-tags error', async () => {
-    const accounts = [anAccount()];
-    const accountsRepo = createMockAccountsRepository(Result.success(accounts));
-    // The previous test case for noTags was probably checking watchTags.
-    // WatchAccountDetailsUseCase doesn't use watchTags.
-    // However, if watchTransactions (now watchAccountBenchmarks) fails, it should propagate.
-    // Let's assume this test meant to check if one of the watchers fails.
-    const flowsRepo = createMockFlowsRepository(Result.failure([FlowsRepositoryErrors.noTags]));
-    const dateInterval = { start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-12-31') };
-    const useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
+      expect(result).toBeFailureWithErrors(['other-error', 'other-error']);
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.queryDetails((data) => {
-      result = data;
+      unsubscribe();
     });
 
-    await waitFor(() => expect(result).toBeDefined());
+    it('should return loading when accounts repository is loading', async () => {
+      accountsRepo.isLoading();
 
-    expect(result).toBeFailureWithErrors([FlowsRepositoryErrors.noTags]);
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.queryDetails((data) => {
+        result = data;
+      });
 
-    unsubscribe();
-  });
+      await waitFor(() => expect(result).toBeDefined());
 
-  it('should return loading when repository is loading', async () => {
-    const accountsRepo = createMockAccountsRepository(Result.loading());
-    const flowsRepo = createMockFlowsRepository(Result.success([]));
-    const dateInterval = { start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-12-31') };
-    const useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
+      expect(result).toBeLoading();
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.queryDetails((data) => {
-      result = data;
+      unsubscribe();
     });
 
-    await waitFor(() => expect(result).toBeDefined());
+    it('should return loading when flows repository is loading', async () => {
+      flowsRepo.isLoading();
 
-    expect(result?.isLoading).toBe(true);
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.queryDetails((data) => {
+        result = data;
+      });
 
-    unsubscribe();
-  });
+      await waitFor(() => expect(result).toBeDefined());
 
-  it('should call repository.watch and flows.watchTransactions', () => {
-    const accountsRepo = createMockAccountsRepository(Result.loading());
-    const flowsRepo = createMockFlowsRepository(Result.loading());
-    const dateInterval = { start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-12-31') };
-    const useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
+      expect(result).toBeLoading();
 
-    useCase.queryDetails(jest.fn());
-
-    expect(accountsRepo.watch).toHaveBeenCalled();
-    expect(flowsRepo.watchAccountVariations).toHaveBeenCalled();
-    expect(flowsRepo.watchCashflowVariations).toHaveBeenCalled();
+      unsubscribe();
+    });
   });
 });

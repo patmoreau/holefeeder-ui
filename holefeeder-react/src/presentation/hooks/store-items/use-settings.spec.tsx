@@ -2,8 +2,8 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
-import { aSettings } from '@/domain/core/__tests__/settings-for-test';
-import { aStoreItem } from '@/domain/core/__tests__/store-item-for-test';
+import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
+import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { useSettings } from '@/presentation/hooks/store-items/use-settings';
 
 describe('useStoreItems', () => {

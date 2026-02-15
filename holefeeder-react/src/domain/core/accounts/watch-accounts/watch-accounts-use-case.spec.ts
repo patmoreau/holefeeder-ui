@@ -1,73 +1,63 @@
 import { waitFor } from '@testing-library/react-native';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
+import { AccountsRepositoryInMemory } from '@/domain/core/accounts/__tests__/accounts-repository-for-test';
 import { Result } from '@/domain/core/result';
-import { Account } from '../account';
-import { AccountsRepository } from '../accounts-repository';
 import { WatchAccountsUseCase } from './watch-accounts-use-case';
 
-const createMockRepository = (result: Result<Account[]>): AccountsRepository => ({
-  watch: jest.fn((onDataChange) => {
-    onDataChange(result);
-    return jest.fn(); // Return unsubscribe function
-  }),
-});
-
 describe('WatchAccountsUseCase', () => {
-  it('should return accounts when repository succeeds', async () => {
-    const accounts = [anAccount()];
-    const repository = createMockRepository(Result.success(accounts));
-    const useCase = WatchAccountsUseCase(repository);
+  let repository: AccountsRepositoryInMemory;
+  let useCase: ReturnType<typeof WatchAccountsUseCase>;
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
-      result = data;
-    });
-
-    await waitFor(() => expect(result).toBeDefined());
-
-    expect(result).toBeSuccessWithValue(accounts);
-
-    unsubscribe();
+  beforeEach(() => {
+    repository = AccountsRepositoryInMemory();
+    useCase = WatchAccountsUseCase(repository);
   });
 
-  it('should return failure when repository fails', async () => {
-    const repository = createMockRepository(Result.failure(['error']));
-    const useCase = WatchAccountsUseCase(repository);
+  describe('query', () => {
+    it('returns accounts when repository succeeds', async () => {
+      const account = anAccount();
+      repository.add(account);
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
-      result = data;
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.query((data) => {
+        result = data;
+      });
+
+      await waitFor(() => expect(result).toBeDefined());
+
+      expect(result).toBeSuccessWithValue([account]);
+
+      unsubscribe();
     });
 
-    await waitFor(() => expect(result).toBeDefined());
+    it('returns failure when repository fails', async () => {
+      repository.isFailing(['error']);
 
-    expect(result).toBeFailureWithErrors(['error']);
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.query((data) => {
+        result = data;
+      });
 
-    unsubscribe();
-  });
+      await waitFor(() => expect(result).toBeDefined());
 
-  it('should return loading when repository is loading', async () => {
-    const repository = createMockRepository(Result.loading());
-    const useCase = WatchAccountsUseCase(repository);
+      expect(result).toBeFailureWithErrors(['error']);
 
-    let result: Result<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
-      result = data;
+      unsubscribe();
     });
 
-    await waitFor(() => expect(result).toBeDefined());
+    it('returns loading when repository is loading', async () => {
+      repository.isLoading();
 
-    expect(result?.isLoading).toBe(true);
+      let result: Result<any> | undefined;
+      const unsubscribe = useCase.query((data) => {
+        result = data;
+      });
 
-    unsubscribe();
-  });
+      await waitFor(() => expect(result).toBeDefined());
 
-  it('should call repository.watchForCode with correct code', () => {
-    const repository = createMockRepository(Result.loading());
-    const useCase = WatchAccountsUseCase(repository);
+      expect(result).toBeLoading();
 
-    useCase.query(jest.fn());
-
-    expect(repository.watch).toHaveBeenCalledWith(expect.any(Function));
+      unsubscribe();
+    });
   });
 });

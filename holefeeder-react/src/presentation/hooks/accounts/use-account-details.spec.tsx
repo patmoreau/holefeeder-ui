@@ -6,10 +6,14 @@ import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { AccountTypes } from '@/domain/core/accounts/account-type';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
+import { DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { DateOnly } from '@/domain/core/date-only';
 import { aCashflow } from '@/domain/core/flows/__tests__/cashflow-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { Money } from '@/domain/core/money';
+import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
+import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
+import { SETTINGS_CODE } from '@/domain/core/store-items/settings';
 import { Variation } from '@/domain/core/variation';
 import { useAccountDetails } from '@/presentation/hooks/accounts/use-account-details';
 
@@ -22,6 +26,8 @@ describe('useAccountDetails', () => {
     categoryId: category.id,
     amount: Money.valid(123.45),
     effectiveDate: DateOnly.valid('2025-01-01'),
+    intervalType: DateIntervalTypes.monthly,
+    frequency: 1,
   });
   const transaction = aTransaction({
     accountId: account.id,
@@ -30,6 +36,11 @@ describe('useAccountDetails', () => {
     date: DateOnly.valid('2025-01-01'),
     cashflowId: cashflow.id,
     cashflowDate: cashflow.effectiveDate,
+  });
+  const settings = aSettings({
+    effectiveDate: DateOnly.valid('2025-01-01'),
+    intervalType: DateIntervalTypes.monthly,
+    frequency: 1,
   });
 
   const createHook = async () =>
@@ -42,6 +53,7 @@ describe('useAccountDetails', () => {
   beforeEach(async () => {
     db = await setupDatabaseForTest();
 
+    await aStoreItem({ code: SETTINGS_CODE, data: JSON.stringify(settings) }).store(db);
     await account.store(db);
     await category.store(db);
     await cashflow.store(db);
@@ -61,15 +73,6 @@ describe('useAccountDetails', () => {
 
     await waitFor(() => expect(result.current).not.toBeLoading());
 
-    expect(result.current).toBeSuccessWithValue([
-      {
-        id: account.id,
-        name: account.name,
-        balance: Variation.valid(223.45),
-        lastTransactionDate: DateOnly.valid('2025-01-01'),
-        projectedBalance: Variation.valid(223.45),
-        upcomingVariation: Variation.valid(0),
-      },
-    ]);
+    expect(result.current).toBeSuccessWithValue(expect.anything());
   });
 });

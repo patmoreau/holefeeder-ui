@@ -3,22 +3,22 @@ import { StoreItem } from '@/domain/core/store-items/store-item';
 import { StoreItemsRepository, StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
 
 export type StoreItemsRepositoryInMemory = StoreItemsRepository & {
-  add: (item: StoreItem) => void;
+  add: (...items: StoreItem[]) => void;
   isLoading: () => void;
   isFailing: (errors: string[]) => void;
 };
 
 export const StoreItemsRepositoryInMemory = (): StoreItemsRepositoryInMemory => {
-  const items: StoreItem[] = [];
-  let _loading = false;
-  let _errors: string[] = [];
+  const itemsInMemory: StoreItem[] = [];
+  let loadingInMemory = false;
+  let errorsInMemory: string[] = [];
 
   const watchForCode = (code: string, onDataChange: (result: Result<StoreItem>) => void) => {
-    const item = items.find((item) => item.code === code);
-    if (_loading) {
+    const item = itemsInMemory.find((item) => item.code === code);
+    if (loadingInMemory) {
       onDataChange(Result.loading());
-    } else if (_errors.length > 0) {
-      onDataChange(Result.failure(_errors));
+    } else if (errorsInMemory.length > 0) {
+      onDataChange(Result.failure(errorsInMemory));
     } else if (item) {
       onDataChange(Result.success(item));
     } else {
@@ -29,7 +29,7 @@ export const StoreItemsRepositoryInMemory = (): StoreItemsRepositoryInMemory => 
   };
 
   const getByCode = async (code: string) => {
-    const item = items.find((item) => item.code === code);
+    const item = itemsInMemory.find((item) => item.code === code);
     if (item) {
       return Result.success(item);
     }
@@ -37,20 +37,20 @@ export const StoreItemsRepositoryInMemory = (): StoreItemsRepositoryInMemory => 
   };
 
   const save = (storeItem: StoreItem) => {
-    const index = items.findIndex((item) => item.code === storeItem.code);
+    const index = itemsInMemory.findIndex((item) => item.code === storeItem.code);
     if (index >= 0) {
-      items[index] = storeItem;
+      itemsInMemory[index] = storeItem;
     } else {
-      items.push(storeItem);
+      itemsInMemory.push(storeItem);
     }
     return Promise.resolve(Result.success(undefined));
   };
 
-  const add = (item: StoreItem) => items.push(item);
+  const add = (...items: StoreItem[]) => itemsInMemory.push(...items);
 
-  const isLoading = () => (_loading = true);
+  const isLoading = () => (loadingInMemory = true);
 
-  const isFailing = (errors: string[]) => (_errors = errors);
+  const isFailing = (errors: string[]) => (errorsInMemory = errors);
 
   return { watchForCode: watchForCode, getByCode: getByCode, save: save, add: add, isLoading: isLoading, isFailing: isFailing };
 };

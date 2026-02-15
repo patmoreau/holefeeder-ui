@@ -1,8 +1,8 @@
 import { waitFor } from '@testing-library/react-native';
 import { aWord } from '@/__tests__/mocks/string-for-test';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
-import { aStoreItem, toStoreItem } from '@/domain/core/__tests__/store-item-for-test';
 import { Result } from '@/domain/core/result';
+import { aStoreItem, toStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
 import { StoreItemsRepositoryInPowersync } from '@/domain/persistence/store-items/store-items-repository-in-powersync';
 

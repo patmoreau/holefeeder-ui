@@ -1,10 +1,10 @@
 import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { aPastDate } from '@/__tests__/mocks/date-for-test';
+import { anAccountType } from '@/__tests__/mocks/enum-for-test';
+import { aVariation } from '@/__tests__/mocks/number-for-test';
+import { anId, aString } from '@/__tests__/mocks/string-for-test';
 import { Account } from '@/domain/core/accounts/account';
 import { Variation } from '@/domain/core/variation';
-import { aPastDate } from '../../../../__tests__/mocks/date-for-test';
-import { anAccountType } from '../../../../__tests__/mocks/enum-for-test';
-import { aVariation } from '../../../../__tests__/mocks/number-for-test';
-import { anId, aString } from '../../../../__tests__/mocks/string-for-test';
 
 export type AccountForTest = Account & {
   times: (count: number) => AccountForTest[];

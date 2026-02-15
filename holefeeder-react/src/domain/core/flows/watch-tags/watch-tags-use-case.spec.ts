@@ -1,23 +1,21 @@
 import { waitFor } from '@testing-library/react-native';
+import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
 import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
 import { Result } from '@/domain/core/result';
-import { FlowsRepository } from '../flows-repository';
-import { Tag } from '../tag';
 import { WatchTagsUseCase } from './watch-tags-use-case';
 
-const createMockRepository = (result: Result<Tag[]>): FlowsRepository => ({
-  watchTags: jest.fn((onDataChange) => {
-    onDataChange(result);
-    return jest.fn(); // Return unsubscribe function
-  }),
-  create: jest.fn(),
-});
-
 describe('WatchTagsUseCase', () => {
+  let repository: FlowsRepositoryInMemory;
+  let useCase: ReturnType<typeof WatchTagsUseCase>;
+
+  beforeEach(() => {
+    repository = FlowsRepositoryInMemory();
+    useCase = WatchTagsUseCase(repository);
+  });
+
   it('should return tags when repository succeeds', async () => {
-    const tags = [aTag()];
-    const repository = createMockRepository(Result.success(tags));
-    const useCase = WatchTagsUseCase(repository);
+    const tag = aTag();
+    repository.addTags(tag);
 
     let result: Result<any> | undefined;
     const unsubscribe = useCase.query((data) => {
@@ -26,14 +24,13 @@ describe('WatchTagsUseCase', () => {
 
     await waitFor(() => expect(result).toBeDefined());
 
-    expect(result).toBeSuccessWithValue(tags);
+    expect(result).toBeSuccessWithValue([tag]);
 
     unsubscribe();
   });
 
   it('should return failure when repository fails', async () => {
-    const repository = createMockRepository(Result.failure(['error']));
-    const useCase = WatchTagsUseCase(repository);
+    repository.isFailing(['error']);
 
     let result: Result<any> | undefined;
     const unsubscribe = useCase.query((data) => {
@@ -48,8 +45,7 @@ describe('WatchTagsUseCase', () => {
   });
 
   it('should return loading when repository is loading', async () => {
-    const repository = createMockRepository(Result.loading());
-    const useCase = WatchTagsUseCase(repository);
+    repository.isLoading();
 
     let result: Result<any> | undefined;
     const unsubscribe = useCase.query((data) => {
@@ -58,17 +54,8 @@ describe('WatchTagsUseCase', () => {
 
     await waitFor(() => expect(result).toBeDefined());
 
-    expect(result?.isLoading).toBe(true);
+    expect(result).toBeLoading();
 
     unsubscribe();
-  });
-
-  it('should call repository.watchTags with correct code', () => {
-    const repository = createMockRepository(Result.loading());
-    const useCase = WatchTagsUseCase(repository);
-
-    useCase.query(jest.fn());
-
-    expect(repository.watchTags).toHaveBeenCalledWith(expect.any(Function));
   });
 });

@@ -4,13 +4,14 @@ import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { Tag } from '@/domain/core/flows/tag';
+import { TagList } from '@/domain/core/flows/tag-list';
 import { useTags } from './use-tags';
 
 describe('useTags', () => {
   let db: DatabaseForTest;
-  const firstTransaction = aTransaction({ tags: ['groceries', 'food'] });
-  const secondTransaction = aTransaction({ tags: ['groceries', 'shopping'] });
-  const thirdTransaction = aTransaction({ tags: ['food'] });
+  const firstTransaction = aTransaction({ tags: TagList.valid(['groceries', 'food']) });
+  const secondTransaction = aTransaction({ tags: TagList.valid(['groceries', 'shopping']) });
+  const thirdTransaction = aTransaction({ tags: TagList.valid(['food']) });
   const validTags: Tag[] = [aTag({ tag: 'food', count: 2 }), aTag({ tag: 'groceries', count: 2 }), aTag({ tag: 'shopping', count: 1 })];
 
   const createHook = async () =>

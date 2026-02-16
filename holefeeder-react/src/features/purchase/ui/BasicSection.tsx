@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Account } from '@/domain/core/accounts/account';
 import { Category } from '@/domain/core/categories/category';
-import { CategoryType } from '@/domain/core/categories/category-type';
+import { CategoryTypes } from '@/domain/core/categories/category-type';
 import { Tag } from '@/domain/core/flows/tag';
 import { PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { usePurchaseForm } from '@/features/purchase/core/use-purchase-form';
@@ -32,7 +32,7 @@ export function BasicSection({ accounts, categories, tags }: Props) {
   const updateTags = (next: Tag[]) => updateFormField('tags', next);
   const updateDescription = (value: string) => updateFormField('description', value);
 
-  const variant = formData.purchaseType === PurchaseType.expense ? CategoryType.expense : CategoryType.gain;
+  const variant = formData.purchaseType === PurchaseType.expense ? CategoryTypes.expense : CategoryTypes.gain;
 
   return (
     <AppSection>

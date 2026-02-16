@@ -17,9 +17,9 @@ const schema = {
 
 const create = (tags: unknown): Result<TagList> => {
   const tagsResult = Validate.validate<string[]>(schema, tags);
-  if (tagsResult.isFailure) return tagsResult;
+  if (!tagsResult.isSuccess) return tagsResult;
 
-  return Result.success([...new Set(tagsResult.value.map((tag) => tag.trim()).filter((tag) => tag.length > 0))] as TagList);
+  return Result.success(TagList.valid([...new Set(tagsResult.value.map((tag) => tag.trim()).filter((tag) => tag.length > 0))]));
 };
 
 const valid = (tags: string[]): TagList => tags as TagList;

@@ -27,7 +27,7 @@ RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && p
 # Copy the dev-client source files (needed before rebuild)
 COPY dev-client/*.ts ./
 COPY dev-client/tsconfig.json ./
-COPY src/core/persistence/app-schema.ts ./
+COPY src/domain/persistence/app-schema.ts ./
 
 # Ensure data directory exists
 RUN mkdir -p /data

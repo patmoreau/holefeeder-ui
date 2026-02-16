@@ -1,15 +1,26 @@
 import { EventEmitter } from 'events';
-import { PowerSyncBackendConnector, PowerSyncDatabase, Schema } from '@powersync/node';
+import { Schema } from '@powersync/common';
+import { PowerSyncDatabase } from '@powersync/node';
 import Database from 'better-sqlite3';
+
+// Define the connector interface based on PowerSync requirements
+interface PowerSyncBackendConnector {
+  fetchCredentials(): Promise<{
+    endpoint: string;
+    token: string;
+    expiresAt?: number;
+  } | null>;
+  uploadData(database: any): Promise<void>;
+}
 
 interface SyncConfig {
   powerSyncUrl: string;
   powerSyncToken?: string;
   sqliteDbPath: string;
-  localDbPath?: string; // Local cache for PowerSync
+  localDbPath?: string;
   tables: string[];
   syncIntervalMs?: number;
-  schema: Schema; // PowerSync schema is required
+  schema: Schema;
 }
 
 interface SyncStats {
@@ -106,7 +117,7 @@ class PowerSyncToSQLiteSync extends EventEmitter {
       this.createTableIfNotExists(tableName, columns);
 
       // Begin transaction for batch insert
-      const insertStmt = this.sqliteDb.prepare(`INSERT OR REPLACE INTO ${tableName} (${columnNames}) VALUES (${placeholders})`);
+      const insertStmt = this.sqliteDb.prepare(`REPLACE INTO ${tableName} (${columnNames}) VALUES (${placeholders})`);
 
       const insertMany = this.sqliteDb.transaction((rows: any[]) => {
         for (const row of rows) {
@@ -209,6 +220,8 @@ class PowerSyncToSQLiteSync extends EventEmitter {
 // Example usage
 async function main() {
   // Import schema (adjust path as needed)
+  // @ts-ignore
+  // eslint-disable-next-line import/no-unresolved
   const { AppSchema } = await import('./app-schema.js');
 
   // Validate required environment variables
@@ -219,7 +232,7 @@ async function main() {
   const sync = new PowerSyncToSQLiteSync({
     powerSyncUrl: process.env.POWERSYNC_URL,
     powerSyncToken: process.env.POWERSYNC_TOKEN,
-    schema: AppSchema, // Pass the PowerSync schema
+    schema: AppSchema as any,
     sqliteDbPath: process.env.SQLITE_DB_PATH || '/data/local.db',
     localDbPath: process.env.POWERSYNC_CACHE_PATH || '/data/powersync-cache.db',
     tables: (process.env.SYNC_TABLES || 'accounts,cashflows,categories,store_items,transactions').split(','),

@@ -3,14 +3,13 @@ services:
     build:
       context: ..
       dockerfile: dev-client/Dockerfile
-    profiles: [ "debug" ] # Only runs with --profile debug
     environment:
       - POWERSYNC_URL=http://powersync:8080
       - POWERSYNC_TOKEN=${POWERSYNC_TOKEN}
     volumes:
       - ./debug-data:/data
     networks:
-      - proxy  # Add this
+      - proxy
 
 networks:
   proxy:

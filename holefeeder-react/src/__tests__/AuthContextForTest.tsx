@@ -19,6 +19,7 @@ export const createAuthContextForTest = (overrides?: Partial<Auth0ContextInterfa
   resetPassword: jest.fn().mockResolvedValue(undefined),
   authorizeWithExchange: jest.fn().mockResolvedValue(undefined),
   authorizeWithExchangeNativeSocial: jest.fn().mockResolvedValue(undefined),
+  customTokenExchange: jest.fn().mockResolvedValue(undefined),
   sendEmailCode: jest.fn().mockResolvedValue(undefined),
   authorizeWithEmail: jest.fn().mockResolvedValue(undefined),
   sendSMSCode: jest.fn().mockResolvedValue(undefined),

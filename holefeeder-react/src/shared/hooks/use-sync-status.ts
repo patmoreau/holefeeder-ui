@@ -1,4 +1,4 @@
-import { useStatus } from '@powersync/react-native';
+import { useStatus } from '@powersync/react';
 
 export interface SyncStatusInfo {
   connected: boolean;

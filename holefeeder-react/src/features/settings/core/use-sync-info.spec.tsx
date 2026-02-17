@@ -1,10 +1,10 @@
-import { usePowerSync } from '@powersync/react-native';
-import { renderHook, waitFor, act } from '@testing-library/react-native';
+import { usePowerSync } from '@powersync/react';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { useSyncInfo } from '@/features/settings/core/use-sync-info';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 
 // Mock the dependencies
-jest.mock('@powersync/react-native', () => ({
+jest.mock('@powersync/react', () => ({
   usePowerSync: jest.fn(),
 }));
 jest.mock('@/shared/hooks/use-sync-status');

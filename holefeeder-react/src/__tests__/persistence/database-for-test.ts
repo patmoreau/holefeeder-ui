@@ -1,15 +1,15 @@
 import fs from 'fs';
 import {
   AbstractPowerSyncDatabase,
-  CreateSyncImplementationOptions,
-  DBAdapter,
-  PowerSyncBackendConnector,
-  PowerSyncDatabaseOptionsWithSettings,
-  RequiredAdditionalConnectionOptions,
+  type CreateSyncImplementationOptions,
+  type DBAdapter,
+  type PowerSyncBackendConnector,
+  type PowerSyncDatabaseOptionsWithSettings,
+  type RequiredAdditionalConnectionOptions,
   Schema,
   SqliteBucketStorage,
-  StreamingSyncImplementation,
-} from '@powersync/react-native';
+  type StreamingSyncImplementation,
+} from '@powersync/common';
 import Database from 'better-sqlite3';
 import { DatabaseAdapterForTest } from '@/__tests__/persistence/database-adapter-for-test';
 import { AppSchema } from '@/domain/persistence/app-schema';

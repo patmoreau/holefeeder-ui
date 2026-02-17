@@ -1,4 +1,4 @@
-import { usePowerSync } from '@powersync/react-native';
+import { usePowerSync } from '@powersync/react';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
 import { CategoriesRepository } from '@/domain/core/categories/categories-repository';

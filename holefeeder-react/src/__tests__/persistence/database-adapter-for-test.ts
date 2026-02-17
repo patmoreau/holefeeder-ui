@@ -1,5 +1,4 @@
-import { BaseObserver } from '@powersync/common';
-import { DBAdapter, QueryResult } from '@powersync/react-native';
+import { BaseObserver, type DBAdapter, type QueryResult } from '@powersync/common';
 import Database from 'better-sqlite3';
 
 export class DatabaseAdapterForTest extends BaseObserver<any> implements DBAdapter {

@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { aCategoryType } from '@/__tests__/mocks/enum-for-test';
 import { aTagList } from '@/domain/core/__tests__/tag-list-for-test';
 import { Transaction } from '@/domain/core/flows/transaction';

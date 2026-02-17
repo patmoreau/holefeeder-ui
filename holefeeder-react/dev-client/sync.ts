@@ -102,7 +102,7 @@ class PowerSyncToSQLiteSync extends EventEmitter {
   private async syncTable(tableName: string): Promise<number> {
     try {
       // Get all rows from PowerSync table
-      const rows = await this.powerSyncDb.getAll(`SELECT * FROM ${tableName}`);
+      const rows = await this.powerSyncDb.getAll<Record<string, any>>(`SELECT * FROM ${tableName}`);
 
       if (rows.length === 0) {
         return 0;
@@ -186,7 +186,7 @@ class PowerSyncToSQLiteSync extends EventEmitter {
       this.syncAll().catch((error) => {
         this.emit('error', error);
       });
-    }, interval);
+    }, interval) as unknown as NodeJS.Timeout;
 
     this.emit('autoSyncStarted', { interval });
   }

@@ -1,4 +1,5 @@
-import { AbstractPowerSyncDatabase, PowerSyncContext } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
+import { PowerSyncContext } from '@powersync/react';
 import React from 'react';
 import { RepositoryProvider } from '@/contexts/RepositoryContext';
 

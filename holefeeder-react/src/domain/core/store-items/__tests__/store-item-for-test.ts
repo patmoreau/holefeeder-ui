@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { anId, aWord } from '@/__tests__/mocks/string-for-test';
 import { StoreItem } from '@/domain/core/store-items/store-item';
 

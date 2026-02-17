@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase, PowerSyncBackendConnector } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase, type PowerSyncBackendConnector } from '@powersync/common';
 import { config } from '@/config/config';
 import { syncApi } from '@/shared/api/sync-api';
 

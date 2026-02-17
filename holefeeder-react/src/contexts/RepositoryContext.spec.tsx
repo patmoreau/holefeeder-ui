@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { renderHook } from '@testing-library/react-native';
 import React from 'react';
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';

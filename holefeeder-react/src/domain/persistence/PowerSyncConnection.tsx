@@ -1,4 +1,4 @@
-import { usePowerSync } from '@powersync/react-native';
+import { usePowerSync } from '@powersync/react';
 import React, { ReactNode, useEffect } from 'react';
 import { PowerSyncConnector } from '@/domain/persistence/powersync-connector';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -47,7 +47,7 @@ export const PowerSyncConnection = ({ children }: { children: ReactNode }) => {
       // Just disconnect on unmount, don't clear
       powerSync.disconnect();
     };
-  }, [user, powerSync]); // Only re-run if User or DB instance changes
+  }, [user, powerSync, getCredentials]); // Only re-run if User or DB instance changes
 
   return <>{children}</>;
 };

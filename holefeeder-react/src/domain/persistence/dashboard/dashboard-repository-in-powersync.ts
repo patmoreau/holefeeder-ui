@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
 import { SummaryData } from '@/domain/core/dashboard/summary-data';
 import { DateIntervalType, DateIntervalTypes } from '@/domain/core/date-interval-type';

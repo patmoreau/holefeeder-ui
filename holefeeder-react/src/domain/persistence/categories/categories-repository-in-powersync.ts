@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { CategoriesRepository } from '@/domain/core/categories/categories-repository';
 import { Category } from '@/domain/core/categories/category';
 import { Money } from '@/domain/core/money';

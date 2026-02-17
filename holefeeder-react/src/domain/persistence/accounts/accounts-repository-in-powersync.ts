@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { Account } from '@/domain/core/accounts/account';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
 import { Result } from '@/domain/core/result';

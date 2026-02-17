@@ -1,4 +1,4 @@
-import { usePowerSync } from '@powersync/react-native';
+import { usePowerSync } from '@powersync/react';
 import { useEffect, useState } from 'react';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 

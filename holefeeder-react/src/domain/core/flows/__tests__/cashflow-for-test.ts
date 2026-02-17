@@ -1,4 +1,4 @@
-import { AbstractPowerSyncDatabase } from '@powersync/react-native';
+import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { aPastDate } from '@/__tests__/mocks/date-for-test';
 import { aCategoryType, aDateIntervalType } from '@/__tests__/mocks/enum-for-test';
 import { aCount, anAmount } from '@/__tests__/mocks/number-for-test';

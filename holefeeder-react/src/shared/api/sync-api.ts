@@ -1,4 +1,4 @@
-import { CrudEntry } from '@powersync/react-native';
+import { CrudEntry } from '@powersync/common';
 import { type AxiosResponse } from 'axios';
 import { apiService } from '@/shared/api/api-service';
 

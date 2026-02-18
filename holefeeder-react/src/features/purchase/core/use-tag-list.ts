@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Tag } from '@/domain/core/flows/tag';
-import { Result } from '@/domain/core/result';
 
 export const useTagList = ({ tags, selected, onChange }: { tags: Tag[]; selected: Tag[]; onChange: (next: Tag[]) => void }) => {
   const [filter, setFilter] = useState('');
@@ -43,7 +42,7 @@ export const useTagList = ({ tags, selected, onChange }: { tags: Tag[]; selected
       }
     } else {
       const newTag = Tag.create({ tag: q, count: 0 });
-      if (Result.isSuccess(newTag) && !selected.some((t) => t.tag === newTag.value.tag)) {
+      if (newTag.isSuccess && !selected.some((t) => t.tag === newTag.value.tag)) {
         nextSelected = [newTag.value, ...selected];
       }
     }

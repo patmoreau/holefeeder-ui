@@ -1,5 +1,4 @@
 import { DateOnly, DateOnlyErrors } from '@/domain/core/date-only';
-import { Result } from './result';
 
 describe('DateOnly', () => {
   describe('create', () => {
@@ -107,7 +106,7 @@ describe('DateOnly', () => {
     it('should allow Date to be used as string', () => {
       const result = DateOnly.create('2026-01-24');
 
-      if (Result.isSuccess(result)) {
+      if (result.isSuccess) {
         const date = result.value;
         const year = date.substring(0, 4);
         const month = date.substring(5, 7);
@@ -123,7 +122,7 @@ describe('DateOnly', () => {
       const result1 = DateOnly.create('2026-01-24');
       const result2 = DateOnly.create('2026-01-24');
 
-      if (Result.isSuccess(result1) && Result.isSuccess(result2)) {
+      if (result1.isSuccess && result2.isSuccess) {
         expect(result1.value === result2.value).toBe(true);
       }
     });

@@ -23,15 +23,15 @@ export const useAccountDetails = (): Result<AccountDetail[]> => {
   );
 
   const useCase = useMemo(() => {
-    if (!Result.isSuccess(dateIntervalResult)) {
+    if (!dateIntervalResult.isSuccess) {
       return null;
     }
     return WatchAccountDetailsUseCase(dateIntervalResult.value, accountRepository, flowRepository);
   }, [dateIntervalResult, accountRepository, flowRepository]);
 
   useEffect(() => {
-    if (!Result.isSuccess(dateIntervalResult)) {
-      setAccounts(Result.failure(Result.isFailure(dateIntervalResult) ? dateIntervalResult.errors : []));
+    if (!dateIntervalResult.isSuccess) {
+      setAccounts(Result.failure(dateIntervalResult.isFailure ? dateIntervalResult.errors : []));
       return;
     }
 

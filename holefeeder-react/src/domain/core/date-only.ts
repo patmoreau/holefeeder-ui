@@ -16,7 +16,7 @@ const schema = {
 const create = (value: unknown): Result<DateOnly> => {
   const patternResult = Validate.validateWithErrors<DateOnly>(schema, value, [DateOnlyErrors.invalid]);
 
-  if (!Result.isSuccess(patternResult)) {
+  if (!patternResult.isSuccess) {
     return patternResult;
   }
 

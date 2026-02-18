@@ -1,6 +1,5 @@
 import { DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { DateOnly } from '@/domain/core/date-only';
-import { Result } from '@/domain/core/result';
 import { DateInterval, DateIntervalErrors } from './date-interval';
 
 describe('DateInterval', () => {
@@ -31,66 +30,42 @@ describe('DateInterval', () => {
       const asOfDate = DateOnly.valid('2023-01-01');
       const result = DateInterval.createFrom(asOfDate, 0, effectiveDate, DateIntervalTypes.weekly, 1);
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2023-01-01');
-        expect(result.value.end).toBe('2023-01-07');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-01-07') });
     });
 
     it('should create a valid weekly interval for next iteration', () => {
       const asOfDate = DateOnly.valid('2023-01-01');
       const result = DateInterval.createFrom(asOfDate, 1, effectiveDate, DateIntervalTypes.weekly, 1);
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2023-01-08');
-        expect(result.value.end).toBe('2023-01-14');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2023-01-08'), end: DateOnly.valid('2023-01-14') });
     });
 
     it('should create a valid monthly interval', () => {
       const asOfDate = DateOnly.valid('2023-01-01');
       const result = DateInterval.createFrom(asOfDate, 0, effectiveDate, DateIntervalTypes.monthly, 1);
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2023-01-01');
-        expect(result.value.end).toBe('2023-01-31');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-01-31') });
     });
 
     it('should create a valid monthly interval for next iteration', () => {
       const asOfDate = DateOnly.valid('2023-01-01');
       const result = DateInterval.createFrom(asOfDate, 1, effectiveDate, DateIntervalTypes.monthly, 1);
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2023-02-01');
-        expect(result.value.end).toBe('2023-02-28');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2023-02-01'), end: DateOnly.valid('2023-02-28') });
     });
 
     it('should create a valid yearly interval', () => {
       const asOfDate = DateOnly.valid('2023-01-01');
       const result = DateInterval.createFrom(asOfDate, 0, effectiveDate, DateIntervalTypes.yearly, 1);
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2023-01-01');
-        expect(result.value.end).toBe('2023-12-31');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-12-31') });
     });
 
     it('should create a valid yearly interval for next iteration', () => {
       const asOfDate = DateOnly.valid('2023-01-01');
       const result = DateInterval.createFrom(asOfDate, 1, effectiveDate, DateIntervalTypes.yearly, 1);
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2024-01-01');
-        expect(result.value.end).toBe('2024-12-31');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2024-01-01'), end: DateOnly.valid('2024-12-31') });
     });
 
     it('should create a valid interval with frequency > 1', () => {
@@ -100,22 +75,14 @@ describe('DateInterval', () => {
       // iteration 0: 2023-01-01 to 2023-01-14
       // iteration 1: 2023-01-15 to 2023-01-28 (asOf + 1*2 weeks = 2023-01-15)
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2023-01-15');
-        expect(result.value.end).toBe('2023-01-28');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2023-01-15'), end: DateOnly.valid('2023-01-28') });
     });
 
     it('should handle oneTime interval', () => {
       const asOfDate = DateOnly.valid('2023-01-01');
       const result = DateInterval.createFrom(asOfDate, 0, effectiveDate, DateIntervalTypes.oneTime, 1);
 
-      expect(Result.isSuccess(result)).toBe(true);
-      if (Result.isSuccess(result)) {
-        expect(result.value.start).toBe('2023-01-01');
-        expect(result.value.end).toBe('2023-01-01');
-      }
+      expect(result).toBeSuccessWithValue({ start: DateOnly.valid('2023-01-01'), end: DateOnly.valid('2023-01-01') });
     });
   });
 });

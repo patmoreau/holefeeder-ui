@@ -58,7 +58,7 @@ const create = (value: unknown): Result<AccountType> => {
   }
 
   const result = Validate.validateWithErrors(schema, normalized, [AccountTypeErrors.invalid]);
-  if (Result.isSuccess(result)) {
+  if (result.isSuccess) {
     return Result.success(normalized as AccountType);
   }
   return result;

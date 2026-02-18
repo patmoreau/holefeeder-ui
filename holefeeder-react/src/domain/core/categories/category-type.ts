@@ -34,7 +34,7 @@ const create = (value: unknown): Result<CategoryType> => {
   }
 
   const result = Validate.validateWithErrors(schema, normalized, [CategoryTypeErrors.invalid]);
-  if (Result.isSuccess(result)) {
+  if (result.isSuccess) {
     return Result.success(normalized as CategoryType);
   }
   return result;

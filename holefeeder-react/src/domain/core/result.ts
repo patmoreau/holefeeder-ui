@@ -69,19 +69,10 @@ const combineArray = <T>(results: Result<T>[]): Result<T[]> => {
   return failures.length > 0 ? failure(failures) : success(values);
 };
 
-const isSuccess = <T>(result: Result<T>): result is Success<T> => !result.isLoading && !result.isFailure;
-
-const isFailure = <T>(result: Result<T>): result is Failure => result.isFailure;
-
-const isLoading = <T>(result: Result<T>): result is Loading => result.isLoading;
-
 export const Result = {
   success: success,
   failure: failure,
   loading: loading,
   combine: combine,
   combineArray: combineArray,
-  isSuccess: isSuccess,
-  isFailure: isFailure,
-  isLoading: isLoading,
 } as const;

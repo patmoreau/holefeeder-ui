@@ -8,13 +8,13 @@ import { StoreItemsRepository } from '@/domain/core/store-items/store-items-repo
 export const SaveSettingsUseCase = (repository: StoreItemsRepository) => {
   const execute = async (command: SaveSettingsCommand): Promise<Result<void>> => {
     const settingsResult = Settings.create(command);
-    if (!Result.isSuccess(settingsResult)) {
+    if (!settingsResult.isSuccess) {
       return settingsResult;
     }
 
     const settings = settingsResult.value;
     let storeItem = await repository.getByCode(SETTINGS_CODE);
-    if (!Result.isSuccess(storeItem)) {
+    if (!storeItem.isSuccess) {
       storeItem = StoreItem.create({
         id: Id.newId(),
         code: SETTINGS_CODE,
@@ -28,7 +28,7 @@ export const SaveSettingsUseCase = (repository: StoreItemsRepository) => {
       });
     }
 
-    if (Result.isSuccess(storeItem)) {
+    if (storeItem.isSuccess) {
       return await repository.save(storeItem.value);
     }
 

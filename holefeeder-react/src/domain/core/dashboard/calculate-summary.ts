@@ -2,7 +2,6 @@ import { CategoryType, CategoryTypes } from '@/domain/core/categories/category-t
 import { DateIntervalType } from '@/domain/core/date-interval-type';
 import { DateOnly } from '@/domain/core/date-only';
 import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
 import { SummaryData } from './summary-data';
 
 export type SummaryResult = {
@@ -82,7 +81,7 @@ const groupByTypeAndPeriod = (data: SummaryData[], startDate: DateOnly, interval
     const current = grouped.get(key)!;
     const newTotal = (Money.toCents(current.total) + Money.toCents(item.total)) / 100;
     const moneyResult = Money.create(newTotal);
-    if (Result.isSuccess(moneyResult)) {
+    if (moneyResult.isSuccess) {
       current.total = moneyResult.value;
     }
   }
@@ -132,5 +131,5 @@ const calculateAverage = (periodData: Map<string, Money>): Money => {
 
   const average = totalCents / periodData.size / 100;
   const moneyResult = Money.create(average);
-  return Result.isSuccess(moneyResult) ? moneyResult.value : Money.ZERO;
+  return moneyResult.isSuccess ? moneyResult.value : Money.ZERO;
 };

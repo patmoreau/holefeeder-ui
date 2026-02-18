@@ -55,7 +55,7 @@ const create = (value: unknown): Result<DateIntervalType> => {
   }
 
   const result = Validate.validateWithErrors(schema, normalized, [DateIntervalTypeErrors.invalid]);
-  if (Result.isSuccess(result)) {
+  if (result.isSuccess) {
     return Result.success(normalized as DateIntervalType);
   }
   return result;

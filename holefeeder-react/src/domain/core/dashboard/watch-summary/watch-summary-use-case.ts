@@ -22,7 +22,7 @@ export const WatchSummaryUseCase = (settings: Settings, repository: DashboardRep
           settings.intervalType,
           settings.frequency
         );
-        if (!Result.isSuccess(dateIntervalResult)) {
+        if (!dateIntervalResult.isSuccess) {
           onDataChange(dateIntervalResult);
           return;
         }

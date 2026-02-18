@@ -4,7 +4,7 @@ import { DateOnly } from '@/domain/core/date-only';
 import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createBooleanValidator, createNumberValidator, Validate } from '@/domain/core/validate';
 import { TagList } from './tag-list';
 
 export type Cashflow = {
@@ -27,16 +27,8 @@ export const CashflowErrors = {
   neverPaid: 'cashflow-never-paid',
 };
 
-const schemaPositiveNumber = {
-  $id: 'cashflow-positive-number',
-  type: 'number',
-  minimum: 1,
-};
-
-const schemaBoolean = {
-  $id: 'cashflow-boolean',
-  type: 'boolean',
-};
+const isPositiveNumber = createNumberValidator({ min: 1 });
+const isValidBoolean = createBooleanValidator();
 
 const create = (value: Record<string, unknown>): Result<Cashflow> =>
   Result.combine<Cashflow>({
@@ -44,13 +36,13 @@ const create = (value: Record<string, unknown>): Result<Cashflow> =>
     effectiveDate: DateOnly.create(value.effectiveDate),
     amount: Money.create(value.amount),
     intervalType: DateIntervalType.create(value.intervalType),
-    frequency: Validate.validateWithErrors(schemaPositiveNumber, value.frequency, [CashflowErrors.invalid]),
-    recurrence: Validate.validateWithErrors(schemaPositiveNumber, value.recurrence, [CashflowErrors.invalid]),
+    frequency: Validate.validateWithErrors(isPositiveNumber, value.frequency, [CashflowErrors.invalid]),
+    recurrence: Validate.validateWithErrors(isPositiveNumber, value.recurrence, [CashflowErrors.invalid]),
     description: Result.success(value.description as string),
     accountId: Id.create(value.accountId),
     categoryId: Id.create(value.categoryId),
     categoryType: CategoryType.create(value.categoryType),
-    inactive: Validate.validateWithErrors(schemaBoolean, value.inactive, [CashflowErrors.invalid]),
+    inactive: Validate.validateWithErrors(isValidBoolean, value.inactive, [CashflowErrors.invalid]),
     tags: TagList.create(value.tags),
   });
 

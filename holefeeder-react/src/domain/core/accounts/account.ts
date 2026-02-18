@@ -2,7 +2,7 @@ import { AccountType } from '@/domain/core/accounts/account-type';
 import { DateOnly } from '@/domain/core/date-only';
 import { Id } from '@/domain/core/id';
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createBooleanValidator, createStringValidator, Validate } from '@/domain/core/validate';
 import { Variation } from '@/domain/core/variation';
 
 export type Account = {
@@ -25,32 +25,20 @@ export const AccountErrors = {
   invalidInactive: 'invalid-inactive',
 };
 
-const schema = {
-  $id: 'account-name',
-  type: 'string',
-  minLength: 1,
-};
-
-const schemaDescription = {
-  $id: 'account-description',
-  type: 'string',
-};
-
-const schemaBoolean = {
-  $id: 'account-boolean',
-  type: 'boolean',
-};
+const isValidName = createStringValidator({ minLength: 1 });
+const isValidDescription = createStringValidator();
+const isValidBoolean = createBooleanValidator();
 
 const create = (value: Record<string, unknown>): Result<Account> => {
   return Result.combine<Account>({
     id: Id.create(value.id),
     type: AccountType.create(value.type),
-    name: Validate.validateWithErrors(schema, value.name, [AccountErrors.invalidName]),
+    name: Validate.validateWithErrors(isValidName, value.name, [AccountErrors.invalidName]),
     openBalance: Variation.create(value.openBalance),
     openDate: DateOnly.create(value.openDate),
-    description: Validate.validateWithErrors(schemaDescription, value.description, [AccountErrors.invalidDescription]),
-    favorite: Validate.validateWithErrors(schemaBoolean, value.favorite, [AccountErrors.invalidFavorite]),
-    inactive: Validate.validateWithErrors(schemaBoolean, value.inactive, [AccountErrors.invalidInactive]),
+    description: Validate.validateWithErrors(isValidDescription, value.description, [AccountErrors.invalidDescription]),
+    favorite: Validate.validateWithErrors(isValidBoolean, value.favorite, [AccountErrors.invalidFavorite]),
+    inactive: Validate.validateWithErrors(isValidBoolean, value.inactive, [AccountErrors.invalidInactive]),
   });
 };
 

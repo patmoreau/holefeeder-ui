@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createEnumValidator, Validate } from '@/domain/core/validate';
 
 export const CategoryTypes = {
   expense: 'expense',
@@ -19,10 +19,7 @@ const normalizeCategoryType = (type: string): CategoryType => {
   return CategoryTypes.expense;
 };
 
-const schema = {
-  $id: 'category-type',
-  enum: Object.values(CategoryTypes),
-};
+const isValid = createEnumValidator(CategoryTypes);
 
 const create = (value: unknown): Result<CategoryType> => {
   let normalized = value;
@@ -33,7 +30,7 @@ const create = (value: unknown): Result<CategoryType> => {
     }
   }
 
-  const result = Validate.validateWithErrors(schema, normalized, [CategoryTypeErrors.invalid]);
+  const result = Validate.validateWithErrors(isValid, normalized, [CategoryTypeErrors.invalid]);
   if (result.isSuccess) {
     return Result.success(normalized as CategoryType);
   }

@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createArrayValidator, Validate } from '@/domain/core/validate';
 
 export type TagList = string[] & { readonly __brand: 'TagList' };
 
@@ -7,16 +7,11 @@ export const TagListErrors = {
   invalid: 'tag-list-invalid',
 };
 
-const schema = {
-  $id: 'tag-list',
-  type: 'array',
-  items: {
-    type: 'string',
-  },
-};
+const isString = (value: unknown): value is string => typeof value === 'string';
+const isValidStringArray = createArrayValidator<string>(isString);
 
 const create = (tags: unknown): Result<TagList> => {
-  const tagsResult = Validate.validate<string[]>(schema, tags);
+  const tagsResult = Validate.validate<string[]>(isValidStringArray, tags);
   if (!tagsResult.isSuccess) return tagsResult;
 
   return Result.success(TagList.valid([...new Set(tagsResult.value.map((tag) => tag.trim()).filter((tag) => tag.length > 0))]));

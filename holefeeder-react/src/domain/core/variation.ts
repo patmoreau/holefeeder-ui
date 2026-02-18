@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createNumberValidator, Validate } from '@/domain/core/validate';
 
 export type Variation = number & { readonly __brand: 'Variation' };
 
@@ -7,13 +7,10 @@ export const VariationErrors = {
   invalid: 'variation-invalid',
 };
 
-const schema = {
-  $id: 'variation',
-  type: 'number',
-};
+const isValidVariation = createNumberValidator<Variation>();
 
 const create = (value: unknown): Result<Variation> => {
-  const variationResult = Validate.validateWithErrors<Variation>(schema, value, [VariationErrors.invalid]);
+  const variationResult = Validate.validateWithErrors<Variation>(isValidVariation, value, [VariationErrors.invalid]);
   if (!variationResult.isSuccess) return variationResult;
 
   const variation = toCents(variationResult.value);

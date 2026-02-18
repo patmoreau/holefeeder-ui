@@ -4,7 +4,7 @@ import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createNumberValidator, Validate } from '@/domain/core/validate';
 
 export type CreateFlowCommand = {
   date: DateOnly;
@@ -20,11 +20,7 @@ export const CreateFlowErrors = {
   invalidCashflowFrequency: 'invalid-cashflow-frequency',
 };
 
-const schema = {
-  $id: 'frequency',
-  type: 'number',
-  minimum: 1,
-};
+const isValidFrequency = createNumberValidator({ min: 1 });
 
 const create = (purchase: Record<string, unknown>): Result<CreateFlowCommand> =>
   Result.combine<CreateFlowCommand>({
@@ -45,7 +41,7 @@ const createCashflow = (cashflow?: Record<string, unknown>): Result<CreateFlowCo
   return Result.combine<CashflowObject>({
     effectiveDate: DateOnly.create(cashflow.effectiveDate),
     intervalType: Result.success(cashflow.intervalType as DateIntervalType),
-    frequency: Validate.validateWithErrors(schema, cashflow.frequency, [CreateFlowErrors.invalidCashflowFrequency]),
+    frequency: Validate.validateWithErrors(isValidFrequency, cashflow.frequency, [CreateFlowErrors.invalidCashflowFrequency]),
     recurrence: Result.success(cashflow.recurrence as number),
   });
 };

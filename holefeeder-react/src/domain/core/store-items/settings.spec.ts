@@ -52,7 +52,7 @@ describe('Settings', () => {
 
     const result = Settings.create(jsonString);
 
-    expect(result).toBeFailureWithErrors(['must be >= 1']);
+    expect(result).toBeFailureWithErrors(['min-value-error']);
   });
 
   describe('toStoreItemData', () => {

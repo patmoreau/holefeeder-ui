@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createNumberValidator, Validate } from '@/domain/core/validate';
 
 export type Money = number & { readonly __brand: 'Money' };
 
@@ -7,14 +7,10 @@ export const MoneyErrors = {
   invalid: 'money-invalid',
 };
 
-const schema = {
-  $id: 'money',
-  type: 'number',
-  minimum: 0,
-};
+const isValidMoney = createNumberValidator<Money>({ min: 0 });
 
 const create = (value: unknown): Result<Money> => {
-  const moneyResult = Validate.validateWithErrors<Money>(schema, value, [MoneyErrors.invalid]);
+  const moneyResult = Validate.validateWithErrors<Money>(isValidMoney, value, [MoneyErrors.invalid]);
   if (!moneyResult.isSuccess) return moneyResult;
 
   const money = toCents(moneyResult.value);

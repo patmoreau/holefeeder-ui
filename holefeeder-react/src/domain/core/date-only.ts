@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createPatternValidator, Validate } from '@/domain/core/validate';
 
 export type DateOnly = string & { readonly __brand: 'DateOnly' };
 
@@ -7,14 +7,11 @@ export const DateOnlyErrors = {
   invalid: 'date-invalid',
 };
 
-const schema = {
-  $id: 'dateOnly',
-  type: 'string',
-  pattern: '^\\d{4}-\\d{2}-\\d{2}$',
-};
+const DATE_ONLY_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const isValidPattern = createPatternValidator<DateOnly>(DATE_ONLY_PATTERN);
 
 const create = (value: unknown): Result<DateOnly> => {
-  const patternResult = Validate.validateWithErrors<DateOnly>(schema, value, [DateOnlyErrors.invalid]);
+  const patternResult = Validate.validateWithErrors<DateOnly>(isValidPattern, value, [DateOnlyErrors.invalid]);
 
   if (!patternResult.isSuccess) {
     return patternResult;

@@ -1,6 +1,6 @@
 import { Id } from '@/domain/core/id';
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createStringValidator, Validate } from '@/domain/core/validate';
 
 export type StoreItem = {
   id: Id;
@@ -23,16 +23,12 @@ const isValidJson = (value: unknown): Result<string> => {
   }
 };
 
-const schema = {
-  $id: 'store-item-code',
-  type: 'string',
-  minLength: 1,
-};
+const isValidCode = createStringValidator({ minLength: 1 });
 
 const create = (value: Record<string, unknown>): Result<StoreItem> => {
   return Result.combine<StoreItem>({
     id: Id.create(value.id),
-    code: Validate.validateWithErrors(schema, value.code, [StoreItemErrors.invalidCode]),
+    code: Validate.validateWithErrors(isValidCode, value.code, [StoreItemErrors.invalidCode]),
     data: isValidJson(value.data),
   });
 };

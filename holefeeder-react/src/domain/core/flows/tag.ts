@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { Validate } from '@/domain/core/validate';
+import { createNumberValidator, createStringValidator, Validate } from '@/domain/core/validate';
 
 export type Tag = {
   tag: string;
@@ -11,22 +11,13 @@ export const TagErrors = {
   invalidCount: 'invalid-count',
 };
 
-const schema = {
-  $id: 'tag-name',
-  type: 'string',
-  minLength: 1,
-};
-
-const countSchema = {
-  $id: 'tag-count',
-  type: 'number',
-  minimum: 0,
-};
+const isValidTag = createStringValidator({ minLength: 1 });
+const isValidCount = createNumberValidator({ min: 0 });
 
 const create = (value: Record<string, unknown>): Result<Tag> => {
   return Result.combine<Tag>({
-    tag: Validate.validateWithErrors(schema, value.tag, [TagErrors.invalidName]),
-    count: Validate.validateWithErrors(countSchema, value.count, [TagErrors.invalidCount]),
+    tag: Validate.validateWithErrors(isValidTag, value.tag, [TagErrors.invalidName]),
+    count: Validate.validateWithErrors(isValidCount, value.count, [TagErrors.invalidCount]),
   });
 };
 

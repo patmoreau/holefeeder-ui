@@ -1,150 +1,201 @@
 import {
-  ArrayValidationErrors,
-  BooleanValidationErrors,
-  createArrayValidator,
-  createBooleanValidator,
-  createEnumValidator,
-  createNumberValidator,
-  createPatternValidator,
-  createStringValidator,
-  EnumValidationErrors,
-  NumberValidationErrors,
-  PatternValidationErrors,
-  StringValidationErrors,
+  ArrayValidatorErrors,
+  BooleanValidatorErrors,
+  EnumValidatorErrors,
+  NumberValidatorErrors,
+  PatternValidatorErrors,
+  StringValidatorErrors,
   Validate,
+  Validator,
 } from '@/domain/core/validate';
 
+const CUSTOM_ERROR = 'custom-error';
+
 describe('Validate.validate', () => {
-  const isValid = createNumberValidator({ min: 1, max: 10 }, { type: 'type-error', min: 'minimum-error', max: 'maximum-error' });
+  const isValid = Validator.numberValidator({ min: 1, max: 10 });
 
   it('returns success for valid values', () => {
-    const result = Validate.validate<number>(isValid, 5);
+    const result = Validate.validate(isValid, 5);
 
     expect(result).toBeSuccessWithValue(5);
   });
 
-  it('returns failure for invalid values', () => {
-    const result = Validate.validate<number>(isValid, 10.5);
+  it('returns failure with error message from validator', () => {
+    const result = Validate.validate(isValid, 10.5);
 
-    expect(result).toBeFailureWithErrors(['maximum-error']);
+    expect(result).toBeFailureWithErrors([NumberValidatorErrors.max]);
   });
 
-  it('returns failure with default error message when no custom errors provided', () => {
-    const isValidWithDefaults = createNumberValidator({ min: 1, max: 10 });
-    const result = Validate.validate(isValidWithDefaults, 10.5);
+  it('allows overriding error message', () => {
+    const isValidWithDefaults = Validator.numberValidator({ min: 1, max: 10 });
+    const result = Validate.validate(isValidWithDefaults, 10.5, ['custom-error']);
 
-    expect(result).toBeFailureWithErrors([NumberValidationErrors.max]);
-  });
-});
-
-describe('createEnumValidator', () => {
-  enum TestEnum {
-    A = 'A',
-    B = 'B',
-  }
-
-  const validator = createEnumValidator(TestEnum);
-
-  it('returns success for valid enum values', () => {
-    expect(validator('A')).toBeSuccessWithValue('A');
-    expect(validator('B')).toBeSuccessWithValue('B');
-  });
-
-  it('returns failure for invalid enum values', () => {
-    expect(validator('C')).toBeFailureWithErrors([EnumValidationErrors.invalidValue]);
-  });
-
-  it('returns failure for invalid type', () => {
-    expect(validator(123)).toBeFailureWithErrors([EnumValidationErrors.invalidValue]);
+    expect(result).toBeFailureWithErrors(['custom-error']);
   });
 });
 
-describe('createPatternValidator', () => {
-  const pattern = /^[a-z]+$/;
-  const validator = createPatternValidator(pattern);
+describe('Validator', () => {
+  describe('booleanValidator', () => {
+    const validator = Validator.booleanValidator();
 
-  it('returns success for matching pattern', () => {
-    expect(validator('abc')).toBeSuccessWithValue('abc');
+    it('returns success for boolean true', () => {
+      expect(validator(true)).toBeSuccessWithValue(true);
+    });
+
+    it('returns success for boolean false', () => {
+      expect(validator(false)).toBeSuccessWithValue(false);
+    });
+
+    it('returns failure for invalid type', () => {
+      expect(validator('true')).toBeFailureWithErrors([BooleanValidatorErrors.type]);
+    });
   });
 
-  it('returns failure for non-matching pattern', () => {
-    expect(validator('123')).toBeFailureWithErrors([PatternValidationErrors.patternMismatch]);
+  describe('enumValidator', () => {
+    const TestEnums = {
+      A: 'A',
+      B: 'B',
+    };
+    type TestEnum = (typeof TestEnums)[keyof typeof TestEnums];
+
+    const validator = Validator.enumValidator<TestEnum>({ values: TestEnums });
+
+    it('returns success for valid enum values', () => {
+      expect(validator('A')).toBeSuccessWithValue('A');
+      expect(validator('B')).toBeSuccessWithValue('B');
+    });
+
+    it('returns failure for invalid enum values', () => {
+      expect(validator('C')).toBeFailureWithErrors([EnumValidatorErrors.invalid]);
+    });
+
+    it('allows overriding error message', () => {
+      const customValidator = Validator.enumValidator<TestEnum>({ values: TestEnums, errors: CUSTOM_ERROR });
+      expect(customValidator('C')).toBeFailureWithErrors([CUSTOM_ERROR]);
+      expect(customValidator(123)).toBeFailureWithErrors([CUSTOM_ERROR]);
+    });
   });
 
-  it('returns failure for invalid type', () => {
-    expect(validator(123)).toBeFailureWithErrors([PatternValidationErrors.invalidType]);
-  });
-});
+  describe('numberValidator', () => {
+    const validator = Validator.numberValidator({ min: 10, max: 20, integer: true });
 
-describe('createNumberValidator', () => {
-  const validator = createNumberValidator({ min: 10, max: 20 });
+    it('returns success for valid number', () => {
+      expect(validator(15)).toBeSuccessWithValue(15);
+    });
 
-  it('returns success for valid number', () => {
-    expect(validator(15)).toBeSuccessWithValue(15);
-  });
+    it('returns failure for value less than min', () => {
+      expect(validator(5)).toBeFailureWithErrors([NumberValidatorErrors.min]);
+    });
 
-  it('returns failure for value less than min', () => {
-    expect(validator(5)).toBeFailureWithErrors([NumberValidationErrors.min]);
-  });
+    it('returns failure for value greater than max', () => {
+      expect(validator(25)).toBeFailureWithErrors([NumberValidatorErrors.max]);
+    });
 
-  it('returns failure for value greater than max', () => {
-    expect(validator(25)).toBeFailureWithErrors([NumberValidationErrors.max]);
-  });
+    it('returns failure for invalid type', () => {
+      expect(validator('15')).toBeFailureWithErrors([NumberValidatorErrors.type]);
+    });
 
-  it('returns failure for invalid type', () => {
-    expect(validator('15')).toBeFailureWithErrors([NumberValidationErrors.invalidType]);
-  });
-});
+    it('returns failure for invalid integrer', () => {
+      expect(validator(15.5)).toBeFailureWithErrors([NumberValidatorErrors.integer]);
+    });
 
-describe('createStringValidator', () => {
-  const validator = createStringValidator({ minLength: 3, maxLength: 5 });
-
-  it('returns success for valid string length', () => {
-    expect(validator('abcd')).toBeSuccessWithValue('abcd');
-  });
-
-  it('returns failure for string too short', () => {
-    expect(validator('ab')).toBeFailureWithErrors([StringValidationErrors.minLength]);
-  });
-
-  it('returns failure for string too long', () => {
-    expect(validator('abcdef')).toBeFailureWithErrors([StringValidationErrors.maxLength]);
+    it('allows overriding error messages', () => {
+      const customValidator = Validator.numberValidator({
+        min: 10,
+        max: 20,
+        integer: true,
+        errors: { min: `min-${CUSTOM_ERROR}`, max: `max-${CUSTOM_ERROR}`, integer: `integer-${CUSTOM_ERROR}` },
+      });
+      expect(customValidator(5)).toBeFailureWithErrors([`min-${CUSTOM_ERROR}`]);
+      expect(customValidator(25)).toBeFailureWithErrors([`max-${CUSTOM_ERROR}`]);
+      expect(customValidator(15.5)).toBeFailureWithErrors([`integer-${CUSTOM_ERROR}`]);
+    });
   });
 
-  it('returns failure for invalid type', () => {
-    expect(validator(123)).toBeFailureWithErrors([StringValidationErrors.invalidType]);
-  });
-});
+  describe('patternValidator', () => {
+    const pattern = /^[a-z]+$/;
+    const validator = Validator.patternValidator({ pattern: pattern });
 
-describe('createBooleanValidator', () => {
-  const validator = createBooleanValidator();
+    it('returns success for matching pattern', () => {
+      expect(validator('abc')).toBeSuccessWithValue('abc');
+    });
 
-  it('returns success for boolean true', () => {
-    expect(validator(true)).toBeSuccessWithValue(true);
-  });
+    it('returns failure for non-matching pattern', () => {
+      expect(validator('123')).toBeFailureWithErrors([PatternValidatorErrors.pattern]);
+    });
 
-  it('returns success for boolean false', () => {
-    expect(validator(false)).toBeSuccessWithValue(false);
-  });
+    it('returns failure for invalid type', () => {
+      expect(validator(123)).toBeFailureWithErrors([PatternValidatorErrors.type]);
+    });
 
-  it('returns failure for invalid type', () => {
-    expect(validator('true')).toBeFailureWithErrors([BooleanValidationErrors.invalidType]);
-  });
-});
-
-describe('createArrayValidator', () => {
-  const itemValidator = createStringValidator({ minLength: 2 });
-  const validator = createArrayValidator(itemValidator);
-
-  it('returns success for valid array', () => {
-    expect(validator(['abc', 'def'])).toBeSuccessWithValue(['abc', 'def']);
+    it('allows overriding error messages', () => {
+      const customValidator = Validator.patternValidator({ pattern: pattern, errors: CUSTOM_ERROR });
+      expect(customValidator('123')).toBeFailureWithErrors([CUSTOM_ERROR]);
+    });
   });
 
-  it('returns failure for array with invalid item', () => {
-    expect(validator(['a', 'def'])).toBeFailureWithErrors([StringValidationErrors.minLength]);
+  describe('stringValidator', () => {
+    const validator = Validator.stringValidator({ minLength: 3, maxLength: 5 });
+
+    it('returns success for valid string length', () => {
+      expect(validator('abcd')).toBeSuccessWithValue('abcd');
+    });
+
+    it('returns failure for string too short', () => {
+      expect(validator('ab')).toBeFailureWithErrors([StringValidatorErrors.minLength]);
+    });
+
+    it('returns failure for string too long', () => {
+      expect(validator('abcdef')).toBeFailureWithErrors([StringValidatorErrors.maxLength]);
+    });
+
+    it('returns failure for invalid type', () => {
+      expect(validator(123)).toBeFailureWithErrors([StringValidatorErrors.type]);
+    });
+
+    it('allows overriding error messages', () => {
+      const customValidator = Validator.stringValidator({
+        minLength: 3,
+        maxLength: 5,
+        errors: { minLength: `min-${CUSTOM_ERROR}`, maxLength: `max-${CUSTOM_ERROR}` },
+      });
+      expect(customValidator('ab')).toBeFailureWithErrors([`min-${CUSTOM_ERROR}`]);
+      expect(customValidator('abcdef')).toBeFailureWithErrors([`max-${CUSTOM_ERROR}`]);
+    });
   });
 
-  it('returns failure for invalid type', () => {
-    expect(validator('not-an-array')).toBeFailureWithErrors([ArrayValidationErrors.invalidType]);
+  describe('arrayValidator', () => {
+    const itemValidator = Validator.stringValidator({ minLength: 2 });
+    const validator = Validator.arrayValidator(itemValidator, { minLength: 1, maxLength: 2 });
+
+    it('returns success for valid array', () => {
+      expect(validator(['abc', 'def'])).toBeSuccessWithValue(['abc', 'def']);
+    });
+
+    it('fails on min length error', () => {
+      expect(validator([])).toBeFailureWithErrors([ArrayValidatorErrors.minLength]);
+    });
+
+    it('fails on max length error', () => {
+      expect(validator(['abc', 'def', 'ghi'])).toBeFailureWithErrors([ArrayValidatorErrors.maxLength]);
+    });
+
+    it('returns failure for invalid type', () => {
+      expect(validator('not-an-array')).toBeFailureWithErrors([ArrayValidatorErrors.type]);
+    });
+
+    it('bubbles up item error when no override provided', () => {
+      expect(validator(['a', 'def'])).toBeFailureWithErrors([`index-0-${StringValidatorErrors.minLength}`]);
+    });
+
+    it('allows overriding error messages', () => {
+      const customValidator = Validator.arrayValidator(itemValidator, {
+        minLength: 1,
+        maxLength: 2,
+        errors: { minLength: `min-${CUSTOM_ERROR}`, maxLength: `max-${CUSTOM_ERROR}` },
+      });
+      expect(customValidator([])).toBeFailureWithErrors([`min-${CUSTOM_ERROR}`]);
+      expect(customValidator(['abc', 'def', 'ghi'])).toBeFailureWithErrors([`max-${CUSTOM_ERROR}`]);
+    });
   });
 });

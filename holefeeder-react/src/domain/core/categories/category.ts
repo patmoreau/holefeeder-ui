@@ -2,7 +2,7 @@ import { CategoryType } from '@/domain/core/categories/category-type';
 import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
 import { Result } from '@/domain/core/result';
-import { createBooleanValidator, createStringValidator, Validate } from '@/domain/core/validate';
+import { Validate, Validator } from '@/domain/core/validate';
 
 export type Category = {
   id: Id;
@@ -22,19 +22,19 @@ export const CategoryErrors = {
   invalidSystem: 'invalid-system',
 };
 
-const isValidName = createStringValidator({ minLength: 1 });
-const isValidColor = createStringValidator({ minLength: 1 });
-const isValidBoolean = createBooleanValidator();
+const isValidName = Validator.stringValidator({ minLength: 1 });
+const isValidColor = Validator.stringValidator({ minLength: 1 });
+const isValidBoolean = Validator.booleanValidator();
 
 const create = (value: Record<string, unknown>): Result<Category> =>
   Result.combine<Category>({
     id: Id.create(value.id),
     type: CategoryType.create(value.type),
-    name: Validate.validateWithErrors(isValidName, value.name, [CategoryErrors.invalidName]),
-    color: Validate.validateWithErrors(isValidColor, value.color, [CategoryErrors.invalidColor]),
+    name: Validate.validate(isValidName, value.name, [CategoryErrors.invalidName]),
+    color: Validate.validate(isValidColor, value.color, [CategoryErrors.invalidColor]),
     budgetAmount: Money.create(value.budgetAmount),
-    favorite: Validate.validateWithErrors(isValidBoolean, value.favorite, [CategoryErrors.invalidFavorite]),
-    system: Validate.validateWithErrors(isValidBoolean, value.system, [CategoryErrors.invalidSystem]),
+    favorite: Validate.validate(isValidBoolean, value.favorite, [CategoryErrors.invalidFavorite]),
+    system: Validate.validate(isValidBoolean, value.system, [CategoryErrors.invalidSystem]),
   });
 
 const valid = (value: Record<string, unknown>): Category => ({

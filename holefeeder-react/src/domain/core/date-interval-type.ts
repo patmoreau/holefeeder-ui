@@ -1,6 +1,6 @@
 import { addDays, addMonths, addWeeks, addYears, subDays } from 'date-fns';
 import { Result } from '@/domain/core/result';
-import { createEnumValidator, Validate } from '@/domain/core/validate';
+import { Validate, Validator } from '@/domain/core/validate';
 import { withDate } from '@/features/shared/utils/with-date';
 import { DateOnly } from './date-only';
 
@@ -18,7 +18,7 @@ export const DateIntervalTypeErrors = {
   invalid: 'date-interval-type-invalid',
 };
 
-const isValid = createEnumValidator(DateIntervalTypes);
+const isValid = Validator.enumValidator<DateIntervalType>({ values: DateIntervalTypes });
 
 export const normalizeDateIntervalType = (type: string): DateIntervalType => {
   const normalized = type.trim().toLowerCase();
@@ -51,7 +51,7 @@ const create = (value: unknown): Result<DateIntervalType> => {
     }
   }
 
-  const result = Validate.validateWithErrors(isValid, normalized, [DateIntervalTypeErrors.invalid]);
+  const result = Validate.validate(isValid, normalized, [DateIntervalTypeErrors.invalid]);
   if (result.isSuccess) {
     return Result.success(normalized as DateIntervalType);
   }

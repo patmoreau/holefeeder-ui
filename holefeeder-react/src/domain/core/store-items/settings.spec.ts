@@ -1,7 +1,7 @@
 import { DateIntervalTypeErrors, DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { DateOnlyErrors } from '@/domain/core/date-only';
 import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
-import { Settings } from '@/domain/core/store-items/settings';
+import { Settings, SettingsErrors } from '@/domain/core/store-items/settings';
 
 describe('Settings', () => {
   it('parse valid settings JSON', () => {
@@ -52,7 +52,7 @@ describe('Settings', () => {
 
     const result = Settings.create(jsonString);
 
-    expect(result).toBeFailureWithErrors(['min-value-error']);
+    expect(result).toBeFailureWithErrors([SettingsErrors.invalid]);
   });
 
   describe('toStoreItemData', () => {

@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { createEnumValidator, Validate } from '@/domain/core/validate';
+import { Validate, Validator } from '@/domain/core/validate';
 
 export const AccountTypes = {
   checking: 'checking',
@@ -41,7 +41,7 @@ export const normalizeAccountType = (type: string): AccountType => {
   }
 };
 
-const isValid = createEnumValidator(AccountTypes);
+const isValid = Validator.enumValidator<AccountType>({ values: AccountTypes });
 
 const create = (value: unknown): Result<AccountType> => {
   let normalized = value;
@@ -54,7 +54,7 @@ const create = (value: unknown): Result<AccountType> => {
     }
   }
 
-  const result = Validate.validateWithErrors(isValid, normalized, [AccountTypeErrors.invalid]);
+  const result = Validate.validate(isValid, normalized, [AccountTypeErrors.invalid]);
   if (result.isSuccess) {
     return Result.success(normalized as AccountType);
   }

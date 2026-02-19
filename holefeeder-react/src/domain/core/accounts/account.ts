@@ -2,7 +2,7 @@ import { AccountType } from '@/domain/core/accounts/account-type';
 import { DateOnly } from '@/domain/core/date-only';
 import { Id } from '@/domain/core/id';
 import { Result } from '@/domain/core/result';
-import { createBooleanValidator, createStringValidator, Validate } from '@/domain/core/validate';
+import { Validate, Validator } from '@/domain/core/validate';
 import { Variation } from '@/domain/core/variation';
 
 export type Account = {
@@ -25,20 +25,20 @@ export const AccountErrors = {
   invalidInactive: 'invalid-inactive',
 };
 
-const isValidName = createStringValidator({ minLength: 1 });
-const isValidDescription = createStringValidator();
-const isValidBoolean = createBooleanValidator();
+const isValidName = Validator.stringValidator({ minLength: 1 });
+const isValidDescription = Validator.stringValidator();
+const isValidBoolean = Validator.booleanValidator();
 
 const create = (value: Record<string, unknown>): Result<Account> => {
   return Result.combine<Account>({
     id: Id.create(value.id),
     type: AccountType.create(value.type),
-    name: Validate.validateWithErrors(isValidName, value.name, [AccountErrors.invalidName]),
+    name: Validate.validate(isValidName, value.name, [AccountErrors.invalidName]),
     openBalance: Variation.create(value.openBalance),
     openDate: DateOnly.create(value.openDate),
-    description: Validate.validateWithErrors(isValidDescription, value.description, [AccountErrors.invalidDescription]),
-    favorite: Validate.validateWithErrors(isValidBoolean, value.favorite, [AccountErrors.invalidFavorite]),
-    inactive: Validate.validateWithErrors(isValidBoolean, value.inactive, [AccountErrors.invalidInactive]),
+    description: Validate.validate(isValidDescription, value.description, [AccountErrors.invalidDescription]),
+    favorite: Validate.validate(isValidBoolean, value.favorite, [AccountErrors.invalidFavorite]),
+    inactive: Validate.validate(isValidBoolean, value.inactive, [AccountErrors.invalidInactive]),
   });
 };
 

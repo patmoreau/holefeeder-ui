@@ -1,187 +1,147 @@
 import { Result } from '@/domain/core/result';
 
-export type Validator<T> = (value: unknown) => value is T;
-export type ResultValidator<T> = (value: unknown) => Result<T>;
+type Validator<T> = (value: unknown) => Result<T>;
 
-const executeValidator = <T>(validator: Validator<T> | ResultValidator<T>, value: unknown): Result<T> => {
-  const result = (validator as Function)(value);
-
-  if (typeof result === 'boolean') {
-    return result ? Result.success(value as T) : Result.failure([]);
-  }
-
-  return result as Result<T>;
+const validate = <T>(validator: Validator<T>, value: unknown, errors?: string[]): Result<T> => {
+  const result = validator(value);
+  return result.isFailure ? Result.failure(errors ?? result.errors) : result;
 };
 
-const validate = <T>(validator: Validator<T> | ResultValidator<T>, value: unknown, errorMessage?: string): Result<T> => {
-  const result = executeValidator<T>(validator, value);
-  if (result.isSuccess) {
-    return result;
-  }
-  if (errorMessage) {
-    return Result.failure([errorMessage]);
-  }
-  if ('errors' in result && result.errors.length) {
-    return result;
-  }
-  return Result.failure(['Validation failed']);
+export const Validate = { validate: validate } as const;
+
+export const BooleanValidatorErrors = {
+  type: 'boolean-type',
 };
 
-const validateWithErrors = <T>(validator: Validator<T> | ResultValidator<T>, value: unknown, errors: string[]): Result<T> => {
-  const result = executeValidator(validator, value);
-  return result.isSuccess ? result : Result.failure(errors);
+const booleanValidator = (): Validator<boolean> => (value) => {
+  if (typeof value !== 'boolean') return Result.failure([BooleanValidatorErrors.type]);
+  return Result.success(value as boolean);
 };
 
-export const Validate = { validate, validateWithErrors } as const;
-
-export const EnumValidationErrors = {
-  invalidType: 'invalid-type-enum',
-  invalidValue: 'invalid-value-enum',
+type EnumOptions<T> = {
+  values: Record<string, T>;
+  errors?: string;
 };
 
-export function createEnumValidator<T extends string | number>(
-  enumObj: Record<string, T>,
-  errors?: { invalidType?: string; invalidValue?: string }
-): ResultValidator<T>;
-export function createEnumValidator<T extends string | number>(
-  enumObj: Record<string, T>,
-  errors: { invalidType?: string; invalidValue?: string } = EnumValidationErrors
-) {
-  return (value: unknown): Result<T> => {
-    if (typeof value !== 'string' && typeof value !== 'number') {
-      return Result.failure([errors.invalidType || EnumValidationErrors.invalidType]);
-    }
-    if (!Object.values(enumObj).includes(value as T)) {
-      return Result.failure([errors.invalidValue || EnumValidationErrors.invalidValue]);
+export const EnumValidatorErrors = {
+  invalid: 'enum-invalid',
+};
+
+const enumValidator =
+  <T extends string>(opts: EnumOptions<T>): Validator<T> =>
+  (value) => {
+    const allowedValues = Object.values(opts.values);
+
+    if (typeof value !== 'string' || !allowedValues.includes(value as T)) {
+      return Result.failure([opts.errors ?? EnumValidatorErrors.invalid]);
     }
     return Result.success(value as T);
   };
-}
 
-export const PatternValidationErrors = {
-  invalidType: 'invalid-type-pattern',
-  patternMismatch: 'pattern-mismatch',
+type NumberOptions = {
+  min?: number;
+  max?: number;
+  integer?: boolean;
+  errors?: Partial<{ min: string; max: string; integer: string }>;
 };
 
-export function createPatternValidator<T extends string>(
-  regex: RegExp,
-  errors?: { invalidType?: string; patternMismatch?: string }
-): ResultValidator<T>;
-export function createPatternValidator<T extends string>(
-  regex: RegExp,
-  errors: { invalidType?: string; patternMismatch?: string } = PatternValidationErrors
-) {
-  return (value: unknown): Result<T> => {
-    if (typeof value !== 'string') {
-      return Result.failure([errors.invalidType || PatternValidationErrors.invalidType]);
-    }
-    if (!regex.test(value)) {
-      return Result.failure([errors.patternMismatch || PatternValidationErrors.patternMismatch]);
-    }
+export const NumberValidatorErrors = {
+  min: 'number-min',
+  max: 'number-max',
+  integer: 'number-integer',
+  type: 'number-type',
+};
+
+const numberValidator =
+  <T extends number>(opts: NumberOptions = {}): Validator<T> =>
+  (value: unknown) => {
+    if (typeof value !== 'number' || isNaN(value)) return Result.failure([NumberValidatorErrors.type]);
+    if (opts.integer && !Number.isInteger(value)) return Result.failure([opts.errors?.integer ?? NumberValidatorErrors.integer]);
+    if (opts.min !== undefined && value < opts.min) return Result.failure([opts.errors?.min ?? NumberValidatorErrors.min]);
+    if (opts.max !== undefined && value > opts.max) return Result.failure([opts.errors?.max ?? NumberValidatorErrors.max]);
     return Result.success(value as T);
   };
-}
 
-export const NumberValidationErrors = {
-  invalidType: 'invalid-type-number',
-  min: 'min-value-error',
-  max: 'max-value-error',
+type PatternOptions = {
+  pattern: RegExp;
+  errors?: string;
 };
 
-export function createNumberValidator<T extends number>(
-  options?: { min?: number; max?: number },
-  errors?: { min?: string; max?: string; type?: string }
-): ResultValidator<T>;
-export function createNumberValidator<T extends number>(
-  options: { min?: number; max?: number } = {},
-  errors: { min?: string; max?: string; type?: string } = NumberValidationErrors
-) {
-  return (value: unknown): Result<T> => {
-    if (typeof value !== 'number' || Number.isNaN(value)) {
-      return Result.failure([errors.type || NumberValidationErrors.invalidType]);
-    }
-    if (options.min !== undefined && value < options.min) {
-      return Result.failure([errors.min || NumberValidationErrors.min]);
-    }
-    if (options.max !== undefined && value > options.max) {
-      return Result.failure([errors.max || NumberValidationErrors.max]);
-    }
+export const PatternValidatorErrors = {
+  pattern: 'pattern-invalid',
+  type: 'pattern-type',
+};
+
+const patternValidator =
+  <T extends string>(opts: PatternOptions): Validator<T> =>
+  (value) => {
+    if (typeof value !== 'string') return Result.failure([PatternValidatorErrors.type]);
+    if (!opts.pattern.test(value)) return Result.failure([opts.errors ?? PatternValidatorErrors.pattern]);
     return Result.success(value as T);
   };
-}
 
-export const StringValidationErrors = {
-  invalidType: 'invalid-type-string',
-  minLength: 'min-length-error',
-  maxLength: 'max-length-error',
+type StringOptions = {
+  minLength?: number;
+  maxLength?: number;
+  errors?: Partial<{ minLength: string; maxLength: string }>;
 };
 
-export function createStringValidator(
-  options?: { minLength?: number; maxLength?: number },
-  errors?: { invalidType?: string; minLength?: string; maxLength?: string }
-): ResultValidator<string>;
-export function createStringValidator(
-  options: { minLength?: number; maxLength?: number } = {},
-  errors: { invalidType?: string; minLength?: string; maxLength?: string } = StringValidationErrors
-) {
-  return (value: unknown): Result<string> => {
-    if (typeof value !== 'string') {
-      return Result.failure([errors.invalidType || StringValidationErrors.invalidType]);
-    }
-    if (options.minLength !== undefined && value.length < options.minLength) {
-      return Result.failure([errors.minLength || StringValidationErrors.minLength]);
-    }
-    if (options.maxLength !== undefined && value.length > options.maxLength) {
-      return Result.failure([errors.maxLength || StringValidationErrors.maxLength]);
-    }
-    return Result.success(value as string);
-  };
-}
-
-export const BooleanValidationErrors = {
-  invalidType: 'invalid-type-boolean',
+export const StringValidatorErrors = {
+  minLength: 'string-min-length',
+  maxLength: 'string-max-length',
+  type: 'string-type',
 };
 
-export function createBooleanValidator(errors?: { invalidType?: string }): ResultValidator<boolean>;
-export function createBooleanValidator(errors: { invalidType?: string } = BooleanValidationErrors) {
-  return (value: unknown): Result<boolean> => {
-    if (typeof value !== 'boolean') {
-      return Result.failure([errors.invalidType || BooleanValidationErrors.invalidType]);
-    }
-    return Result.success(value);
+const stringValidator =
+  <T extends string>(opts: StringOptions = {}): Validator<T> =>
+  (value) => {
+    if (typeof value !== 'string') return Result.failure([StringValidatorErrors.type]);
+    if (opts.minLength !== undefined && value.length < opts.minLength)
+      return Result.failure([opts.errors?.minLength ?? StringValidatorErrors.minLength]);
+    if (opts.maxLength !== undefined && value.length > opts.maxLength)
+      return Result.failure([opts.errors?.maxLength ?? StringValidatorErrors.maxLength]);
+    return Result.success(value as T);
   };
-}
 
-export const ArrayValidationErrors = {
-  invalidType: 'invalid-type-array',
-  itemInvalid: 'item-invalid',
+type ArrayOptions = {
+  minLength?: number;
+  maxLength?: number;
+  errors?: Partial<{
+    minLength: string;
+    maxLength: string;
+  }>;
 };
 
-export function createArrayValidator<T>(
-  itemValidator: Validator<T> | ResultValidator<T>,
-  errors?: { invalidType?: string; itemInvalid?: string }
-): ResultValidator<T[]>;
-export function createArrayValidator<T>(
-  itemValidator: Validator<T> | ResultValidator<T>,
-  errors: { invalidType?: string; itemInvalid?: string } = ArrayValidationErrors
-) {
-  return (value: unknown): Result<T[]> => {
-    if (!Array.isArray(value)) {
-      return Result.failure([errors.invalidType || ArrayValidationErrors.invalidType]);
-    }
+export const ArrayValidatorErrors = {
+  minLength: 'array-min-length',
+  maxLength: 'array-max-length',
+  items: 'array-items',
+  type: 'array-type',
+};
 
-    // Validate all items
-    for (const item of value) {
-      const result = executeValidator(itemValidator, item);
-      if (result.isFailure) {
-        // We could aggregate errors or fail fast. For now, fail fast with a generic item error or the specific error.
-        // If the specific item validator returned errors, we might want to use them?
-        // But the requirement here is to have overrides.
-        // If errors.itemInvalid is provided, use it. Otherwise use the item's error if available.
-        return Result.failure([errors.itemInvalid || (result.errors.length ? result.errors[0] : ArrayValidationErrors.itemInvalid)]);
-      }
-    }
+const arrayValidator =
+  <T>(itemValidator: Validator<T>, opts: ArrayOptions = {}): Validator<T[]> =>
+  (value) => {
+    if (!Array.isArray(value)) return Result.failure([ArrayValidatorErrors.type]);
+    if (opts.minLength !== undefined && value.length < opts.minLength)
+      return Result.failure([opts.errors?.minLength ?? ArrayValidatorErrors.minLength]);
+    if (opts.maxLength !== undefined && value.length > opts.maxLength)
+      return Result.failure([opts.errors?.maxLength ?? ArrayValidatorErrors.maxLength]);
 
-    return Result.success(value as T[]);
+    const errors = value.flatMap((item, i) => {
+      const result = itemValidator(item);
+      if (result.isSuccess) return [];
+      return result.errors.map((e) => `index-${i}-${e}`);
+    });
+
+    return errors.length > 0 ? Result.failure(errors) : Result.success(value as T[]);
   };
-}
+
+export const Validator = {
+  booleanValidator: booleanValidator,
+  enumValidator: enumValidator,
+  numberValidator: numberValidator,
+  patternValidator: patternValidator,
+  stringValidator: stringValidator,
+  arrayValidator: arrayValidator,
+} as const;

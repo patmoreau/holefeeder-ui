@@ -1,5 +1,5 @@
 import { Result } from '@/domain/core/result';
-import { createArrayValidator, Validate } from '@/domain/core/validate';
+import { Validate, Validator } from '@/domain/core/validate';
 
 export type TagList = string[] & { readonly __brand: 'TagList' };
 
@@ -7,8 +7,8 @@ export const TagListErrors = {
   invalid: 'tag-list-invalid',
 };
 
-const isString = (value: unknown): value is string => typeof value === 'string';
-const isValidStringArray = createArrayValidator<string>(isString);
+const isString = Validator.stringValidator();
+const isValidStringArray = Validator.arrayValidator<string>(isString);
 
 const create = (tags: unknown): Result<TagList> => {
   const tagsResult = Validate.validate<string[]>(isValidStringArray, tags);

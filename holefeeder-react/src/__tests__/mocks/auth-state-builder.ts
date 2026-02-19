@@ -1,4 +1,4 @@
-import { aBoolean } from '@/__tests__/mocks/boolean-builder';
+import { aBoolean } from '@/__tests__/mocks/boolean-for-test';
 import { aTokenInfo } from '@/__tests__/mocks/token-info-builder';
 import { AuthState } from '@/types/auth-state';
 

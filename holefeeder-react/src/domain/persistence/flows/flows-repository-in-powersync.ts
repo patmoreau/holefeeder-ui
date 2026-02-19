@@ -48,6 +48,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const saveTransfer = async (formData: PurchaseFormData): Promise<Result<void>> => {
     const transferId = Id.newId();
     const amountInCents = Math.round(formData.amount * 100);

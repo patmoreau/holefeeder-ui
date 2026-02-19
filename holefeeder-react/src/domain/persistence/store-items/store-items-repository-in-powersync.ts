@@ -1,12 +1,14 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 import { StoreItem } from '@/domain/core/store-items/store-item';
 import { StoreItemsRepository, StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
 
 type StoreItemRow = { id: number; code: string; data: string };
 
 export const StoreItemsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): StoreItemsRepository => {
-  const watchForCode = (code: string, onDataChange: (result: Result<StoreItem>) => void) => {
+  const watchForCode = (code: string, onDataChange: (result: AsyncResult<StoreItem>) => void) => {
+    onDataChange(Result.loading());
+
     const query = db.query<StoreItemRow>({
       sql: 'SELECT id, code, data FROM store_items WHERE code = ?',
       parameters: [code],

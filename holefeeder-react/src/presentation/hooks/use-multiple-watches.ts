@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ErrorKey } from '@/domain/core/error-key';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 
-type WatchHook<T> = () => Result<T>;
+type WatchHook<T> = () => AsyncResult<T>;
 
 type WatchHooks = Record<string, WatchHook<any>>;
 
@@ -14,7 +14,7 @@ type MultiWatchResult<T extends WatchHooks> = {
     setShowError: (show: boolean) => void;
     error: ErrorKey;
   };
-  results: { [K in keyof T]: Result<any> };
+  results: { [K in keyof T]: AsyncResult<any> };
 };
 
 export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchResult<T> => {

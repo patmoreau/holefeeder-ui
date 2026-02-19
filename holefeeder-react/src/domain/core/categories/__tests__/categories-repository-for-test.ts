@@ -1,6 +1,6 @@
 import { CategoriesRepository } from '@/domain/core/categories/categories-repository';
 import { Category } from '@/domain/core/categories/category';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 
 export type CategoriesRepositoryInMemory = CategoriesRepository & {
   add: (...items: Category[]) => void;
@@ -13,7 +13,7 @@ export const CategoriesRepositoryInMemory = (): CategoriesRepositoryInMemory => 
   let loadingInMemory = false;
   let errorsInMemory: string[] = [];
 
-  const watch = (onDataChange: (result: Result<Category[]>) => void) => {
+  const watch = (onDataChange: (result: AsyncResult<Category[]>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
     } else if (errorsInMemory.length > 0) {

@@ -6,7 +6,7 @@ import { FlowsRepository, FlowsRepositoryErrors } from '@/domain/core/flows/flow
 import { Tag } from '@/domain/core/flows/tag';
 import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
@@ -82,7 +82,9 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  const watchAccountVariations = (onDataChange: (result: Result<AccountVariation[]>) => void) => {
+  const watchAccountVariations = (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => {
+    onDataChange(Result.loading());
+
     const query = db.query<{ accountId: string; lastTransactionDate: string; expenses: number; gains: number }>({
       sql: `
         SELECT
@@ -120,7 +122,9 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     });
   };
 
-  const watchCashflowVariations = (onDataChange: (result: Result<CashflowVariation[]>) => void) => {
+  const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => {
+    onDataChange(Result.loading());
+
     const query = db.query<{
       id: string;
       accountId: string;
@@ -172,7 +176,9 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     });
   };
 
-  const watchTags = (onDataChange: (result: Result<Tag[]>) => void) => {
+  const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) => {
+    onDataChange(Result.loading());
+
     const query = db.query<{ tag: string; count: number }>({
       sql: `
           WITH RECURSIVE split(tag, remainder) AS

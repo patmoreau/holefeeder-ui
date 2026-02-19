@@ -1,4 +1,5 @@
-export type Result<T> = Success<T> | Failure | Loading;
+export type Result<T> = Success<T> | Failure;
+export type AsyncResult<T> = Result<T> | Loading;
 
 export type Success<T> = {
   readonly isSuccess: true;
@@ -30,9 +31,11 @@ const failure = (errors: string[]): Failure => ({ isSuccess: false, isFailure: t
 
 const loading = (): Loading => ({ isSuccess: false, isFailure: false, isLoading: true });
 
-const combine = <T extends Record<string, unknown>>(results: {
-  [K in keyof T]: Result<T[K]>;
-}) => {
+function combine<T extends Record<string, unknown>>(results: { [K in keyof T]: Result<T[K]> }): Result<T>;
+function combine<T extends Record<string, unknown>>(results: { [K in keyof T]: AsyncResult<T[K]> }): AsyncResult<T>;
+function combine<T extends Record<string, unknown>>(results: {
+  [K in keyof T]: AsyncResult<T[K]>;
+}): AsyncResult<T> {
   let loadings: Loading[] = [];
   let failures: string[] = [];
   const combined = {} as T;
@@ -48,9 +51,11 @@ const combine = <T extends Record<string, unknown>>(results: {
 
   if (loadings.length > 0) return loading();
   return failures.length > 0 ? failure(failures) : success(combined);
-};
+}
 
-const combineArray = <T>(results: Result<T>[]): Result<T[]> => {
+function combineArray<T>(results: Result<T>[]): Result<T[]>;
+function combineArray<T>(results: AsyncResult<T>[]): AsyncResult<T[]>;
+function combineArray<T>(results: AsyncResult<T>[]): AsyncResult<T[]> {
   let loadings: Loading[] = [];
   const failures: string[] = [];
   const values: T[] = [];
@@ -67,7 +72,7 @@ const combineArray = <T>(results: Result<T>[]): Result<T[]> => {
 
   if (loadings.length > 0) return loading();
   return failures.length > 0 ? failure(failures) : success(values);
-};
+}
 
 export const Result = {
   success: success,

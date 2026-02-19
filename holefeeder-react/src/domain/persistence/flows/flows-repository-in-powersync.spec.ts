@@ -14,7 +14,7 @@ import { Tag } from '@/domain/core/flows/tag';
 import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { FlowsRepositoryInPowersync } from './flows-repository-in-powersync';
 
 describe('FlowsRepository', () => {
@@ -74,10 +74,8 @@ describe('FlowsRepository', () => {
         date: DateOnly.valid('2026-02-01'),
       }).store(db);
 
-      const repo = FlowsRepositoryInPowersync(db);
-
-      let result: Result<AccountVariation[]> | undefined;
-      const unsubscribe = repo.watchAccountVariations((data) => {
+      let result: AsyncResult<AccountVariation[]> | undefined;
+      const unsubscribe = repository.watchAccountVariations((data) => {
         result = data;
       });
 
@@ -98,10 +96,8 @@ describe('FlowsRepository', () => {
     });
 
     it('returns empty list when no transaction exist', async () => {
-      const repo = FlowsRepositoryInPowersync(db);
-
-      let result: Result<AccountVariation[]> | undefined;
-      const unsubscribe = repo.watchAccountVariations((data) => {
+      let result: AsyncResult<AccountVariation[]> | undefined;
+      const unsubscribe = repository.watchAccountVariations((data) => {
         result = data;
       });
 
@@ -115,13 +111,11 @@ describe('FlowsRepository', () => {
     });
 
     it('handles database errors', async () => {
-      const repo = FlowsRepositoryInPowersync(db);
-
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<AccountVariation[]> | undefined;
-      const unsubscribe = repo.watchAccountVariations((data) => {
+      let result: AsyncResult<AccountVariation[]> | undefined;
+      const unsubscribe = repository.watchAccountVariations((data) => {
         result = data;
       });
 
@@ -140,10 +134,8 @@ describe('FlowsRepository', () => {
       const category = await aCategory({ type: CategoryTypes.expense }).store(db);
       const cashflow = await aCashflow({ categoryId: category.id, amount: Money.valid(100) }).store(db);
 
-      const repo = FlowsRepositoryInPowersync(db);
-
-      let result: Result<CashflowVariation[]> | undefined;
-      const unsubscribe = repo.watchCashflowVariations((data) => {
+      let result: AsyncResult<CashflowVariation[]> | undefined;
+      const unsubscribe = repository.watchCashflowVariations((data) => {
         result = data;
       });
 
@@ -168,7 +160,7 @@ describe('FlowsRepository', () => {
       unsubscribe();
     });
 
-    it('retrieves cashflows paid', async () => {
+    it('retrieves cashflows variations', async () => {
       const category = await aCategory({ type: CategoryTypes.expense }).store(db);
       const cashflow = await aCashflow({ categoryId: category.id, amount: Money.valid(100) }).store(db);
       const transaction = await aTransaction({
@@ -179,10 +171,8 @@ describe('FlowsRepository', () => {
         cashflowId: cashflow.id,
       }).store(db);
 
-      const repo = FlowsRepositoryInPowersync(db);
-
-      let result: Result<CashflowVariation[]> | undefined;
-      const unsubscribe = repo.watchCashflowVariations((data) => {
+      let result: AsyncResult<CashflowVariation[]> | undefined;
+      const unsubscribe = repository.watchCashflowVariations((data) => {
         result = data;
       });
 
@@ -208,10 +198,8 @@ describe('FlowsRepository', () => {
     });
 
     it('returns empty list when no cashflow exist', async () => {
-      const repo = FlowsRepositoryInPowersync(db);
-
-      let result: Result<CashflowVariation[]> | undefined;
-      const unsubscribe = repo.watchCashflowVariations((data) => {
+      let result: AsyncResult<CashflowVariation[]> | undefined;
+      const unsubscribe = repository.watchCashflowVariations((data) => {
         result = data;
       });
 
@@ -225,13 +213,11 @@ describe('FlowsRepository', () => {
     });
 
     it('handles database errors', async () => {
-      const repo = FlowsRepositoryInPowersync(db);
-
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<CashflowVariation[]> | undefined;
-      const unsubscribe = repo.watchCashflowVariations((data) => {
+      let result: AsyncResult<CashflowVariation[]> | undefined;
+      const unsubscribe = repository.watchCashflowVariations((data) => {
         result = data;
       });
 
@@ -252,10 +238,8 @@ describe('FlowsRepository', () => {
       await aTransaction({ tags: TagList.valid(['food']) }).store(db);
       const validTags: Tag[] = [aTag({ tag: 'food', count: 2 }), aTag({ tag: 'groceries', count: 2 }), aTag({ tag: 'shopping', count: 1 })];
 
-      const repo = FlowsRepositoryInPowersync(db);
-
-      let result: Result<Tag[]> | undefined;
-      const unsubscribe = repo.watchTags((data) => {
+      let result: AsyncResult<Tag[]> | undefined;
+      const unsubscribe = repository.watchTags((data) => {
         result = data;
       });
 
@@ -269,10 +253,8 @@ describe('FlowsRepository', () => {
     });
 
     it('returns not found when no tags exist', async () => {
-      const repo = FlowsRepositoryInPowersync(db);
-
-      let result: Result<Tag[]> | undefined;
-      const unsubscribe = repo.watchTags((data) => {
+      let result: AsyncResult<Tag[]> | undefined;
+      const unsubscribe = repository.watchTags((data) => {
         result = data;
       });
 
@@ -286,13 +268,11 @@ describe('FlowsRepository', () => {
     });
 
     it('handles database errors', async () => {
-      const repo = FlowsRepositoryInPowersync(db);
-
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<Tag[]> | undefined;
-      const unsubscribe = repo.watchTags((data) => {
+      let result: AsyncResult<Tag[]> | undefined;
+      const unsubscribe = repository.watchTags((data) => {
         result = data;
       });
 

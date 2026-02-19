@@ -1,6 +1,6 @@
 import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
 import { SummaryData } from '@/domain/core/dashboard/summary-data';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 
 export type DashboardRepositoryInMemory = DashboardRepository & {
   add: (...items: SummaryData[]) => void;
@@ -13,7 +13,7 @@ export const DashboardRepositoryInMemory = (): DashboardRepositoryInMemory => {
   let loadingInMemory = false;
   let errorsInMemory: string[] = [];
 
-  const watch = (onDataChange: (result: Result<SummaryData[]>) => void) => {
+  const watch = (onDataChange: (result: AsyncResult<SummaryData[]>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
     } else if (errorsInMemory.length > 0) {

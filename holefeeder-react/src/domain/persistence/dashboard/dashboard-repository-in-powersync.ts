@@ -3,10 +3,12 @@ import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repositor
 import { SummaryData } from '@/domain/core/dashboard/summary-data';
 import { DateIntervalType, DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 
 export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): DashboardRepository => {
-  const watch = (onDataChange: (result: Result<SummaryData[]>) => void, intervalType: DateIntervalType, frequency: number) => {
+  const watch = (onDataChange: (result: AsyncResult<SummaryData[]>) => void, intervalType: DateIntervalType, frequency: number) => {
+    onDataChange(Result.loading());
+
     let groupByDate = 't.date';
     if (frequency === 1) {
       if (intervalType === DateIntervalTypes.monthly) {

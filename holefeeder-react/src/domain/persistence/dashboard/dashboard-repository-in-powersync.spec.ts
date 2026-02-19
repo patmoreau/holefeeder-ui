@@ -5,7 +5,7 @@ import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { withDate } from '@/features/shared/utils/with-date';
 import { DashboardRepositoryInPowersync } from './dashboard-repository-in-powersync';
 
@@ -96,7 +96,7 @@ describe('DashboardRepositoryInPowersync', () => {
 
       const repo = DashboardRepositoryInPowersync(db);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watch(
         (data) => {
           result = data;
@@ -153,7 +153,7 @@ describe('DashboardRepositoryInPowersync', () => {
     it('returns empty list when no transactions exist', async () => {
       const repo = DashboardRepositoryInPowersync(db);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watch(
         (data) => {
           result = data;
@@ -177,7 +177,7 @@ describe('DashboardRepositoryInPowersync', () => {
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watch(
         (data) => {
           result = data;

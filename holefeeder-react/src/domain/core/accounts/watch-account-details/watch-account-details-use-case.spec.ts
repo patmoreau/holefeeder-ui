@@ -10,7 +10,7 @@ import { DateOnly } from '@/domain/core/date-only';
 import { aCashflowVariation } from '@/domain/core/flows/__tests__/cashflow-variation-for-test';
 import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
 import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { Variation } from '@/domain/core/variation';
 import { WatchAccountDetailsUseCase } from './watch-account-details-use-case';
 
@@ -44,7 +44,7 @@ describe('WatchAccountDetailsUseCase', () => {
       flowsRepo.addAccountVariations(accountVariation);
       flowsRepo.addCashflowVariations(cashflow);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.queryDetails((data) => {
         result = data;
       });
@@ -68,7 +68,7 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return failure when accounts repository fails', async () => {
       accountsRepo.isFailing(['error']);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.queryDetails((data) => {
         result = data;
       });
@@ -83,7 +83,7 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return failure when flows repository fails with other error', async () => {
       flowsRepo.isFailing(['other-error']);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.queryDetails((data) => {
         result = data;
       });
@@ -98,7 +98,7 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return loading when accounts repository is loading', async () => {
       accountsRepo.isLoading();
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.queryDetails((data) => {
         result = data;
       });
@@ -113,7 +113,7 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return loading when flows repository is loading', async () => {
       flowsRepo.isLoading();
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.queryDetails((data) => {
         result = data;
       });

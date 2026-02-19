@@ -5,7 +5,7 @@ import { CreateFlowCommand } from '@/domain/core/flows/create-flow/create-flow-c
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
 import { Tag } from '@/domain/core/flows/tag';
 import { Id } from '@/domain/core/id';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 
 export type FlowsRepositoryInMemory = FlowsRepository & {
   addAccountVariations: (...items: AccountVariation[]) => void;
@@ -26,7 +26,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     return Promise.resolve(Result.success(anId()));
   };
 
-  const watchAccountVariations = (onDataChange: (result: Result<AccountVariation[]>) => void) => {
+  const watchAccountVariations = (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
     } else if (errorsInMemory.length > 0) {
@@ -37,7 +37,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     return () => void 0;
   };
 
-  const watchCashflowVariations = (onDataChange: (result: Result<CashflowVariation[]>) => void) => {
+  const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
     } else if (errorsInMemory.length > 0) {
@@ -48,7 +48,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     return () => void 0;
   };
 
-  const watchTags = (onDataChange: (result: Result<Tag[]>) => void) => {
+  const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
     } else if (errorsInMemory.length > 0) {

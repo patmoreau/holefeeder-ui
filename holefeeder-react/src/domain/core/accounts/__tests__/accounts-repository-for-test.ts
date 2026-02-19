@@ -1,6 +1,6 @@
 import { Account } from '@/domain/core/accounts/account';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 
 export type AccountsRepositoryInMemory = AccountsRepository & {
   add: (...items: Account[]) => void;
@@ -13,7 +13,7 @@ export const AccountsRepositoryInMemory = (): AccountsRepositoryInMemory => {
   let loadingInMemory = false;
   let errorsInMemory: string[] = [];
 
-  const watch = (onDataChange: (result: Result<Account[]>) => void) => {
+  const watch = (onDataChange: (result: AsyncResult<Account[]>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
     } else if (errorsInMemory.length > 0) {

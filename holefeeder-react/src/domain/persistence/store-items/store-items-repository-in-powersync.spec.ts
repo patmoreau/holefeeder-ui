@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { aWord } from '@/__tests__/mocks/string-for-test';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { aStoreItem, toStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
 import { StoreItemsRepositoryInPowersync } from '@/domain/persistence/store-items/store-items-repository-in-powersync';
@@ -22,7 +22,7 @@ describe('StoreItemsRepositoryInPowersync', () => {
       const storeItem = await aStoreItem().store(db);
       const repo = StoreItemsRepositoryInPowersync(db);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watchForCode(storeItem.code, (data) => {
         result = data;
       });
@@ -31,19 +31,15 @@ describe('StoreItemsRepositoryInPowersync', () => {
         expect(result).toBeDefined();
       });
 
-      expect(result).toBeSuccessWithValue({
-        id: storeItem.id,
-        code: storeItem.code,
-        data: storeItem.data,
-      });
+      expect(result).toBeSuccessWithValue(toStoreItem(storeItem));
 
       unsubscribe();
     });
 
-    it('returns not found when code does not exist', async () => {
+    it('returns not found when no store items exist', async () => {
       const repo = StoreItemsRepositoryInPowersync(db);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watchForCode(aWord(), (data) => {
         result = data;
       });
@@ -63,8 +59,8 @@ describe('StoreItemsRepositoryInPowersync', () => {
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<any> | undefined;
-      const unsubscribe = repo.watchForCode('some-code', (data) => {
+      let result: AsyncResult<any> | undefined;
+      const unsubscribe = repo.watchForCode(aWord(), (data) => {
         result = data;
       });
 

@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { CategoriesRepositoryInPowersync } from './categories-repository-in-powersync';
 
 describe('CategoriesRepositoryInPowersync', () => {
@@ -20,7 +20,7 @@ describe('CategoriesRepositoryInPowersync', () => {
       const category = await aCategory().store(db);
       const repo = CategoriesRepositoryInPowersync(db);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watch((data) => {
         result = data;
       });
@@ -47,7 +47,7 @@ describe('CategoriesRepositoryInPowersync', () => {
     it('returns not found when no categories exist', async () => {
       const repo = CategoriesRepositoryInPowersync(db);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watch((data) => {
         result = data;
       });
@@ -67,7 +67,7 @@ describe('CategoriesRepositoryInPowersync', () => {
       // Close the database to trigger an error
       await db.close();
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = repo.watch((data) => {
         result = data;
       });

@@ -6,7 +6,7 @@ import { DashboardComputedSummary, WatchSummaryUseCase } from '@/domain/core/das
 import { DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { DateOnly } from '@/domain/core/date-only';
 import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
 import { withDate } from '@/features/shared/utils/with-date';
 
@@ -36,7 +36,7 @@ describe('WatchCategoriesUseCase', () => {
     ];
     repository.add(...expenses, ...gains);
 
-    let result: Result<DashboardComputedSummary> | undefined;
+    let result: AsyncResult<DashboardComputedSummary> | undefined;
     const unsubscribe = useCase.query((data) => {
       result = data;
     });
@@ -64,7 +64,7 @@ describe('WatchCategoriesUseCase', () => {
   it('returns failure when repository fails', async () => {
     repository.isFailing(['error']);
 
-    let result: Result<DashboardComputedSummary> | undefined;
+    let result: AsyncResult<DashboardComputedSummary> | undefined;
     const unsubscribe = useCase.query((data) => {
       result = data;
     });
@@ -79,7 +79,7 @@ describe('WatchCategoriesUseCase', () => {
   it('returns loading when repository is loading', async () => {
     repository.isLoading();
 
-    let result: Result<DashboardComputedSummary> | undefined;
+    let result: AsyncResult<DashboardComputedSummary> | undefined;
     const unsubscribe = useCase.query((data) => {
       result = data;
     });

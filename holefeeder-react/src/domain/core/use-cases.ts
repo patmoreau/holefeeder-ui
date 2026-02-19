@@ -1,4 +1,4 @@
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 
 export type Command<O, I> = {
   execute(input: I): Promise<Result<O>>;
@@ -6,8 +6,8 @@ export type Command<O, I> = {
 
 export type Query<I, O> = I extends void
   ? {
-      query: (onDataChange: (result: Result<O>) => void) => () => void;
+      query: (onDataChange: (result: AsyncResult<O>) => void) => () => void;
     }
   : {
-      query: (input: I, onDataChange: (result: Result<O>) => void) => () => void;
+      query: (input: I, onDataChange: (result: AsyncResult<O>) => void) => () => void;
     };

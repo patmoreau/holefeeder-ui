@@ -1,7 +1,7 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { Account } from '@/domain/core/accounts/account';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 import { Variation } from '@/domain/core/variation';
 
 type AccountRow = {
@@ -16,7 +16,9 @@ type AccountRow = {
 };
 
 export const AccountsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): AccountsRepository => {
-  const watch = (onDataChange: (result: Result<Account[]>) => void) => {
+  const watch = (onDataChange: (result: AsyncResult<Account[]>) => void) => {
+    onDataChange(Result.loading());
+
     const query = db.query<AccountRow>({
       sql: `
         SELECT id,

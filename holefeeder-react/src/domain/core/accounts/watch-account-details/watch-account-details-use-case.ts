@@ -4,7 +4,7 @@ import { AccountVariation } from '@/domain/core/accounts/account-variation';
 import { DateInterval } from '@/domain/core/date-interval';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { Variation } from '@/domain/core/variation';
 import { combineWatchers } from '@/domain/core/watch-utils';
 import { CategoryType, CategoryTypes } from '../../categories/category-type';
@@ -47,15 +47,15 @@ export const WatchAccountDetailsUseCase = (
     };
   };
 
-  const watchAccounts = (onDataChange: (result: Result<Account[]>) => void) => accountsRepository.watch((result) => onDataChange(result));
+  const watchAccounts = (onDataChange: (result: AsyncResult<Account[]>) => void) => accountsRepository.watch((result) => onDataChange(result));
 
-  const watchAccountVariations = (onDataChange: (result: Result<AccountVariation[]>) => void) =>
+  const watchAccountVariations = (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) =>
     flowsRepository.watchAccountVariations((result) => onDataChange(result));
 
-  const watchCashflowVariations = (onDataChange: (result: Result<CashflowVariation[]>) => void) =>
+  const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) =>
     flowsRepository.watchCashflowVariations((result) => onDataChange(result));
 
-  const queryDetails = (onDataChange: (result: Result<AccountDetail[]>) => void) =>
+  const queryDetails = (onDataChange: (result: AsyncResult<AccountDetail[]>) => void) =>
     combineWatchers(
       [watchAccounts, watchAccountVariations, watchCashflowVariations],
       (accounts: Account[], accountVariations: AccountVariation[], cashflowVariations: CashflowVariation[]) =>

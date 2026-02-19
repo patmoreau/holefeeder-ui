@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react-native';
-import { Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
 import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { StoreItemsRepositoryInMemory } from '@/domain/core/store-items/__tests__/store-items-repository-for-test';
@@ -21,7 +21,7 @@ describe('GetSettingsUseCase', () => {
       const storeItem = aStoreItem({ code: SETTINGS_CODE, data: JSON.stringify(settings) });
       repository.add(storeItem);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.query((data) => {
         result = data;
       });
@@ -34,7 +34,7 @@ describe('GetSettingsUseCase', () => {
     });
 
     it('returns default settings when code not found', async () => {
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.query((data) => {
         result = data;
       });
@@ -46,10 +46,12 @@ describe('GetSettingsUseCase', () => {
       unsubscribe();
     });
 
-    it('should return failure when repository fails', async () => {
+    it('returns failure when repository fails', async () => {
+      const storeItem = aStoreItem({ code: SETTINGS_CODE });
+      repository.add(storeItem);
       repository.isFailing(['error']);
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.query((data) => {
         result = data;
       });
@@ -61,17 +63,19 @@ describe('GetSettingsUseCase', () => {
       unsubscribe();
     });
 
-    it('should return loading when repository is loading', async () => {
+    it('returns loading when repository is loading', async () => {
+      const storeItem = aStoreItem({ code: SETTINGS_CODE });
+      repository.add(storeItem);
       repository.isLoading();
 
-      let result: Result<any> | undefined;
+      let result: AsyncResult<any> | undefined;
       const unsubscribe = useCase.query((data) => {
         result = data;
       });
 
       await waitFor(() => expect(result).toBeDefined());
 
-      expect(result?.isLoading).toBe(true);
+      expect(result).toBeLoading();
 
       unsubscribe();
     });

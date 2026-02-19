@@ -1,4 +1,4 @@
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 import { StoreItem } from '@/domain/core/store-items/store-item';
 import { StoreItemsRepository, StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
 
@@ -13,7 +13,7 @@ export const StoreItemsRepositoryInMemory = (): StoreItemsRepositoryInMemory => 
   let loadingInMemory = false;
   let errorsInMemory: string[] = [];
 
-  const watchForCode = (code: string, onDataChange: (result: Result<StoreItem>) => void) => {
+  const watchForCode = (code: string, onDataChange: (result: AsyncResult<StoreItem>) => void) => {
     const item = itemsInMemory.find((item) => item.code === code);
     if (loadingInMemory) {
       onDataChange(Result.loading());

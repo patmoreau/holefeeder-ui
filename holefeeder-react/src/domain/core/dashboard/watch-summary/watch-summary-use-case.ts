@@ -1,4 +1,4 @@
-import { Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/domain/core/result';
 import { Settings } from '@/domain/core/store-items/settings';
 import { withDate } from '@/features/shared/utils/with-date';
 import { DateInterval } from '../../date-interval';
@@ -7,9 +7,9 @@ import { DashboardRepository } from '../dashboard-repository';
 import { SummaryData } from '../summary-data';
 
 export const WatchSummaryUseCase = (settings: Settings, repository: DashboardRepository) => {
-  const query = (onDataChange: (result: Result<DashboardComputedSummary>) => void) =>
+  const query = (onDataChange: (result: AsyncResult<DashboardComputedSummary>) => void) =>
     repository.watch(
-      (result: Result<SummaryData[]>) => {
+      (result: AsyncResult<SummaryData[]>) => {
         if (result.isLoading || result.isFailure) {
           onDataChange(result);
           return;

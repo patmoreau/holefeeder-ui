@@ -1,4 +1,4 @@
-import { Result, Success } from '@/domain/core/result';
+import { type AsyncResult, Result, Success } from '@/domain/core/result';
 
 declare global {
   namespace jest {
@@ -11,19 +11,19 @@ declare global {
 }
 
 declare global {
-  var expectSuccess: <T>(result: Result<T>) => asserts result is Success<T>;
+  var expectSuccess: <T>(result: Result<T> | AsyncResult<T>) => asserts result is Success<T>;
 }
 
 global.expectSuccess = expectSuccess;
 
-function expectSuccess<T>(result: Result<T>): asserts result is Success<T> {
+function expectSuccess<T>(result: Result<T> | AsyncResult<T>): asserts result is Success<T> {
   if (result.isFailure) {
     throw new Error('Expected success but got failure', { cause: result.errors });
   }
 }
 
 expect.extend({
-  toBeSuccessWithValue(received: Result<any>, expected: any) {
+  toBeSuccessWithValue(received: Result<any> | AsyncResult<any>, expected: any) {
     if (received.isFailure === undefined) {
       return {
         pass: false,
@@ -57,7 +57,7 @@ expect.extend({
     };
   },
 
-  toBeFailureWithErrors(received: Result<any>, expected: any) {
+  toBeFailureWithErrors(received: Result<any> | AsyncResult<any>, expected: any) {
     if (!received.isFailure) {
       return {
         pass: false,
@@ -73,7 +73,7 @@ expect.extend({
     };
   },
 
-  toBeLoading(received: Result<any>, expected: any) {
+  toBeLoading(received: AsyncResult<any>, expected: any) {
     if (!received.isLoading) {
       return {
         pass: false,

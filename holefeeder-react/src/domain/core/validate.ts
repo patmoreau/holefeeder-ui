@@ -138,10 +138,10 @@ const arrayValidator =
   };
 
 export const Validator = {
-  booleanValidator: booleanValidator,
-  enumValidator: enumValidator,
-  numberValidator: numberValidator,
-  patternValidator: patternValidator,
-  stringValidator: stringValidator,
-  arrayValidator: arrayValidator,
+  boolean: booleanValidator,
+  enum: enumValidator,
+  number: numberValidator,
+  pattern: patternValidator,
+  string: stringValidator,
+  array: arrayValidator,
 } as const;

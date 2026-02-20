@@ -19,7 +19,7 @@ const normalizeCategoryType = (type: string): CategoryType => {
   return CategoryTypes.expense;
 };
 
-const isValid = Validator.enumValidator<CategoryType>({ values: CategoryTypes });
+const isValid = Validator.enum<CategoryType>({ values: CategoryTypes });
 
 const create = (value: unknown): Result<CategoryType> => {
   let normalized = value;

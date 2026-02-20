@@ -25,9 +25,9 @@ export const AccountErrors = {
   invalidInactive: 'invalid-inactive',
 };
 
-const isValidName = Validator.stringValidator({ minLength: 1 });
-const isValidDescription = Validator.stringValidator();
-const isValidBoolean = Validator.booleanValidator();
+const isValidName = Validator.string({ minLength: 1 });
+const isValidDescription = Validator.string();
+const isValidBoolean = Validator.boolean();
 
 const create = (value: Record<string, unknown>): Result<Account> => {
   return Result.combine<Account>({

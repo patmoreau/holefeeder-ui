@@ -22,9 +22,9 @@ export const CategoryErrors = {
   invalidSystem: 'invalid-system',
 };
 
-const isValidName = Validator.stringValidator({ minLength: 1 });
-const isValidColor = Validator.stringValidator({ minLength: 1 });
-const isValidBoolean = Validator.booleanValidator();
+const isValidName = Validator.string({ minLength: 1 });
+const isValidColor = Validator.string({ minLength: 1 });
+const isValidBoolean = Validator.boolean();
 
 const create = (value: Record<string, unknown>): Result<Category> =>
   Result.combine<Category>({

@@ -11,8 +11,8 @@ export const TagErrors = {
   invalidCount: 'invalid-count',
 };
 
-const isValidTag = Validator.stringValidator({ minLength: 1 });
-const isValidCount = Validator.numberValidator({ min: 0 });
+const isValidTag = Validator.string({ minLength: 1 });
+const isValidCount = Validator.number({ min: 0 });
 
 const create = (value: Record<string, unknown>): Result<Tag> => {
   return Result.combine<Tag>({

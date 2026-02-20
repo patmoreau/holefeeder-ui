@@ -13,7 +13,7 @@ export const SaveSettingsCommandErrors = {
   invalidFrequency: 'invalid-frequency',
 };
 
-const isValidFrequency = Validator.numberValidator({ min: 1 });
+const isValidFrequency = Validator.number({ min: 1 });
 
 const create = (command: Record<string, unknown>): Result<SaveSettingsCommand> =>
   Result.combine<SaveSettingsCommand>({

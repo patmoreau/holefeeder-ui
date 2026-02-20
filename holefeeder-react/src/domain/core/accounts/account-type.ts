@@ -41,7 +41,7 @@ export const normalizeAccountType = (type: string): AccountType => {
   }
 };
 
-const isValid = Validator.enumValidator<AccountType>({ values: AccountTypes });
+const isValid = Validator.enum<AccountType>({ values: AccountTypes });
 
 const create = (value: unknown): Result<AccountType> => {
   let normalized = value;

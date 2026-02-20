@@ -9,7 +9,7 @@ export const IdErrors = {
 };
 
 const UUID_PATTERN = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-const isValidPattern = Validator.patternValidator<Id>({ pattern: UUID_PATTERN });
+const isValidPattern = Validator.pattern<Id>({ pattern: UUID_PATTERN });
 
 const newId = (): Id => Crypto.randomUUID() as Id;
 

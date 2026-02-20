@@ -22,7 +22,7 @@ export const SettingsErrors = {
   invalid: 'settings-invalid',
 };
 
-const isValidFrequency = Validator.numberValidator({ min: 1 });
+const isValidFrequency = Validator.number({ min: 1 });
 
 const create = (value: Record<string, unknown>): Result<Settings> =>
   Result.combine<Settings>({

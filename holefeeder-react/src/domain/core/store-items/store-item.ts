@@ -23,7 +23,7 @@ const isValidJson = (value: unknown): Result<string> => {
   }
 };
 
-const isValidCode = Validator.stringValidator({ minLength: 1 });
+const isValidCode = Validator.string({ minLength: 1 });
 
 const create = (value: Record<string, unknown>): Result<StoreItem> => {
   return Result.combine<StoreItem>({

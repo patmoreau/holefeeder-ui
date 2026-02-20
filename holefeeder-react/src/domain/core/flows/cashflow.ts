@@ -27,8 +27,8 @@ export const CashflowErrors = {
   neverPaid: 'cashflow-never-paid',
 };
 
-const isPositiveNumber = Validator.numberValidator({ min: 1 });
-const isValidBoolean = Validator.booleanValidator();
+const isPositiveNumber = Validator.number({ min: 1 });
+const isValidBoolean = Validator.boolean();
 
 const create = (value: Record<string, unknown>): Result<Cashflow> =>
   Result.combine<Cashflow>({

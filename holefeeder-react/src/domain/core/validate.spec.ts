@@ -12,7 +12,7 @@ import {
 const CUSTOM_ERROR = 'custom-error';
 
 describe('Validate.validate', () => {
-  const isValid = Validator.numberValidator({ min: 1, max: 10 });
+  const isValid = Validator.number({ min: 1, max: 10 });
 
   it('returns success for valid values', () => {
     const result = Validate.validate(isValid, 5);
@@ -27,7 +27,7 @@ describe('Validate.validate', () => {
   });
 
   it('allows overriding error message', () => {
-    const isValidWithDefaults = Validator.numberValidator({ min: 1, max: 10 });
+    const isValidWithDefaults = Validator.number({ min: 1, max: 10 });
     const result = Validate.validate(isValidWithDefaults, 10.5, ['custom-error']);
 
     expect(result).toBeFailureWithErrors(['custom-error']);
@@ -36,7 +36,7 @@ describe('Validate.validate', () => {
 
 describe('Validator', () => {
   describe('booleanValidator', () => {
-    const validator = Validator.booleanValidator();
+    const validator = Validator.boolean();
 
     it('returns success for boolean true', () => {
       expect(validator(true)).toBeSuccessWithValue(true);
@@ -58,7 +58,7 @@ describe('Validator', () => {
     };
     type TestEnum = (typeof TestEnums)[keyof typeof TestEnums];
 
-    const validator = Validator.enumValidator<TestEnum>({ values: TestEnums });
+    const validator = Validator.enum<TestEnum>({ values: TestEnums });
 
     it('returns success for valid enum values', () => {
       expect(validator('A')).toBeSuccessWithValue('A');
@@ -70,14 +70,14 @@ describe('Validator', () => {
     });
 
     it('allows overriding error message', () => {
-      const customValidator = Validator.enumValidator<TestEnum>({ values: TestEnums, errors: CUSTOM_ERROR });
+      const customValidator = Validator.enum<TestEnum>({ values: TestEnums, errors: CUSTOM_ERROR });
       expect(customValidator('C')).toBeFailureWithErrors([CUSTOM_ERROR]);
       expect(customValidator(123)).toBeFailureWithErrors([CUSTOM_ERROR]);
     });
   });
 
   describe('numberValidator', () => {
-    const validator = Validator.numberValidator({ min: 10, max: 20, integer: true });
+    const validator = Validator.number({ min: 10, max: 20, integer: true });
 
     it('returns success for valid number', () => {
       expect(validator(15)).toBeSuccessWithValue(15);
@@ -100,7 +100,7 @@ describe('Validator', () => {
     });
 
     it('allows overriding error messages', () => {
-      const customValidator = Validator.numberValidator({
+      const customValidator = Validator.number({
         min: 10,
         max: 20,
         integer: true,
@@ -114,7 +114,7 @@ describe('Validator', () => {
 
   describe('patternValidator', () => {
     const pattern = /^[a-z]+$/;
-    const validator = Validator.patternValidator({ pattern: pattern });
+    const validator = Validator.pattern({ pattern: pattern });
 
     it('returns success for matching pattern', () => {
       expect(validator('abc')).toBeSuccessWithValue('abc');
@@ -129,13 +129,13 @@ describe('Validator', () => {
     });
 
     it('allows overriding error messages', () => {
-      const customValidator = Validator.patternValidator({ pattern: pattern, errors: CUSTOM_ERROR });
+      const customValidator = Validator.pattern({ pattern: pattern, errors: CUSTOM_ERROR });
       expect(customValidator('123')).toBeFailureWithErrors([CUSTOM_ERROR]);
     });
   });
 
   describe('stringValidator', () => {
-    const validator = Validator.stringValidator({ minLength: 3, maxLength: 5 });
+    const validator = Validator.string({ minLength: 3, maxLength: 5 });
 
     it('returns success for valid string length', () => {
       expect(validator('abcd')).toBeSuccessWithValue('abcd');
@@ -154,7 +154,7 @@ describe('Validator', () => {
     });
 
     it('allows overriding error messages', () => {
-      const customValidator = Validator.stringValidator({
+      const customValidator = Validator.string({
         minLength: 3,
         maxLength: 5,
         errors: { minLength: `min-${CUSTOM_ERROR}`, maxLength: `max-${CUSTOM_ERROR}` },
@@ -165,8 +165,8 @@ describe('Validator', () => {
   });
 
   describe('arrayValidator', () => {
-    const itemValidator = Validator.stringValidator({ minLength: 2 });
-    const validator = Validator.arrayValidator(itemValidator, { minLength: 1, maxLength: 2 });
+    const itemValidator = Validator.string({ minLength: 2 });
+    const validator = Validator.array(itemValidator, { minLength: 1, maxLength: 2 });
 
     it('returns success for valid array', () => {
       expect(validator(['abc', 'def'])).toBeSuccessWithValue(['abc', 'def']);
@@ -189,7 +189,7 @@ describe('Validator', () => {
     });
 
     it('allows overriding error messages', () => {
-      const customValidator = Validator.arrayValidator(itemValidator, {
+      const customValidator = Validator.array(itemValidator, {
         minLength: 1,
         maxLength: 2,
         errors: { minLength: `min-${CUSTOM_ERROR}`, maxLength: `max-${CUSTOM_ERROR}` },

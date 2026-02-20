@@ -8,7 +8,7 @@ export const DateOnlyErrors = {
 };
 
 const DATE_ONLY_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const isValidPattern = Validator.patternValidator<DateOnly>({ pattern: DATE_ONLY_PATTERN });
+const isValidPattern = Validator.pattern<DateOnly>({ pattern: DATE_ONLY_PATTERN });
 
 const create = (value: unknown): Result<DateOnly> => {
   const patternResult = Validate.validate<DateOnly>(isValidPattern, value, [DateOnlyErrors.invalid]);

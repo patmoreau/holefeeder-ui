@@ -7,7 +7,7 @@ export const VariationErrors = {
   invalid: 'variation-invalid',
 };
 
-const isValidVariation = Validator.numberValidator<Variation>();
+const isValidVariation = Validator.number<Variation>();
 
 const create = (value: unknown): Result<Variation> => {
   const variationResult = Validate.validate<Variation>(isValidVariation, value, [VariationErrors.invalid]);

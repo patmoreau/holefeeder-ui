@@ -18,7 +18,7 @@ export const DateIntervalTypeErrors = {
   invalid: 'date-interval-type-invalid',
 };
 
-const isValid = Validator.enumValidator<DateIntervalType>({ values: DateIntervalTypes });
+const isValid = Validator.enum<DateIntervalType>({ values: DateIntervalTypes });
 
 export const normalizeDateIntervalType = (type: string): DateIntervalType => {
   const normalized = type.trim().toLowerCase();

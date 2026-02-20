@@ -7,7 +7,7 @@ export const MoneyErrors = {
   invalid: 'money-invalid',
 };
 
-const isValidMoney = Validator.numberValidator<Money>({ min: 0 });
+const isValidMoney = Validator.number<Money>({ min: 0 });
 
 const create = (value: unknown): Result<Money> => {
   const moneyResult = Validate.validate<Money>(isValidMoney, value, [MoneyErrors.invalid]);

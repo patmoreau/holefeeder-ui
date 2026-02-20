@@ -20,7 +20,7 @@ export const CreateFlowErrors = {
   invalidCashflowFrequency: 'invalid-cashflow-frequency',
 };
 
-const isValidFrequency = Validator.numberValidator({ min: 1 });
+const isValidFrequency = Validator.number({ min: 1 });
 
 const create = (purchase: Record<string, unknown>): Result<CreateFlowCommand> =>
   Result.combine<CreateFlowCommand>({

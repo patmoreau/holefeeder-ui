@@ -7,8 +7,8 @@ export const TagListErrors = {
   invalid: 'tag-list-invalid',
 };
 
-const isString = Validator.stringValidator();
-const isValidStringArray = Validator.arrayValidator<string>(isString);
+const isString = Validator.string();
+const isValidStringArray = Validator.array<string>(isString);
 
 const create = (tags: unknown): Result<TagList> => {
   const tagsResult = Validate.validate<string[]>(isValidStringArray, tags);

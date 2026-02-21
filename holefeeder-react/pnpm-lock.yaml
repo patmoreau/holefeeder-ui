@@ -156,6 +156,9 @@ importers:
       '@babel/core':
         specifier: 7.29.0
         version: 7.29.0
+      '@babel/plugin-transform-async-generator-functions':
+        specifier: ^7.29.0
+        version: 7.29.0(@babel/core@7.29.0)
       '@babel/runtime':
         specifier: 7.28.6
         version: 7.28.6

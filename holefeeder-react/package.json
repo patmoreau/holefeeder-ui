@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.29.0",
+    "@babel/plugin-transform-async-generator-functions": "^7.29.0",
     "@babel/runtime": "7.28.6",
     "@faker-js/faker": "9.9.0",
     "@powersync/node": "0.17.0",

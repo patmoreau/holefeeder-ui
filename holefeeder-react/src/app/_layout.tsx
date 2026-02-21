@@ -1,16 +1,13 @@
-import { PowerSyncContext } from '@powersync/react';
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
-// Polyfill required for PowerSync/SQLite to handle async allows (Symbol.asyncIterator) correctly in React Native
 import '@azure/core-asynciterator-polyfill';
 import { useEffect } from 'react';
 import { Auth0Provider } from 'react-native-auth0';
 import ErrorBoundary from 'react-native-error-boundary';
 import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
+import { PowerSyncAuthProvider } from '@/contexts/PowerSyncAuthProvider';
 import { RepositoryProvider } from '@/contexts/RepositoryContext';
-import { db } from '@/domain/persistence/db';
-import { PowerSyncConnection } from '@/domain/persistence/PowerSyncConnection';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -45,13 +42,6 @@ if (!__DEV__) {
     originalWarn('[PROD-WARN]', new Date().toISOString(), ...args);
   };
 
-  // Global unhandled error handler
-  // if (global.ErrorUtils) {
-  //   global.ErrorUtils.setGlobalHandler((error: Error, isFatal: boolean) => {
-  //     console.error('[UNHANDLED-ERROR]', '\nFatal:', isFatal, '\nName:', error.name, '\nMessage:', error.message, '\nStack:', error.stack);
-  //   });
-  // }
-  // Unhandled promise rejections
   const originalHandler = global.Promise.prototype.catch;
   global.Promise.prototype.catch = function (onRejected) {
     return originalHandler.call(this, (error) => {
@@ -107,13 +97,11 @@ export default function RootLayout() {
     <ErrorBoundary onError={errorHandler}>
       <Auth0Provider domain={config.auth0.domain} clientId={config.auth0.clientId}>
         <AppProvider>
-          <PowerSyncContext.Provider value={db}>
-            <PowerSyncConnection>
-              <RepositoryProvider>
-                <AppContent />
-              </RepositoryProvider>
-            </PowerSyncConnection>
-          </PowerSyncContext.Provider>
+          <PowerSyncAuthProvider>
+            <RepositoryProvider>
+              <AppContent />
+            </RepositoryProvider>
+          </PowerSyncAuthProvider>
         </AppProvider>
       </Auth0Provider>
     </ErrorBoundary>

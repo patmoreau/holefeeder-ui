@@ -85,7 +85,7 @@
     "axios-mock-adapter": "2.1.0",
     "babel-plugin-react-native-web": "0.21.2",
     "better-sqlite3": "12.6.2",
-    "eslint": "9.39.2",
+    "eslint": "9.39.3",
     "eslint-config-expo": "10.0.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.4",

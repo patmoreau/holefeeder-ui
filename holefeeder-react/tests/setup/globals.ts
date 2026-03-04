@@ -6,5 +6,4 @@ if (typeof global.structuredClone !== 'function') {
 // Keep test isolation tidy
 afterEach(() => {
   jest.clearAllMocks();
-  // jest.resetModules(); // optional; use only if module state leaks between tests
 });

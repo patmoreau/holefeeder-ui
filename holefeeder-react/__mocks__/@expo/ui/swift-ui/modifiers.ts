@@ -4,3 +4,7 @@ export const border = jest.fn((props) => props);
 export const font = jest.fn((props) => props);
 export const fixedSize = jest.fn((props) => props);
 export const ignoreSafeArea = jest.fn((props) => props);
+export const buttonStyle = jest.fn((props) => props);
+export const tint = jest.fn((props) => props);
+export const foregroundStyle = jest.fn((props) => props);
+export const controlSize = jest.fn((props) => props);

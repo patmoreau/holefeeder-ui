@@ -1,4 +1,4 @@
-import { DateTimePicker } from '@expo/ui/swift-ui';
+import { DatePicker } from '@expo/ui/swift-ui';
 import { StyleProp, ViewStyle } from 'react-native';
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
 
@@ -16,14 +16,14 @@ export const AppDatePicker = ({ selectedDate, onDateSelected, style }: DatePicke
   const datePickerProps = {
     onDateSelected: (date: Date) =>
       onDateSelected(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`),
-    displayedComponents: 'date' as const,
+    displayedComponents: ['date' as const],
     variant: 'compact' as const,
     ...(selectedDate && { initialDate: initialDate.toISOString() }),
   };
 
   return (
     <AppHost>
-      <DateTimePicker {...datePickerProps} />
+      <DatePicker {...datePickerProps} />
     </AppHost>
   );
 };

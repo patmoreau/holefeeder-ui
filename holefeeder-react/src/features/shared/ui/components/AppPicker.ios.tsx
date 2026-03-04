@@ -1,5 +1,5 @@
-import { Picker } from '@expo/ui/swift-ui';
-import { fixedSize } from '@expo/ui/swift-ui/modifiers';
+import { Picker, Text } from '@expo/ui/swift-ui';
+import { fixedSize, pickerStyle, tag } from '@expo/ui/swift-ui/modifiers';
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
 import { PickerOption, PickerProps } from '@/features/shared/ui/components/AppPicker';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
@@ -18,12 +18,19 @@ export const AppPicker = <T extends PickerOption>({
   return (
     <AppHost>
       <Picker
-        options={options.map((option) => onOptionLabel(option))}
-        modifiers={variant === 'menu' ? [fixedSize({ horizontal: true, vertical: true })] : []}
-        selectedIndex={options.findIndex((option) => option === selectedOption)}
-        onOptionSelected={({ nativeEvent: { index } }) => onSelectOption(options[index])}
-        variant={variant}
-      />
+        modifiers={[pickerStyle(variant), ...(variant === 'menu' ? [fixedSize({ horizontal: true, vertical: true })] : [])]}
+        selection={selectedOption.id}
+        onSelectionChange={(id) => {
+          const selected = options.find((option) => option.id === id);
+          if (selected) onSelectOption(selected);
+        }}
+      >
+        {options.map((option) => (
+          <Text key={option.id} modifiers={[tag(option.id)]}>
+            {onOptionLabel(option)}
+          </Text>
+        ))}
+      </Picker>
     </AppHost>
   );
 };

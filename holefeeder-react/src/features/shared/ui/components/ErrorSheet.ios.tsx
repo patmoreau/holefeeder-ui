@@ -1,5 +1,5 @@
 import { BottomSheet, Button, HStack, Image, Text, VStack } from '@expo/ui/swift-ui';
-import { frame, padding } from '@expo/ui/swift-ui/modifiers';
+import { buttonStyle, font, foregroundStyle, frame, padding } from '@expo/ui/swift-ui/modifiers';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowDimensions } from 'react-native';
@@ -19,26 +19,16 @@ export const ErrorSheet = ({ showError, setShowError, error, onRetry }: Props) =
 
   return (
     <AppHost style={{ position: 'absolute', width }}>
-      <BottomSheet isOpened={showError} onIsOpenedChange={(e) => setShowError(e)}>
+      <BottomSheet isPresented={showError} onIsPresentedChange={(e) => setShowError(e)}>
         <VStack spacing={32} modifiers={[frame({ maxWidth: width }), padding({ all: 32 })]}>
-          <Text size={18} weight="bold" color="red">
-            {t(tkErrorTitles[error])}
-          </Text>
+          <Text modifiers={[font({ size: 24, weight: 'bold' }), foregroundStyle('red')]}>{t(tkErrorTitles[error])}</Text>
           <HStack spacing={16}>
             <Image systemName="exclamationmark.triangle" />
-            <Text size={17} modifiers={[frame({ maxWidth: width, height: 100 })]}>
-              {t(tkErrorMessages[error])}
-            </Text>
+            <Text modifiers={[font({ size: 17 }), frame({ maxWidth: width, height: 100 })]}>{t(tkErrorMessages[error])}</Text>
           </HStack>
           <HStack spacing={16}>
-            {onRetry && (
-              <Button variant="borderedProminent" onPress={onRetry}>
-                {t(tk.errorSheet.retry)}
-              </Button>
-            )}
-            <Button variant="bordered" onPress={() => setShowError(false)}>
-              {t(tk.errorSheet.dismiss)}
-            </Button>
+            {onRetry && <Button label={t(tk.errorSheet.retry)} modifiers={[buttonStyle('borderedProminent')]} onPress={onRetry} />}
+            <Button label={t(tk.errorSheet.dismiss)} modifiers={[buttonStyle('bordered')]} onPress={() => setShowError(false)} />
           </HStack>
         </VStack>
       </BottomSheet>

@@ -7,8 +7,6 @@ export interface SyncStatusInfo {
     downloading: boolean;
     uploading: boolean;
   };
-  // Note: Precise "number of items synced" is not directly exposed by the standard status object across all versions.
-  // We expose the raw status for now.
 }
 
 export function useSyncStatus(): SyncStatusInfo {

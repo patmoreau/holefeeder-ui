@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react-native';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { Credentials } from 'react-native-auth0';
 import { AuthContextForTest } from '@/__tests__/AuthContextForTest';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -12,7 +12,7 @@ describe('useAuth', () => {
     scope: 'openid profile email',
   };
 
-  it('should initialize with loading state', () => {
+  it('should initialize with loading state', async () => {
     const mockGetCredentials = jest.fn().mockResolvedValue(mockCredentials);
 
     const { result } = renderHook(() => useAuth(), {
@@ -30,6 +30,9 @@ describe('useAuth', () => {
     });
 
     expect(result.current.isLoading).toBe(true);
+
+    // Wait for any pending async state updates to settle
+    await waitFor(() => expect(result.current.isLoading).toBeDefined());
   });
 
   it('should return user and token info when authenticated', async () => {
@@ -82,7 +85,9 @@ describe('useAuth', () => {
       ),
     });
 
-    await result.current.login();
+    await act(async () => {
+      await result.current.login();
+    });
 
     expect(mockAuthorize).toHaveBeenCalled();
   });
@@ -106,7 +111,9 @@ describe('useAuth', () => {
       ),
     });
 
-    await result.current.logout();
+    await act(async () => {
+      await result.current.logout();
+    });
 
     expect(mockClearSession).toHaveBeenCalled();
   });

@@ -20,7 +20,7 @@ const defaultCashflow = (): Cashflow => ({
   effectiveDate: aPastDate(),
   amount: anAmount(),
   intervalType: aDateIntervalType(),
-  frequency: aCount(),
+  frequency: aCount() + 1,
   recurrence: aCount(),
   description: aString(),
   accountId: anId(),

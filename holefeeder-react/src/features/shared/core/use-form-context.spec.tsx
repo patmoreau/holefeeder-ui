@@ -12,6 +12,7 @@ const mockRepositories: Repositories = {
   categoryRepository: {} as any,
   dashboardRepository: {} as any,
   flowRepository: {} as any,
+  settingsRepository: {} as any,
   storeItemRepository: {} as any,
 };
 

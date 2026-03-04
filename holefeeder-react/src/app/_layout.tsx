@@ -12,17 +12,17 @@ import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicat
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useQuickActions } from '@/shared/hooks/use-quick-actions';
-
-(function addConsoleTimestamp() {
-  const methods: (keyof Console)[] = ['log', 'info', 'warn', 'error', 'debug'];
-  methods.forEach((m) => {
-    const orig = (console as any)[m].bind(console);
-    (console as any)[m] = (...args: any[]) => {
-      const time = new Date().toISOString();
-      orig(`[${time}]`, ...args);
-    };
-  });
-})();
+//
+// (function addConsoleTimestamp() {
+//   const methods: (keyof Console)[] = ['log', 'info', 'warn', 'error', 'debug'];
+//   methods.forEach((m) => {
+//     const orig = (console as any)[m].bind(console);
+//     (console as any)[m] = (...args: any[]) => {
+//       const time = new Date().toISOString();
+//       orig(`[${time}]`, ...args);
+//     };
+//   });
+// })();
 
 // ===== PRODUCTION LOGGING SETUP =====
 if (!__DEV__) {

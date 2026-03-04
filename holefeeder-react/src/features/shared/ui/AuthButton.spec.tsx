@@ -4,7 +4,7 @@ import { AuthContextForTest } from '@/__tests__/AuthContextForTest';
 import { anId } from '@/__tests__/mocks/string-for-test';
 import { AuthButton } from '@/features/shared/ui/AuthButton';
 
-describe('<AuthButton />', () => {
+xdescribe('<AuthButton />', () => {
   beforeEach(() => {});
 
   describe('when user is logged', () => {

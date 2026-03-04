@@ -1,4 +1,4 @@
-import { Switch } from '@expo/ui/swift-ui';
+import { Toggle } from '@expo/ui/swift-ui';
 import React from 'react';
 import { View } from 'react-native';
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
@@ -14,7 +14,7 @@ export const AppSwitch = ({ value, onChange, readonly }: Props) => {
   return (
     <View pointerEvents={readonly ? 'none' : 'auto'}>
       <AppHost style={{ margin: spacing.xs }}>
-        <Switch value={value} onValueChange={onChange} />
+        <Toggle isOn={value} onIsOnChange={onChange} />
       </AppHost>
     </View>
   );

@@ -30,6 +30,7 @@ describe('RepositoryContext', () => {
     expect(result.current.categoryRepository).toBeDefined();
     expect(result.current.dashboardRepository).toBeDefined();
     expect(result.current.flowRepository).toBeDefined();
+    expect(result.current.settingsRepository).toBeDefined();
     expect(result.current.storeItemRepository).toBeDefined();
   });
 
@@ -42,7 +43,6 @@ describe('RepositoryContext', () => {
       ),
     });
 
-    // Call useRepositories again
     const { result: result2 } = renderHook(() => useRepositories(), {
       wrapper: ({ children }) => (
         <PowerSyncProviderForTest db={mockDb}>

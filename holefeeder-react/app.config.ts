@@ -22,7 +22,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: './assets/images/safe.png',
   scheme: 'holefeeder',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: true,
   ios: {
     supportsTablet: true,
     icon: `./assets/${iosIconFile}`,
@@ -53,6 +52,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/images/safe.png',
   },
   plugins: [
+    [
+      'expo-image',
+      {
+        disableLibdav1d: true,
+      },
+    ],
     'expo-font',
     'expo-localization',
     'expo-web-browser',

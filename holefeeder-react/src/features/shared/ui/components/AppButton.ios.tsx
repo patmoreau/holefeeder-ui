@@ -1,5 +1,5 @@
-import { Button, ButtonVariant, HStack, Image } from '@expo/ui/swift-ui';
-import { fixedSize, frame } from '@expo/ui/swift-ui/modifiers';
+import { Button, HStack, Image } from '@expo/ui/swift-ui';
+import { buttonStyle, fixedSize, frame, tint } from '@expo/ui/swift-ui/modifiers';
 import React from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { AppButtonVariant } from '@/features/shared/ui/components/AppButtonVariant';
@@ -22,11 +22,14 @@ export type ButtonProps = {
   testID?: string;
 };
 
-const variantMapping: Record<AppButtonVariant, ButtonVariant> = {
+const variantMapping: Record<
+  AppButtonVariant,
+  'automatic' | 'bordered' | 'borderedProminent' | 'borderless' | 'glass' | 'glassProminent' | 'plain'
+> = {
   primary: 'glassProminent',
-  secondary: 'default',
+  secondary: 'automatic',
   destructive: 'glassProminent',
-  link: 'link',
+  link: 'plain',
 };
 
 const variantColor = (variant: AppButtonVariant, theme: Theme) => {
@@ -79,6 +82,8 @@ export const AppButton = ({
     modifiers.push(fixedSize({ horizontal: true, vertical: true }));
     modifiers.push(frame({ alignment: 'center' }));
   }
+  modifiers.push(buttonStyle(variantMapping[variant]));
+  modifiers.push(tint(variantMapping[variant]));
 
   const buttonIcon = iconPosition === 'left' ? icon : undefined;
 
@@ -86,15 +91,12 @@ export const AppButton = ({
     <AppHost style={{ margin: spacing.sm }} testID={testID}>
       <HStack>
         <Button
+          label={label}
           systemImage={buttonIcon}
           role={variant === AppButtonVariant.destructive ? 'destructive' : undefined}
-          variant={variantMapping[variant]}
-          color={variantColor(variant, theme)}
           onPress={handlePress}
           modifiers={modifiers}
-        >
-          {label}
-        </Button>
+        />
         {icon && iconPosition === 'right' && <Image systemName={icon} color={variantColor(variant, theme)} />}
       </HStack>
     </AppHost>

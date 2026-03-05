@@ -6,29 +6,41 @@ import { Money } from '@/domain/core/money';
 import { type AsyncResult, Result } from '@/domain/core/result';
 
 export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): DashboardRepository => {
+  const getBucketLogic = (intervalType: DateIntervalType, frequency: number) => {
+    // const { effectiveDate, intervalType, frequency } = settings;
+    const effectiveDate = '2014-01-01';
+
+    if (intervalType === DateIntervalTypes.weekly) {
+      const days = frequency * 7;
+      // Calculate how many 'days' intervals have passed since the anchor date
+      return `CAST((julianday(t.date) - julianday('${effectiveDate}')) / ${days} AS INTEGER)`;
+    }
+
+    if (intervalType === DateIntervalTypes.monthly) {
+      // Calculate total months since anchor, divided by frequency
+      return `CAST(((strftime('%Y', t.date) - strftime('%Y', '${effectiveDate}')) * 12 + 
+            (strftime('%m', t.date) - strftime('%m', '${effectiveDate}'))) / ${frequency} AS INTEGER)`;
+    }
+
+    return 't.date'; // Fallback
+  };
+
   const watch = (onDataChange: (result: AsyncResult<SummaryData[]>) => void, intervalType: DateIntervalType, frequency: number) => {
     onDataChange(Result.loading());
 
-    let groupByDate = 't.date';
-    if (frequency === 1) {
-      if (intervalType === DateIntervalTypes.monthly) {
-        groupByDate = "strftime('%Y-%m-01', t.date)";
-      } else if (intervalType === DateIntervalTypes.yearly) {
-        groupByDate = "strftime('%Y-01-01', t.date)";
-      }
-    }
+    const bucketSql = getBucketLogic(intervalType, frequency);
 
-    const query = db.query<{ type: string; date: string; total: number }>({
+    const query = db.query<{ type: string; bucket_date: string; total: number }>({
       sql: `
         SELECT
           c.type,
-          ${groupByDate} as date,
+          MIN(t.date) as bucket_date,
           SUM(t.amount) as total
         FROM categories c
                INNER JOIN transactions t ON c.id = t.category_id
         WHERE c.system = 0
-        GROUP BY c.type, ${groupByDate}
-        ORDER BY c.type, ${groupByDate}
+        GROUP BY c.type, ${bucketSql}
+        ORDER BY c.type, bucket_date
       `,
       parameters: [],
     });
@@ -44,7 +56,7 @@ export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): D
                 data.map((row) =>
                   SummaryData.valid({
                     type: row.type,
-                    date: row.date,
+                    date: row.bucket_date,
                     total: Money.fromCents(row.total),
                   })
                 )

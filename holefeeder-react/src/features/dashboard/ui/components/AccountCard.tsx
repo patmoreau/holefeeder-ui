@@ -7,6 +7,8 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { Variation } from '@/domain/core/variation';
+import { AccountType } from '@/domain/core/accounts/account-type';
 
 export type AccountCardProps = ViewProps & {
   account: AccountDetail;
@@ -104,7 +106,10 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
           <AppText variant={'footnote'}>{t(tk.accountCard.projected)}</AppText>
           <AppText
             variant={'defaultSemiBold'}
-            style={[styles.projectedAmount, account.balance >= 0 ? styles.positiveAmount : styles.negativeAmount]}
+            style={[
+              styles.projectedAmount,
+              Variation.multiply(account.balance, AccountType.multiplier[account.type]) >= 0 ? styles.positiveAmount : styles.negativeAmount,
+            ]}
             adjustsFontSizeToFit
           >
             {projectedSign}

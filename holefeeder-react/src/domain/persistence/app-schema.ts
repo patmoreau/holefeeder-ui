@@ -69,6 +69,7 @@ export const AppSchema = new Schema({
     },
     {
       indexes: {
+        transactions_category_date: ['category_id', 'date'],
         transactions_date: ['date'],
         transactions_account: ['account_id'],
         transactions_category: ['category_id'],

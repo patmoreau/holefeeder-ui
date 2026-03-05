@@ -1,10 +1,12 @@
 import { DateOnly } from '@/domain/core/date-only';
 import { Id } from '@/domain/core/id';
 import { Variation } from '@/domain/core/variation';
+import { AccountType } from '@/domain/core/accounts/account-type';
 
 export type AccountDetail = {
   id: Id;
   name: string;
+  type: AccountType;
   balance: Variation;
   lastTransactionDate: DateOnly;
   projectedBalance: Variation;
@@ -14,6 +16,7 @@ export type AccountDetail = {
 const valid = (value: Record<string, unknown>): AccountDetail => ({
   id: Id.valid(value.id as string),
   name: value.name as string,
+  type: AccountType.valid(value.type as string),
   balance: Variation.valid(value.balance as number),
   lastTransactionDate: DateOnly.valid(value.lastTransactionDate as string),
   projectedBalance: Variation.valid(value.projectedBalance as number),

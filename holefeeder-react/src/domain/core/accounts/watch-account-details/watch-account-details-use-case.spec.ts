@@ -55,6 +55,7 @@ describe('WatchAccountDetailsUseCase', () => {
         {
           id: account.id,
           name: account.name,
+          type: account.type,
           balance: Money.valid(121),
           lastTransactionDate: accountVariation.lastTransactionDate,
           projectedBalance: Variation.valid(-79),

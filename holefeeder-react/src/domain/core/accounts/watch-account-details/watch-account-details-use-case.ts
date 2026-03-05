@@ -39,9 +39,10 @@ export const WatchAccountDetailsUseCase = (
       return AccountDetail.valid({
         id: account.id,
         name: account.name,
+        type: account.type,
         balance: balance,
         lastTransactionDate: lastTransactionDate,
-        projectedBalance: Variation.sum(balance, upcomingVariation),
+        projectedBalance: Variation.sum(balance, Variation.multiply(upcomingVariation, AccountType.multiplier[account.type])),
         upcomingVariation: upcomingVariation,
       });
     };

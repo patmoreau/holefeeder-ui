@@ -56,6 +56,21 @@ export type DashboardComputedSummary = {
   averageSpending: number;
 };
 
+export const NO_SUMMARY: DashboardComputedSummary = {
+  currentSpending: 0,
+  variation: {
+    amount: 0,
+    percentage: 0,
+    isOver: false,
+  },
+  netFlow: {
+    amount: 0,
+    isOver: false,
+  },
+  totalIncome: 0,
+  averageSpending: 0,
+};
+
 const computeDashboardData = (summary: SummaryResult): DashboardComputedSummary => {
   const isOver = summary.expenseVariation > 0;
 

@@ -6,14 +6,14 @@ import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeade
 import { AppView } from '@/features/shared/ui/AppView';
 import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
-import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useAccountDetails } from '@/presentation/hooks/accounts/use-account-details';
 import { useDashboard } from '@/presentation/hooks/dashboard/use-dashboard';
-import { useMultipleWatches } from '@/presentation/hooks/use-multiple-watches';
+import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { NO_SUMMARY } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -62,14 +62,13 @@ const DashboardScreen = () => {
   const styles = useStyles(createStyles);
 
   const { data, isLoading, errors } = useMultipleWatches({
-    accounts: () => accountsQuery,
-    dashboard: () => dashboardQuery,
+    accounts: withDefault(() => accountsQuery, []),
+    dashboard: withDefault(() => dashboardQuery, NO_SUMMARY),
   });
 
-  if (isLoading || !data) {
+  if (errors.showError) {
     return (
       <AppView style={styles.container}>
-        <LoadingIndicator />
         <ErrorSheet {...errors} />
       </AppView>
     );
@@ -80,10 +79,10 @@ const DashboardScreen = () => {
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
-      largeCard={<DashboardHeaderLargeCard summary={dashboard!} />}
-      smallCard={<DashboardHeaderSmallCard summary={dashboard!} />}
+      largeCard={<DashboardHeaderLargeCard summary={dashboard} />}
+      smallCard={<DashboardHeaderSmallCard summary={dashboard} />}
     >
-      <AccountCardList accounts={accounts!} cardWidth={300} />
+      <AccountCardList accounts={accounts} cardWidth={300} />
 
       {Array.from({ length: 20 }).map((_, i) => (
         <View key={i} style={styles.contentCard}>

@@ -2,12 +2,18 @@ import { useEffect, useState } from 'react';
 import { ErrorKey } from '@/domain/core/error-key';
 import { type AsyncResult } from '@/domain/core/result';
 
-type WatchHook<T> = () => AsyncResult<T>;
+type WatchHook<T, TDefault extends T | null | undefined = undefined> = {
+  (): AsyncResult<T>;
+  defaultValue?: TDefault;
+};
 
-type WatchHooks = Record<string, WatchHook<any>>;
+type WatchHooks = Record<string, WatchHook<any, any>>;
+
+type WatchHookValue<H> =
+  H extends WatchHook<infer R, infer D> ? (D extends NonNullable<D> ? R : D extends null ? R | null : R | undefined) : never;
 
 type MultiWatchResult<T extends WatchHooks> = {
-  data: { [K in keyof T]: T[K] extends WatchHook<infer R> ? R : never } | null;
+  data: { [K in keyof T]: WatchHookValue<T[K]> };
   isLoading: boolean;
   errors: {
     showError: boolean;
@@ -15,6 +21,12 @@ type MultiWatchResult<T extends WatchHooks> = {
     error: ErrorKey;
   };
   results: { [K in keyof T]: AsyncResult<any> };
+};
+
+export const withDefault = <T>(hook: () => AsyncResult<T>, defaultValue: T): WatchHook<T, T> => {
+  const wrapped = () => hook();
+  (wrapped as any).defaultValue = defaultValue;
+  return wrapped as WatchHook<T, T>;
 };
 
 export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchResult<T> => {
@@ -38,13 +50,12 @@ export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchRe
     }
   }, [hasErrors]);
 
-  const data =
-    hasErrors || isLoading
-      ? null
-      : Object.entries(results).reduce((acc, [key, result]: [string, any]) => {
-          acc[key] = result.value;
-          return acc;
-        }, {} as any);
+  const data = Object.entries(results).reduce((acc, [key, result]: [string, any]) => {
+    const hook = hooks[key];
+    const hasDefault = 'defaultValue' in hook;
+    acc[key] = result.isSuccess ? result.value : hasDefault ? (hook as any).defaultValue : undefined;
+    return acc;
+  }, {} as any);
 
   return {
     data,

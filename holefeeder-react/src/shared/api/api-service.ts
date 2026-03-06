@@ -1,79 +1,60 @@
-import axios, { type AxiosResponse } from 'axios';
 import { config } from '@/config/config';
 
-export const apiService = (token: string | null) => {
-  const api = axios.create({
-    baseURL: config.api.baseUrl,
-    timeout: config.api.timeout,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+const fetchWithBase = async (url: string, init: RequestInit): Promise<Response> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), config.api.timeout);
 
-  if (config.api.logRequest) {
-    api.interceptors.request.use((request) => {
-      console.log('Request:', {
-        url: request.url,
-        method: request.method,
-        headers: request.headers,
-        data: request.data,
-        baseURL: request.baseURL,
-      });
-      return request;
+  try {
+    const response = await fetch(`${config.api.baseUrl}${url}`, {
+      ...init,
+      signal: controller.signal,
     });
-
-    api.interceptors.response.use(
-      (response) => {
-        console.log('Response:', {
-          status: response.status,
-          data: response.data,
-          headers: response.headers,
-        });
-        return response;
-      },
-      (error) => {
-        if (error.response) {
-          console.log('Error Response:', {
-            status: error.response.status,
-            data: error.response.data,
-            headers: error.response.headers,
-          });
-        } else {
-          console.log('Error:', error.message);
-        }
-        return Promise.reject(error);
-      }
-    );
+    return response;
+  } finally {
+    clearTimeout(timeoutId);
   }
+};
 
-  const getWithAuth = <T>(url: string, options?: { params?: Record<string, any> }): Promise<AxiosResponse<T>> => {
-    if (config.api.simulateNetworkDelay > 0) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(
-            api.get(url, {
-              headers: { Authorization: `Bearer ${token}` },
-              params: options?.params,
-            })
-          );
-        }, config.api.simulateNetworkDelay);
-      });
+export const apiService = (token: string | null) => {
+  const postWithAuth = async <T>(url: string, data: T): Promise<void> => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    const body = JSON.stringify(data);
+
+    if (config.api.logRequest) {
+      console.log('Request:', { url, method: 'POST', headers, data });
     }
 
-    return api.get(url, {
-      headers: { Authorization: `Bearer ${token}` },
-      params: options?.params,
-    });
-  };
+    const doFetch = () => fetchWithBase(url, { method: 'POST', headers, body });
 
-  const postWithAuth = <T>(url: string, data: T): Promise<AxiosResponse<T>> => {
-    return api.post(url, data, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response =
+      config.api.simulateNetworkDelay > 0
+        ? await new Promise<Response>((resolve) => setTimeout(() => resolve(doFetch()), config.api.simulateNetworkDelay))
+        : await doFetch();
+
+    if (config.api.logRequest) {
+      if (response.ok) {
+        console.log('Response:', { status: response.status, headers: Object.fromEntries(response.headers) });
+      } else {
+        let data: unknown;
+        try {
+          data = await response.clone().json();
+        } catch {
+          data = await response.clone().text();
+        }
+        console.log('Error Response:', { status: response.status, data, headers: Object.fromEntries(response.headers) });
+      }
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
   };
 
   return {
-    getWithAuth,
     postWithAuth,
   };
 };

@@ -1,5 +1,4 @@
 import { CrudEntry } from '@powersync/common';
-import { type AxiosResponse } from 'axios';
 import { apiService } from '@/shared/api/api-service';
 
 type SyncUploadApi = {
@@ -10,7 +9,7 @@ type SyncUploadApi = {
 export const syncApi = (token: string | null) => {
   const api = apiService(token);
 
-  const upload = ({ transactionId, operations }: { transactionId?: number; operations: CrudEntry[] }): Promise<AxiosResponse> => {
+  const upload = ({ transactionId, operations }: { transactionId?: number; operations: CrudEntry[] }): Promise<void> => {
     const payload: SyncUploadApi = {
       transaction_id: transactionId,
       operations: operations,

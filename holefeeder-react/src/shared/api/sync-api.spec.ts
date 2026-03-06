@@ -1,4 +1,3 @@
-import { anAxiosResponse } from '@/__tests__/mocks/axios-response-builder';
 import { apiService } from '@/shared/api/api-service';
 import { syncApi } from '@/shared/api/sync-api';
 
@@ -20,7 +19,7 @@ describe('sync-api', () => {
 
   describe('upload', () => {
     it('should upload data with transaction ID', async () => {
-      mockPostWithAuth.mockResolvedValue(anAxiosResponse({}, { status: 200 }));
+      mockPostWithAuth.mockResolvedValue(undefined);
       const transactionId = 123;
       const operations: any[] = [{ op: 'PUT', table: 'test', data: {} }];
 
@@ -33,7 +32,7 @@ describe('sync-api', () => {
     });
 
     it('should upload data without transaction ID', async () => {
-      mockPostWithAuth.mockResolvedValue(anAxiosResponse({}, { status: 200 }));
+      mockPostWithAuth.mockResolvedValue(undefined);
       const operations: any[] = [{ op: 'PUT', table: 'test', data: {} }];
 
       await service.upload({ operations });
@@ -45,11 +44,11 @@ describe('sync-api', () => {
     });
 
     it('should handle API errors', async () => {
-      const aServerError = anAxiosResponse({ error: 'Server error' }, { status: 500 });
-      mockPostWithAuth.mockRejectedValue(aServerError);
+      const serverError = new Error('HTTP 500: Internal Server Error');
+      mockPostWithAuth.mockRejectedValue(serverError);
       const operations: any[] = [];
 
-      await expect(service.upload({ operations })).rejects.toEqual(aServerError);
+      await expect(service.upload({ operations })).rejects.toThrow('HTTP 500');
     });
   });
 });

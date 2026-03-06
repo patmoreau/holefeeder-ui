@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
-import { ExternalLink } from '@/components/external-link';
+import { ExternalLink } from '@/presentation/components/external-link';
 import { AppCollapsible } from '@/features/shared/ui/components/AppCollapsible';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';

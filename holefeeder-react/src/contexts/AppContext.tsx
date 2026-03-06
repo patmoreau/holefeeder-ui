@@ -11,7 +11,7 @@ import { darkTheme } from '@/types/theme/dark';
 import { lightTheme } from '@/types/theme/light';
 import { ThemeMode } from '@/types/theme/theme';
 import { UserProfile } from '@/types/user-profile';
-import { Storage } from '@/utils/storage';
+import { Storage } from '@/domain/persistence/storage';
 
 export const AppContext = createContext<AppState | null>(null);
 
@@ -85,7 +85,7 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
     async (themeMode: ThemeMode) => {
       try {
         if (Appearance.setColorScheme) {
-          Appearance.setColorScheme(themeMode === 'system' ? undefined : themeMode);
+          Appearance.setColorScheme(themeMode === 'system' ? 'unspecified' : themeMode);
         }
         await updateSettings({ themeMode });
       } catch (error) {
@@ -150,7 +150,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         await initI18n(loadedSettings.language);
 
         if (Appearance.setColorScheme) {
-          Appearance.setColorScheme(loadedSettings.themeMode === 'system' ? undefined : loadedSettings.themeMode);
+          Appearance.setColorScheme(loadedSettings.themeMode === 'system' ? 'unspecified' : loadedSettings.themeMode);
         }
 
         setLoadedSettings(loadedSettings);

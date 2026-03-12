@@ -2,6 +2,7 @@ import { Account } from '@/domain/core/accounts/account';
 import { Category } from '@/domain/core/categories/category';
 import { DateIntervalType } from '@/domain/core/date-interval-type';
 import { Tag } from '@/domain/core/flows/tag';
+import { DateOnly } from '@/domain/core/date-only';
 
 export const PurchaseType = {
   expense: 'expense',
@@ -13,7 +14,7 @@ export type PurchaseType = (typeof PurchaseType)[keyof typeof PurchaseType];
 
 export type PurchaseFormData = {
   purchaseType: PurchaseType;
-  date: string;
+  date: DateOnly;
   amount: number;
   description: string;
   sourceAccount: Account;
@@ -21,7 +22,7 @@ export type PurchaseFormData = {
   category: Category;
   tags: Tag[];
   hasCashflow: boolean;
-  cashflowEffectiveDate: string;
+  cashflowEffectiveDate: DateOnly;
   cashflowIntervalType: DateIntervalType;
   cashflowFrequency: number;
 };

@@ -1,7 +1,6 @@
 import { useNavigation } from 'expo-router';
 import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
-import { DateOnly } from '@/domain/core/date-only';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppForm } from '@/features/shared/ui/AppForm';
 import { AppScreen } from '@/features/shared/ui/AppScreen';
@@ -70,7 +69,7 @@ const TestComponentsScreen = () => {
         </AppSection>
         <AppSection title={'AppDatePicker'}>
           <AppField icon={AppIcons.account} label="AppDatePicker">
-            <AppDatePicker selectedDate={date} onDateSelected={(d) => setDate(DateOnly.valid(d))} />
+            <AppDatePicker selectedDate={date} onDateSelected={(d) => setDate(d)} />
           </AppField>
         </AppSection>
         <AppSection title={'AppPicker'}>

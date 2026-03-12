@@ -10,7 +10,7 @@ import { withDate } from '@/features/shared/utils/with-date';
 import { useAccounts } from '@/presentation/hooks/accounts/use-accounts';
 import { useCategories } from '@/presentation/hooks/categories/use-categories';
 import { useTags } from '@/presentation/hooks/flows/use-tags';
-import { useMultipleWatches } from '@/presentation/hooks/use-multiple-watches';
+import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 
@@ -27,9 +27,9 @@ const PurchaseScreen = () => {
   const styles = useStyles(createStyles);
 
   const { data, isLoading, errors } = useMultipleWatches({
-    accounts: () => accountsQuery,
-    categories: () => categoriesQuery,
-    tags: () => tagsQuery,
+    accounts: withDefault(() => accountsQuery, []),
+    categories: withDefault(() => categoriesQuery, []),
+    tags: withDefault(() => tagsQuery, []),
   });
 
   if (isLoading || !data) {

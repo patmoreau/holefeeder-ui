@@ -12,15 +12,15 @@ import { AppIcons } from '@/types/icons';
 const createStyles = () => ({
   content: {
     flex: 1,
-    overflow: 'hidden',
+    overflow: 'hidden' as const,
   },
   container: {
     flex: 1,
     minHeight: '100%' as const,
-    backgroundColor: 'red',
+    backgroundColor: 'red' as const,
   },
   headerImage: {
-    color: '#808080',
+    color: '#808080' as const,
     bottom: -90,
     left: -35,
     position: 'absolute' as const,

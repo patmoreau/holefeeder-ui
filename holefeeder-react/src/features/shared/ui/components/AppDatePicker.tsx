@@ -4,10 +4,12 @@ import DateTimePicker, { DateType, useDefaultStyles } from 'react-native-ui-date
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { borderRadius, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { DateOnly } from '@/domain/core/date-only';
+import { withDate } from '@/features/shared/utils/with-date';
 
-export type DatePickerProps = {
-  selectedDate: string | null;
-  onDateSelected: (date: string) => void;
+export type AppDatePickerProps = {
+  selectedDate: DateOnly | null;
+  onDateSelected: (date: DateOnly) => void;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -15,9 +17,9 @@ const createStyles = (theme: Theme) => ({
   dateInput: {
     ...theme.typography.body,
     color: theme.colors.text,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent' as const,
     borderWidth: 0,
-    outline: 'none',
+    outline: 'none' as const,
     padding: spacing.sm,
     minWidth: 120,
     textAlign: 'right' as const,
@@ -32,9 +34,9 @@ const createStyles = (theme: Theme) => ({
     backgroundColor: theme.colors.background,
     borderRadius: borderRadius.lg,
     padding: spacing.xl,
-    width: '90%',
+    width: '90%' as const,
     maxWidth: 400,
-    shadowColor: '#000',
+    shadowColor: '#000' as const,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -45,7 +47,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export function AppDatePicker({ selectedDate, onDateSelected, style }: DatePickerProps) {
+export function AppDatePicker({ selectedDate, onDateSelected, style }: AppDatePickerProps) {
   const defaultStyles = useDefaultStyles();
   const styles = useStyles(createStyles);
   const [selected, setSelected] = useState<DateType>(selectedDate);
@@ -59,23 +61,22 @@ export function AppDatePicker({ selectedDate, onDateSelected, style }: DatePicke
     const date = params.date;
     setSelected(date);
     if (date) {
-      let dateString = '';
+      let dateOnly: DateOnly | undefined;
       if (typeof date === 'string') {
-        dateString = date;
-      } else if (typeof date === 'number') {
-        dateString = new Date(date).toISOString();
-      } else if (typeof date === 'object') {
-        if ('toISOString' in date && typeof (date as any).toISOString === 'function') {
-          dateString = (date as any).toISOString();
-        } else if (date instanceof Date) {
-          dateString = date.toISOString();
+        const dateOnlyResult = DateOnly.create(date);
+        if (dateOnlyResult.isSuccess) {
+          dateOnly = dateOnlyResult.value;
         }
+      } else if (typeof date === 'number') {
+        dateOnly = withDate(new Date(date)).toDateOnly();
+      } else if (date instanceof Date) {
+        dateOnly = withDate(date).toDateOnly();
       }
 
-      if (dateString) {
-        onDateSelected(dateString.slice(0, 10));
+      if (dateOnly) {
+        onDateSelected(dateOnly);
+        setShowPicker(false);
       }
-      setShowPicker(false);
     }
   };
 

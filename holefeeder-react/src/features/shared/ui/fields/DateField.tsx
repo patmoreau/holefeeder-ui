@@ -1,11 +1,12 @@
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppDatePicker } from '@/features/shared/ui/components/AppDatePicker';
 import { AppIcons } from '@/types/icons';
+import { DateOnly } from '@/domain/core/date-only';
 
 type Props = {
   label: string;
-  selectedDate: string | null;
-  onDateSelected: (date: string) => void;
+  selectedDate: DateOnly | null;
+  onDateSelected: (date: DateOnly) => void;
 };
 
 export function DateField({ label, selectedDate, onDateSelected }: Props) {

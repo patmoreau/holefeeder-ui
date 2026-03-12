@@ -19,8 +19,14 @@ export const PowerSyncAuthProvider = ({ children }: { children: ReactNode }) => 
 
     if (user) {
       db.init()
-        .then(() => db.connect(PowerSyncConnector(getToken)))
-        .finally(() => setInitialized(true));
+        .then(() => {
+          setInitialized(true);
+          db.connect(PowerSyncConnector(getToken)).catch((e) => console.warn('[PowerSync] connect failed (offline?)', e));
+        })
+        .catch((e) => {
+          console.error('[PowerSync] init failed', e);
+          setInitialized(true);
+        });
     } else {
       db.disconnect().finally(() => setInitialized(true));
     }

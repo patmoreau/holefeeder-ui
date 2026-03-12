@@ -1,57 +1,32 @@
 import { PowerSyncContext } from '@powersync/react-native';
 import { ReactNode, useEffect, useState } from 'react';
-import { db } from '@/domain/persistence/db';
+import { getDatabase } from '@/domain/persistence/db';
 import { PowerSyncConnector } from '@/domain/persistence/powersync-connector';
 import { useAuth } from '@/shared/hooks/use-auth';
 
 export const PowerSyncAuthProvider = ({ children }: { children: ReactNode }) => {
   const [initialized, setInitialized] = useState(false);
-  const { getCredentials, user } = useAuth();
+  const { getCredentials, user, isLoading: authLoading } = useAuth();
+  const db = getDatabase();
 
   useEffect(() => {
-    let isMounted = true;
+    if (authLoading) return;
 
     const getToken = async () => {
-      try {
-        const credentials = await getCredentials();
-        return credentials ? { token: credentials.accessToken, expiresAt: credentials.expiresAt } : null;
-      } catch (e) {
-        console.error('Token fetch failed', e);
-        return null;
-      }
+      const credentials = await getCredentials();
+      return credentials ? { token: credentials.accessToken, expiresAt: credentials.expiresAt } : null;
     };
 
-    db.waitForStatus((status) => {
-      if (status.connected && status.connecting) {
-        console.error('PowerSyncAuthProvider - status: ', status.toJSON());
-      }
-    });
+    if (user) {
+      db.init()
+        .then(() => db.connect(PowerSyncConnector(getToken)))
+        .finally(() => setInitialized(true));
+    } else {
+      db.disconnect().finally(() => setInitialized(true));
+    }
+  }, [user?.sub, authLoading]);
 
-    const init = async () => {
-      if (db.currentStatus.connected) {
-        await db.disconnect();
-      }
-
-      if (user && isMounted) {
-        await db.init();
-        await db.connect(PowerSyncConnector(getToken));
-        setInitialized(true);
-      } else if (!user && isMounted) {
-        await db.disconnectAndClear();
-      }
-    };
-
-    init();
-
-    return () => {
-      isMounted = false;
-      db.disconnect();
-    };
-  }, [getCredentials, user]);
-
-  if (!initialized) {
-    return null; // Or a loading spinner
-  }
+  if (!initialized) return null;
 
   return <PowerSyncContext.Provider value={db}>{children}</PowerSyncContext.Provider>;
 };

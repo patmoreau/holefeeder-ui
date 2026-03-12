@@ -2,8 +2,12 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { Credentials } from 'react-native-auth0';
 import { AuthContextForTest } from '@/__tests__/AuthContextForTest';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
+import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 
 describe('useAuth', () => {
+  let db: DatabaseForTest;
+
   const mockCredentials: Credentials = {
     accessToken: 'mock-access-token',
     idToken: 'mock-id-token',
@@ -12,20 +16,32 @@ describe('useAuth', () => {
     scope: 'openid profile email',
   };
 
+  beforeEach(async () => {
+    db = await setupDatabaseForTest();
+  });
+
+  afterEach(async () => {
+    await act(async () => {
+      await db.cleanupTestDb();
+    });
+  });
+
   it('should initialize with loading state', async () => {
     const mockGetCredentials = jest.fn().mockResolvedValue(mockCredentials);
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: ({ children }) => (
-        <AuthContextForTest
-          overrides={{
-            user: null,
-            isLoading: true,
-            getCredentials: mockGetCredentials,
-          }}
-        >
-          {children}
-        </AuthContextForTest>
+        <PowerSyncProviderForTest db={db}>
+          <AuthContextForTest
+            overrides={{
+              user: null,
+              isLoading: true,
+              getCredentials: mockGetCredentials,
+            }}
+          >
+            {children}
+          </AuthContextForTest>
+        </PowerSyncProviderForTest>
       ),
     });
 
@@ -46,15 +62,17 @@ describe('useAuth', () => {
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: ({ children }) => (
-        <AuthContextForTest
-          overrides={{
-            user: mockUser,
-            isLoading: false,
-            getCredentials: mockGetCredentials,
-          }}
-        >
-          {children}
-        </AuthContextForTest>
+        <PowerSyncProviderForTest db={db}>
+          <AuthContextForTest
+            overrides={{
+              user: mockUser,
+              isLoading: false,
+              getCredentials: mockGetCredentials,
+            }}
+          >
+            {children}
+          </AuthContextForTest>
+        </PowerSyncProviderForTest>
       ),
     });
 
@@ -72,16 +90,18 @@ describe('useAuth', () => {
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: ({ children }) => (
-        <AuthContextForTest
-          overrides={{
-            user: null,
-            isLoading: false,
-            authorize: mockAuthorize,
-            getCredentials: mockGetCredentials,
-          }}
-        >
-          {children}
-        </AuthContextForTest>
+        <PowerSyncProviderForTest db={db}>
+          <AuthContextForTest
+            overrides={{
+              user: null,
+              isLoading: false,
+              authorize: mockAuthorize,
+              getCredentials: mockGetCredentials,
+            }}
+          >
+            {children}
+          </AuthContextForTest>
+        </PowerSyncProviderForTest>
       ),
     });
 
@@ -98,16 +118,18 @@ describe('useAuth', () => {
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: ({ children }) => (
-        <AuthContextForTest
-          overrides={{
-            user: { sub: 'auth0|123456', email: 'test@example.com' },
-            isLoading: false,
-            clearSession: mockClearSession,
-            getCredentials: mockGetCredentials,
-          }}
-        >
-          {children}
-        </AuthContextForTest>
+        <PowerSyncProviderForTest db={db}>
+          <AuthContextForTest
+            overrides={{
+              user: { sub: 'auth0|123456', email: 'test@example.com' },
+              isLoading: false,
+              clearSession: mockClearSession,
+              getCredentials: mockGetCredentials,
+            }}
+          >
+            {children}
+          </AuthContextForTest>
+        </PowerSyncProviderForTest>
       ),
     });
 
@@ -123,15 +145,17 @@ describe('useAuth', () => {
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: ({ children }) => (
-        <AuthContextForTest
-          overrides={{
-            user: null,
-            isLoading: false,
-            getCredentials: mockGetCredentials,
-          }}
-        >
-          {children}
-        </AuthContextForTest>
+        <PowerSyncProviderForTest db={db}>
+          <AuthContextForTest
+            overrides={{
+              user: null,
+              isLoading: false,
+              getCredentials: mockGetCredentials,
+            }}
+          >
+            {children}
+          </AuthContextForTest>
+        </PowerSyncProviderForTest>
       ),
     });
 

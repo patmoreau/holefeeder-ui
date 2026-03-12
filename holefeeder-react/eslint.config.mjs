@@ -1,14 +1,17 @@
-import { defineConfig } from 'eslint/config';
 import expoConfig from 'eslint-config-expo/flat.js';
-import pluginImport from 'eslint-plugin-import';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import { defineConfig } from 'eslint/config';
+
+// Reuse the exact plugin instance expo registered to avoid "Cannot redefine plugin" errors
+// (ESLint flat config throws when the same key is registered with different object instances)
+const importPlugin = expoConfig.find((c) => c?.plugins?.import)?.plugins?.import;
 
 export default defineConfig([
   { ignores: ['node_modules/*', 'dist/*', '.expo/*'] },
   expoConfig,
   eslintPluginPrettierRecommended,
   {
-    plugins: { import: pluginImport },
+    plugins: { import: importPlugin },
     settings: {
       react: {
         version: '19.2.0', // ← add this, matches your package.json

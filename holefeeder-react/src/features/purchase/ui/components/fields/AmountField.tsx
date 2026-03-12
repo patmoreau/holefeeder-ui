@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
@@ -27,7 +27,7 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const AmountField = React.forwardRef<AmountFieldRef, Props>(({ amount, onAmountChange }, ref) => {
+export const AmountField = forwardRef<AmountFieldRef, Props>(({ amount, onAmountChange }, ref) => {
   const { formatCurrency } = useLocaleFormatter();
   const styles = useStyles(createStyles);
   const inputRef = useRef<TextInput>(null);

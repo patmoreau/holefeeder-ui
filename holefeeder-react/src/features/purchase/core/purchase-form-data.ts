@@ -1,8 +1,8 @@
 import { Account } from '@/domain/core/accounts/account';
 import { Category } from '@/domain/core/categories/category';
 import { DateIntervalType } from '@/domain/core/date-interval-type';
-import { Tag } from '@/domain/core/flows/tag';
 import { DateOnly } from '@/domain/core/date-only';
+import { Tag } from '@/domain/core/flows/tag';
 
 export const PurchaseType = {
   expense: 'expense',

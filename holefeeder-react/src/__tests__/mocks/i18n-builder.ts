@@ -1,5 +1,4 @@
-/* eslint-disable import/no-named-as-default-member */
-import i18n from 'i18next';
+import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 /**
@@ -13,7 +12,8 @@ import { initReactI18next } from 'react-i18next';
  * render(<I18nextProvider i18n={i18nInstance}></I18nextProvider>);
  */
 const i18nBuilder = (ns: string, debug: boolean = false) => {
-  i18n
+  const instance = createInstance();
+  instance
     .use(initReactI18next)
     .init({
       initAsync: false,
@@ -24,6 +24,6 @@ const i18nBuilder = (ns: string, debug: boolean = false) => {
       debug,
     })
     .then();
-  return i18n;
+  return instance;
 };
 export default i18nBuilder;

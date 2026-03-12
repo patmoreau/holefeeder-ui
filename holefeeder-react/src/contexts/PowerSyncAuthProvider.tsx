@@ -30,7 +30,7 @@ export const PowerSyncAuthProvider = ({ children }: { children: ReactNode }) => 
     } else {
       db.disconnect().finally(() => setInitialized(true));
     }
-  }, [user?.sub, authLoading]);
+  }, [user?.sub, authLoading, user, getCredentials, db]);
 
   if (!initialized) return null;
 

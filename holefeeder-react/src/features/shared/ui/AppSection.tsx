@@ -1,4 +1,4 @@
-import React from 'react';
+import { Children } from 'react';
 import { View, type ViewProps } from 'react-native';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
@@ -36,10 +36,10 @@ export const AppSection = ({ title, style, children, ...otherProps }: SectionPro
         </AppText>
       )}
       <View style={[styles.section, style]} {...otherProps}>
-        {React.Children.map(children, (child, index) => (
+        {Children.map(children, (child, index) => (
           <>
             {child}
-            {index < React.Children.count(children) - 1 && <View style={styles.divider} />}
+            {index < Children.count(children) - 1 && <View style={styles.divider} />}
           </>
         ))}
       </View>

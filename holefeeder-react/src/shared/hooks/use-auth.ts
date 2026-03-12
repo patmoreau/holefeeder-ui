@@ -1,8 +1,8 @@
+import { usePowerSync } from '@powersync/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Credentials, useAuth0 } from 'react-native-auth0';
 import { config } from '@/config/config';
 import { TokenInfo } from '@/types/token-info';
-import { usePowerSync } from '@powersync/react';
 
 export function useAuth() {
   const { user, getCredentials, isLoading: authLoading, authorize, clearSession } = useAuth0();
@@ -82,7 +82,7 @@ export function useAuth() {
   const logout = useCallback(async () => {
     await clearSession({ returnToUrl: config.auth0.logoutRedirectUri }, {});
     await powersync.disconnectAndClear();
-  }, [clearSession]);
+  }, [clearSession, powersync]);
 
   return {
     tokenInfo,

@@ -1,9 +1,9 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { Credentials } from 'react-native-auth0';
 import { AuthContextForTest } from '@/__tests__/AuthContextForTest';
-import { useAuth } from '@/shared/hooks/use-auth';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
+import { useAuth } from '@/shared/hooks/use-auth';
 
 describe('useAuth', () => {
   let db: DatabaseForTest;

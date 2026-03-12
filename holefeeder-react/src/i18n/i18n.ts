@@ -1,6 +1,5 @@
-/* eslint-disable import/no-named-as-default-member */
 import * as Localization from 'expo-localization';
-import i18n from 'i18next';
+import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { en } from './locales/en-CA/translations';
 import { fr } from './locales/fr-CA/translations';
@@ -15,6 +14,7 @@ const resources = {
 };
 
 let isInitialized = false;
+const instance = createInstance();
 
 export const initI18n = async (savedLanguage?: string): Promise<void> => {
   if (isInitialized) {
@@ -32,7 +32,7 @@ export const initI18n = async (savedLanguage?: string): Promise<void> => {
       languageToUse = supportedLanguages.includes(deviceLanguage) ? deviceLanguage : 'en';
     }
 
-    await i18n.use(initReactI18next).init({
+    await instance.use(initReactI18next).init({
       resources,
       lng: languageToUse,
       fallbackLng: {
@@ -52,7 +52,7 @@ export const initI18n = async (savedLanguage?: string): Promise<void> => {
   } catch (error) {
     console.error('Error initializing i18n:', error);
     // Fallback initialization without saved language
-    await i18n.use(initReactI18next).init({
+    await instance.use(initReactI18next).init({
       resources,
       lng: 'en',
       fallbackLng: 'en',
@@ -69,5 +69,5 @@ export const getI18nInstance = () => {
   if (!isInitialized) {
     console.warn('i18n not initialized yet. Call initI18n() first.');
   }
-  return i18n;
+  return instance;
 };

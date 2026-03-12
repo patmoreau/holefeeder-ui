@@ -10,7 +10,7 @@ import {
   SqliteBucketStorage,
   type StreamingSyncImplementation,
 } from '@powersync/common';
-import Database from 'better-sqlite3';
+import sqliteDatabase from 'better-sqlite3';
 import { DatabaseAdapterForTest } from '@/__tests__/persistence/database-adapter-for-test';
 import { AppSchema } from '@/domain/persistence/app-schema';
 
@@ -49,7 +49,7 @@ export class DatabaseForTest extends AbstractPowerSyncDatabase {
 
   async cleanupTestDb() {
     try {
-      const sqliteDb = (this.database as DatabaseAdapterForTest).dbConnection as Database.Database;
+      const sqliteDb = (this.database as DatabaseAdapterForTest).dbConnection as sqliteDatabase.Database;
       if (sqliteDb && sqliteDb.open) {
         sqliteDb.close();
       }

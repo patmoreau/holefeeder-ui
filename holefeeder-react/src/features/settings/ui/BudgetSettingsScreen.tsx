@@ -1,4 +1,5 @@
 import React from 'react';
+import { DefaultSettings } from '@/domain/core/store-items/settings';
 import { SettingsFormData } from '@/features/settings/core/settings-form-data';
 import { SettingsFormProvider, validateSettingsForm } from '@/features/settings/core/use-settings-form';
 import { BudgetSettingsForm } from '@/features/settings/ui/BudgetSettingsForm';
@@ -10,7 +11,6 @@ import { useSettings } from '@/presentation/hooks/store-items/use-settings';
 import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
-import { DefaultSettings } from '@/domain/core/store-items/settings';
 
 const createStyles = (theme: Theme) => ({
   container: {

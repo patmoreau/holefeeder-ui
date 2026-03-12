@@ -9,12 +9,12 @@ import { AppText } from '@/features/shared/ui/components/AppText';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { tk } from '@/i18n/translations';
+import { DEFAULT_SYNC_INFO } from '@/presentation/hooks/settings/sync-info';
 import { useSyncInfo } from '@/presentation/hooks/settings/use-sync-info';
 import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 import { spacing, Theme } from '@/types/theme';
-import { DEFAULT_SYNC_INFO } from '@/presentation/hooks/settings/sync-info';
 
 const createStyles = (theme: Theme) => ({
   collapsibleSection: {

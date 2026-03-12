@@ -1,8 +1,8 @@
 import { DatePicker, DatePickerProps } from '@expo/ui/swift-ui';
 import { StyleProp, ViewStyle } from 'react-native';
+import { DateOnly } from '@/domain/core/date-only';
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
 import { withDate } from '@/features/shared/utils/with-date';
-import { DateOnly } from '@/domain/core/date-only';
 
 export type AppDatePickerProps = {
   selectedDate: DateOnly | null;

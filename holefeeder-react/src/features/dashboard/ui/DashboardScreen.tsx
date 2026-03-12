@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import { NO_SUMMARY } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 import { AccountCardList } from '@/features/dashboard/ui/components/AccountCardList';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeaderSmallCard';
@@ -13,7 +14,6 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { NO_SUMMARY } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -61,7 +61,7 @@ const DashboardScreen = () => {
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
 
-  const { data, isLoading, errors } = useMultipleWatches({
+  const { data, errors } = useMultipleWatches({
     accounts: withDefault(() => accountsQuery, []),
     dashboard: withDefault(() => dashboardQuery, NO_SUMMARY),
   });

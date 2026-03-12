@@ -1,8 +1,9 @@
 import * as SystemUI from 'expo-system-ui';
-import i18n, { changeLanguage } from 'i18next';
+import { changeLanguage, createInstance } from 'i18next';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Appearance, View } from 'react-native';
+import { Storage } from '@/domain/persistence/storage';
 import { initI18n } from '@/i18n';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { AppSettings, initialSettings } from '@/types/app-settings';
@@ -11,8 +12,8 @@ import { darkTheme } from '@/types/theme/dark';
 import { lightTheme } from '@/types/theme/light';
 import { ThemeMode } from '@/types/theme/theme';
 import { UserProfile } from '@/types/user-profile';
-import { Storage } from '@/domain/persistence/storage';
 
+const instance = createInstance();
 export const AppContext = createContext<AppState | null>(null);
 
 const availableThemeModes = [
@@ -39,7 +40,7 @@ function AppProviderContent({ children, loadedSettings }: { children: ReactNode;
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
   const [settings, setSettings] = useState<AppSettings>(loadedSettings);
   const [systemColorScheme, setSystemColorScheme] = useState(Appearance.getColorScheme());
-  const [currentLanguage, setCurrentLanguage] = useState<LanguageType>((i18n.language as LanguageType) || 'en');
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageType>((instance.language as LanguageType) || 'en');
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {

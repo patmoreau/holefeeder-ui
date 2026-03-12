@@ -1,7 +1,7 @@
+import { AccountType } from '@/domain/core/accounts/account-type';
 import { DateOnly } from '@/domain/core/date-only';
 import { Id } from '@/domain/core/id';
 import { Variation } from '@/domain/core/variation';
-import { AccountType } from '@/domain/core/accounts/account-type';
 
 export type AccountDetail = {
   id: Id;

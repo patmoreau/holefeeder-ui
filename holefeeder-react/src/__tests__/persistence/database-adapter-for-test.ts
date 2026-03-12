@@ -1,13 +1,13 @@
 import { BaseObserver, type DBAdapter, type QueryResult } from '@powersync/common';
-import Database from 'better-sqlite3';
+import sqliteDatabase from 'better-sqlite3';
 
 export class DatabaseAdapterForTest extends BaseObserver<any> implements DBAdapter {
   name = 'database-adapter-for-test';
-  private db: Database.Database;
+  private db: sqliteDatabase.Database;
 
   constructor(dbFilename: string) {
     super();
-    this.db = new Database(dbFilename);
+    this.db = new sqliteDatabase(dbFilename);
 
     this.db.function('powersync_rs_version', () => '0.4.10');
     this.db.function('powersync_connection_name', () => 'test-connection');

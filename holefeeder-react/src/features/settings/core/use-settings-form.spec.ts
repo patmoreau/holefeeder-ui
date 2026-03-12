@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
+import { DateOnly } from '@/domain/core/date-only';
 import { SettingsFormData } from './settings-form-data';
 import { SettingsFormError, validateSettingsForm } from './use-settings-form';
-import { DateOnly } from '@/domain/core/date-only';
 
 describe('SettingsFormError', () => {
   it('should have effectiveDateRequired error constant', () => {

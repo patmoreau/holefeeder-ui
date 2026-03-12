@@ -2,7 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import type { SymbolViewProps } from 'expo-symbols';
 import { ComponentProps } from 'react';
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
+type IconMapping = Record<Extract<SymbolViewProps['name'], string>, ComponentProps<typeof MaterialIcons>['name']>;
 
 export const AppIcons = {
   account: 'creditcard',

@@ -19,10 +19,10 @@ const createStyles = (theme: Theme) => ({
   },
   header: {
     height: HEADER_HEIGHT,
-    overflow: 'hidden',
+    overflow: 'hidden' as const,
   },
   content: {
-    minHeight: '100%',
+    minHeight: '100%' as const,
   },
   scrollArea: {
     backgroundColor: theme.colors.background,

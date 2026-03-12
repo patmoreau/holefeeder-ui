@@ -25,7 +25,7 @@ const createStyles = (theme: Theme) => ({
     width: 36,
     height: 36,
     borderRadius: borderRadius.xl,
-    backgroundColor: `${theme.colors.primary}20`,
+    backgroundColor: `${theme.colors.primary}20` as const,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
   },
@@ -36,7 +36,7 @@ const createStyles = (theme: Theme) => ({
   },
   defaultContent: {
     flex: 1,
-    width: '100%',
+    width: '100%' as const,
     alignItems: 'flex-end' as const,
     justifyContent: 'flex-end' as const,
     overflow: 'hidden' as const,

@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-native';
+import { act, renderHook } from '@testing-library/react-native';
 import { useColorScheme as useRNColorScheme } from 'react-native';
 import { useColorScheme } from '@/shared/hooks/theme/use-color-scheme.web';
 
@@ -44,7 +44,7 @@ describe('useColorScheme', () => {
 
   it('should handle null system color scheme after hydration', async () => {
     // Arrange
-    mockUseRNColorScheme.mockReturnValue(null);
+    mockUseRNColorScheme.mockReturnValue(null!);
 
     // Act
     const { result, rerender } = renderHook(() => useColorScheme());

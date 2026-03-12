@@ -23,7 +23,7 @@ type Props = {
 const createStyles = () => ({
   container: {
     paddingHorizontal: 16,
-    width: '100%',
+    width: '100%' as const,
   },
 });
 

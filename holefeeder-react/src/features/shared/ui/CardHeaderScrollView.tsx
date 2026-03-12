@@ -55,7 +55,7 @@ const createStyles = (theme: Theme) => ({
   },
   content: {
     backgroundColor: theme.colors.background,
-    minHeight: '100%',
+    minHeight: '100%' as const,
   },
 });
 

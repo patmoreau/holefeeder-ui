@@ -3,7 +3,7 @@ import { useRepositories } from '@/contexts/RepositoryContext';
 import { AsyncResult, Result } from '@/domain/core/result';
 import { DataMetrics } from '@/domain/core/settings/data-metrics';
 import { WatchDataMetricsUseCase } from '@/domain/core/settings/watch-data-metrics/watch-data-metrics-use-case';
-import { SyncInfo } from '@/presentation/hooks/settings/SyncInfo';
+import { SyncInfo } from '@/presentation/hooks/settings/sync-info';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 
 export const useSyncInfo = (): AsyncResult<SyncInfo> => {

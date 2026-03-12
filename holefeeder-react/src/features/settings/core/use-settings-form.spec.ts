@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import { SettingsFormData } from './settings-form-data';
 import { SettingsFormError, validateSettingsForm } from './use-settings-form';
+import { DateOnly } from '@/domain/core/date-only';
 
 describe('SettingsFormError', () => {
   it('should have effectiveDateRequired error constant', () => {
@@ -16,7 +17,7 @@ describe('validateSettingsForm', () => {
   describe('valid form data', () => {
     it('should return no errors for valid form data', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: 1,
       };
@@ -29,7 +30,7 @@ describe('validateSettingsForm', () => {
 
     it('should return no errors for valid form data with high frequency', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-12-31',
+        effectiveDate: DateOnly.valid('2023-12-31'),
         intervalType: 'weekly',
         frequency: 52,
       };
@@ -41,7 +42,7 @@ describe('validateSettingsForm', () => {
 
     it('should return no errors for valid form data with different intervalType', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2024-06-15',
+        effectiveDate: DateOnly.valid('2024-06-15'),
         intervalType: 'yearly',
         frequency: 5,
       };
@@ -55,7 +56,7 @@ describe('validateSettingsForm', () => {
   describe('effectiveDate validation', () => {
     it('should return effectiveDateRequired error when effectiveDate is empty string', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '',
+        effectiveDate: DateOnly.valid(''),
         intervalType: 'monthly',
         frequency: 1,
       };
@@ -68,7 +69,7 @@ describe('validateSettingsForm', () => {
 
     it('should not return error for non-empty effectiveDate', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-01',
+        effectiveDate: DateOnly.valid('2023-01-01'),
         intervalType: 'monthly',
         frequency: 1,
       };
@@ -82,7 +83,7 @@ describe('validateSettingsForm', () => {
   describe('frequency validation', () => {
     it('should return frequencyRequired error when frequency is 0', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: 0,
       };
@@ -95,7 +96,7 @@ describe('validateSettingsForm', () => {
 
     it('should return frequencyRequired error when frequency is negative', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: -1,
       };
@@ -107,7 +108,7 @@ describe('validateSettingsForm', () => {
 
     it('should return frequencyRequired error when frequency is large negative number', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: -100,
       };
@@ -119,7 +120,7 @@ describe('validateSettingsForm', () => {
 
     it('should not return error for positive frequency', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: 1,
       };
@@ -131,7 +132,7 @@ describe('validateSettingsForm', () => {
 
     it('should not return error for large positive frequency', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: 999,
       };
@@ -145,7 +146,7 @@ describe('validateSettingsForm', () => {
   describe('multiple validation errors', () => {
     it('should return both errors when effectiveDate is empty and frequency is 0', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '',
+        effectiveDate: DateOnly.valid(''),
         intervalType: 'monthly',
         frequency: 0,
       };
@@ -159,7 +160,7 @@ describe('validateSettingsForm', () => {
 
     it('should return both errors when effectiveDate is empty and frequency is negative', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '',
+        effectiveDate: DateOnly.valid(''),
         intervalType: 'weekly',
         frequency: -5,
       };
@@ -175,7 +176,7 @@ describe('validateSettingsForm', () => {
   describe('edge cases', () => {
     it('should handle form data with decimal frequency (boundary test)', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: 0.5,
       };
@@ -188,7 +189,7 @@ describe('validateSettingsForm', () => {
 
     it('should handle form data with very small positive frequency', () => {
       const formData: SettingsFormData = {
-        effectiveDate: '2023-01-15',
+        effectiveDate: DateOnly.valid('2023-01-15'),
         intervalType: 'monthly',
         frequency: 0.001,
       };
@@ -203,7 +204,7 @@ describe('validateSettingsForm', () => {
 
       intervalTypes.forEach((intervalType) => {
         const formData: SettingsFormData = {
-          effectiveDate: '2023-01-15',
+          effectiveDate: DateOnly.valid('2023-01-15'),
           intervalType,
           frequency: 1,
         };

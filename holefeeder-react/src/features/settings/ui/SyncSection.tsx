@@ -10,10 +10,11 @@ import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { tk } from '@/i18n/translations';
 import { useSyncInfo } from '@/presentation/hooks/settings/use-sync-info';
-import { useMultipleWatches } from '@/presentation/hooks/use-multiple-watches';
+import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 import { spacing, Theme } from '@/types/theme';
+import { DEFAULT_SYNC_INFO } from '@/presentation/hooks/settings/sync-info';
 
 const createStyles = (theme: Theme) => ({
   collapsibleSection: {
@@ -36,7 +37,7 @@ export function SyncSection() {
   const syncInfoQuery = useSyncInfo();
 
   const { data, isLoading, errors } = useMultipleWatches({
-    syncInfo: () => syncInfoQuery,
+    syncInfo: withDefault(() => syncInfoQuery, DEFAULT_SYNC_INFO),
   });
 
   if (isLoading || !data) {

@@ -8,7 +8,7 @@ type FormatterHook = {
   currentLocale: string;
   currencyCode: string;
   formatCurrency: (amount: number, options?: { currency?: string; isEditing?: boolean }) => string;
-  formatDate: (date: Date | string | number, options?: Intl.DateTimeFormatOptions) => string;
+  formatDate: (date: Date | string | number, anchorDate: Date | string | number, options?: Intl.DateTimeFormatOptions) => string;
   formatPercentage: (val: number) => string;
 };
 
@@ -51,19 +51,23 @@ export const useLocaleFormatter = (): FormatterHook => {
           return `${amount} ${safeCurrency}`;
         }
       },
-      formatDate: (date: Date | string | number, options?: Intl.DateTimeFormatOptions) => {
+      formatDate: (date: Date | string | number, anchorDate: Date | string | number, options?: Intl.DateTimeFormatOptions) => {
         const dateObj = new Date(date);
+        const anchor = new Date(anchorDate);
         try {
-          const now = new Date();
-          const diffTime = Math.abs(now.getTime() - dateObj.getTime());
+          const diffTime = anchor.getTime() - dateObj.getTime();
           const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
           if (diffDays === 0) {
             return t(tk.common.today);
           } else if (diffDays === 1) {
             return t(tk.common.yesterday);
-          } else if (diffDays < 7) {
+          } else if (diffDays === -1) {
+            return t(tk.common.tomorrow);
+          } else if (diffDays > 0 && diffDays < 8) {
             return t(tk.common.last7Days, { count: diffDays });
+          } else if (diffDays > -8 && diffDays < 0) {
+            return t(tk.common.next7Days, { count: Math.abs(diffDays) });
           } else {
             return new Intl.DateTimeFormat(localeInfo.languageTag, {
               dateStyle: 'medium',

@@ -43,6 +43,8 @@ export const en = {
     today: 'Today',
     yesterday: 'Yesterday',
     last7Days: '{{count}} days ago',
+    tomorrow: 'Tomorrow',
+    next7Days: 'in {{count}} days',
     welcome: 'Welcome',
     login: 'Login',
     logout: 'Logout',

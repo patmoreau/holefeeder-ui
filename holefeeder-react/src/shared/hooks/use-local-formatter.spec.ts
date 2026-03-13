@@ -103,8 +103,9 @@ describe('useLocaleFormatter', () => {
     it('should format Date object', () => {
       const { result } = renderHook(() => useLocaleFormatter());
       const date = new Date('2023-12-25T12:00:00Z');
+      const anchor = new Date('2025-12-25T12:00:00Z');
 
-      const formatted = result.current.formatDate(date);
+      const formatted = result.current.formatDate(date, anchor);
 
       expect(formatted).toMatch(/Dec/);
       expect(formatted).toMatch(/2023/);
@@ -113,8 +114,10 @@ describe('useLocaleFormatter', () => {
 
     it('should format date string', () => {
       const { result } = renderHook(() => useLocaleFormatter());
+      const date = '2023-12-25';
+      const anchor = '2025-12-25T12:00:00Z';
 
-      const formatted = result.current.formatDate('2023-12-25T12:00:00Z');
+      const formatted = result.current.formatDate(date, anchor);
 
       expect(formatted).toMatch(/Dec/);
       expect(formatted).toMatch(/2023/);
@@ -124,8 +127,9 @@ describe('useLocaleFormatter', () => {
     it('should format timestamp number', () => {
       const { result } = renderHook(() => useLocaleFormatter());
       const timestamp = new Date('2023-12-25T12:00:00Z').getTime();
+      const anchor = new Date('2025-12-25T12:00:00Z');
 
-      const formatted = result.current.formatDate(timestamp);
+      const formatted = result.current.formatDate(timestamp, anchor);
 
       expect(formatted).toMatch(/Dec/);
       expect(formatted).toMatch(/2023/);
@@ -135,17 +139,69 @@ describe('useLocaleFormatter', () => {
     it('should accept custom format options', () => {
       const { result } = renderHook(() => useLocaleFormatter());
       const date = new Date('2023-12-25T12:00:00Z');
+      const anchor = new Date('2025-12-25T12:00:00Z');
 
-      const formatted = result.current.formatDate(date, { dateStyle: 'short' });
+      const formatted = result.current.formatDate(date, anchor, { dateStyle: 'short' });
 
       expect(formatted).toMatch(/12/);
       expect(formatted).toMatch(/2023|23/);
       expect(formatted.length).toBeGreaterThan(0);
     });
 
+    it('should display today', () => {
+      const { result } = renderHook(() => useLocaleFormatter());
+      const date = new Date('2023-12-25T12:00:00Z');
+      const anchor = new Date('2023-12-25T15:00:00Z');
+
+      const formatted = result.current.formatDate(date, anchor);
+
+      expect(formatted).toMatch('common.today');
+    });
+
+    it('should display yesterday', () => {
+      const { result } = renderHook(() => useLocaleFormatter());
+      const date = new Date('2023-12-24T12:00:00Z');
+      const anchor = new Date('2023-12-25T12:00:00Z');
+
+      const formatted = result.current.formatDate(date, anchor);
+
+      expect(formatted).toMatch('common.yesterday');
+    });
+
+    it('should display n days ago', () => {
+      const { result } = renderHook(() => useLocaleFormatter());
+      const date = new Date('2023-12-24T12:00:00Z');
+      const anchor = new Date('2023-12-31T12:00:00Z');
+
+      const formatted = result.current.formatDate(date, anchor);
+
+      expect(formatted).toMatch('common.last7Days');
+    });
+
+    it('should display tomorrow', () => {
+      const { result } = renderHook(() => useLocaleFormatter());
+      const date = new Date('2023-12-26T12:00:00Z');
+      const anchor = new Date('2023-12-25T15:00:00Z');
+
+      const formatted = result.current.formatDate(date, anchor);
+
+      expect(formatted).toMatch('common.tomorrow');
+    });
+
+    it('should display in next n days', () => {
+      const { result } = renderHook(() => useLocaleFormatter());
+      const date = new Date('2023-12-31T12:00:00Z');
+      const anchor = new Date('2023-12-24T12:00:00Z');
+
+      const formatted = result.current.formatDate(date, anchor);
+
+      expect(formatted).toMatch('common.next7Days');
+    });
+
     it('should fallback to toDateString on error', () => {
       const { result } = renderHook(() => useLocaleFormatter());
       const date = new Date('2023-12-25');
+      const anchor = new Date('2025-12-24T12:00:00Z');
 
       // Mock Intl.DateTimeFormat to throw an error
       const originalDateTimeFormat = Intl.DateTimeFormat;
@@ -153,7 +209,7 @@ describe('useLocaleFormatter', () => {
         throw new Error('Invalid format');
       }) as any;
 
-      const formatted = result.current.formatDate(date);
+      const formatted = result.current.formatDate(date, anchor);
 
       expect(formatted).toBe(date.toDateString());
 

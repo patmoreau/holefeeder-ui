@@ -45,6 +45,8 @@ export const fr: TranslationStructure = {
     today: "Aujourd'hui",
     yesterday: 'Hier',
     last7Days: '{{count}} jrs passés',
+    tomorrow: 'Demain',
+    next7Days: 'dans {{count}} jrs',
     welcome: 'Bienvenue',
     login: 'Connexion',
     logout: 'Déconnexion',

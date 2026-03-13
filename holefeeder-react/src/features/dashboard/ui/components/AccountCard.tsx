@@ -100,7 +100,7 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
       <View style={styles.projectedSection}>
         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start' }}>
           <AppText variant={'footnote'}>{t(tk.accountCard.updated)}</AppText>
-          <AppText variant={'default'}>{formatDate(account.lastTransactionDate!)}</AppText>
+          <AppText variant={'default'}>{formatDate(account.lastTransactionDate!, new Date())}</AppText>
         </View>
         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end' }}>
           <AppText variant={'footnote'}>{t(tk.accountCard.projected)}</AppText>

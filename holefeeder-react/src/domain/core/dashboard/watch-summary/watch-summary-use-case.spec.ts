@@ -1,5 +1,5 @@
-import { startOfMonth } from 'date-fns';
 import { waitFor } from '@testing-library/react-native';
+import { startOfMonth } from 'date-fns';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
 import { DashboardRepositoryInMemory } from '@/domain/core/dashboard/__tests__/dashboard-repository-in-memory';
 import { aSummaryData } from '@/domain/core/dashboard/__tests__/summary-data-for-test';

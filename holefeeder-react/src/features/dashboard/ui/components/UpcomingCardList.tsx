@@ -1,9 +1,9 @@
 import { ScrollView, View, type ViewProps } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { spacing } from '@/types/theme/design-tokens';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
 import { UpcomingCard } from '@/features/dashboard/ui/components/UpcomingCard';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { spacing } from '@/types/theme/design-tokens';
 
 export type UpcomingCardListProps = ViewProps & {
   upcomingFlows: UpcomingFlow[];

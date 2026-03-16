@@ -4,12 +4,12 @@ import { AccountDetail } from '@/domain/core/accounts/account-detail';
 import { AccountType } from '@/domain/core/accounts/account-type';
 import { Variation } from '@/domain/core/variation';
 import { AppText } from '@/features/shared/ui/components/AppText';
+import { today } from '@/features/shared/utils/with-date';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { today } from '@/features/shared/utils/with-date';
 
 export type AccountCardProps = ViewProps & {
   account: AccountDetail;

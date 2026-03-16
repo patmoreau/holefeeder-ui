@@ -4,12 +4,12 @@ import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/domain/core/flows/create-flow/create-flow-command';
 import { FlowsRepository, FlowsRepositoryErrors } from '@/domain/core/flows/flows-repository';
 import { Tag } from '@/domain/core/flows/tag';
+import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
 import { type AsyncResult, Result } from '@/domain/core/result';
-import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 import { watchQuery } from '@/domain/persistence/watch-query';
-import { TagList } from '@/domain/core/flows/tag-list';
+import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
 
 type CashflowVariationRow = {
   id: string;

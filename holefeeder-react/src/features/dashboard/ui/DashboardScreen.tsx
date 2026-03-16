@@ -1,6 +1,7 @@
 import React from 'react';
 import { NO_SUMMARY } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 import { AccountCardList } from '@/features/dashboard/ui/components/AccountCardList';
+import { UpcomingCardList } from '@/features/dashboard/ui/components/UpcomingCardList';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/features/dashboard/ui/DashboardHeaderSmallCard';
 import { AppView } from '@/features/shared/ui/AppView';
@@ -8,13 +9,12 @@ import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView'
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { useAccountDetails } from '@/presentation/hooks/accounts/use-account-details';
 import { useDashboard } from '@/presentation/hooks/dashboard/use-dashboard';
+import { useUpcomingFlows } from '@/presentation/hooks/flows/get-upcoming-flows/use-upcoming-flows';
 import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { fontSize, fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { UpcomingCardList } from '@/features/dashboard/ui/components/UpcomingCardList';
-import { useUpcomingFlows } from '@/presentation/hooks/flows/get-upcoming-flows/use-upcoming-flows';
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -40,13 +40,14 @@ const createStyles = (theme: Theme) => ({
 const DashboardScreen = () => {
   const accountsQuery = useAccountDetails();
   const dashboardQuery = useDashboard();
+  const upcomingQuery = useUpcomingFlows();
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
 
   const { data, errors } = useMultipleWatches({
     accounts: withDefault(() => accountsQuery, []),
     dashboard: withDefault(() => dashboardQuery, NO_SUMMARY),
-    upcomingFlows: withDefault(() => useUpcomingFlows(), []),
+    upcomingFlows: withDefault(() => upcomingQuery, []),
   });
 
   if (errors.showError) {

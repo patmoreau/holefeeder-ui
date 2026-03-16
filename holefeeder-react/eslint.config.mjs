@@ -1,25 +1,20 @@
-import expoConfig from 'eslint-config-expo/flat.js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import { defineConfig } from 'eslint/config';
-
-// Reuse the exact plugin instance expo registered to avoid "Cannot redefine plugin" errors
-// (ESLint flat config throws when the same key is registered with different object instances)
-const importPlugin = expoConfig.find((c) => c?.plugins?.import)?.plugins?.import;
+import expoConfig from 'eslint-config-expo/flat.js';
+import importX from 'eslint-plugin-import-x';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default defineConfig([
   { ignores: ['node_modules/*', 'dist/*', '.expo/*'] },
   expoConfig,
-  eslintPluginPrettierRecommended,
+  importX.flatConfigs.recommended,
+  importX.flatConfigs.typescript,
   {
-    plugins: { import: importPlugin },
     settings: {
-      react: {
-        version: '19.2.0', // ← add this, matches your package.json
-      },
-      'import/parsers': {
+      react: { version: '19.2.0' },
+      'import-x/parsers': {
         '@typescript-eslint/parser': ['.ts', '.tsx'],
       },
-      'import/resolver': {
+      'import-x/resolver': {
         typescript: {
           alwaysTryTypes: true,
           project: './tsconfig.json',
@@ -29,7 +24,7 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/no-redeclare': 'off',
       'max-len': ['error', { code: 255 }],
-      'import/order': [
+      'import-x/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
@@ -39,4 +34,5 @@ export default defineConfig([
       ],
     },
   },
+  eslintPluginPrettierRecommended,
 ]);

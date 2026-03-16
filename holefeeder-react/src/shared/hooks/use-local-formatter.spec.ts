@@ -1,9 +1,9 @@
 import { act, renderHook } from '@testing-library/react-native';
 import * as ExpoLocalization from 'expo-localization';
 import { AppState, AppStateStatus } from 'react-native';
-import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { DateOnly } from '@/domain/core/date-only';
 import { withDate } from '@/features/shared/utils/with-date';
+import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 
 jest.mock('expo-localization');
 

@@ -1,12 +1,12 @@
 import { StyleSheet, View, type ViewProps } from 'react-native';
+import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
+import { AppChip } from '@/features/shared/ui/components/AppChip';
 import { AppText } from '@/features/shared/ui/components/AppText';
+import { today } from '@/features/shared/utils/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { borderRadius, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
-import { AppChip } from '@/features/shared/ui/components/AppChip';
-import { today } from '@/features/shared/utils/with-date';
 
 export type UpcomingCardProps = ViewProps & {
   upcomingFlow: UpcomingFlow;

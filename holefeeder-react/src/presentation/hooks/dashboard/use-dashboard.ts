@@ -10,11 +10,13 @@ export const useDashboard = (): AsyncResult<DashboardComputedSummary> => {
   const settingsResult = useSettings();
   const [summary, setSummary] = useState<AsyncResult<DashboardComputedSummary>>(Result.loading());
 
-  const settings = settingsResult.isSuccess ? settingsResult.value : DefaultSettings;
-
   const useCase = useMemo(() => {
+    if (settingsResult.isLoading) return null;
+
+    const settings = settingsResult.isSuccess ? settingsResult.value : DefaultSettings;
+
     return WatchSummaryUseCase(settings, dashboardRepository);
-  }, [dashboardRepository, settings]);
+  }, [dashboardRepository, settingsResult]);
 
   useEffect(() => {
     if (!useCase) {

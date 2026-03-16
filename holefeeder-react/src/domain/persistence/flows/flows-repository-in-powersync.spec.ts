@@ -129,7 +129,7 @@ describe('FlowsRepository', () => {
     });
   });
 
-  describe('watchCashflows', () => {
+  describe('watchCashflowVariations', () => {
     it('retrieves cashflows never paid', async () => {
       const category = await aCategory({ type: CategoryTypes.expense }).store(db);
       const cashflow = await aCashflow({ categoryId: category.id, amount: Money.valid(100) }).store(db);
@@ -149,11 +149,13 @@ describe('FlowsRepository', () => {
           accountId: cashflow.accountId,
           categoryType: category.type,
           amount: Money.valid(100),
+          description: cashflow.description,
           effectiveDate: cashflow.effectiveDate,
           frequency: cashflow.frequency,
           intervalType: cashflow.intervalType,
           lastPaidDate: undefined,
           lastCashflowDate: undefined,
+          tags: cashflow.tags,
         },
       ]);
 
@@ -186,11 +188,13 @@ describe('FlowsRepository', () => {
           accountId: cashflow.accountId,
           categoryType: category.type,
           amount: Money.valid(100),
+          description: cashflow.description,
           effectiveDate: cashflow.effectiveDate,
           frequency: cashflow.frequency,
           intervalType: cashflow.intervalType,
           lastPaidDate: transaction.date,
           lastCashflowDate: transaction.cashflowDate,
+          tags: cashflow.tags,
         },
       ]);
 

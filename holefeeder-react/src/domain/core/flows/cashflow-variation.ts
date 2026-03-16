@@ -1,5 +1,6 @@
 import { DateIntervalType } from '@/domain/core/date-interval-type';
 import { DateOnly } from '@/domain/core/date-only';
+import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
 import { Result } from '@/domain/core/result';
@@ -12,10 +13,12 @@ export type CashflowVariation = {
   lastPaidDate?: DateOnly;
   lastCashflowDate?: DateOnly;
   amount: Money;
+  description: string;
   effectiveDate: DateOnly;
   frequency: number;
   intervalType: DateIntervalType;
   categoryType: CategoryType;
+  tags: TagList;
 };
 
 export const CashflowVariationErrors = {
@@ -28,10 +31,12 @@ const valid = (value: Record<string, unknown>): CashflowVariation => ({
   lastPaidDate: value.lastPaidDate ? DateOnly.valid(value.lastPaidDate as string) : undefined,
   lastCashflowDate: value.lastCashflowDate ? DateOnly.valid(value.lastCashflowDate as string) : undefined,
   amount: Money.valid(value.amount as number),
+  description: value.description as string,
   effectiveDate: DateOnly.valid(value.effectiveDate as string),
   frequency: value.frequency as number,
   intervalType: DateIntervalType.valid(value.intervalType as string),
   categoryType: CategoryType.valid(value.categoryType as string),
+  tags: TagList.valid(value.tags as string[]),
 });
 
 const forVariations = (cashflow: CashflowVariation) => {

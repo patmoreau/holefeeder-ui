@@ -1,6 +1,6 @@
+import { isValid, parseISO } from 'date-fns';
 import { Result } from '@/domain/core/result';
 import { Validate, Validator } from '@/domain/core/validate';
-import { isValid, parseISO } from 'date-fns';
 
 export type DateOnly = string & { readonly __brand: 'DateOnly' };
 

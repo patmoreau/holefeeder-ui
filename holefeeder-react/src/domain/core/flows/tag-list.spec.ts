@@ -12,4 +12,12 @@ describe('TagList', () => {
     const result = TagList.create(tags);
     expect(result).toBeSuccessWithValue([]);
   });
+
+  describe('fromConcatenatedString', () => {
+    it('should split and trim tags from a comma-separated string', () => {
+      const tags = 'tag1, tag2, tag3';
+      const result = TagList.toArray(tags);
+      expect(result).toEqual(['tag1', 'tag2', 'tag3']);
+    });
+  });
 });

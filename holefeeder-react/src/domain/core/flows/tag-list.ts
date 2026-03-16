@@ -3,10 +3,6 @@ import { Validate, Validator } from '@/domain/core/validate';
 
 export type TagList = string[] & { readonly __brand: 'TagList' };
 
-export const TagListErrors = {
-  invalid: 'tag-list-invalid',
-};
-
 const isString = Validator.string();
 const isValidStringArray = Validator.array<string>(isString);
 
@@ -19,7 +15,10 @@ const create = (tags: unknown): Result<TagList> => {
 
 const valid = (tags: string[]): TagList => tags as TagList;
 
+const fromConcatenatedString = (tags: string): string[] => (tags.trim().length > 0 ? tags.split(',').map((tag) => tag.trim()) : []);
+
 export const TagList = {
   create: create,
   valid: valid,
+  toArray: fromConcatenatedString,
 };

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text, View } from 'react-native';
 import { NO_SUMMARY } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 import { AccountCardList } from '@/features/dashboard/ui/components/AccountCardList';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
@@ -12,8 +11,10 @@ import { useDashboard } from '@/presentation/hooks/dashboard/use-dashboard';
 import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { borderRadius, fontSize, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
+import { fontSize, fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { UpcomingCardList } from '@/features/dashboard/ui/components/UpcomingCardList';
+import { useUpcomingFlows } from '@/presentation/hooks/flows/get-upcoming-flows/use-upcoming-flows';
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -34,25 +35,6 @@ const createStyles = (theme: Theme) => ({
     fontWeight: fontWeight.semiBold,
     color: theme.colors.primaryText,
   },
-  contentCard: {
-    backgroundColor: theme.colors.secondaryBackground,
-    marginHorizontal: spacing.lg,
-    marginVertical: spacing.sm,
-    padding: spacing.lg,
-    borderRadius: borderRadius.xl,
-    ...shadows.base,
-  },
-  contentTitle: {
-    fontSize: fontSize!.lg,
-    fontWeight: fontWeight.semiBold,
-    marginBottom: spacing.sm,
-    color: '#333',
-  },
-  contentText: {
-    fontSize: fontSize!.base,
-    color: '#666',
-    lineHeight: 20,
-  },
 });
 
 const DashboardScreen = () => {
@@ -64,6 +46,7 @@ const DashboardScreen = () => {
   const { data, errors } = useMultipleWatches({
     accounts: withDefault(() => accountsQuery, []),
     dashboard: withDefault(() => dashboardQuery, NO_SUMMARY),
+    upcomingFlows: withDefault(() => useUpcomingFlows(), []),
   });
 
   if (errors.showError) {
@@ -74,7 +57,7 @@ const DashboardScreen = () => {
     );
   }
 
-  const { accounts, dashboard } = data;
+  const { accounts, dashboard, upcomingFlows } = data;
 
   return (
     <CardHeaderScrollView
@@ -84,12 +67,7 @@ const DashboardScreen = () => {
     >
       <AccountCardList accounts={accounts} cardWidth={300} />
 
-      {Array.from({ length: 20 }).map((_, i) => (
-        <View key={i} style={styles.contentCard}>
-          <Text style={styles.contentTitle}>Item {i + 1}</Text>
-          <Text style={styles.contentText}>This is some content that you can scroll through to see the header morph animation.</Text>
-        </View>
-      ))}
+      <UpcomingCardList upcomingFlows={upcomingFlows} />
     </CardHeaderScrollView>
   );
 };

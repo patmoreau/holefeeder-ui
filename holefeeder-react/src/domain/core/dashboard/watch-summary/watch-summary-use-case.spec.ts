@@ -1,3 +1,4 @@
+import { startOfMonth } from 'date-fns';
 import { waitFor } from '@testing-library/react-native';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
 import { DashboardRepositoryInMemory } from '@/domain/core/dashboard/__tests__/dashboard-repository-in-memory';
@@ -8,7 +9,6 @@ import { Money } from '@/domain/core/money';
 import { type AsyncResult } from '@/domain/core/result';
 import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
 import { today, withDate } from '@/features/shared/utils/with-date';
-import { startOfMonth } from 'date-fns';
 
 describe('WatchCategoriesUseCase', () => {
   const asOfDate = withDate(startOfMonth(today())).toDateOnly();

@@ -8,6 +8,22 @@ import { Id } from '@/domain/core/id';
 import { Money } from '@/domain/core/money';
 import { type AsyncResult, Result } from '@/domain/core/result';
 import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
+import { watchQuery } from '@/domain/persistence/watch-query';
+import { TagList } from '@/domain/core/flows/tag-list';
+
+type CashflowVariationRow = {
+  id: string;
+  accountId: string;
+  lastPaidDate: string;
+  lastCashflowDate: string;
+  amount: number;
+  description: string;
+  effectiveDate: string;
+  frequency: number;
+  intervalType: string;
+  categoryType: string;
+  tags: string;
+};
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
@@ -55,7 +71,6 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
 
     try {
       await db.writeTransaction(async (tx) => {
-        // Debit from source account
         await tx.execute(
           `INSERT INTO transactions (
           id, date, amount, description, account_id, category_id, tags
@@ -63,7 +78,6 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           [transferId, formData.date, -amountInCents, formData.description, formData.sourceAccount.id, null, '[]']
         );
 
-        // Credit to target account
         const creditId = Id.newId();
         await tx.execute(
           `INSERT INTO transactions (
@@ -123,59 +137,35 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     });
   };
 
-  const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => {
-    onDataChange(Result.loading());
-
-    const query = db.query<{
-      id: string;
-      accountId: string;
-      lastPaidDate: string;
-      lastCashflowDate: string;
-      amount: number;
-      effectiveDate: string;
-      frequency: number;
-      intervalType: string;
-      categoryType: string;
-    }>({
-      sql: `
-        SELECT
-          c.id as id,
-          c.account_id as accountId,
-          MAX(t.date) as lastPaidDate,
-          MAX(t.cashflow_date) as lastCashflowDate,
-          c.amount,
-          c.effective_date as effectiveDate,
-          c.frequency,
-          c.interval_type as intervalType,
-          cc.type as categoryType
+  const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) =>
+    watchQuery<CashflowVariationRow, CashflowVariation>(
+      db,
+      `
+        WITH tx_agg AS (SELECT cashflow_id,
+                               MAX(date)          AS lastPaidDate,
+                               MAX(cashflow_date) AS lastCashflowDate
+                        FROM transactions
+                        GROUP BY cashflow_id)
+        SELECT c.id             AS id,
+               c.account_id     AS accountId,
+               tx.lastPaidDate,
+               tx.lastCashflowDate,
+               c.amount,
+               COALESCE(NULLIF(c.description, ''), cc.name) AS description,
+               c.effective_date AS effectiveDate,
+               c.frequency,
+               c.interval_type  AS intervalType,
+               cc.type          AS categoryType,
+               c.tags           AS tags
         FROM cashflows c
-        LEFT JOIN transactions t ON t.cashflow_id = c.id
-        JOIN categories cc ON cc.id = c.category_id
+               LEFT JOIN tx_agg tx ON tx.cashflow_id = c.id
+               JOIN categories cc ON cc.id = c.category_id
         WHERE c.inactive = 0
-        GROUP BY c.id, c.account_id, c.amount, c.effective_date, c.frequency, c.interval_type, cc.type
       `,
-      parameters: [],
-    });
-
-    const watcher = query.watch();
-
-    return watcher.registerListener({
-      onData: (data) =>
-        !data || data.length === 0
-          ? onDataChange(Result.success([]))
-          : onDataChange(
-              Result.success(
-                data.map((row) =>
-                  CashflowVariation.valid({
-                    ...row,
-                    amount: Money.fromCents(row.amount),
-                  })
-                )
-              )
-            ),
-      onError: (error) => onDataChange(Result.failure([error.message])),
-    });
-  };
+      [],
+      (row) => CashflowVariation.valid({ ...row, amount: Money.fromCents(row.amount), tags: TagList.toArray(row.tags) }),
+      onDataChange
+    );
 
   const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) => {
     onDataChange(Result.loading());

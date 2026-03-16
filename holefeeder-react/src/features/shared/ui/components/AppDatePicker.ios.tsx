@@ -2,7 +2,7 @@ import { DatePicker, DatePickerProps } from '@expo/ui/swift-ui';
 import { StyleProp, ViewStyle } from 'react-native';
 import { DateOnly } from '@/domain/core/date-only';
 import { AppHost } from '@/features/shared/ui/components/AppHost.ios';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today, withDate } from '@/features/shared/utils/with-date';
 
 export type AppDatePickerProps = {
   selectedDate: DateOnly | null;
@@ -11,7 +11,7 @@ export type AppDatePickerProps = {
 };
 
 export const AppDatePicker = ({ selectedDate, onDateSelected }: AppDatePickerProps) => {
-  const initialDate = withDate(selectedDate || new Date()).toDate();
+  const initialDate = withDate(selectedDate || today()).toDate();
 
   const datePickerProps: DatePickerProps = {
     onDateChange: (date: Date) => onDateSelected(withDate(date).toDateOnly()),

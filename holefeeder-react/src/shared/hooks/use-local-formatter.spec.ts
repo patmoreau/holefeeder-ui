@@ -2,6 +2,8 @@ import { act, renderHook } from '@testing-library/react-native';
 import * as ExpoLocalization from 'expo-localization';
 import { AppState, AppStateStatus } from 'react-native';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { DateOnly } from '@/domain/core/date-only';
+import { withDate } from '@/features/shared/utils/with-date';
 
 jest.mock('expo-localization');
 
@@ -100,36 +102,12 @@ describe('useLocaleFormatter', () => {
   });
 
   describe('formatDate', () => {
-    it('should format Date object', () => {
+    it('should format DateOnly object', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-25T12:00:00Z');
-      const anchor = new Date('2025-12-25T12:00:00Z');
+      const date = DateOnly.valid('2023-12-25');
+      const anchor = DateOnly.valid('2025-12-25');
 
       const formatted = result.current.formatDate(date, anchor);
-
-      expect(formatted).toMatch(/Dec/);
-      expect(formatted).toMatch(/2023/);
-      expect(formatted.length).toBeGreaterThan(0);
-    });
-
-    it('should format date string', () => {
-      const { result } = renderHook(() => useLocaleFormatter());
-      const date = '2023-12-25';
-      const anchor = '2025-12-25T12:00:00Z';
-
-      const formatted = result.current.formatDate(date, anchor);
-
-      expect(formatted).toMatch(/Dec/);
-      expect(formatted).toMatch(/2023/);
-      expect(formatted.length).toBeGreaterThan(0);
-    });
-
-    it('should format timestamp number', () => {
-      const { result } = renderHook(() => useLocaleFormatter());
-      const timestamp = new Date('2023-12-25T12:00:00Z').getTime();
-      const anchor = new Date('2025-12-25T12:00:00Z');
-
-      const formatted = result.current.formatDate(timestamp, anchor);
 
       expect(formatted).toMatch(/Dec/);
       expect(formatted).toMatch(/2023/);
@@ -138,8 +116,8 @@ describe('useLocaleFormatter', () => {
 
     it('should accept custom format options', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-25T12:00:00Z');
-      const anchor = new Date('2025-12-25T12:00:00Z');
+      const date = DateOnly.valid('2023-12-25');
+      const anchor = DateOnly.valid('2025-12-25');
 
       const formatted = result.current.formatDate(date, anchor, { dateStyle: 'short' });
 
@@ -150,8 +128,8 @@ describe('useLocaleFormatter', () => {
 
     it('should display today', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-25T12:00:00Z');
-      const anchor = new Date('2023-12-25T15:00:00Z');
+      const date = DateOnly.valid('2023-12-25');
+      const anchor = DateOnly.valid('2023-12-25');
 
       const formatted = result.current.formatDate(date, anchor);
 
@@ -160,8 +138,8 @@ describe('useLocaleFormatter', () => {
 
     it('should display yesterday', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-24T12:00:00Z');
-      const anchor = new Date('2023-12-25T12:00:00Z');
+      const date = DateOnly.valid('2023-12-24');
+      const anchor = DateOnly.valid('2023-12-25');
 
       const formatted = result.current.formatDate(date, anchor);
 
@@ -170,8 +148,8 @@ describe('useLocaleFormatter', () => {
 
     it('should display n days ago', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-24T12:00:00Z');
-      const anchor = new Date('2023-12-31T12:00:00Z');
+      const date = DateOnly.valid('2023-12-24');
+      const anchor = DateOnly.valid('2023-12-31');
 
       const formatted = result.current.formatDate(date, anchor);
 
@@ -180,8 +158,8 @@ describe('useLocaleFormatter', () => {
 
     it('should display tomorrow', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-26T12:00:00Z');
-      const anchor = new Date('2023-12-25T15:00:00Z');
+      const date = DateOnly.valid('2023-12-26');
+      const anchor = DateOnly.valid('2023-12-25');
 
       const formatted = result.current.formatDate(date, anchor);
 
@@ -190,8 +168,8 @@ describe('useLocaleFormatter', () => {
 
     it('should display in next n days', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-31T12:00:00Z');
-      const anchor = new Date('2023-12-24T12:00:00Z');
+      const date = DateOnly.valid('2023-12-31');
+      const anchor = DateOnly.valid('2023-12-24');
 
       const formatted = result.current.formatDate(date, anchor);
 
@@ -200,8 +178,8 @@ describe('useLocaleFormatter', () => {
 
     it('should fallback to toDateString on error', () => {
       const { result } = renderHook(() => useLocaleFormatter());
-      const date = new Date('2023-12-25');
-      const anchor = new Date('2025-12-24T12:00:00Z');
+      const date = DateOnly.valid('2023-12-25');
+      const anchor = DateOnly.valid('2025-12-24');
 
       // Mock Intl.DateTimeFormat to throw an error
       const originalDateTimeFormat = Intl.DateTimeFormat;
@@ -211,7 +189,7 @@ describe('useLocaleFormatter', () => {
 
       const formatted = result.current.formatDate(date, anchor);
 
-      expect(formatted).toBe(date.toDateString());
+      expect(formatted).toBe(withDate(date).toDate().toDateString());
 
       // Restore original
       Intl.DateTimeFormat = originalDateTimeFormat;
@@ -294,7 +272,7 @@ describe('useLocaleFormatter', () => {
       // Change locale
       (ExpoLocalization.getLocales as jest.Mock).mockReturnValue([mockFrenchLocale]);
 
-      // Simulate app becoming active
+      // Simulate the app becoming active
       act(() => {
         appStateListeners.forEach((listener) => listener('active'));
       });
@@ -309,7 +287,7 @@ describe('useLocaleFormatter', () => {
 
       expect(result.current.currentLocale).toBe('en-US');
 
-      // Clear spy calls from initial render
+      // Clear spy calls from the initial render
       getLocalesSpy.mockClear();
 
       // Simulate app going to background
@@ -317,7 +295,7 @@ describe('useLocaleFormatter', () => {
         appStateListeners.forEach((listener) => listener('background'));
       });
 
-      // Simulate app becoming active (locale unchanged)
+      // Simulates app becoming active (locale unchanged)
       act(() => {
         appStateListeners.forEach((listener) => listener('active'));
       });
@@ -407,7 +385,7 @@ describe('useLocaleFormatter', () => {
       // Change locale
       (ExpoLocalization.getLocales as jest.Mock).mockReturnValue([mockFrenchLocale]);
 
-      // Simulate app becoming active
+      // Simulate the app becoming active
       act(() => {
         appStateListeners.forEach((listener) => listener('active'));
       });

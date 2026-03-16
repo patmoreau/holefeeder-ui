@@ -2,7 +2,7 @@ import { DateIntervalType, DateIntervalTypes } from '@/domain/core/date-interval
 import { DateOnly } from '@/domain/core/date-only';
 import { Result } from '@/domain/core/result';
 import { Validate, Validator } from '@/domain/core/validate';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today } from '@/features/shared/utils/with-date';
 
 export const SETTINGS_CODE = 'settings';
 
@@ -13,7 +13,7 @@ export type Settings = {
 };
 
 export const DefaultSettings: Settings = {
-  effectiveDate: DateOnly.valid(withDate(new Date()).toDateOnly()),
+  effectiveDate: today(),
   intervalType: DateIntervalTypes.monthly,
   frequency: 1,
 } as const;

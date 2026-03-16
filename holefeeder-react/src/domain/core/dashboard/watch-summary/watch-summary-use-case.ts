@@ -1,6 +1,6 @@
 import { type AsyncResult, Result } from '@/domain/core/result';
 import { Settings } from '@/domain/core/store-items/settings';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today } from '@/features/shared/utils/with-date';
 import { DateInterval } from '../../date-interval';
 import { calculateSummary, SummaryResult } from '../calculate-summary';
 import { DashboardRepository } from '../dashboard-repository';
@@ -15,13 +15,7 @@ export const WatchSummaryUseCase = (settings: Settings, repository: DashboardRep
           return;
         }
 
-        const dateIntervalResult = DateInterval.createFrom(
-          withDate(new Date(Date.now())).toDateOnly(),
-          0,
-          settings.effectiveDate,
-          settings.intervalType,
-          settings.frequency
-        );
+        const dateIntervalResult = DateInterval.createFrom(today(), 0, settings.effectiveDate, settings.intervalType, settings.frequency);
         if (!dateIntervalResult.isSuccess) {
           onDataChange(dateIntervalResult);
           return;

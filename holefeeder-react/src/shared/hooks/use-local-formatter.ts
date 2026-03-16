@@ -3,12 +3,15 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, AppStateStatus } from 'react-native';
 import { tk } from '@/i18n/translations';
+import { DateOnly } from '@/domain/core/date-only';
+import { differenceInCalendarDays, parseISO } from 'date-fns';
+import { withDate } from '@/features/shared/utils/with-date';
 
 type FormatterHook = {
   currentLocale: string;
   currencyCode: string;
   formatCurrency: (amount: number, options?: { currency?: string; isEditing?: boolean }) => string;
-  formatDate: (date: Date | string | number, anchorDate: Date | string | number, options?: Intl.DateTimeFormatOptions) => string;
+  formatDate: (date: DateOnly, anchorDate: DateOnly, options?: Intl.DateTimeFormatOptions) => string;
   formatPercentage: (val: number) => string;
 };
 
@@ -51,31 +54,27 @@ export const useLocaleFormatter = (): FormatterHook => {
           return `${amount} ${safeCurrency}`;
         }
       },
-      formatDate: (date: Date | string | number, anchorDate: Date | string | number, options?: Intl.DateTimeFormatOptions) => {
-        const dateObj = new Date(date);
-        const anchor = new Date(anchorDate);
+      formatDate: (date: DateOnly, anchorDate: DateOnly, options?: Intl.DateTimeFormatOptions) => {
         try {
-          const diffTime = anchor.getTime() - dateObj.getTime();
-          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+          const dateObj = typeof date === 'string' ? parseISO(date) : date;
+          const anchor = typeof anchorDate === 'string' ? parseISO(anchorDate) : anchorDate;
 
-          if (diffDays === 0) {
-            return t(tk.common.today);
-          } else if (diffDays === 1) {
-            return t(tk.common.yesterday);
-          } else if (diffDays === -1) {
-            return t(tk.common.tomorrow);
-          } else if (diffDays > 0 && diffDays < 8) {
-            return t(tk.common.last7Days, { count: diffDays });
-          } else if (diffDays > -8 && diffDays < 0) {
-            return t(tk.common.next7Days, { count: Math.abs(diffDays) });
-          } else {
-            return new Intl.DateTimeFormat(localeInfo.languageTag, {
-              dateStyle: 'medium',
-              ...options,
-            }).format(dateObj);
-          }
+          const diffDays = differenceInCalendarDays(anchor, dateObj);
+
+          if (diffDays === 0) return t(tk.common.today);
+          if (diffDays === 1) return t(tk.common.yesterday);
+          if (diffDays === -1) return t(tk.common.tomorrow);
+
+          if (diffDays > 1 && diffDays < 8) return t(tk.common.last7Days, { count: diffDays });
+          if (diffDays < -1 && diffDays > -8) return t(tk.common.next7Days, { count: Math.abs(diffDays) });
+
+          return new Intl.DateTimeFormat(localeInfo.languageTag, {
+            dateStyle: 'medium',
+            timeZone: 'UTC',
+            ...options,
+          }).format(dateObj);
         } catch {
-          return dateObj.toDateString();
+          return withDate(date).toDate().toDateString();
         }
       },
       formatPercentage: (val: number) => `${val.toFixed(2)}%`,

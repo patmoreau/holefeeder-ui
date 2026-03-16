@@ -1,20 +1,19 @@
-import { format, parse, startOfDay } from 'date-fns';
+import { addDays, addMonths, addWeeks, addYears, format, parseISO, startOfToday } from 'date-fns';
 import { DateOnly } from '@/domain/core/date-only';
 
+export const today = () => withDate(startOfToday()).toDateOnly();
+
 export const withDate = (date: Date | DateOnly) => {
-  const fromDateOnly = (dateOnly: DateOnly): Date => {
-    return parse(dateOnly, 'yyyy-MM-dd', startOfDay(new Date()));
-  };
-
-  const currentDate = date instanceof Date ? date : fromDateOnly(date);
-
-  const toDateOnly = (transform?: (date: Date) => Date): DateOnly =>
-    DateOnly.valid(format(transform ? transform(currentDate) : currentDate, 'yyyy-MM-dd'));
-
-  const toDate = (transform?: (date: Date) => Date): Date => (transform ? transform(currentDate) : currentDate);
+  let current: Date = typeof date === 'string' ? parseISO(date) : date;
 
   return {
-    toDateOnly,
-    toDate,
+    addDays: (amount: number) => withDate(addDays(current, amount)),
+    addWeeks: (amount: number) => withDate(addWeeks(current, amount)),
+    addMonths: (amount: number) => withDate(addMonths(current, amount)),
+    addYears: (amount: number) => withDate(addYears(current, amount)),
+
+    toDateOnly: (): DateOnly => DateOnly.valid(format(current, 'yyyy-MM-dd')),
+
+    toDate: (): Date => current,
   };
 };

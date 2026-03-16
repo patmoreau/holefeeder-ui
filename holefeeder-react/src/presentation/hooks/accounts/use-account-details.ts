@@ -1,4 +1,3 @@
-import { startOfToday } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
 import { AccountDetail } from '@/domain/core/accounts/account-detail';
@@ -6,7 +5,7 @@ import { WatchAccountDetailsUseCase } from '@/domain/core/accounts/watch-account
 import { DateInterval } from '@/domain/core/date-interval';
 import { type AsyncResult, Result } from '@/domain/core/result';
 import { DefaultSettings } from '@/domain/core/store-items/settings';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today } from '@/features/shared/utils/with-date';
 import { useSettings } from '@/presentation/hooks/store-items/use-settings';
 
 export const useAccountDetails = (): AsyncResult<AccountDetail[]> => {
@@ -16,10 +15,9 @@ export const useAccountDetails = (): AsyncResult<AccountDetail[]> => {
 
   const settings = settingsResult.isSuccess ? settingsResult.value : DefaultSettings;
 
-  const today = withDate(startOfToday()).toDateOnly();
   const dateIntervalResult = useMemo(
-    () => DateInterval.createFrom(today, 0, settings.effectiveDate, settings.intervalType, settings.frequency),
-    [today, settings.effectiveDate, settings.intervalType, settings.frequency]
+    () => DateInterval.createFrom(today(), 0, settings.effectiveDate, settings.intervalType, settings.frequency),
+    [settings.effectiveDate, settings.intervalType, settings.frequency]
   );
 
   const useCase = useMemo(() => {

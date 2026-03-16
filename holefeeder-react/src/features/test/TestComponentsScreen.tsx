@@ -14,20 +14,20 @@ import { AppText } from '@/features/shared/ui/components/AppText';
 import { AppTextInput } from '@/features/shared/ui/components/AppTextInput';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today } from '@/features/shared/utils/with-date';
 import { AppIcons } from '@/types/icons';
 
 type PickerType<T> = PickerOption & { value: T };
 const pickerOptions: PickerType<string>[] = [
   { id: 'menu1', value: 'menu' },
   { id: 'menu2', value: 'medium menu' },
-  { id: 'menu3', value: 'a very incredibly super looooong menu' },
+  { id: 'menu3', value: 'a very incredibly super super very long menu' },
 ];
 const iconOptions: PickerType<AppIcons>[] = Object.entries(AppIcons).map((icon) => ({ id: icon[0], value: icon[1] }));
 
 const TestComponentsScreen = () => {
   const [chipSelection, setChipSelection] = useState(false);
-  const [date, setDate] = useState(withDate(new Date()).toDateOnly());
+  const [date, setDate] = useState(today());
   const [switchValue, setSwitchValue] = useState(false);
   const [pickerValue, setPickerValue] = useState<PickerType<string>>(pickerOptions[0]);
   const [textValue, setTextValue] = useState('');

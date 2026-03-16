@@ -9,6 +9,7 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { today } from '@/features/shared/utils/with-date';
 
 export type AccountCardProps = ViewProps & {
   account: AccountDetail;
@@ -100,7 +101,7 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
       <View style={styles.projectedSection}>
         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start' }}>
           <AppText variant={'footnote'}>{t(tk.accountCard.updated)}</AppText>
-          <AppText variant={'default'}>{formatDate(account.lastTransactionDate!, new Date())}</AppText>
+          <AppText variant={'default'}>{formatDate(account.lastTransactionDate!, today())}</AppText>
         </View>
         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end' }}>
           <AppText variant={'footnote'}>{t(tk.accountCard.projected)}</AppText>

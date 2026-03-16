@@ -6,7 +6,7 @@ import { AppScreen } from '@/features/shared/ui/AppScreen';
 import { AppView } from '@/features/shared/ui/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today } from '@/features/shared/utils/with-date';
 import { useAccounts } from '@/presentation/hooks/accounts/use-accounts';
 import { useCategories } from '@/presentation/hooks/categories/use-categories';
 import { useTags } from '@/presentation/hooks/flows/use-tags';
@@ -45,14 +45,14 @@ const PurchaseScreen = () => {
 
   const initialData: PurchaseFormData = {
     purchaseType: PurchaseType.expense,
-    date: withDate(new Date()).toDateOnly(),
+    date: today(),
     amount: 0,
     description: '',
     sourceAccount: accounts[0],
     category: categories[0],
     tags: [],
     hasCashflow: false,
-    cashflowEffectiveDate: withDate(new Date()).toDateOnly(),
+    cashflowEffectiveDate: today(),
     cashflowIntervalType: 'monthly',
     cashflowFrequency: 1,
     targetAccount: accounts![1] || accounts![0],

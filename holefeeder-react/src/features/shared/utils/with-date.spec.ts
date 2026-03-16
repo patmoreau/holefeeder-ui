@@ -1,8 +1,40 @@
-import { addMonths } from 'date-fns';
 import { DateOnly } from '@/domain/core/date-only';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today, withDate } from '@/features/shared/utils/with-date';
+
+describe('today', () => {
+  it('returns the current date from startOfToday of date-fns', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-07-13T12:00:00Z'));
+
+    expect(today()).toEqual('2025-07-13');
+  });
+});
 
 describe('with-date', () => {
+  it('adds days', () => {
+    const date = DateOnly.valid('2025-07-13');
+    expect(withDate(date).addDays(5).toDateOnly()).toBe('2025-07-18');
+  });
+
+  it('adds weeks', () => {
+    const date = DateOnly.valid('2025-07-13');
+    expect(withDate(date).addWeeks(1).toDateOnly()).toBe('2025-07-20');
+  });
+
+  it('adds months', () => {
+    const date = DateOnly.valid('2025-07-13');
+    expect(withDate(date).addMonths(2).toDateOnly()).toBe('2025-09-13');
+  });
+
+  it('adds months to february', () => {
+    const date = DateOnly.valid('2025-01-30');
+    expect(withDate(date).addMonths(1).toDateOnly()).toBe('2025-02-28');
+  });
+
+  it('adds years', () => {
+    const date = DateOnly.valid('2025-07-13');
+    expect(withDate(date).addYears(1).toDateOnly()).toBe('2026-07-13');
+  });
+
   describe('toDateOnly', () => {
     it('accepts Date', () => {
       const date = new Date(2025, 6, 13);
@@ -12,12 +44,6 @@ describe('with-date', () => {
     it('accepts DateOnly', () => {
       const date = DateOnly.valid('2025-07-13');
       expect(withDate(date).toDateOnly()).toBe(date);
-    });
-
-    it('transforms the date when a transform function is provided', () => {
-      const date = new Date(2025, 6, 13);
-      const transform = (d: Date) => addMonths(d, 1);
-      expect(withDate(date).toDateOnly(transform)).toBe('2025-08-13');
     });
   });
 
@@ -32,12 +58,6 @@ describe('with-date', () => {
       const date = DateOnly.valid(dateString);
       const expected = new Date(2025, 6, 13);
       expect(withDate(date).toDate()).toEqual(expected);
-    });
-
-    it('transforms the date when a transform function is provided', () => {
-      const date = new Date(2025, 6, 13);
-      const transform = (d: Date) => addMonths(d, 1);
-      expect(withDate(date).toDate(transform)).toEqual(new Date(2025, 7, 13));
     });
   });
 });

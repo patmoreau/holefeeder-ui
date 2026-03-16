@@ -1,20 +1,20 @@
 import { waitFor } from '@testing-library/react-native';
-import { addMonths } from 'date-fns';
+import { startOfMonth } from 'date-fns';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { Money } from '@/domain/core/money';
 import { type AsyncResult } from '@/domain/core/result';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today, withDate } from '@/features/shared/utils/with-date';
 import { DashboardRepositoryInPowersync } from './dashboard-repository-in-powersync';
 
 describe('DashboardRepositoryInPowersync', () => {
   let db: DatabaseForTest;
-  const asOfDate = withDate(new Date(Date.now())).toDateOnly((date) => new Date(date.getFullYear(), date.getMonth(), 1));
-  const middleOfMonthDate = withDate(asOfDate).toDateOnly((date) => new Date(date.getFullYear(), date.getMonth(), 10));
-  const previousMonthDate = withDate(asOfDate).toDateOnly((date) => addMonths(date, -1));
-  const oldestMonthDate = withDate(asOfDate).toDateOnly((date) => addMonths(date, -2));
+  const asOfDate = withDate(startOfMonth(today())).toDateOnly();
+  const middleOfMonthDate = withDate(asOfDate).addDays(10).toDateOnly();
+  const previousMonthDate = withDate(asOfDate).addMonths(-1).toDateOnly();
+  const oldestMonthDate = withDate(asOfDate).addMonths(-2).toDateOnly();
 
   beforeEach(async () => {
     db = await setupDatabaseForTest();

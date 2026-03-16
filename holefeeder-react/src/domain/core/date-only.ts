@@ -1,5 +1,6 @@
 import { Result } from '@/domain/core/result';
 import { Validate, Validator } from '@/domain/core/validate';
+import { isValid, parseISO } from 'date-fns';
 
 export type DateOnly = string & { readonly __brand: 'DateOnly' };
 
@@ -19,10 +20,7 @@ const create = (value: unknown): Result<DateOnly> => {
 
   const stringValue = patternResult.value;
 
-  const jsDate = new globalThis.Date(stringValue);
-  const isValidDate = !isNaN(jsDate.getTime()) && jsDate.toISOString().startsWith(stringValue);
-
-  return isValidDate ? Result.success(stringValue as DateOnly) : Result.failure([DateOnlyErrors.invalid]);
+  return isValid(parseISO(stringValue)) ? Result.success(stringValue as DateOnly) : Result.failure([DateOnlyErrors.invalid]);
 };
 
 const valid = (value: string): DateOnly => value as DateOnly;

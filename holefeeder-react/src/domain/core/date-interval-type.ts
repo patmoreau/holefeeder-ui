@@ -1,4 +1,3 @@
-import { addDays, addMonths, addWeeks, addYears, subDays } from 'date-fns';
 import { Result } from '@/domain/core/result';
 import { Validate, Validator } from '@/domain/core/validate';
 import { withDate } from '@/features/shared/utils/with-date';
@@ -65,13 +64,13 @@ const valid = (value: unknown): DateIntervalType => {
 const addIteration = (effectiveDate: DateOnly, iteration: number, intervalType: DateIntervalType): DateOnly => {
   switch (intervalType) {
     case DateIntervalTypes.daily:
-      return withDate(effectiveDate).toDateOnly((date) => addDays(date, iteration));
+      return withDate(effectiveDate).addDays(iteration).toDateOnly();
     case DateIntervalTypes.weekly:
-      return withDate(effectiveDate).toDateOnly((date) => addWeeks(date, iteration));
+      return withDate(effectiveDate).addWeeks(iteration).toDateOnly();
     case DateIntervalTypes.monthly:
-      return withDate(effectiveDate).toDateOnly((date) => addMonths(date, iteration));
+      return withDate(effectiveDate).addMonths(iteration).toDateOnly();
     case DateIntervalTypes.yearly:
-      return withDate(effectiveDate).toDateOnly((date) => addYears(date, iteration));
+      return withDate(effectiveDate).addYears(iteration).toDateOnly();
     case DateIntervalTypes.oneTime:
     default:
       return effectiveDate;
@@ -90,12 +89,16 @@ const interval = (
 
   const next = lookupDate > effectiveDate;
   let start = effectiveDate;
-  let end = withDate(addIteration(start, frequency, intervalType)).toDateOnly((date) => subDays(date, 1));
+  let end = withDate(addIteration(start, frequency, intervalType))
+    .addDays(-1)
+    .toDateOnly();
   let iteration = 1;
 
   while (start > lookupDate || end < lookupDate) {
     start = addIteration(effectiveDate, (next ? frequency : -frequency) * iteration, intervalType);
-    end = withDate(addIteration(start, frequency, intervalType)).toDateOnly((date) => subDays(date, 1));
+    end = withDate(addIteration(start, frequency, intervalType))
+      .addDays(-1)
+      .toDateOnly();
     iteration++;
   }
 

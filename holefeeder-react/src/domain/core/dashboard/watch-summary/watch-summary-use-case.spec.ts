@@ -4,16 +4,16 @@ import { DashboardRepositoryInMemory } from '@/domain/core/dashboard/__tests__/d
 import { aSummaryData } from '@/domain/core/dashboard/__tests__/summary-data-for-test';
 import { DashboardComputedSummary, WatchSummaryUseCase } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 import { DateIntervalTypes } from '@/domain/core/date-interval-type';
-import { DateOnly } from '@/domain/core/date-only';
 import { Money } from '@/domain/core/money';
 import { type AsyncResult } from '@/domain/core/result';
 import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
-import { withDate } from '@/features/shared/utils/with-date';
+import { today, withDate } from '@/features/shared/utils/with-date';
+import { startOfMonth } from 'date-fns';
 
 describe('WatchCategoriesUseCase', () => {
-  const asOfDate = withDate(new Date(Date.now())).toDateOnly((date) => new Date(date.getFullYear(), date.getMonth(), 1));
+  const asOfDate = withDate(startOfMonth(today())).toDateOnly();
   const settings = aSettings({
-    effectiveDate: DateOnly.valid(withDate(asOfDate).toDateOnly((date) => new Date(date.getFullYear(), date.getMonth(), 1))),
+    effectiveDate: asOfDate,
     intervalType: DateIntervalTypes.monthly,
     frequency: 1,
   });

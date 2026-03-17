@@ -1,45 +1,42 @@
-import { StyleSheet, View, type ViewProps } from 'react-native';
+import { View, type ViewProps } from 'react-native';
 import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
 import { AppChip } from '@/features/shared/ui/components/AppChip';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { today } from '@/features/shared/utils/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
-import { borderRadius, shadows, spacing } from '@/types/theme/design-tokens';
-import { Theme } from '@/types/theme/theme';
+import { Theme } from '@/types/theme';
+import { shadows, spacing } from '@/types/theme/design-tokens';
 
 export type UpcomingCardProps = ViewProps & {
   upcomingFlow: UpcomingFlow;
 };
 
-const createStyles = (theme: Theme) =>
-  StyleSheet.create({
-    card: {
-      flex: 1,
-      flexDirection: 'row',
-      overflow: 'hidden',
-      backgroundColor: theme.colors.secondaryBackground,
-      marginHorizontal: spacing.md,
-      marginVertical: spacing.sm,
-      padding: spacing.lg,
-      borderRadius: borderRadius.xl,
-      ...shadows.base,
-    },
-    cardAmount: {
-      flexShrink: 0,
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-    },
-    cardDescription: {
-      flex: 1,
-      flexDirection: 'column',
-    },
-    tags: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginTop: spacing.xs,
-    },
-  });
+const createStyles = (theme: Theme) => ({
+  card: {
+    flex: 1,
+    flexDirection: 'row' as const,
+    overflow: 'hidden' as const,
+    backgroundColor: theme.colors.background,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    ...shadows.base,
+  },
+  cardAmount: {
+    flexShrink: 0,
+    alignItems: 'flex-end' as const,
+    justifyContent: 'center' as const,
+  },
+  cardDescription: {
+    flex: 1,
+    flexDirection: 'column' as const,
+  },
+  tags: {
+    flexDirection: 'row' as const,
+    flexWrap: 'wrap' as const,
+    marginTop: spacing.xs,
+  },
+});
 
 export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProps) => {
   const { formatCurrency, formatDate } = useLocaleFormatter();

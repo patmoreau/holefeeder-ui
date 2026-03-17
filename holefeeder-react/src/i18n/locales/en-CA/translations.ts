@@ -193,6 +193,11 @@ export const en = {
       outstanding: 'Not synced',
     },
   },
+  swipeableActions: {
+    clear: 'Clear',
+    delete: 'Delete',
+    pay: 'Pay',
+  },
   tabs: {
     dashboard: 'Dashboard',
     accounts: 'Accounts',

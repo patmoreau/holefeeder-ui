@@ -196,6 +196,11 @@ export const fr: TranslationStructure = {
       outstanding: 'Non synchronisé',
     },
   },
+  swipeableActions: {
+    clear: 'Annuler',
+    delete: 'Effacer',
+    pay: 'Payer',
+  },
   tabs: {
     dashboard: 'Tableau de bord',
     accounts: 'Comptes',

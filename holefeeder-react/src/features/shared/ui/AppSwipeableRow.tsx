@@ -1,12 +1,13 @@
 import React, { ReactNode, useRef } from 'react';
 import { View } from 'react-native';
-import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Swipeable, { SwipeableMethods, SwipeDirection } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { SharedValue } from 'react-native-reanimated';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 
 type AppSwipeableRowProps = {
   renderLeftActions?: (progress: SharedValue<number>, swipeableRef: React.RefObject<SwipeableMethods | null>) => ReactNode;
   renderRightActions?: (progress: SharedValue<number>, swipeableRef: React.RefObject<SwipeableMethods | null>) => ReactNode;
+  onSwipeableLeftOpen?: () => void;
   children?: ReactNode;
 };
 
@@ -17,7 +18,7 @@ const createStyles = () => ({
   },
 });
 
-export const AppSwipeableRow = ({ renderLeftActions, renderRightActions, children }: AppSwipeableRowProps) => {
+export const AppSwipeableRow = ({ renderLeftActions, renderRightActions, onSwipeableLeftOpen, children }: AppSwipeableRowProps) => {
   const styles = useStyles(createStyles);
   const swipeableRow = useRef<SwipeableMethods>(null);
 
@@ -32,6 +33,12 @@ export const AppSwipeableRow = ({ renderLeftActions, renderRightActions, childre
       rightThreshold={40}
       renderLeftActions={renderLeftActions ? (_, progress) => renderLeftActions(progress, swipeableRow) : undefined}
       renderRightActions={renderRightActions ? (_, progress) => rightActions(renderRightActions(progress, swipeableRow)) : undefined}
+      onSwipeableOpen={(direction) => {
+        if (direction === SwipeDirection.RIGHT) {
+          onSwipeableLeftOpen?.();
+          swipeableRow.current?.close();
+        }
+      }}
     >
       {children}
     </Swipeable>

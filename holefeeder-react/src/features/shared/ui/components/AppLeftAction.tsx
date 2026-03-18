@@ -32,9 +32,10 @@ type LeftActionsProps = {
   text: string;
   dragX: SharedValue<number>;
   swipeableRef: React.RefObject<SwipeableMethods | null>;
+  onAction?: () => void;
 };
 
-export const AppLeftAction = ({ text, dragX, swipeableRef }: LeftActionsProps) => {
+export const AppLeftAction = ({ text, dragX, swipeableRef, onAction }: LeftActionsProps) => {
   const styles = useStyles(createStyles);
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -45,7 +46,13 @@ export const AppLeftAction = ({ text, dragX, swipeableRef }: LeftActionsProps) =
   }));
 
   return (
-    <RectButton style={styles.leftAction} onPress={() => swipeableRef.current!.close()}>
+    <RectButton
+      style={styles.leftAction}
+      onPress={() => {
+        onAction?.();
+        swipeableRef.current!.close();
+      }}
+    >
       <Animated.Text style={[styles.archiveText, animatedStyle]}>{text}</Animated.Text>
     </RectButton>
   );

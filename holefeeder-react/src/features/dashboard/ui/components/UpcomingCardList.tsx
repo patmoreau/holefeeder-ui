@@ -1,16 +1,9 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ScrollView, View, type ViewProps } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SwipeableMethods } from 'react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable';
-import { SharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
 import { UpcomingCard } from '@/features/dashboard/ui/components/UpcomingCard';
-import { AppSwipeableRow } from '@/features/shared/ui/AppSwipeableRow';
-import { AppLeftAction } from '@/features/shared/ui/components/AppLeftAction';
-import { AppRightAction } from '@/features/shared/ui/components/AppRightAction';
-import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme';
 import { spacing } from '@/types/theme/design-tokens';
@@ -31,36 +24,8 @@ const createStyles = (theme: Theme) => ({
 });
 
 export const UpcomingCardList = ({ upcomingFlows, style, ...props }: UpcomingCardListProps) => {
-  const { t } = useTranslation();
   const styles = useStyles(createStyles);
   const { bottom } = useSafeAreaInsets();
-
-  const renderLeftActions = (progress: SharedValue<number>, swipeableRef: React.RefObject<SwipeableMethods | null>) => (
-    <AppLeftAction text={t(tk.swipeableActions.pay)} dragX={progress} swipeableRef={swipeableRef} />
-  );
-
-  const renderRightActions = (progress: SharedValue<number>, swipeableRef: React.RefObject<SwipeableMethods | null>) => {
-    return (
-      <>
-        <AppRightAction
-          text={t(tk.swipeableActions.clear)}
-          color="#ffab00"
-          x={128}
-          progress={progress}
-          totalWidth={192}
-          swipeableRef={swipeableRef}
-        />
-        <AppRightAction
-          text={t(tk.swipeableActions.delete)}
-          color="#dd2c00"
-          x={64}
-          progress={progress}
-          totalWidth={192}
-          swipeableRef={swipeableRef}
-        />
-      </>
-    );
-  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -69,17 +34,17 @@ export const UpcomingCardList = ({ upcomingFlows, style, ...props }: UpcomingCar
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[styles.scrollContent, { paddingBottom: bottom + spacing.lg }]}
           decelerationRate="fast"
-          snapToInterval={spacing.lg} // card width + margin
+          snapToInterval={spacing.lg}
           snapToAlignment="start"
         >
-          {upcomingFlows.map((flow, index) => (
-            <AppSwipeableRow key={flow.id + flow.date} renderLeftActions={renderLeftActions} renderRightActions={renderRightActions}>
-              <>
+          {upcomingFlows.map((flow, index) => {
+            return (
+              <View key={flow.id + flow.date}>
                 <UpcomingCard upcomingFlow={flow} />
                 {index < upcomingFlows.length - 1 && <View style={styles.divider} />}
-              </>
-            </AppSwipeableRow>
-          ))}
+              </View>
+            );
+          })}
         </ScrollView>
       </View>
     </GestureHandlerRootView>

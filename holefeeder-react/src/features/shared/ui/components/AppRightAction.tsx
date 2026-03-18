@@ -29,9 +29,10 @@ type RightActionProps = {
   progress: SharedValue<number>;
   totalWidth: number;
   swipeableRef: React.RefObject<SwipeableMethods | null>;
+  onAction?: () => void;
 };
 
-export const AppRightAction = ({ text, color, x, progress, totalWidth, swipeableRef }: RightActionProps) => {
+export const AppRightAction = ({ text, color, x, progress, totalWidth, swipeableRef, onAction }: RightActionProps) => {
   const styles = useStyles(createStyles);
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -40,10 +41,10 @@ export const AppRightAction = ({ text, color, x, progress, totalWidth, swipeable
       },
     ],
   }));
-  const pressHandler = () => {
-    swipeableRef.current?.close();
 
-    window.alert(text);
+  const pressHandler = () => {
+    onAction?.();
+    swipeableRef.current?.close();
   };
 
   return (

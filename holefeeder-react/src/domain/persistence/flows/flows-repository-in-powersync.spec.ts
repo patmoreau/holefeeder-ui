@@ -10,6 +10,7 @@ import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/domain/core/flows/create-flow/create-flow-command';
+import { PayFlowCommand } from '@/domain/core/flows/pay-flow/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
 import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
@@ -53,6 +54,35 @@ describe('FlowsRepository', () => {
       expect(dbResult[0].amount).toBe(5025); // 50.25 * 100
       expect(dbResult[0].description).toBe('Groceries');
       expect(dbResult[0].tags).toBe('tag-1');
+    });
+  });
+
+  describe('pay', () => {
+    it('should pay a cashflow as a transaction', async () => {
+      const cashflow = await aCashflow().store(db);
+      const command: PayFlowCommand = PayFlowCommand.valid({
+        date: cashflow.effectiveDate,
+        amount: cashflow.amount,
+        cashflowId: cashflow.id,
+        cashflowDate: cashflow.effectiveDate,
+      });
+
+      const result = await repository.pay(command);
+
+      expect(result.isSuccess).toBe(true);
+
+      if (result.isFailure || result.isLoading) return;
+
+      const dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE id = ?', [result.value]);
+
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].amount).toBe(Money.toCents(cashflow.amount));
+      expect(dbResult[0].description).toBe(cashflow.description);
+      expect(dbResult[0].cashflow_id).toBe(cashflow.id);
+      expect(dbResult[0].cashflow_date).toBe(cashflow.effectiveDate);
+      expect(dbResult[0].account_id).toBe(cashflow.accountId);
+      expect(dbResult[0].category_id).toBe(cashflow.categoryId);
+      expect(dbResult[0].tags).toBe(cashflow.tags.join(','));
     });
   });
 

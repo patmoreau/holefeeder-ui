@@ -3,6 +3,7 @@ import { AccountVariation } from '@/domain/core/accounts/account-variation';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/domain/core/flows/create-flow/create-flow-command';
 import { FlowsRepository, FlowsRepositoryErrors } from '@/domain/core/flows/flows-repository';
+import { PayFlowCommand } from '@/domain/core/flows/pay-flow/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
 import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
@@ -61,6 +62,27 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
         console.error(`${FlowsRepositoryErrors.createFlowCommandFailed}: `, error.message);
       }
       return Result.failure([FlowsRepositoryErrors.createFlowCommandFailed]);
+    }
+  };
+
+  const pay = async (command: PayFlowCommand): Promise<Result<Id>> => {
+    const newId = Id.newId();
+
+    try {
+      await db.execute(
+        `INSERT INTO transactions (id, date, amount, description, account_id, category_id, cashflow_id, cashflow_date, tags)
+         SELECT ?, ?, ?, description, account_id, category_id, id, ?, tags
+         FROM cashflows
+         WHERE id = ?`,
+        [newId, command.date, Money.toCents(command.amount), command.cashflowDate, command.cashflowId]
+      );
+
+      return Result.success(newId);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`${FlowsRepositoryErrors.payFlowCommandFailed}: `, error.message);
+      }
+      return Result.failure([FlowsRepositoryErrors.payFlowCommandFailed]);
     }
   };
 
@@ -205,6 +227,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
 
   return {
     create: create,
+    pay: pay,
     watchTags: watchTags,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,

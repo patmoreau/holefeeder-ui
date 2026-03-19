@@ -37,7 +37,7 @@ describe('WatchCategoriesUseCase', () => {
     repository.add(...expenses, ...gains);
 
     let result: AsyncResult<DashboardComputedSummary> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 
@@ -65,7 +65,7 @@ describe('WatchCategoriesUseCase', () => {
     repository.isFailing(['error']);
 
     let result: AsyncResult<DashboardComputedSummary> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 
@@ -80,7 +80,7 @@ describe('WatchCategoriesUseCase', () => {
     repository.isLoading();
 
     let result: AsyncResult<DashboardComputedSummary> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 

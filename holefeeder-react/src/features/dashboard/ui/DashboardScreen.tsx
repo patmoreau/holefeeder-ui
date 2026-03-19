@@ -1,6 +1,7 @@
 import React from 'react';
 import { NO_SUMMARY } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 import { useAccountDetails } from '@/features/dashboard/core/use-account-details';
+import { useDashboard } from '@/features/dashboard/core/use-dashboard';
 import { AccountCardList } from '@/features/dashboard/ui/components/AccountCardList';
 import { UpcomingCardList } from '@/features/dashboard/ui/components/UpcomingCardList';
 import { DashboardHeaderLargeCard } from '@/features/dashboard/ui/DashboardHeaderLargeCard';
@@ -9,7 +10,6 @@ import { useMultipleWatches, withDefault } from '@/features/shared/core/use-mult
 import { AppView } from '@/features/shared/ui/AppView';
 import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
-import { useDashboard } from '@/presentation/hooks/dashboard/use-dashboard';
 import { useUpcomingFlows } from '@/presentation/hooks/flows/get-upcoming-flows/use-upcoming-flows';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';

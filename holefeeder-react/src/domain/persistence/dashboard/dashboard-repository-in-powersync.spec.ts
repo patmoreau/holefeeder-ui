@@ -3,9 +3,11 @@ import { startOfMonth } from 'date-fns';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
+import { DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { Money } from '@/domain/core/money';
 import { type AsyncResult } from '@/domain/core/result';
+import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
 import { today, withDate } from '@/features/shared/utils/with-date';
 import { DashboardRepositoryInPowersync } from './dashboard-repository-in-powersync';
 
@@ -15,6 +17,10 @@ describe('DashboardRepositoryInPowersync', () => {
   const middleOfMonthDate = withDate(asOfDate).addDays(10).toDateOnly();
   const previousMonthDate = withDate(asOfDate).addMonths(-1).toDateOnly();
   const oldestMonthDate = withDate(asOfDate).addMonths(-2).toDateOnly();
+  const settings = aSettings({
+    intervalType: DateIntervalTypes.daily,
+    frequency: 1,
+  });
 
   beforeEach(async () => {
     db = await setupDatabaseForTest();
@@ -97,13 +103,9 @@ describe('DashboardRepositoryInPowersync', () => {
       const repo = DashboardRepositoryInPowersync(db);
 
       let result: AsyncResult<any> | undefined;
-      const unsubscribe = repo.watch(
-        (data) => {
-          result = data;
-        },
-        'daily',
-        1
-      );
+      const unsubscribe = repo.watch((data) => {
+        result = data;
+      }, settings);
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -154,13 +156,9 @@ describe('DashboardRepositoryInPowersync', () => {
       const repo = DashboardRepositoryInPowersync(db);
 
       let result: AsyncResult<any> | undefined;
-      const unsubscribe = repo.watch(
-        (data) => {
-          result = data;
-        },
-        'daily',
-        1
-      );
+      const unsubscribe = repo.watch((data) => {
+        result = data;
+      }, settings);
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -178,13 +176,9 @@ describe('DashboardRepositoryInPowersync', () => {
       await db.close();
 
       let result: AsyncResult<any> | undefined;
-      const unsubscribe = repo.watch(
-        (data) => {
-          result = data;
-        },
-        'daily',
-        1
-      );
+      const unsubscribe = repo.watch((data) => {
+        result = data;
+      }, settings);
 
       await waitFor(() => {
         expect(result).toBeDefined();

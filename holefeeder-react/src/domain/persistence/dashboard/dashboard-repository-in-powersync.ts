@@ -1,14 +1,21 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
 import { SummaryData } from '@/domain/core/dashboard/summary-data';
-import { DateIntervalType, DateIntervalTypes } from '@/domain/core/date-interval-type';
+import { DateIntervalTypes } from '@/domain/core/date-interval-type';
 import { Money } from '@/domain/core/money';
-import { type AsyncResult, Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
+import { Settings } from '@/domain/core/store-items/settings';
+import { watchQuery } from '@/domain/persistence/watch-query';
+
+type SummaryDataRow = {
+  type: string;
+  bucket_date: string;
+  total: number;
+};
 
 export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): DashboardRepository => {
-  const getBucketLogic = (intervalType: DateIntervalType, frequency: number) => {
-    // const { effectiveDate, intervalType, frequency } = settings;
-    const effectiveDate = '2014-01-01';
+  const getBucketLogic = (settings: Settings) => {
+    const { effectiveDate, intervalType, frequency } = settings;
 
     if (intervalType === DateIntervalTypes.weekly) {
       const days = frequency * 7;
@@ -25,13 +32,10 @@ export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): D
     return 't.date'; // Fallback
   };
 
-  const watch = (onDataChange: (result: AsyncResult<SummaryData[]>) => void, intervalType: DateIntervalType, frequency: number) => {
-    onDataChange(Result.loading());
-
-    const bucketSql = getBucketLogic(intervalType, frequency);
-
-    const query = db.query<{ type: string; bucket_date: string; total: number }>({
-      sql: `
+  const watch = (onDataChange: (result: AsyncResult<SummaryData[]>) => void, settings: Settings) =>
+    watchQuery<SummaryDataRow, SummaryData>(
+      db,
+      `
         SELECT
           c.type,
           MIN(t.date) as bucket_date,
@@ -39,32 +43,17 @@ export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): D
         FROM categories c
                INNER JOIN transactions t ON c.id = t.category_id
         WHERE c.system = 0
-        GROUP BY c.type, ${bucketSql}
-        ORDER BY c.type, bucket_date
+        GROUP BY c.type, ${getBucketLogic(settings)}
       `,
-      parameters: [],
-    });
-
-    const watcher = query.watch();
-
-    return watcher.registerListener({
-      onData: (data) =>
-        !data || data.length === 0
-          ? onDataChange(Result.success([]))
-          : onDataChange(
-              Result.success(
-                data.map((row) =>
-                  SummaryData.valid({
-                    type: row.type,
-                    date: row.bucket_date,
-                    total: Money.fromCents(row.total),
-                  })
-                )
-              )
-            ),
-      onError: (error) => onDataChange(Result.failure([error.message])),
-    });
-  };
+      [],
+      (row) =>
+        SummaryData.valid({
+          type: row.type,
+          date: row.bucket_date,
+          total: Money.fromCents(row.total),
+        }),
+      onDataChange
+    );
 
   return {
     watch: watch,

@@ -7,31 +7,27 @@ import { DashboardRepository } from '../dashboard-repository';
 import { SummaryData } from '../summary-data';
 
 export const WatchSummaryUseCase = (settings: Settings, repository: DashboardRepository) => {
-  const query = (onDataChange: (result: AsyncResult<DashboardComputedSummary>) => void) =>
-    repository.watch(
-      (result: AsyncResult<SummaryData[]>) => {
-        if (result.isLoading || result.isFailure) {
-          onDataChange(result);
-          return;
-        }
+  const watch = (onDataChange: (result: AsyncResult<DashboardComputedSummary>) => void) =>
+    repository.watch((result: AsyncResult<SummaryData[]>) => {
+      if (result.isLoading || result.isFailure) {
+        onDataChange(result);
+        return;
+      }
 
-        const dateIntervalResult = DateInterval.createFrom(today(), 0, settings.effectiveDate, settings.intervalType, settings.frequency);
-        if (!dateIntervalResult.isSuccess) {
-          onDataChange(dateIntervalResult);
-          return;
-        }
+      const dateIntervalResult = DateInterval.createFrom(today(), 0, settings.effectiveDate, settings.intervalType, settings.frequency);
+      if (!dateIntervalResult.isSuccess) {
+        onDataChange(dateIntervalResult);
+        return;
+      }
 
-        const summaryResult = calculateSummary(result.value, dateIntervalResult.value.start, settings.intervalType, settings.frequency);
-        const computedSummary = computeDashboardData(summaryResult);
+      const summaryResult = calculateSummary(result.value, dateIntervalResult.value.start, settings.intervalType, settings.frequency);
+      const computedSummary = computeDashboardData(summaryResult);
 
-        onDataChange(Result.success(computedSummary));
-      },
-      settings.intervalType,
-      settings.frequency
-    );
+      onDataChange(Result.success(computedSummary));
+    }, settings);
 
   return {
-    query: query,
+    watch: watch,
   };
 };
 

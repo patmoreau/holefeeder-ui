@@ -5,6 +5,12 @@ export const en = {
     updated: 'Updated',
   },
   alert: {
+    delete: {
+      title: 'Delete {{item}}',
+      message: 'Do you want to delete this {{item}}?',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+    },
     discard: {
       title: 'Discard changes?',
       message: 'You have unsaved changes. Do you want to discard them and go back?',

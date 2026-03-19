@@ -11,6 +11,7 @@ import { AppChip } from '@/features/shared/ui/components/AppChip';
 import { AppLeftAction } from '@/features/shared/ui/components/AppLeftAction';
 import { AppRightAction } from '@/features/shared/ui/components/AppRightAction';
 import { AppText } from '@/features/shared/ui/components/AppText';
+import { showAlert } from '@/features/shared/utils/show-alert';
 import { today } from '@/features/shared/utils/with-date';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
@@ -54,6 +55,7 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
   const styles = useStyles(createStyles);
   const repositories = useRepositories();
   const upcomingFlowUseCase = useUpcomingFlow(repositories);
+  const { showDeleteAlert } = showAlert(t);
 
   const handlePay = () => {
     upcomingFlowUseCase.pay(upcomingFlow);
@@ -61,6 +63,15 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
 
   const handleClear = () => {
     upcomingFlowUseCase.clear(upcomingFlow);
+  };
+
+  const handleDelete = () => {
+    showDeleteAlert(upcomingFlow.description, {
+      onConfirm: () => {
+        upcomingFlowUseCase.delete(upcomingFlow);
+      },
+      onCancel: () => {},
+    });
   };
 
   const renderLeftAction = (progress: SharedValue<number>, swipeableRef: React.RefObject<SwipeableMethods | null>) => {
@@ -86,6 +97,7 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
           progress={progress}
           totalWidth={192}
           swipeableRef={swipeableRef}
+          onAction={handleDelete}
         />
       </>
     );

@@ -12,6 +12,20 @@ type FormErrorAlertProps = {
 };
 
 export const showAlert = (t: (key: string, options?: any) => string) => {
+  const showDeleteAlert = (item: string, { onConfirm, onCancel }: AlertCallbacks) => {
+    Alert.alert(t(tk.alert.delete.title, { item }), t(tk.alert.delete.message, { item }), [
+      {
+        text: t(tk.alert.delete.cancelText),
+        style: 'cancel',
+        onPress: onCancel,
+      },
+      {
+        text: t(tk.alert.delete.confirmText),
+        style: 'destructive',
+        onPress: onConfirm,
+      },
+    ]);
+  };
   const showDiscardAlert = ({ onConfirm, onCancel }: AlertCallbacks) => {
     Alert.alert(t(tk.alert.discard.title), t(tk.alert.discard.message), [
       {
@@ -45,5 +59,5 @@ export const showAlert = (t: (key: string, options?: any) => string) => {
     );
   };
 
-  return { showDiscardAlert, showFormErrorAlert };
+  return { showDeleteAlert: showDeleteAlert, showDiscardAlert: showDiscardAlert, showFormErrorAlert: showFormErrorAlert };
 };

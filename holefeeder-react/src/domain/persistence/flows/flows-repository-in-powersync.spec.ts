@@ -86,6 +86,23 @@ describe('FlowsRepository', () => {
     });
   });
 
+  describe('deleteCashflow', () => {
+    it('should deactivate a cashflow', async () => {
+      const cashflow = await aCashflow().store(db);
+
+      const result = await repository.deleteCashflow(cashflow.id);
+
+      expect(result.isSuccess).toBe(true);
+
+      if (result.isFailure || result.isLoading) return;
+
+      const dbResult = await db.getAll<any>('SELECT * FROM cashflows WHERE id = ?', [cashflow.id]);
+
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].inactive).toBe(1);
+    });
+  });
+
   describe('watchAccountVariations', () => {
     it('retrieves account variations', async () => {
       const account = await anAccount().store(db);

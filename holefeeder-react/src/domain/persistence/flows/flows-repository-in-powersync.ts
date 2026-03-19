@@ -39,10 +39,11 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     };
     try {
       await db.execute(
-        `INSERT INTO transactions (
-        id, date, amount, description, account_id, category_id, 
-        cashflow_id, cashflow_date, tags
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `
+          INSERT INTO transactions (id, date, amount, description, account_id, category_id,
+                                    cashflow_id, cashflow_date, tags)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `,
         [
           transaction.id,
           transaction.date,
@@ -86,6 +87,27 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
+  const deleteCashflow = async (cashflowId: Id): Promise<Result<void>> => {
+    try {
+      console.debug(`Marking cashflow ${cashflowId} as inactive...`);
+      await db.execute(
+        `
+          UPDATE cashflows
+          SET inactive = 1
+          WHERE id = ?
+        `,
+        [cashflowId]
+      );
+
+      return Result.success();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`${FlowsRepositoryErrors.payFlowCommandFailed}: `, error.message);
+      }
+      return Result.failure([FlowsRepositoryErrors.payFlowCommandFailed]);
+    }
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const saveTransfer = async (formData: PurchaseFormData): Promise<Result<void>> => {
     const transferId = Id.newId();
@@ -94,9 +116,10 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     try {
       await db.writeTransaction(async (tx) => {
         await tx.execute(
-          `INSERT INTO transactions (
-          id, date, amount, description, account_id, category_id, tags
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          `
+            INSERT INTO transactions (id, date, amount, description, account_id, category_id, tags)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+          `,
           [transferId, formData.date, -amountInCents, formData.description, formData.sourceAccount.id, null, '[]']
         );
 
@@ -228,6 +251,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
   return {
     create: create,
     pay: pay,
+    deleteCashflow: deleteCashflow,
     watchTags: watchTags,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,

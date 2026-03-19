@@ -9,6 +9,7 @@ import { type AsyncResult, Result } from '@/domain/core/result';
 export type FlowsRepository = {
   create(command: CreateFlowCommand): Promise<Result<Id>>;
   pay(command: PayFlowCommand): Promise<Result<Id>>;
+  deleteCashflow(cashflowId: Id): Promise<Result<void>>;
   watchAccountVariations: (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => () => void;
   watchCashflowVariations: (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => () => void;
   watchTags: (onDataChange: (result: AsyncResult<Tag[]>) => void) => () => void;

@@ -7,6 +7,12 @@ export const fr: TranslationStructure = {
     updated: 'Mis à jour',
   },
   alert: {
+    delete: {
+      title: 'Effacer {{item}}',
+      message: 'Voulez-vous effacer {{item}}?',
+      confirmText: 'Effacer',
+      cancelText: 'Annuler',
+    },
     discard: {
       title: 'Annuler les modifications ?',
       message: 'Vous avez des modifications non enregistrées. Voulez-vous les annuler et revenir en arrière ?',

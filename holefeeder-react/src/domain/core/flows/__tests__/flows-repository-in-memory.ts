@@ -31,6 +31,10 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     return Promise.resolve(Result.success(anId()));
   };
 
+  const deleteCashflow = (cashflowId: Id): Promise<Result<void>> => {
+    return Promise.resolve(Result.success());
+  };
+
   const watchAccountVariations = (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
@@ -75,6 +79,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
   return {
     create,
     pay,
+    deleteCashflow,
     watchAccountVariations,
     watchCashflowVariations,
     watchTags,

@@ -1,4 +1,5 @@
 import { Repositories } from '@/contexts/RepositoryContext';
+import { DeleteCashFlowUseCase } from '@/domain/core/flows/delete-cashflow/delete-cashflow-flow-use-case';
 import { PayFlowUseCase } from '@/domain/core/flows/pay-flow/pay-flow-use-case';
 import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
 import { Money } from '@/domain/core/money';
@@ -24,8 +25,14 @@ export const useUpcomingFlow = (repositories: Repositories) => {
     });
   };
 
+  const deleteFlow = (upcomingFlow: UpcomingFlow) => {
+    const useCase = DeleteCashFlowUseCase(repositories.flowRepository);
+    return useCase.execute(upcomingFlow.id);
+  };
+
   return {
     pay: pay,
     clear: clear,
+    delete: deleteFlow,
   };
 };

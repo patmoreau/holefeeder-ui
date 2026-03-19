@@ -25,14 +25,20 @@ const isValidJson = (value: unknown): Result<string> => {
 
 const isValidCode = Validator.string({ minLength: 1 });
 
-const create = (value: Record<string, unknown>): Result<StoreItem> => {
-  return Result.combine<StoreItem>({
+const create = (value: Record<string, unknown>): Result<StoreItem> =>
+  Result.combine<StoreItem>({
     id: Id.create(value.id),
     code: Validate.validate(isValidCode, value.code, [StoreItemErrors.invalidCode]),
     data: isValidJson(value.data),
   });
-};
+
+const valid = (value: Record<string, unknown>): StoreItem => ({
+  id: Id.valid(value.id),
+  code: value.code as string,
+  data: value.data as string,
+});
 
 export const StoreItem = {
   create: create,
+  valid: valid,
 };

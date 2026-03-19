@@ -3,7 +3,7 @@ import { type AsyncResult } from '@/domain/core/result';
 import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
 import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { StoreItemsRepositoryInMemory } from '@/domain/core/store-items/__tests__/store-items-repository-for-test';
-import { DefaultSettings, SETTINGS_CODE } from '@/domain/core/store-items/settings';
+import { DefaultSettings, Settings, SETTINGS_CODE } from '@/domain/core/store-items/settings';
 import { GetSettingsUseCase } from './get-settings-use-case';
 
 describe('GetSettingsUseCase', () => {
@@ -15,14 +15,14 @@ describe('GetSettingsUseCase', () => {
     useCase = GetSettingsUseCase(repository);
   });
 
-  describe('query', () => {
+  describe('watchForCode', () => {
     it('returns settings', async () => {
       const settings = aSettings();
       const storeItem = aStoreItem({ code: SETTINGS_CODE, data: JSON.stringify(settings) });
       repository.add(storeItem);
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      let result: AsyncResult<Settings> | undefined;
+      const unsubscribe = useCase.watchForCode((data) => {
         result = data;
       });
 
@@ -34,8 +34,8 @@ describe('GetSettingsUseCase', () => {
     });
 
     it('returns default settings when code not found', async () => {
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      let result: AsyncResult<Settings> | undefined;
+      const unsubscribe = useCase.watchForCode((data) => {
         result = data;
       });
 
@@ -51,8 +51,8 @@ describe('GetSettingsUseCase', () => {
       repository.add(storeItem);
       repository.isFailing(['error']);
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      let result: AsyncResult<Settings> | undefined;
+      const unsubscribe = useCase.watchForCode((data) => {
         result = data;
       });
 
@@ -68,8 +68,8 @@ describe('GetSettingsUseCase', () => {
       repository.add(storeItem);
       repository.isLoading();
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      let result: AsyncResult<Settings> | undefined;
+      const unsubscribe = useCase.watchForCode((data) => {
         result = data;
       });
 

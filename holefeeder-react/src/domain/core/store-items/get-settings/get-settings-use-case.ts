@@ -4,8 +4,8 @@ import { StoreItem } from '@/domain/core/store-items/store-item';
 import { StoreItemsRepository, StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
 
 export const GetSettingsUseCase = (repository: StoreItemsRepository) => {
-  const query = (onDataChange: (result: AsyncResult<Settings>) => void) => {
-    return repository.watchForCode(SETTINGS_CODE, (storeItemResult: AsyncResult<StoreItem>) => {
+  const watchForCode = (onDataChange: (result: AsyncResult<Settings>) => void) =>
+    repository.watchForCode(SETTINGS_CODE, (storeItemResult: AsyncResult<StoreItem>) => {
       if (storeItemResult.isLoading) {
         onDataChange(storeItemResult as AsyncResult<Settings>);
         return;
@@ -25,9 +25,8 @@ export const GetSettingsUseCase = (repository: StoreItemsRepository) => {
       const settingsResult = Settings.create(settingsData);
       onDataChange(settingsResult);
     });
-  };
 
   return {
-    query: query,
+    watchForCode: watchForCode,
   };
 };

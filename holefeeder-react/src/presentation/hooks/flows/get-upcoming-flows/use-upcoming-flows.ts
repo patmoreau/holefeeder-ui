@@ -4,7 +4,7 @@ import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
 import { WatchUpcomingFlowsUseCase } from '@/domain/core/flows/watch-upcoming/watch-upcoming-flows-use-case';
 import { type AsyncResult, Result } from '@/domain/core/result';
 import { DefaultSettings } from '@/domain/core/store-items/settings';
-import { useSettings } from '@/presentation/hooks/store-items/use-settings';
+import { useSettings } from '@/features/shared/core/use-settings';
 
 export const useUpcomingFlows = (): AsyncResult<UpcomingFlow[]> => {
   const { flowRepository } = useRepositories();

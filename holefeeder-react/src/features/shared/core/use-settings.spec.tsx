@@ -4,7 +4,7 @@ import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/d
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
 import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
-import { useSettings } from '@/presentation/hooks/store-items/use-settings';
+import { useSettings } from '@/features/shared/core/use-settings';
 
 describe('useStoreItems', () => {
   let db: DatabaseForTest;

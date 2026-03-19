@@ -5,8 +5,8 @@ import { WatchAccountDetailsUseCase } from '@/domain/core/accounts/watch-account
 import { DateInterval } from '@/domain/core/date-interval';
 import { type AsyncResult, Result } from '@/domain/core/result';
 import { DefaultSettings } from '@/domain/core/store-items/settings';
+import { useSettings } from '@/features/shared/core/use-settings';
 import { today } from '@/features/shared/utils/with-date';
-import { useSettings } from '@/presentation/hooks/store-items/use-settings';
 
 export const useAccountDetails = (): AsyncResult<AccountDetail[]> => {
   const { accountRepository, flowRepository } = useRepositories();

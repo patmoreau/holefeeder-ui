@@ -11,7 +11,7 @@ export const useSettings = (): AsyncResult<Settings> => {
   const useCase = useMemo(() => GetSettingsUseCase(storeItemRepository), [storeItemRepository]);
 
   useEffect(() => {
-    const unsubscribe = useCase.query(setSettings);
+    const unsubscribe = useCase.watchForCode(setSettings);
     return () => unsubscribe();
   }, [useCase]);
 

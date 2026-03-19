@@ -13,7 +13,7 @@ export const SettingsRepositoryInMemory = (): SettingsRepositoryInMemory => {
   let loadingInMemory = false;
   let errorsInMemory: string[] = [];
 
-  const watchSyncInfo = (onDataChange: (result: AsyncResult<DataMetrics>) => void) => {
+  const watchDataMetrics = (onDataChange: (result: AsyncResult<DataMetrics>) => void) => {
     if (loadingInMemory) {
       onDataChange(Result.loading());
     } else if (errorsInMemory.length > 0) {
@@ -31,5 +31,5 @@ export const SettingsRepositoryInMemory = (): SettingsRepositoryInMemory => {
 
   const isFailing = (errors: string[]) => (errorsInMemory = errors);
 
-  return { watchDataMetrics: watchSyncInfo, add: add, isLoading: isLoading, isFailing: isFailing };
+  return { watchDataMetrics: watchDataMetrics, add: add, isLoading: isLoading, isFailing: isFailing };
 };

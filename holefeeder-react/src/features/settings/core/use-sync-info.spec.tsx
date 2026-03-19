@@ -6,7 +6,7 @@ import { aCategory } from '@/domain/core/categories/__tests__/category-for-test'
 import { aCashflow } from '@/domain/core/flows/__tests__/cashflow-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
-import { useSyncInfo } from '@/presentation/hooks/settings/use-sync-info';
+import { useSyncInfo } from '@/features/settings/core/use-sync-info';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 
 jest.mock('@/shared/hooks/use-sync-status');

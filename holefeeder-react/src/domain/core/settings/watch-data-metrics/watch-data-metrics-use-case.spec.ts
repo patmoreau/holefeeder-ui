@@ -13,12 +13,12 @@ describe('WatchDataMetricsUseCase', () => {
     useCase = WatchDataMetricsUseCase(settingsRepo);
   });
 
-  describe('query', () => {
+  describe('watch', () => {
     it('returns sync info when returns data', async () => {
       settingsRepo.add({ accounts: 1, cashflows: 2, categories: 3, storeItems: 4, transactions: 5, outstandingTransactions: 6 });
 
       let result: AsyncResult<DataMetrics> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      const unsubscribe = useCase.watch((data) => {
         result = data;
       });
 
@@ -40,7 +40,7 @@ describe('WatchDataMetricsUseCase', () => {
       settingsRepo.isFailing(['error']);
 
       let result: AsyncResult<DataMetrics> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      const unsubscribe = useCase.watch((data) => {
         result = data;
       });
 
@@ -55,7 +55,7 @@ describe('WatchDataMetricsUseCase', () => {
       settingsRepo.isLoading();
 
       let result: AsyncResult<DataMetrics> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      const unsubscribe = useCase.watch((data) => {
         result = data;
       });
 

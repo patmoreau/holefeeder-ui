@@ -2,28 +2,19 @@ import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { type AsyncResult, Result } from '@/domain/core/result';
 import { StoreItem } from '@/domain/core/store-items/store-item';
 import { StoreItemsRepository, StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
+import { watchSingle } from '@/domain/persistence/watch-query';
 
 type StoreItemRow = { id: number; code: string; data: string };
 
 export const StoreItemsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): StoreItemsRepository => {
-  const watchForCode = (code: string, onDataChange: (result: AsyncResult<StoreItem>) => void) => {
-    onDataChange(Result.loading());
-
-    const query = db.query<StoreItemRow>({
-      sql: 'SELECT id, code, data FROM store_items WHERE code = ?',
-      parameters: [code],
-    });
-
-    const watcher = query.watch();
-
-    return watcher.registerListener({
-      onData: (data) =>
-        !data || data.length === 0
-          ? onDataChange(Result.failure([StoreItemsRepositoryErrors.storeItemNotFound]))
-          : onDataChange(StoreItem.create(data[0])),
-      onError: (error) => onDataChange(Result.failure([error.message])),
-    });
-  };
+  const watchForCode = (code: string, onDataChange: (result: AsyncResult<StoreItem>) => void) =>
+    watchSingle<StoreItemRow, StoreItem>(
+      db,
+      `SELECT id, code, data FROM store_items WHERE code = ?`,
+      [code],
+      (row: StoreItemRow) => StoreItem.valid(row),
+      onDataChange
+    );
 
   const getByCode = async (code: string): Promise<Result<StoreItem>> => {
     try {

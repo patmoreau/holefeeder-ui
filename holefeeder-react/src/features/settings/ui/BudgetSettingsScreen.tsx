@@ -4,11 +4,11 @@ import { SettingsFormData } from '@/features/settings/core/settings-form-data';
 import { SettingsFormProvider, validateSettingsForm } from '@/features/settings/core/use-settings-form';
 import { BudgetSettingsForm } from '@/features/settings/ui/BudgetSettingsForm';
 import { useMultipleWatches, withDefault } from '@/features/shared/core/use-multiple-watches';
+import { useSettings } from '@/features/shared/core/use-settings';
 import { AppScreen } from '@/features/shared/ui/AppScreen';
 import { AppView } from '@/features/shared/ui/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
-import { useSettings } from '@/presentation/hooks/store-items/use-settings';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 

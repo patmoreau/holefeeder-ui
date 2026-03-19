@@ -5,6 +5,7 @@ import { type AsyncResult } from '@/domain/core/result';
 import { aStoreItem, toStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { StoreItemsRepositoryErrors } from '@/domain/core/store-items/store-items-repository';
 import { StoreItemsRepositoryInPowersync } from '@/domain/persistence/store-items/store-items-repository-in-powersync';
+import { WatchQueryErrors } from '@/domain/persistence/watch-query';
 
 describe('StoreItemsRepositoryInPowersync', () => {
   let db: DatabaseForTest;
@@ -48,7 +49,7 @@ describe('StoreItemsRepositoryInPowersync', () => {
         expect(result).toBeDefined();
       });
 
-      expect(result).toBeFailureWithErrors([StoreItemsRepositoryErrors.storeItemNotFound]);
+      expect(result).toBeFailureWithErrors([WatchQueryErrors.rowNotFound]);
 
       unsubscribe();
     });

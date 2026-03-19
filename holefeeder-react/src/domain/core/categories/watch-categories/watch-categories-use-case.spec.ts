@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { CategoriesRepositoryInMemory } from '@/domain/core/categories/__tests__/categories-repository-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
+import { Category } from '@/domain/core/categories/category';
 import { type AsyncResult } from '@/domain/core/result';
 import { WatchCategoriesUseCase } from './watch-categories-use-case';
 
@@ -17,8 +18,8 @@ describe('WatchCategoriesUseCase', () => {
     const category = aCategory();
     repository.add(category);
 
-    let result: AsyncResult<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    let result: AsyncResult<Category[]> | undefined;
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 
@@ -32,8 +33,8 @@ describe('WatchCategoriesUseCase', () => {
   it('returns failure when repository fails', async () => {
     repository.isFailing(['error']);
 
-    let result: AsyncResult<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    let result: AsyncResult<Category[]> | undefined;
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 
@@ -47,8 +48,8 @@ describe('WatchCategoriesUseCase', () => {
   it('returns loading when repository is loading', async () => {
     repository.isLoading();
 
-    let result: AsyncResult<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    let result: AsyncResult<Category[]> | undefined;
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 

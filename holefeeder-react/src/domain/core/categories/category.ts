@@ -38,11 +38,11 @@ const create = (value: Record<string, unknown>): Result<Category> =>
   });
 
 const valid = (value: Record<string, unknown>): Category => ({
-  id: Id.valid(value.id as string),
-  type: CategoryType.valid(value.type as string),
+  id: Id.valid(value.id),
+  type: CategoryType.valid(value.type),
   name: value.name as string,
   color: value.color as string,
-  budgetAmount: Money.valid(value.budgetAmount as number),
+  budgetAmount: Money.valid(value.budgetAmount),
   favorite: value.favorite as boolean,
   system: value.system as boolean,
 });

@@ -11,7 +11,7 @@ export const useCategories = (): AsyncResult<Category[]> => {
   const useCase = useMemo(() => WatchCategoriesUseCase(categoryRepository), [categoryRepository]);
 
   useEffect(() => {
-    const unsubscribe = useCase.query(setCategories);
+    const unsubscribe = useCase.watch(setCategories);
     return () => unsubscribe();
   }, [useCase]);
 

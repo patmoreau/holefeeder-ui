@@ -3,7 +3,7 @@ import React from 'react';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { aCategory, toCategory } from '@/domain/core/categories/__tests__/category-for-test';
-import { useCategories } from '@/presentation/hooks/categories/use-categories';
+import { useCategories } from '@/features/purchase/core/use-categories';
 
 describe('useCategories', () => {
   let db: DatabaseForTest;

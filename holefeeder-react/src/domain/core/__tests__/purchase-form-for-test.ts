@@ -2,7 +2,7 @@ import { aRecentDate } from '@/__tests__/mocks/date-for-test';
 import { anAmount } from '@/__tests__/mocks/number-for-test';
 import { anId, aString, aWord } from '@/__tests__/mocks/string-for-test';
 import { DateIntervalType, DateIntervalTypes } from '@/domain/core/date-interval-type';
-import { type PurchaseForm } from '@/domain/core/flows/create-flow/create-flow-use-case';
+import { type PurchaseForm } from '@/domain/core/flows/create/create-flow-use-case';
 
 const defaultPurchaseForm = (
   overrides?: Partial<{

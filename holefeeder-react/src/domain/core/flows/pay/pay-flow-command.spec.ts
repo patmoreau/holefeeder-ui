@@ -2,7 +2,7 @@ import { aPastDate, aRecentDate } from '@/__tests__/mocks/date-for-test';
 import { anAmount } from '@/__tests__/mocks/number-for-test';
 import { anId } from '@/__tests__/mocks/string-for-test';
 import { DateOnly, DateOnlyErrors } from '@/domain/core/date-only';
-import { PayFlowCommand } from '@/domain/core/flows/pay-flow/pay-flow-command';
+import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
 import { Id, IdErrors } from '@/domain/core/id';
 import { Money, MoneyErrors } from '@/domain/core/money';
 
@@ -21,10 +21,10 @@ describe('PayFlowCommand', () => {
   it('succeeds with valid data', () => {
     const result = PayFlowCommand.create(form);
     expect(result).toBeSuccessWithValue({
-      date: DateOnly.valid(form.date as string),
-      amount: Money.valid(form.amount as number),
-      cashflowId: Id.valid(form.cashflowId as string),
-      cashflowDate: DateOnly.valid(form.cashflowDate as string),
+      date: DateOnly.valid(form.date),
+      amount: Money.valid(form.amount),
+      cashflowId: Id.valid(form.cashflowId),
+      cashflowDate: DateOnly.valid(form.cashflowDate),
     });
   });
 

@@ -3,7 +3,7 @@ import { Id } from '@/domain/core/id';
 import { Result } from '@/domain/core/result';
 import { PayFlowCommand } from './pay-flow-command';
 
-export const PayFlowUseCase = (repository: FlowsRepository) => {
+export const PayUseCase = (repository: FlowsRepository) => {
   const execute = async (flow: PayFlowCommand): Promise<Result<Id>> => await repository.pay(flow);
 
   return {

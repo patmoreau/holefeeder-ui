@@ -22,11 +22,11 @@ const create = (value: Record<string, unknown>): Result<UpcomingFlow> =>
   });
 
 const valid = (value: Record<string, unknown>): UpcomingFlow => ({
-  id: Id.valid(value.id as string),
-  date: DateOnly.valid(value.date as string),
-  amount: Money.valid(value.amount as number),
+  id: Id.valid(value.id),
+  date: DateOnly.valid(value.date),
+  amount: Money.valid(value.amount),
   description: value.description as string,
-  tags: TagList.valid(value.tags as string[]),
+  tags: TagList.valid(value.tags),
 });
 
 export const UpcomingFlow = {

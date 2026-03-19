@@ -13,7 +13,7 @@ const create = (tags: unknown): Result<TagList> => {
   return Result.success(TagList.valid([...new Set(tagsResult.value.map((tag) => tag.trim()).filter((tag) => tag.length > 0))]));
 };
 
-const valid = (tags: string[]): TagList => tags as TagList;
+const valid = (tags: unknown): TagList => tags as TagList;
 
 const fromConcatenatedString = (tags: string): string[] => (tags.trim().length > 0 ? tags.split(',').map((tag) => tag.trim()) : []);
 

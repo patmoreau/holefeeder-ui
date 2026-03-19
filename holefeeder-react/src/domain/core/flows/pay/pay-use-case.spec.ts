@@ -1,14 +1,14 @@
 import { aPayFlowCommand } from '@/domain/core/__tests__/pay-flow-command-for-test';
 import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
-import { PayFlowUseCase } from '@/domain/core/flows/pay-flow/pay-flow-use-case';
+import { PayUseCase } from '@/domain/core/flows/pay/pay-use-case';
 
 describe('payFlowUseCase', () => {
   let fakeRepo: FlowsRepositoryInMemory;
-  let useCase: ReturnType<typeof PayFlowUseCase>;
+  let useCase: ReturnType<typeof PayUseCase>;
 
   beforeEach(() => {
     fakeRepo = FlowsRepositoryInMemory();
-    useCase = PayFlowUseCase(fakeRepo);
+    useCase = PayUseCase(fakeRepo);
   });
 
   it('should pay flow with valid data', async () => {

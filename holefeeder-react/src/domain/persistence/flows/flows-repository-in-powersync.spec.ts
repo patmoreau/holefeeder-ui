@@ -9,8 +9,8 @@ import { aCashflow } from '@/domain/core/flows/__tests__/cashflow-for-test';
 import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
-import { CreateFlowCommand } from '@/domain/core/flows/create-flow/create-flow-command';
-import { PayFlowCommand } from '@/domain/core/flows/pay-flow/pay-flow-command';
+import { CreateFlowCommand } from '@/domain/core/flows/create/create-flow-command';
+import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
 import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
@@ -86,11 +86,11 @@ describe('FlowsRepository', () => {
     });
   });
 
-  describe('deleteCashflow', () => {
+  describe('deactivateUpcoming', () => {
     it('should deactivate a cashflow', async () => {
       const cashflow = await aCashflow().store(db);
 
-      const result = await repository.deleteCashflow(cashflow.id);
+      const result = await repository.deactivateUpcoming(cashflow.id);
 
       expect(result.isSuccess).toBe(true);
 

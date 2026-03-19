@@ -3,7 +3,7 @@ import { FlowsRepository } from '../flows-repository';
 import { Tag } from '../tag';
 
 export const WatchTagsUseCase = (repository: FlowsRepository) => {
-  const query = (onDataChange: (result: AsyncResult<Tag[]>) => void) =>
+  const watch = (onDataChange: (result: AsyncResult<Tag[]>) => void) =>
     repository.watchTags((result: AsyncResult<Tag[]>) => {
       if (result.isLoading || result.isFailure) {
         onDataChange(result);
@@ -14,6 +14,6 @@ export const WatchTagsUseCase = (repository: FlowsRepository) => {
     });
 
   return {
-    query: query,
+    watch: watch,
   };
 };

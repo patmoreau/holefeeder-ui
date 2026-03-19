@@ -26,17 +26,17 @@ export const CashflowVariationErrors = {
 };
 
 const valid = (value: Record<string, unknown>): CashflowVariation => ({
-  id: Id.valid(value.id as string),
-  accountId: Id.valid(value.accountId as string),
-  lastPaidDate: value.lastPaidDate ? DateOnly.valid(value.lastPaidDate as string) : undefined,
-  lastCashflowDate: value.lastCashflowDate ? DateOnly.valid(value.lastCashflowDate as string) : undefined,
-  amount: Money.valid(value.amount as number),
+  id: Id.valid(value.id),
+  accountId: Id.valid(value.accountId),
+  lastPaidDate: value.lastPaidDate ? DateOnly.valid(value.lastPaidDate) : undefined,
+  lastCashflowDate: value.lastCashflowDate ? DateOnly.valid(value.lastCashflowDate) : undefined,
+  amount: Money.valid(value.amount),
   description: value.description as string,
-  effectiveDate: DateOnly.valid(value.effectiveDate as string),
+  effectiveDate: DateOnly.valid(value.effectiveDate),
   frequency: value.frequency as number,
-  intervalType: DateIntervalType.valid(value.intervalType as string),
-  categoryType: CategoryType.valid(value.categoryType as string),
-  tags: TagList.valid(value.tags as string[]),
+  intervalType: DateIntervalType.valid(value.intervalType),
+  categoryType: CategoryType.valid(value.categoryType),
+  tags: TagList.valid(value.tags),
 });
 
 const forVariations = (cashflow: CashflowVariation) => {

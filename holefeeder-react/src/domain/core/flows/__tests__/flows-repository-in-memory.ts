@@ -1,9 +1,9 @@
 import { anId } from '@/__tests__/mocks/string-for-test';
 import { AccountVariation } from '@/domain/core/accounts/account-variation';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
-import { CreateFlowCommand } from '@/domain/core/flows/create-flow/create-flow-command';
+import { CreateFlowCommand } from '@/domain/core/flows/create/create-flow-command';
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
-import { PayFlowCommand } from '@/domain/core/flows/pay-flow/pay-flow-command';
+import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
 import { Id } from '@/domain/core/id';
 import { type AsyncResult, Result } from '@/domain/core/result';
@@ -79,7 +79,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
   return {
     create,
     pay,
-    deleteCashflow,
+    deactivateUpcoming: deleteCashflow,
     watchAccountVariations,
     watchCashflowVariations,
     watchTags,

@@ -1,9 +1,9 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { AccountVariation } from '@/domain/core/accounts/account-variation';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
-import { CreateFlowCommand } from '@/domain/core/flows/create-flow/create-flow-command';
+import { CreateFlowCommand } from '@/domain/core/flows/create/create-flow-command';
 import { FlowsRepository, FlowsRepositoryErrors } from '@/domain/core/flows/flows-repository';
-import { PayFlowCommand } from '@/domain/core/flows/pay-flow/pay-flow-command';
+import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
 import { TagList } from '@/domain/core/flows/tag-list';
 import { Id } from '@/domain/core/id';
@@ -11,6 +11,8 @@ import { Money } from '@/domain/core/money';
 import { type AsyncResult, Result } from '@/domain/core/result';
 import { watchQuery } from '@/domain/persistence/watch-query';
 import { PurchaseFormData } from '@/features/purchase/core/purchase-form-data';
+
+type AccountVariationRow = { accountId: string; lastTransactionDate: string; expenses: number; gains: number };
 
 type CashflowVariationRow = {
   id: string;
@@ -25,6 +27,8 @@ type CashflowVariationRow = {
   categoryType: string;
   tags: string;
 };
+
+type TagRow = { tag: string; count: number };
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
@@ -87,7 +91,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  const deleteCashflow = async (cashflowId: Id): Promise<Result<void>> => {
+  const deactivateUpcoming = async (cashflowId: Id): Promise<Result<void>> => {
     try {
       console.debug(`Marking cashflow ${cashflowId} as inactive...`);
       await db.execute(
@@ -142,45 +146,30 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  const watchAccountVariations = (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => {
-    onDataChange(Result.loading());
-
-    const query = db.query<{ accountId: string; lastTransactionDate: string; expenses: number; gains: number }>({
-      sql: `
+  const watchAccountVariations = (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) =>
+    watchQuery<AccountVariationRow, AccountVariation>(
+      db,
+      `
         SELECT
           t.account_id as accountId,
           MAX(t.date) as lastTransactionDate,
           SUM(CASE WHEN lower(c.type) = 'expense' THEN t.amount ELSE 0 END) as expenses,
           SUM(CASE WHEN lower(c.type) = 'gain' THEN t.amount ELSE 0 END) as gains
         FROM transactions t
-        JOIN categories c ON t.category_id = c.id
-        JOIN accounts a ON a.id = t.account_id
+               JOIN categories c ON t.category_id = c.id
+               JOIN accounts a ON a.id = t.account_id
         WHERE a.inactive = 0
         GROUP BY t.account_id
       `,
-      parameters: [],
-    });
-
-    const watcher = query.watch();
-
-    return watcher.registerListener({
-      onData: (data) =>
-        !data || data.length === 0
-          ? onDataChange(Result.success([]))
-          : onDataChange(
-              Result.success(
-                data.map((row) =>
-                  AccountVariation.valid({
-                    ...row,
-                    expenses: Money.fromCents(row.expenses),
-                    gains: Money.fromCents(row.gains),
-                  })
-                )
-              )
-            ),
-      onError: (error) => onDataChange(Result.failure([error.message])),
-    });
-  };
+      [],
+      (row) =>
+        AccountVariation.valid({
+          ...row,
+          expenses: Money.fromCents(row.expenses),
+          gains: Money.fromCents(row.gains),
+        }),
+      onDataChange
+    );
 
   const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) =>
     watchQuery<CashflowVariationRow, CashflowVariation>(
@@ -212,46 +201,38 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       onDataChange
     );
 
-  const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) => {
-    onDataChange(Result.loading());
-
-    const query = db.query<{ tag: string; count: number }>({
-      sql: `
-          WITH RECURSIVE split(tag, remainder) AS
-                     (SELECT
-                             Ltrim(Substr(tags || ',', 1, Instr(tags || ',', ',') - 1)) AS tag,
-                             Substr(tags || ',', Instr(tags || ',', ',') + 1)           AS remainder
-                      FROM transactions
-                      WHERE tags IS NOT NULL AND tags <> ''
-                      UNION ALL
-                      SELECT
-                             Ltrim(Substr(remainder, 1, Instr(remainder, ',') - 1)) AS tag,
-                             Substr(remainder, Instr(remainder, ',') + 1)           AS remainder
-                      FROM split
-                      WHERE remainder <> '')
-          SELECT tag,
-                COUNT(*) AS count
-          FROM split
-          WHERE tag <> ''
-          GROUP BY tag
-          ORDER BY count DESC, tag;
+  const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) =>
+    watchQuery<TagRow, Tag>(
+      db,
+      `
+        WITH RECURSIVE split(tag, remainder) AS
+                         (SELECT
+                            Ltrim(Substr(tags || ',', 1, Instr(tags || ',', ',') - 1)) AS tag,
+                            Substr(tags || ',', Instr(tags || ',', ',') + 1)           AS remainder
+                          FROM transactions
+                          WHERE tags IS NOT NULL AND tags <> ''
+                          UNION ALL
+                          SELECT
+                            Ltrim(Substr(remainder, 1, Instr(remainder, ',') - 1)) AS tag,
+                            Substr(remainder, Instr(remainder, ',') + 1)           AS remainder
+                          FROM split
+                          WHERE remainder <> '')
+        SELECT tag,
+               COUNT(*) AS count
+        FROM split
+        WHERE tag <> ''
+        GROUP BY tag
+        ORDER BY count DESC, tag;
       `,
-      parameters: [],
-    });
-
-    const watcher = query.watch();
-
-    return watcher.registerListener({
-      onData: (data) =>
-        !data || data.length === 0 ? onDataChange(Result.success([])) : onDataChange(Result.success(data.map((row) => Tag.valid(row)))),
-      onError: (error) => onDataChange(Result.failure([error.message])),
-    });
-  };
+      [],
+      (row) => Tag.valid(row),
+      onDataChange
+    );
 
   return {
     create: create,
     pay: pay,
-    deleteCashflow: deleteCashflow,
+    deactivateUpcoming: deactivateUpcoming,
     watchTags: watchTags,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,

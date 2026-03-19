@@ -1,23 +1,7 @@
-import { DateIntervalType } from '@/domain/core/date-interval-type';
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
 import { Id } from '@/domain/core/id';
 import { Result } from '@/domain/core/result';
 import { CreateFlowCommand } from './create-flow-command';
-
-export type PurchaseForm = {
-  date: string;
-  amount: number;
-  description: string;
-  accountId: string;
-  categoryId: string;
-  tags: string[];
-  cashflow?: {
-    effectiveDate: string;
-    intervalType: DateIntervalType;
-    frequency: number;
-    recurrence: number;
-  };
-};
 
 export const CreateFlowUseCase = (repository: FlowsRepository) => {
   const execute = async (flow: CreateFlowCommand): Promise<Result<Id>> => {

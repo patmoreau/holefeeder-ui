@@ -3,6 +3,7 @@ import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchas
 import { useAccounts } from '@/features/purchase/core/use-accounts';
 import { useCategories } from '@/features/purchase/core/use-categories';
 import { PurchaseFormProvider, validatePurchaseForm } from '@/features/purchase/core/use-purchase-form';
+import { useTags } from '@/features/purchase/core/use-tags';
 import { PurchaseForm } from '@/features/purchase/ui/PurchaseForm';
 import { useMultipleWatches, withDefault } from '@/features/shared/core/use-multiple-watches';
 import { AppScreen } from '@/features/shared/ui/AppScreen';
@@ -10,7 +11,6 @@ import { AppView } from '@/features/shared/ui/AppView';
 import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { today } from '@/features/shared/utils/with-date';
-import { useTags } from '@/presentation/hooks/flows/use-tags';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { Theme } from '@/types/theme/theme';
 

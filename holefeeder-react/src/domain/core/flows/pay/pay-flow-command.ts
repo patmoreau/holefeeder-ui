@@ -19,10 +19,10 @@ const create = (pay: Record<string, unknown>): Result<PayFlowCommand> =>
   });
 
 const valid = (pay: Record<string, unknown>): PayFlowCommand => ({
-  date: DateOnly.valid(pay.date as string),
-  amount: Money.valid(pay.amount as number),
-  cashflowId: Id.valid(pay.cashflowId as string),
-  cashflowDate: DateOnly.valid(pay.cashflowDate as string),
+  date: DateOnly.valid(pay.date),
+  amount: Money.valid(pay.amount),
+  cashflowId: Id.valid(pay.cashflowId),
+  cashflowDate: DateOnly.valid(pay.cashflowDate),
 });
 
 export const PayFlowCommand = {

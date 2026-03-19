@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
 import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
+import { Tag } from '@/domain/core/flows/tag';
 import { type AsyncResult } from '@/domain/core/result';
 import { WatchTagsUseCase } from './watch-tags-use-case';
 
@@ -17,8 +18,8 @@ describe('WatchTagsUseCase', () => {
     const tag = aTag();
     repository.addTags(tag);
 
-    let result: AsyncResult<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    let result: AsyncResult<Tag[]> | undefined;
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 
@@ -32,8 +33,8 @@ describe('WatchTagsUseCase', () => {
   it('should return failure when repository fails', async () => {
     repository.isFailing(['error']);
 
-    let result: AsyncResult<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    let result: AsyncResult<Tag[]> | undefined;
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 
@@ -47,8 +48,8 @@ describe('WatchTagsUseCase', () => {
   it('should return loading when repository is loading', async () => {
     repository.isLoading();
 
-    let result: AsyncResult<any> | undefined;
-    const unsubscribe = useCase.query((data) => {
+    let result: AsyncResult<Tag[]> | undefined;
+    const unsubscribe = useCase.watch((data) => {
       result = data;
     });
 

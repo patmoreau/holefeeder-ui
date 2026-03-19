@@ -11,7 +11,7 @@ export const useTags = (): AsyncResult<Tag[]> => {
   const useCase = useMemo(() => WatchTagsUseCase(flowRepository), [flowRepository]);
 
   useEffect(() => {
-    const unsubscribe = useCase.query(setTags);
+    const unsubscribe = useCase.watch(setTags);
     return () => unsubscribe();
   }, [useCase]);
 

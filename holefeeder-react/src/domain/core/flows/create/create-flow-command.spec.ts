@@ -1,6 +1,6 @@
 import { aPurchaseForm } from '@/domain/core/__tests__/purchase-form-for-test';
 import { DateOnly, DateOnlyErrors } from '@/domain/core/date-only';
-import { CreateFlowCommand, CreateFlowErrors } from '@/domain/core/flows/create-flow/create-flow-command';
+import { CreateFlowCommand, CreateFlowErrors } from '@/domain/core/flows/create/create-flow-command';
 import { Id, IdErrors } from '@/domain/core/id';
 import { Money, MoneyErrors } from '@/domain/core/money';
 

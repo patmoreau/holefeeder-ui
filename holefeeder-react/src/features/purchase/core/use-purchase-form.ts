@@ -1,9 +1,10 @@
 import { Repositories } from '@/contexts/RepositoryContext';
+import { CreateFlowCommand } from '@/domain/core/flows/create/create-flow-command';
+import { CreateFlowUseCase } from '@/domain/core/flows/create/create-flow-use-case';
 import { Money } from '@/domain/core/money';
 import { Result } from '@/domain/core/result';
 import { PurchaseFormData, PurchaseType } from '@/features/purchase/core/purchase-form-data';
 import { createFormDataContext, ValidationFunction } from '@/features/shared/core/use-form-context';
-import { CreateFlowForm } from '@/presentation/hooks/flows/create-flow/create-flow-form';
 
 export const PurchaseFormError = {
   sameAccount: 'sameAccount',
@@ -42,15 +43,27 @@ export const validatePurchaseForm: ValidationFunction<PurchaseFormData, Purchase
 
 const savePurchase = async (repositories: Repositories, formData: PurchaseFormData): Promise<Result<unknown>> => {
   const purchase = async (formData: PurchaseFormData): Promise<Result<unknown>> => {
-    const useCase = CreateFlowForm(repositories);
-    return useCase.execute({
+    const cashflow = formData.hasCashflow
+      ? {
+          effectiveDate: formData.cashflowEffectiveDate,
+          intervalType: formData.cashflowIntervalType,
+          frequency: formData.cashflowFrequency,
+          recurrence: 0,
+        }
+      : undefined;
+    const result = CreateFlowCommand.create({
       date: formData.date,
       amount: formData.amount,
       description: formData.description,
       accountId: formData.sourceAccount.id,
       categoryId: formData.category.id,
       tags: formData.tags.map((tag) => tag.tag),
+      cashflow,
     });
+    if (result.isFailure) return Result.failure(result.errors);
+
+    const useCase = CreateFlowUseCase(repositories.flowRepository);
+    return await useCase.execute(result.value);
   };
 
   const transfer = async (formData: PurchaseFormData): Promise<Result<unknown>> => {

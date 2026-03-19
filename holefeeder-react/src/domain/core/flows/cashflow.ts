@@ -47,18 +47,18 @@ const create = (value: Record<string, unknown>): Result<Cashflow> =>
   });
 
 const valid = (value: Record<string, unknown>): Cashflow => ({
-  id: Id.valid(value.id as string),
-  effectiveDate: DateOnly.valid(value.effectiveDate as string),
-  amount: Money.valid(value.amount as number),
+  id: Id.valid(value.id),
+  effectiveDate: DateOnly.valid(value.effectiveDate),
+  amount: Money.valid(value.amount),
   intervalType: DateIntervalType.valid(value.intervalType),
   frequency: value.frequency as number,
   recurrence: value.recurrence as number,
   description: value.description as string,
-  accountId: Id.valid(value.accountId as string),
-  categoryId: Id.valid(value.categoryId as string),
+  accountId: Id.valid(value.accountId),
+  categoryId: Id.valid(value.categoryId),
   categoryType: CategoryType.valid(value.categoryType),
   inactive: value.inactive as boolean,
-  tags: TagList.valid(value.tags as string[]),
+  tags: TagList.valid(value.tags),
 });
 
 export const Cashflow = {

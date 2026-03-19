@@ -18,16 +18,16 @@ export type Transaction = {
 };
 
 const valid = (value: Record<string, unknown>): Transaction => ({
-  id: Id.valid(value.id as string),
-  date: DateOnly.valid(value.date as string),
-  amount: Money.valid(value.amount as number),
+  id: Id.valid(value.id),
+  date: DateOnly.valid(value.date),
+  amount: Money.valid(value.amount),
   description: value.description as string,
-  accountId: Id.valid(value.accountId as string),
-  categoryId: Id.valid(value.categoryId as string),
-  categoryType: CategoryType.valid(value.categoryType as string),
-  tags: TagList.valid(value.tags as string[]),
-  cashflowId: value.cashflowId ? Id.valid(value.cashflowId as Id) : undefined,
-  cashflowDate: value.cashflowDate ? DateOnly.valid(value.cashflowDate as DateOnly) : undefined,
+  accountId: Id.valid(value.accountId),
+  categoryId: Id.valid(value.categoryId),
+  categoryType: CategoryType.valid(value.categoryType),
+  tags: TagList.valid(value.tags),
+  cashflowId: value.cashflowId ? Id.valid(value.cashflowId) : undefined,
+  cashflowDate: value.cashflowDate ? DateOnly.valid(value.cashflowDate) : undefined,
 });
 
 export const Transaction = { valid: valid };

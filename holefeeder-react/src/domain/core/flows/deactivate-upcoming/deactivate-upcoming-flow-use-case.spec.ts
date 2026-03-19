@@ -1,14 +1,14 @@
 import { anId } from '@/__tests__/mocks/string-for-test';
 import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
-import { DeleteCashFlowUseCase } from '@/domain/core/flows/delete-cashflow/delete-cashflow-flow-use-case';
+import { DeactivateUpcomingFlowUseCase } from '@/domain/core/flows/deactivate-upcoming/deactivate-upcoming-flow-use-case';
 
-describe('deleteCashflowFlowUseCase', () => {
+describe('DeactivateUpcomingFlowUseCase', () => {
   let repository: FlowsRepositoryInMemory;
-  let useCase: ReturnType<typeof DeleteCashFlowUseCase>;
+  let useCase: ReturnType<typeof DeactivateUpcomingFlowUseCase>;
 
   beforeEach(() => {
     repository = FlowsRepositoryInMemory();
-    useCase = DeleteCashFlowUseCase(repository);
+    useCase = DeactivateUpcomingFlowUseCase(repository);
   });
 
   it('should pay flow with valid data', async () => {

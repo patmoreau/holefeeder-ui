@@ -1,12 +1,12 @@
 import { Repositories } from '@/contexts/RepositoryContext';
-import { DeleteCashFlowUseCase } from '@/domain/core/flows/delete-cashflow/delete-cashflow-flow-use-case';
-import { PayFlowUseCase } from '@/domain/core/flows/pay-flow/pay-flow-use-case';
+import { DeactivateUpcomingFlowUseCase } from '@/domain/core/flows/deactivate-upcoming/deactivate-upcoming-flow-use-case';
+import { PayUseCase } from '@/domain/core/flows/pay/pay-use-case';
 import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
 import { Money } from '@/domain/core/money';
 
 export const useUpcomingFlow = (repositories: Repositories) => {
   const pay = (upcomingFlow: UpcomingFlow) => {
-    const useCase = PayFlowUseCase(repositories.flowRepository);
+    const useCase = PayUseCase(repositories.flowRepository);
     return useCase.execute({
       date: upcomingFlow.date,
       amount: upcomingFlow.amount,
@@ -16,7 +16,7 @@ export const useUpcomingFlow = (repositories: Repositories) => {
   };
 
   const clear = (upcomingFlow: UpcomingFlow) => {
-    const useCase = PayFlowUseCase(repositories.flowRepository);
+    const useCase = PayUseCase(repositories.flowRepository);
     return useCase.execute({
       date: upcomingFlow.date,
       amount: Money.ZERO,
@@ -26,7 +26,7 @@ export const useUpcomingFlow = (repositories: Repositories) => {
   };
 
   const deleteFlow = (upcomingFlow: UpcomingFlow) => {
-    const useCase = DeleteCashFlowUseCase(repositories.flowRepository);
+    const useCase = DeactivateUpcomingFlowUseCase(repositories.flowRepository);
     return useCase.execute(upcomingFlow.id);
   };
 

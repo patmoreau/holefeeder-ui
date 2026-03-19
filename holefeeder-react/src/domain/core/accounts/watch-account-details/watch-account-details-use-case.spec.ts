@@ -3,6 +3,7 @@ import { aDateInterval } from '@/domain/core/__tests__/date-interval-for-test';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { anAccountVariation } from '@/domain/core/accounts/__tests__/account-variation-for-test';
 import { AccountsRepositoryInMemory } from '@/domain/core/accounts/__tests__/accounts-repository-for-test';
+import { AccountDetail } from '@/domain/core/accounts/account-detail';
 import { AccountTypes } from '@/domain/core/accounts/account-type';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
 import { DateIntervalTypes } from '@/domain/core/date-interval-type';
@@ -38,14 +39,14 @@ describe('WatchAccountDetailsUseCase', () => {
     useCase = WatchAccountDetailsUseCase(dateInterval, accountsRepo, flowsRepo);
   });
 
-  describe('queryDetails', () => {
+  describe('watchDetails', () => {
     it('returns account details when both repositories returns data', async () => {
       accountsRepo.add(account);
       flowsRepo.addAccountVariations(accountVariation);
       flowsRepo.addCashflowVariations(cashflow);
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.queryDetails((data) => {
+      let result: AsyncResult<AccountDetail[]> | undefined;
+      const unsubscribe = useCase.watchDetails((data) => {
         result = data;
       });
 
@@ -69,8 +70,8 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return failure when accounts repository fails', async () => {
       accountsRepo.isFailing(['error']);
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.queryDetails((data) => {
+      let result: AsyncResult<AccountDetail[]> | undefined;
+      const unsubscribe = useCase.watchDetails((data) => {
         result = data;
       });
 
@@ -84,8 +85,8 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return failure when flows repository fails with other error', async () => {
       flowsRepo.isFailing(['other-error']);
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.queryDetails((data) => {
+      let result: AsyncResult<AccountDetail[]> | undefined;
+      const unsubscribe = useCase.watchDetails((data) => {
         result = data;
       });
 
@@ -99,8 +100,8 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return loading when accounts repository is loading', async () => {
       accountsRepo.isLoading();
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.queryDetails((data) => {
+      let result: AsyncResult<AccountDetail[]> | undefined;
+      const unsubscribe = useCase.watchDetails((data) => {
         result = data;
       });
 
@@ -114,8 +115,8 @@ describe('WatchAccountDetailsUseCase', () => {
     it('should return loading when flows repository is loading', async () => {
       flowsRepo.isLoading();
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.queryDetails((data) => {
+      let result: AsyncResult<AccountDetail[]> | undefined;
+      const unsubscribe = useCase.watchDetails((data) => {
         result = data;
       });
 

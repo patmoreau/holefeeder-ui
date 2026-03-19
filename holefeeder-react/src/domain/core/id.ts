@@ -15,6 +15,6 @@ const newId = (): Id => Crypto.randomUUID() as Id;
 
 const create = (value: unknown): Result<Id> => Validate.validate<Id>(isValidPattern, value, [IdErrors.invalid]);
 
-const valid = (value: string): Id => value as Id;
+const valid = (value: unknown): Id => value as Id;
 
 export const Id = { newId: newId, create: create, valid: valid } as const;

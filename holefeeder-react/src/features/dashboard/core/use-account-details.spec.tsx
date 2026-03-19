@@ -15,7 +15,7 @@ import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test
 import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
 import { SETTINGS_CODE } from '@/domain/core/store-items/settings';
 import { Variation } from '@/domain/core/variation';
-import { useAccountDetails } from '@/presentation/hooks/accounts/use-account-details';
+import { useAccountDetails } from '@/features/dashboard/core/use-account-details';
 
 describe('useAccountDetails', () => {
   let db: DatabaseForTest;

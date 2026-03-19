@@ -14,13 +14,13 @@ export type AccountDetail = {
 };
 
 const valid = (value: Record<string, unknown>): AccountDetail => ({
-  id: Id.valid(value.id as string),
+  id: Id.valid(value.id),
   name: value.name as string,
-  type: AccountType.valid(value.type as string),
-  balance: Variation.valid(value.balance as number),
-  lastTransactionDate: DateOnly.valid(value.lastTransactionDate as string),
-  projectedBalance: Variation.valid(value.projectedBalance as number),
-  upcomingVariation: Variation.valid(value.upcomingVariation as number),
+  type: AccountType.valid(value.type),
+  balance: Variation.valid(value.balance),
+  lastTransactionDate: DateOnly.valid(value.lastTransactionDate),
+  projectedBalance: Variation.valid(value.projectedBalance),
+  upcomingVariation: Variation.valid(value.upcomingVariation),
 });
 
 export const AccountDetail = {

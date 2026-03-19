@@ -11,7 +11,7 @@ export const useAccounts = (): AsyncResult<Account[]> => {
   const useCase = useMemo(() => WatchAccountsUseCase(accountRepository), [accountRepository]);
 
   useEffect(() => {
-    const unsubscribe = useCase.query(setAccounts);
+    const unsubscribe = useCase.watch(setAccounts);
     return () => unsubscribe();
   }, [useCase]);
 

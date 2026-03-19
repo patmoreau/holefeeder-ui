@@ -1,8 +1,9 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { Account } from '@/domain/core/accounts/account';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
-import { type AsyncResult, Result } from '@/domain/core/result';
+import { type AsyncResult } from '@/domain/core/result';
 import { Variation } from '@/domain/core/variation';
+import { watchQuery } from '@/domain/persistence/watch-query';
 
 type AccountRow = {
   id: number;
@@ -16,11 +17,10 @@ type AccountRow = {
 };
 
 export const AccountsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): AccountsRepository => {
-  const watch = (onDataChange: (result: AsyncResult<Account[]>) => void) => {
-    onDataChange(Result.loading());
-
-    const query = db.query<AccountRow>({
-      sql: `
+  const watch = (onDataChange: (result: AsyncResult<Account[]>) => void) =>
+    watchQuery<AccountRow, Account>(
+      db,
+      `
         SELECT id,
                type,
                name,
@@ -33,30 +33,16 @@ export const AccountsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Ac
         WHERE inactive = 0
         ORDER BY favorite DESC, name
       `,
-      parameters: [],
-    });
-
-    const watcher = query.watch();
-
-    return watcher.registerListener({
-      onData: (data) =>
-        !data || data.length === 0
-          ? onDataChange(Result.success([]))
-          : onDataChange(
-              Result.success(
-                data.map((row) =>
-                  Account.valid({
-                    ...row,
-                    openBalance: Variation.fromCents(row.openBalance),
-                    favorite: row.favorite === 1,
-                    inactive: row.inactive === 1,
-                  })
-                )
-              )
-            ),
-      onError: (error) => onDataChange(Result.failure([error.message])),
-    });
-  };
+      [],
+      (row) =>
+        Account.valid({
+          ...row,
+          openBalance: Variation.fromCents(row.openBalance),
+          favorite: row.favorite === 1,
+          inactive: row.inactive === 1,
+        }),
+      onDataChange
+    );
 
   return {
     watch: watch,

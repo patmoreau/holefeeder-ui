@@ -56,7 +56,7 @@ export const WatchAccountDetailsUseCase = (
   const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) =>
     flowsRepository.watchCashflowVariations((result) => onDataChange(result));
 
-  const queryDetails = (onDataChange: (result: AsyncResult<AccountDetail[]>) => void) =>
+  const watchDetails = (onDataChange: (result: AsyncResult<AccountDetail[]>) => void) =>
     combineWatchers(
       [watchAccounts, watchAccountVariations, watchCashflowVariations],
       (accounts: Account[], accountVariations: AccountVariation[], cashflowVariations: CashflowVariation[]) =>
@@ -64,6 +64,6 @@ export const WatchAccountDetailsUseCase = (
     )(onDataChange);
 
   return {
-    queryDetails: queryDetails,
+    watchDetails: watchDetails,
   };
 };

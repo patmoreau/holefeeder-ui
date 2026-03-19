@@ -18,7 +18,7 @@ const create = (value: unknown): Result<Money> => {
   return Result.success(fromCents(money));
 };
 
-const valid = (value: number): Money => value as Money;
+const valid = (value: unknown): Money => value as Money;
 
 const toCents = (money: Money): number => Math.round(money * 100);
 

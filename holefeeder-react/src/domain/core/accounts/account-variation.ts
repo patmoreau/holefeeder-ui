@@ -10,10 +10,10 @@ export type AccountVariation = {
 };
 
 const valid = (value: Record<string, unknown>): AccountVariation => ({
-  accountId: Id.valid(value.accountId as string),
-  lastTransactionDate: DateOnly.valid(value.lastTransactionDate as string),
-  expenses: Money.valid(value.expenses as number),
-  gains: Money.valid(value.gains as number),
+  accountId: Id.valid(value.accountId),
+  lastTransactionDate: DateOnly.valid(value.lastTransactionDate),
+  expenses: Money.valid(value.expenses),
+  gains: Money.valid(value.gains),
 });
 
 export const AccountVariation = {

@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
+import { Account } from '@/domain/core/accounts/account';
 import { type AsyncResult } from '@/domain/core/result';
 import { AccountsRepositoryInPowersync } from './accounts-repository-in-powersync';
 
@@ -20,7 +21,7 @@ describe('AccountsRepositoryInPowersync', () => {
       const account = await anAccount().store(db);
       const repo = AccountsRepositoryInPowersync(db);
 
-      let result: AsyncResult<any> | undefined;
+      let result: AsyncResult<Account[]> | undefined;
       const unsubscribe = repo.watch((data) => {
         result = data;
       });
@@ -48,7 +49,7 @@ describe('AccountsRepositoryInPowersync', () => {
     it('returns not found when no accounts exist', async () => {
       const repo = AccountsRepositoryInPowersync(db);
 
-      let result: AsyncResult<any> | undefined;
+      let result: AsyncResult<Account[]> | undefined;
       const unsubscribe = repo.watch((data) => {
         result = data;
       });

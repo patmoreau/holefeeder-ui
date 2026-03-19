@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { AccountsRepositoryInMemory } from '@/domain/core/accounts/__tests__/accounts-repository-for-test';
+import { Account } from '@/domain/core/accounts/account';
 import { type AsyncResult } from '@/domain/core/result';
 import { WatchAccountsUseCase } from './watch-accounts-use-case';
 
@@ -13,13 +14,13 @@ describe('WatchAccountsUseCase', () => {
     useCase = WatchAccountsUseCase(repository);
   });
 
-  describe('query', () => {
+  describe('watch', () => {
     it('returns accounts when repository succeeds', async () => {
       const account = anAccount();
       repository.add(account);
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      let result: AsyncResult<Account[]> | undefined;
+      const unsubscribe = useCase.watch((data) => {
         result = data;
       });
 
@@ -33,8 +34,8 @@ describe('WatchAccountsUseCase', () => {
     it('returns failure when repository fails', async () => {
       repository.isFailing(['error']);
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      let result: AsyncResult<Account[]> | undefined;
+      const unsubscribe = useCase.watch((data) => {
         result = data;
       });
 
@@ -48,8 +49,8 @@ describe('WatchAccountsUseCase', () => {
     it('returns loading when repository is loading', async () => {
       repository.isLoading();
 
-      let result: AsyncResult<any> | undefined;
-      const unsubscribe = useCase.query((data) => {
+      let result: AsyncResult<Account[]> | undefined;
+      const unsubscribe = useCase.watch((data) => {
         result = data;
       });
 

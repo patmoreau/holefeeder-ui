@@ -37,7 +37,7 @@ export const useAccountDetails = (): AsyncResult<AccountDetail[]> => {
       return;
     }
 
-    const unsubscribe = useCase.queryDetails(setAccounts);
+    const unsubscribe = useCase.watchDetails(setAccounts);
     return () => unsubscribe();
   }, [useCase, dateIntervalResult]);
 

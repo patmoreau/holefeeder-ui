@@ -23,6 +23,6 @@ const create = (value: unknown): Result<DateOnly> => {
   return isValid(parseISO(stringValue)) ? Result.success(stringValue as DateOnly) : Result.failure([DateOnlyErrors.invalid]);
 };
 
-const valid = (value: string): DateOnly => value as DateOnly;
+const valid = (value: unknown): DateOnly => value as DateOnly;
 
 export const DateOnly = { create: create, valid: valid } as const;

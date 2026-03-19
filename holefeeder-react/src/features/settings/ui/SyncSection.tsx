@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMultipleWatches, withDefault } from '@/features/shared/core/use-multiple-watches';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppSection } from '@/features/shared/ui/AppSection';
 import { AppView } from '@/features/shared/ui/AppView';
@@ -11,7 +12,6 @@ import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicat
 import { tk } from '@/i18n/translations';
 import { DEFAULT_SYNC_INFO } from '@/presentation/hooks/settings/sync-info';
 import { useSyncInfo } from '@/presentation/hooks/settings/use-sync-info';
-import { useMultipleWatches, withDefault } from '@/presentation/hooks/use-multiple-watches';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 import { spacing, Theme } from '@/types/theme';

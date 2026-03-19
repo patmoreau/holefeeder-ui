@@ -18,7 +18,7 @@ const create = (value: unknown): Result<Variation> => {
   return Result.success(fromCents(variation));
 };
 
-const valid = (value: number): Variation => value as Variation;
+const valid = (value: unknown): Variation => value as Variation;
 
 const toCents = (variation: Variation): number => Math.round(variation * 100);
 

@@ -1,6 +1,6 @@
 import { aCategory, toCategory } from '@/domain/core/categories/__tests__/category-for-test';
-import { IdErrors } from '@/domain/core/id';
-import { MoneyErrors } from '@/domain/core/money';
+import { IdErrors } from '@/shared/core/id';
+import { MoneyErrors } from '@/shared/core/money';
 import { Category, CategoryErrors } from './category';
 
 describe('Category', () => {

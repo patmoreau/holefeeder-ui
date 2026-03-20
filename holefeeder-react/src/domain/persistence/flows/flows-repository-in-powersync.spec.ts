@@ -4,7 +4,6 @@ import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { AccountVariation } from '@/domain/core/accounts/account-variation';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
-import { DateOnly } from '@/domain/core/date-only';
 import { aCashflow } from '@/domain/core/flows/__tests__/cashflow-for-test';
 import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
@@ -13,9 +12,10 @@ import { CreateFlowCommand } from '@/domain/core/flows/create/create-flow-comman
 import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
 import { TagList } from '@/domain/core/flows/tag-list';
-import { Id } from '@/domain/core/id';
-import { Money } from '@/domain/core/money';
-import { type AsyncResult } from '@/domain/core/result';
+import { DateOnly } from '@/shared/core/date-only';
+import { Id } from '@/shared/core/id';
+import { Money } from '@/shared/core/money';
+import { type AsyncResult } from '@/shared/core/result';
 import { FlowsRepositoryInPowersync } from './flows-repository-in-powersync';
 
 describe('FlowsRepository', () => {

@@ -1,6 +1,6 @@
 import { CategoriesRepository } from '@/domain/core/categories/categories-repository';
 import { Category } from '@/domain/core/categories/category';
-import { type AsyncResult, Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/shared/core/result';
 
 export type CategoriesRepositoryInMemory = CategoriesRepository & {
   add: (...items: Category[]) => void;

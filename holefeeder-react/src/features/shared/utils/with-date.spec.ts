@@ -1,5 +1,5 @@
-import { DateOnly } from '@/domain/core/date-only';
 import { today, withDate } from '@/features/shared/utils/with-date';
+import { DateOnly } from '@/shared/core/date-only';
 
 describe('today', () => {
   it('returns the current date from startOfToday of date-fns', () => {

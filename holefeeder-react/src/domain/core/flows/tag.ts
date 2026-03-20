@@ -1,5 +1,5 @@
-import { Result } from '@/domain/core/result';
-import { Validate, Validator } from '@/domain/core/validate';
+import { Result } from '@/shared/core/result';
+import { Validate, Validator } from '@/shared/core/validate';
 
 export type Tag = {
   tag: string;

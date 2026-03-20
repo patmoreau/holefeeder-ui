@@ -1,7 +1,7 @@
 import { CategoryType } from '@/domain/core/categories/category-type';
-import { DateOnly } from '@/domain/core/date-only';
-import { Id } from '@/domain/core/id';
-import { Money } from '@/domain/core/money';
+import { DateOnly } from '@/shared/core/date-only';
+import { Id } from '@/shared/core/id';
+import { Money } from '@/shared/core/money';
 import { TagList } from './tag-list';
 
 export type Transaction = {

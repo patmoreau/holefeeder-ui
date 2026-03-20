@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
-import { type AsyncResult } from '@/domain/core/result';
+import { type AsyncResult } from '@/shared/core/result';
 import { CategoriesRepositoryInPowersync } from './categories-repository-in-powersync';
 
 describe('CategoriesRepositoryInPowersync', () => {

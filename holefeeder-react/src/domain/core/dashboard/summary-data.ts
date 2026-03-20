@@ -1,6 +1,6 @@
 import { CategoryType } from '@/domain/core/categories/category-type';
-import { DateOnly } from '@/domain/core/date-only';
-import { Money } from '@/domain/core/money';
+import { DateOnly } from '@/shared/core/date-only';
+import { Money } from '@/shared/core/money';
 
 export type SummaryData = {
   type: CategoryType;

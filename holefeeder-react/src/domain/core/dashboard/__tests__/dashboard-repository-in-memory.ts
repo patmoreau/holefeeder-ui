@@ -1,6 +1,6 @@
 import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
 import { SummaryData } from '@/domain/core/dashboard/summary-data';
-import { type AsyncResult, Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/shared/core/result';
 
 export type DashboardRepositoryInMemory = DashboardRepository & {
   add: (...items: SummaryData[]) => void;

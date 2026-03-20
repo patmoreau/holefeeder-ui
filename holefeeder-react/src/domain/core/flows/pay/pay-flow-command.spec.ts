@@ -1,10 +1,10 @@
 import { aPastDate, aRecentDate } from '@/__tests__/mocks/date-for-test';
 import { anAmount } from '@/__tests__/mocks/number-for-test';
 import { anId } from '@/__tests__/mocks/string-for-test';
-import { DateOnly, DateOnlyErrors } from '@/domain/core/date-only';
 import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
-import { Id, IdErrors } from '@/domain/core/id';
-import { Money, MoneyErrors } from '@/domain/core/money';
+import { DateOnly, DateOnlyErrors } from '@/shared/core/date-only';
+import { Id, IdErrors } from '@/shared/core/id';
+import { Money, MoneyErrors } from '@/shared/core/money';
 
 describe('PayFlowCommand', () => {
   let form: Record<string, unknown>;

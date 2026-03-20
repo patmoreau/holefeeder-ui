@@ -1,5 +1,5 @@
 import { Account } from '@/domain/core/accounts/account';
-import { type AsyncResult } from '@/domain/core/result';
+import { type AsyncResult } from '@/shared/core/result';
 
 export type AccountsRepository = {
   watch: (onDataChange: (result: AsyncResult<Account[]>) => void) => () => void;

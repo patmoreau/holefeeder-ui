@@ -1,6 +1,6 @@
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
-import { Id } from '@/domain/core/id';
-import { Result } from '@/domain/core/result';
+import { Id } from '@/shared/core/id';
+import { Result } from '@/shared/core/result';
 import { PayFlowCommand } from './pay-flow-command';
 
 export const PayUseCase = (repository: FlowsRepository) => {

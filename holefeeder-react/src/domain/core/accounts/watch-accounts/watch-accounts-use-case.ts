@@ -1,4 +1,4 @@
-import { type AsyncResult } from '@/domain/core/result';
+import { type AsyncResult } from '@/shared/core/result';
 import { Account } from '../account';
 import { AccountsRepository } from '../accounts-repository';
 

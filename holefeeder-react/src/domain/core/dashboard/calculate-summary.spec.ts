@@ -1,9 +1,9 @@
 import { startOfMonth } from 'date-fns';
 import { CategoryType, CategoryTypes } from '@/domain/core/categories/category-type';
-import { DateIntervalTypes } from '@/domain/core/date-interval-type';
-import { DateOnly } from '@/domain/core/date-only';
-import { Money } from '@/domain/core/money';
 import { today, withDate } from '@/features/shared/utils/with-date';
+import { DateIntervalTypes } from '@/shared/core/date-interval-type';
+import { DateOnly } from '@/shared/core/date-only';
+import { Money } from '@/shared/core/money';
 import { calculateSummary } from './calculate-summary';
 import { SummaryData } from './summary-data';
 

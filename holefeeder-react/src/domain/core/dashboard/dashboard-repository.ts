@@ -1,5 +1,5 @@
-import { type AsyncResult } from '@/domain/core/result';
-import { Settings } from '@/domain/core/store-items/settings';
+import { Settings } from '@/settings/core/settings';
+import { type AsyncResult } from '@/shared/core/result';
 import { SummaryData } from './summary-data';
 
 export type DashboardRepository = {

@@ -3,9 +3,9 @@ import { getLocales } from 'expo-localization';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, AppStateStatus } from 'react-native';
-import { DateOnly } from '@/domain/core/date-only';
 import { withDate } from '@/features/shared/utils/with-date';
 import { tk } from '@/i18n/translations';
+import { DateOnly } from '@/shared/core/date-only';
 
 type FormatterHook = {
   currentLocale: string;

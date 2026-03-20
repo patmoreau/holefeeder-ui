@@ -1,4 +1,4 @@
-import { type AsyncResult, Result, Success } from '@/domain/core/result';
+import { type AsyncResult, Result, Success } from '@/shared/core/result';
 
 declare global {
   namespace jest {

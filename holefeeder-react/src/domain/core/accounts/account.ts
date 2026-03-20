@@ -1,9 +1,9 @@
 import { AccountType } from '@/domain/core/accounts/account-type';
-import { DateOnly } from '@/domain/core/date-only';
-import { Id } from '@/domain/core/id';
-import { Result } from '@/domain/core/result';
-import { Validate, Validator } from '@/domain/core/validate';
-import { Variation } from '@/domain/core/variation';
+import { DateOnly } from '@/shared/core/date-only';
+import { Id } from '@/shared/core/id';
+import { Result } from '@/shared/core/result';
+import { Validate, Validator } from '@/shared/core/validate';
+import { Variation } from '@/shared/core/variation';
 
 export type Account = {
   id: Id;

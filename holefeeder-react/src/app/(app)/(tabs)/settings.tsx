@@ -1,1 +1,1 @@
-export { default } from '@/features/settings/ui/Settings';
+export { default } from '@/settings/presentation/Settings';

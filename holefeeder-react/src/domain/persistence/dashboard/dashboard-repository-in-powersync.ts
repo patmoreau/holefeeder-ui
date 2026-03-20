@@ -1,11 +1,11 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
 import { SummaryData } from '@/domain/core/dashboard/summary-data';
-import { DateIntervalTypes } from '@/domain/core/date-interval-type';
-import { Money } from '@/domain/core/money';
-import { type AsyncResult } from '@/domain/core/result';
-import { Settings } from '@/domain/core/store-items/settings';
-import { watchQuery } from '@/domain/persistence/watch-query';
+import { Settings } from '@/settings/core/settings';
+import { DateIntervalTypes } from '@/shared/core/date-interval-type';
+import { Money } from '@/shared/core/money';
+import { type AsyncResult } from '@/shared/core/result';
+import { watchQuery } from '@/shared/persistence/watch-query';
 
 type SummaryDataRow = {
   type: string;

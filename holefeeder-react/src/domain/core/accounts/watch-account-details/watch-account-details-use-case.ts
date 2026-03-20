@@ -1,12 +1,12 @@
 import { AccountDetail } from '@/domain/core/accounts/account-detail';
 import { AccountType } from '@/domain/core/accounts/account-type';
 import { AccountVariation } from '@/domain/core/accounts/account-variation';
-import { DateInterval } from '@/domain/core/date-interval';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
-import { type AsyncResult } from '@/domain/core/result';
-import { Variation } from '@/domain/core/variation';
-import { combineWatchers } from '@/domain/core/watch-utils';
+import { DateInterval } from '@/shared/core/date-interval';
+import { type AsyncResult } from '@/shared/core/result';
+import { Variation } from '@/shared/core/variation';
+import { combineWatchers } from '@/shared/core/watch-utils';
 import { CategoryType, CategoryTypes } from '../../categories/category-type';
 import { Account } from '../account';
 import { AccountsRepository } from '../accounts-repository';

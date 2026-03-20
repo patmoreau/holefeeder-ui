@@ -5,7 +5,7 @@ import { anAmount } from '@/__tests__/mocks/number-for-test';
 import { anId, aString } from '@/__tests__/mocks/string-for-test';
 import { aTagList } from '@/domain/core/__tests__/tag-list-for-test';
 import { Transaction } from '@/domain/core/flows/transaction';
-import { Money } from '@/domain/core/money';
+import { Money } from '@/shared/core/money';
 
 export type TransactionForTest = Transaction & {
   times: (count: number) => TransactionForTest[];

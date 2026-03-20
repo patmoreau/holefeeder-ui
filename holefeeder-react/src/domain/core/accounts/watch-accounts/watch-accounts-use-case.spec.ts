@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react-native';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { AccountsRepositoryInMemory } from '@/domain/core/accounts/__tests__/accounts-repository-for-test';
 import { Account } from '@/domain/core/accounts/account';
-import { type AsyncResult } from '@/domain/core/result';
+import { type AsyncResult } from '@/shared/core/result';
 import { WatchAccountsUseCase } from './watch-accounts-use-case';
 
 describe('WatchAccountsUseCase', () => {

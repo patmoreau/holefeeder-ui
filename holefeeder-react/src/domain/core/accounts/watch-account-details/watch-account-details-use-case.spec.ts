@@ -1,18 +1,18 @@
 import { waitFor } from '@testing-library/react-native';
-import { aDateInterval } from '@/domain/core/__tests__/date-interval-for-test';
 import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { anAccountVariation } from '@/domain/core/accounts/__tests__/account-variation-for-test';
 import { AccountsRepositoryInMemory } from '@/domain/core/accounts/__tests__/accounts-repository-for-test';
 import { AccountDetail } from '@/domain/core/accounts/account-detail';
 import { AccountTypes } from '@/domain/core/accounts/account-type';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
-import { DateIntervalTypes } from '@/domain/core/date-interval-type';
-import { DateOnly } from '@/domain/core/date-only';
 import { aCashflowVariation } from '@/domain/core/flows/__tests__/cashflow-variation-for-test';
 import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
-import { Money } from '@/domain/core/money';
-import { type AsyncResult } from '@/domain/core/result';
-import { Variation } from '@/domain/core/variation';
+import { aDateInterval } from '@/shared/__tests__/date-interval-for-test';
+import { DateIntervalTypes } from '@/shared/core/date-interval-type';
+import { DateOnly } from '@/shared/core/date-only';
+import { Money } from '@/shared/core/money';
+import { type AsyncResult } from '@/shared/core/result';
+import { Variation } from '@/shared/core/variation';
 import { WatchAccountDetailsUseCase } from './watch-account-details-use-case';
 
 describe('WatchAccountDetailsUseCase', () => {

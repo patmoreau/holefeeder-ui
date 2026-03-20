@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { DateOnly } from '@/domain/core/date-only';
+import { DateOnly } from '@/shared/core/date-only';
 
 export const aPastDate = () => DateOnly.valid(faker.date.past().toISOString().split('T')[0]);
 

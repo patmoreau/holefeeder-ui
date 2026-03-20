@@ -1,8 +1,8 @@
 import { CategoryType } from '@/domain/core/categories/category-type';
-import { Id } from '@/domain/core/id';
-import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
-import { Validate, Validator } from '@/domain/core/validate';
+import { Id } from '@/shared/core/id';
+import { Money } from '@/shared/core/money';
+import { Result } from '@/shared/core/result';
+import { Validate, Validator } from '@/shared/core/validate';
 
 export type Category = {
   id: Id;

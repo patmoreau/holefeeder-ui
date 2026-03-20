@@ -1,9 +1,9 @@
 import { CategoryTypes } from '@/domain/core/categories/category-type';
-import { DateIntervalTypes } from '@/domain/core/date-interval-type';
-import { DateOnly } from '@/domain/core/date-only';
 import { aCashflowVariation } from '@/domain/core/flows/__tests__/cashflow-variation-for-test';
 import { CashflowVariation, CashflowVariationErrors } from '@/domain/core/flows/cashflow-variation';
-import { Money } from '@/domain/core/money';
+import { DateIntervalTypes } from '@/shared/core/date-interval-type';
+import { DateOnly } from '@/shared/core/date-only';
+import { Money } from '@/shared/core/money';
 
 describe('Cashflow Variation', () => {
   describe('forVariations', () => {

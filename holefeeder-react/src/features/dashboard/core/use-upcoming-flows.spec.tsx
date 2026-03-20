@@ -6,16 +6,16 @@ import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { AccountTypes } from '@/domain/core/accounts/account-type';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
-import { DateIntervalTypes } from '@/domain/core/date-interval-type';
-import { DateOnly } from '@/domain/core/date-only';
 import { aCashflow } from '@/domain/core/flows/__tests__/cashflow-for-test';
 import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
-import { Money } from '@/domain/core/money';
-import { aSettings } from '@/domain/core/store-items/__tests__/settings-for-test';
-import { aStoreItem } from '@/domain/core/store-items/__tests__/store-item-for-test';
-import { SETTINGS_CODE } from '@/domain/core/store-items/settings';
-import { Variation } from '@/domain/core/variation';
 import { useAccountDetails } from '@/features/dashboard/core/use-account-details';
+import { aSettings } from '@/settings/__tests__/settings-for-test';
+import { SETTINGS_CODE } from '@/settings/core/settings';
+import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
+import { DateIntervalTypes } from '@/shared/core/date-interval-type';
+import { DateOnly } from '@/shared/core/date-only';
+import { Money } from '@/shared/core/money';
+import { Variation } from '@/shared/core/variation';
 
 describe('useAccountDetails', () => {
   let db: DatabaseForTest;

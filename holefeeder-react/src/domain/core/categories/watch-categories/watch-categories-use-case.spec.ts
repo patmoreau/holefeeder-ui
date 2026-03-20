@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react-native';
 import { CategoriesRepositoryInMemory } from '@/domain/core/categories/__tests__/categories-repository-for-test';
 import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
 import { Category } from '@/domain/core/categories/category';
-import { type AsyncResult } from '@/domain/core/result';
+import { type AsyncResult } from '@/shared/core/result';
 import { WatchCategoriesUseCase } from './watch-categories-use-case';
 
 describe('WatchCategoriesUseCase', () => {

@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react-native';
 import { FlowsRepositoryInMemory } from '@/domain/core/flows/__tests__/flows-repository-in-memory';
 import { aTag } from '@/domain/core/flows/__tests__/tag-for-test';
 import { Tag } from '@/domain/core/flows/tag';
-import { type AsyncResult } from '@/domain/core/result';
+import { type AsyncResult } from '@/shared/core/result';
 import { WatchTagsUseCase } from './watch-tags-use-case';
 
 describe('WatchTagsUseCase', () => {

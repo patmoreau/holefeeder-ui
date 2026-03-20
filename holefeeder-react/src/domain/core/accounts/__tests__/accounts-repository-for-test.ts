@@ -1,6 +1,6 @@
 import { Account } from '@/domain/core/accounts/account';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
-import { type AsyncResult, Result } from '@/domain/core/result';
+import { type AsyncResult, Result } from '@/shared/core/result';
 
 export type AccountsRepositoryInMemory = AccountsRepository & {
   add: (...items: Account[]) => void;

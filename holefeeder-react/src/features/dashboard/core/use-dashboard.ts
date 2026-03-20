@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
 import { DashboardComputedSummary, WatchSummaryUseCase } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
-import { type AsyncResult, Result } from '@/domain/core/result';
-import { DefaultSettings } from '@/domain/core/store-items/settings';
+import { DefaultSettings } from '@/settings/core/settings';
+import { type AsyncResult, Result } from '@/shared/core/result';
 import { useSettings } from '../../shared/core/use-settings';
 
 export const useDashboard = (): AsyncResult<DashboardComputedSummary> => {

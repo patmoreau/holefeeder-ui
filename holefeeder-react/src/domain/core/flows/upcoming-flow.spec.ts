@@ -1,6 +1,6 @@
 import { aUpcomingFlow } from '@/domain/core/flows/__tests__/upcoming-flow-for-test';
 import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
-import { Id, IdErrors } from '@/domain/core/id';
+import { Id, IdErrors } from '@/shared/core/id';
 
 describe('UpcomingFlow', () => {
   describe('create', () => {

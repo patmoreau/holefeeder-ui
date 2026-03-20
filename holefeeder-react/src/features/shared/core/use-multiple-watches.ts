@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ErrorKey } from '@/domain/core/error-key';
-import { type AsyncResult } from '@/domain/core/result';
+import { ErrorKey } from '@/shared/core/error-key';
+import { type AsyncResult } from '@/shared/core/result';
 
 type WatchHook<T, TDefault extends T | null | undefined = undefined> = {
   (): AsyncResult<T>;

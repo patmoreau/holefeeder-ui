@@ -5,8 +5,8 @@ import { CreateFlowCommand } from '@/domain/core/flows/create/create-flow-comman
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
 import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
-import { Id } from '@/domain/core/id';
-import { type AsyncResult, Result } from '@/domain/core/result';
+import { Id } from '@/shared/core/id';
+import { type AsyncResult, Result } from '@/shared/core/result';
 
 export type FlowsRepositoryInMemory = FlowsRepository & {
   addAccountVariations: (...items: AccountVariation[]) => void;

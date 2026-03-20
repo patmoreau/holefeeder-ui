@@ -3,8 +3,8 @@ import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/domain/core/flows/create/create-flow-command';
 import { PayFlowCommand } from '@/domain/core/flows/pay/pay-flow-command';
 import { Tag } from '@/domain/core/flows/tag';
-import { Id } from '@/domain/core/id';
-import { type AsyncResult, Result } from '@/domain/core/result';
+import { Id } from '@/shared/core/id';
+import { type AsyncResult, Result } from '@/shared/core/result';
 
 export type FlowsRepository = {
   create(command: CreateFlowCommand): Promise<Result<Id>>;

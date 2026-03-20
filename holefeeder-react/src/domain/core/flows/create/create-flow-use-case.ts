@@ -1,6 +1,6 @@
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
-import { Id } from '@/domain/core/id';
-import { Result } from '@/domain/core/result';
+import { Id } from '@/shared/core/id';
+import { Result } from '@/shared/core/result';
 import { CreateFlowCommand } from './create-flow-command';
 
 export const CreateFlowUseCase = (repository: FlowsRepository) => {

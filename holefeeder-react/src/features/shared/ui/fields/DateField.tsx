@@ -1,6 +1,6 @@
-import { DateOnly } from '@/domain/core/date-only';
 import { AppField } from '@/features/shared/ui/AppField';
 import { AppDatePicker } from '@/features/shared/ui/components/AppDatePicker';
+import { DateOnly } from '@/shared/core/date-only';
 import { AppIcons } from '@/types/icons';
 
 type Props = {

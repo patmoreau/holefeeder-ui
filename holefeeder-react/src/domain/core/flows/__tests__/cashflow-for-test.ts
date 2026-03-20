@@ -7,7 +7,7 @@ import { aTagList } from '@/domain/core/__tests__/tag-list-for-test';
 import { AccountForTest } from '@/domain/core/accounts/__tests__/account-for-test';
 import { CategoryForTest } from '@/domain/core/categories/__tests__/category-for-test';
 import { Cashflow } from '@/domain/core/flows/cashflow';
-import { Money } from '@/domain/core/money';
+import { Money } from '@/shared/core/money';
 
 export type CashflowForTest = Cashflow & {
   times: (count: number) => CashflowForTest[];

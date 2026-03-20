@@ -1,9 +1,9 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { CategoriesRepository } from '@/domain/core/categories/categories-repository';
 import { Category } from '@/domain/core/categories/category';
-import { Money } from '@/domain/core/money';
-import { type AsyncResult } from '@/domain/core/result';
-import { watchQuery } from '@/domain/persistence/watch-query';
+import { Money } from '@/shared/core/money';
+import { type AsyncResult } from '@/shared/core/result';
+import { watchQuery } from '@/shared/persistence/watch-query';
 
 type CategoryRow = {
   id: number;

@@ -1,8 +1,8 @@
 import { aPurchaseForm } from '@/domain/core/__tests__/purchase-form-for-test';
-import { DateOnly, DateOnlyErrors } from '@/domain/core/date-only';
 import { CreateFlowCommand, CreateFlowErrors } from '@/domain/core/flows/create/create-flow-command';
-import { Id, IdErrors } from '@/domain/core/id';
-import { Money, MoneyErrors } from '@/domain/core/money';
+import { DateOnly, DateOnlyErrors } from '@/shared/core/date-only';
+import { Id, IdErrors } from '@/shared/core/id';
+import { Money, MoneyErrors } from '@/shared/core/money';
 
 describe('CreateFlowCommand', () => {
   it('succeeds with valid data', () => {

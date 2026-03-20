@@ -1,9 +1,9 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { Account } from '@/domain/core/accounts/account';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
-import { type AsyncResult } from '@/domain/core/result';
-import { Variation } from '@/domain/core/variation';
-import { watchQuery } from '@/domain/persistence/watch-query';
+import { type AsyncResult } from '@/shared/core/result';
+import { Variation } from '@/shared/core/variation';
+import { watchQuery } from '@/shared/persistence/watch-query';
 
 type AccountRow = {
   id: number;

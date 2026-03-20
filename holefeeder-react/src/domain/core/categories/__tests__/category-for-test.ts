@@ -2,7 +2,7 @@ import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { aCategoryType } from '@/__tests__/mocks/enum-for-test';
 import { aColor, anId, aString } from '@/__tests__/mocks/string-for-test';
 import { Category } from '@/domain/core/categories/category';
-import { Money } from '@/domain/core/money';
+import { Money } from '@/shared/core/money';
 
 export type CategoryForTest = Category & {
   times: (count: number) => CategoryForTest[];

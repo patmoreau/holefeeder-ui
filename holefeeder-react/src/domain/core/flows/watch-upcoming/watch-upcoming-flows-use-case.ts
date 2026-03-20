@@ -1,9 +1,9 @@
-import { DateInterval } from '@/domain/core/date-interval';
 import { CashflowVariation } from '@/domain/core/flows/cashflow-variation';
 import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
-import { AsyncResult, Result } from '@/domain/core/result';
-import { Settings } from '@/domain/core/store-items/settings';
 import { today } from '@/features/shared/utils/with-date';
+import { Settings } from '@/settings/core/settings';
+import { DateInterval } from '@/shared/core/date-interval';
+import { AsyncResult, Result } from '@/shared/core/result';
 import { FlowsRepository } from '../flows-repository';
 
 export const WatchUpcomingFlowsUseCase = (settings: Settings, repository: FlowsRepository) => {

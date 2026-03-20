@@ -1,4 +1,4 @@
-import { type AsyncResult } from '@/domain/core/result';
+import { type AsyncResult } from '@/shared/core/result';
 import { CategoriesRepository } from '../categories-repository';
 import { Category } from '../category';
 

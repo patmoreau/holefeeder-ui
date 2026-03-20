@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
-import { type AsyncResult, Result } from '@/domain/core/result';
-import { GetSettingsUseCase } from '@/domain/core/store-items/get-settings/get-settings-use-case';
-import type { Settings } from '@/domain/core/store-items/settings';
+import { GetSettingsUseCase } from '@/settings/core/get-settings/get-settings-use-case';
+import type { Settings } from '@/settings/core/settings';
+import { type AsyncResult, Result } from '@/shared/core/result';
 
 export const useSettings = (): AsyncResult<Settings> => {
   const { storeItemRepository } = useRepositories();

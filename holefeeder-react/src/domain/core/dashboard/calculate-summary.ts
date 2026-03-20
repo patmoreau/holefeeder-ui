@@ -1,7 +1,7 @@
 import { CategoryType, CategoryTypes } from '@/domain/core/categories/category-type';
-import { DateIntervalType } from '@/domain/core/date-interval-type';
-import { DateOnly } from '@/domain/core/date-only';
-import { Money } from '@/domain/core/money';
+import { DateIntervalType } from '@/shared/core/date-interval-type';
+import { DateOnly } from '@/shared/core/date-only';
+import { Money } from '@/shared/core/money';
 import { SummaryData } from './summary-data';
 
 export type SummaryResult = {

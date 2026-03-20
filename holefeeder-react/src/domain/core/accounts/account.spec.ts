@@ -1,8 +1,8 @@
 import { anAccount, toAccount } from '@/domain/core/accounts/__tests__/account-for-test';
 import { Account, AccountErrors } from '@/domain/core/accounts/account';
-import { DateOnlyErrors } from '@/domain/core/date-only';
-import { IdErrors } from '@/domain/core/id';
-import { VariationErrors } from '@/domain/core/variation';
+import { DateOnlyErrors } from '@/shared/core/date-only';
+import { IdErrors } from '@/shared/core/id';
+import { VariationErrors } from '@/shared/core/variation';
 
 describe('Account', () => {
   const validAccount = anAccount();

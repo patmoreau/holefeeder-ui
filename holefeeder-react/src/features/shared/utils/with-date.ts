@@ -1,5 +1,5 @@
 import { addDays, addMonths, addWeeks, addYears, format, parseISO, startOfToday } from 'date-fns';
-import { DateOnly } from '@/domain/core/date-only';
+import { DateOnly } from '@/shared/core/date-only';
 
 export const today = () => withDate(startOfToday()).toDateOnly();
 

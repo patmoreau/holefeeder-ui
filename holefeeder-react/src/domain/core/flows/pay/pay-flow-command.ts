@@ -1,7 +1,7 @@
-import { DateOnly } from '@/domain/core/date-only';
-import { Id } from '@/domain/core/id';
-import { Money } from '@/domain/core/money';
-import { Result } from '@/domain/core/result';
+import { DateOnly } from '@/shared/core/date-only';
+import { Id } from '@/shared/core/id';
+import { Money } from '@/shared/core/money';
+import { Result } from '@/shared/core/result';
 
 export type PayFlowCommand = {
   date: DateOnly;

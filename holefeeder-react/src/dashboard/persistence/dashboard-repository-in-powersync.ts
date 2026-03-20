@@ -1,6 +1,6 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
-import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
-import { SummaryData } from '@/domain/core/dashboard/summary-data';
+import { DashboardRepository } from '@/dashboard/core/dashboard-repository';
+import { SummaryData } from '@/dashboard/core/summary-data';
 import { Settings } from '@/settings/core/settings';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { Money } from '@/shared/core/money';

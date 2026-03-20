@@ -6,7 +6,7 @@ import { DateField } from '@/features/shared/ui/fields/DateField';
 import { DateIntervalTypeField } from '@/features/shared/ui/fields/DateIntervalTypeField';
 import { FrequencyField } from '@/features/shared/ui/fields/FrequencyField';
 import { tk } from '@/i18n/translations';
-import { useSettingsForm } from '@/settings/presentation/hooks/use-settings-form';
+import { useSettingsForm } from '@/settings/presentation/core/use-settings-form';
 
 export const BudgetSettingsFormContent = () => {
   const { t } = useTranslation();

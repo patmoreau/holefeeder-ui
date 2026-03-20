@@ -1,5 +1,5 @@
 import { anAmount } from '@/__tests__/mocks/number-for-test';
-import { SummaryResult } from '@/domain/core/dashboard/calculate-summary';
+import { SummaryResult } from '@/dashboard/core/calculate-summary';
 
 const defaultSummary = (): SummaryResult => ({
   currentExpenses: anAmount(),

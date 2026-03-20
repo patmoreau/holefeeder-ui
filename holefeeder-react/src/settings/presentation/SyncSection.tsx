@@ -11,7 +11,7 @@ import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { tk } from '@/i18n/translations';
 import { DEFAULT_SYNC_INFO } from '@/settings/core/sync-info';
-import { useSyncInfo } from '@/settings/presentation/hooks/use-sync-info';
+import { useSyncInfo } from '@/settings/presentation/core/use-sync-info';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppIcons } from '@/types/icons';
 import { spacing, Theme } from '@/types/theme';

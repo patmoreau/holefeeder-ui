@@ -1,5 +1,5 @@
-import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
-import { SummaryData } from '@/domain/core/dashboard/summary-data';
+import { DashboardRepository } from '@/dashboard/core/dashboard-repository';
+import { SummaryData } from '@/dashboard/core/summary-data';
 import { type AsyncResult, Result } from '@/shared/core/result';
 
 export type DashboardRepositoryInMemory = DashboardRepository & {

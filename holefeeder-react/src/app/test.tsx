@@ -1,1 +1,1 @@
-export { default } from '@/features/test/TestComponentsScreen';
+export { default } from '@/settings/presentation/test/TestComponentsScreen';

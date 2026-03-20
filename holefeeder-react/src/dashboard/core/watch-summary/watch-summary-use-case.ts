@@ -1,7 +1,7 @@
 import { today } from '@/features/shared/utils/with-date';
 import { Settings } from '@/settings/core/settings';
 import { type AsyncResult, Result } from '@/shared/core/result';
-import { DateInterval } from '../../../../shared/core/date-interval';
+import { DateInterval } from '../../../shared/core/date-interval';
 import { calculateSummary, SummaryResult } from '../calculate-summary';
 import { DashboardRepository } from '../dashboard-repository';
 import { SummaryData } from '../summary-data';

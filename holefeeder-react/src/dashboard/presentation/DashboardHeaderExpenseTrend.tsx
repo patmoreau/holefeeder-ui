@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { DashboardComputedSummary } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
+import { DashboardComputedSummary } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
 import { tk } from '@/i18n/translations';

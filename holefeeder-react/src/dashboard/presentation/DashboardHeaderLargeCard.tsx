@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { DashboardComputedSummary } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
-import { DashboardHeaderExpenseTrend } from '@/features/dashboard/ui/DashboardHeaderExpenseTrend';
+import { DashboardComputedSummary } from '@/dashboard/core/watch-summary/watch-summary-use-case';
+import { DashboardHeaderExpenseTrend } from '@/dashboard/presentation/DashboardHeaderExpenseTrend';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';

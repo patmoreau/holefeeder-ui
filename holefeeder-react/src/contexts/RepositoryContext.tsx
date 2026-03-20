@@ -1,12 +1,12 @@
 import { usePowerSync } from '@powersync/react';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import { DashboardRepository } from '@/dashboard/core/dashboard-repository';
+import { DashboardRepositoryInPowersync } from '@/dashboard/persistence/dashboard-repository-in-powersync';
 import { AccountsRepository } from '@/domain/core/accounts/accounts-repository';
 import { CategoriesRepository } from '@/domain/core/categories/categories-repository';
-import { DashboardRepository } from '@/domain/core/dashboard/dashboard-repository';
 import { FlowsRepository } from '@/domain/core/flows/flows-repository';
 import { AccountsRepositoryInPowersync } from '@/domain/persistence/accounts/accounts-repository-in-powersync';
 import { CategoriesRepositoryInPowersync } from '@/domain/persistence/categories/categories-repository-in-powersync';
-import { DashboardRepositoryInPowersync } from '@/domain/persistence/dashboard/dashboard-repository-in-powersync';
 import { FlowsRepositoryInPowersync } from '@/domain/persistence/flows/flows-repository-in-powersync';
 import { SettingsRepository } from '@/settings/core/settings-repository';
 import { SettingsRepositoryInPowersync } from '@/settings/persistence/settings-repository-in-powersync';

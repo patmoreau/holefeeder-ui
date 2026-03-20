@@ -1,9 +1,9 @@
 import { waitFor } from '@testing-library/react-native';
 import { startOfMonth } from 'date-fns';
+import { DashboardRepositoryInMemory } from '@/dashboard/__tests__/dashboard-repository-in-memory';
+import { aSummaryData } from '@/dashboard/__tests__/summary-data-for-test';
+import { DashboardComputedSummary, WatchSummaryUseCase } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { CategoryTypes } from '@/domain/core/categories/category-type';
-import { DashboardRepositoryInMemory } from '@/domain/core/dashboard/__tests__/dashboard-repository-in-memory';
-import { aSummaryData } from '@/domain/core/dashboard/__tests__/summary-data-for-test';
-import { DashboardComputedSummary, WatchSummaryUseCase } from '@/domain/core/dashboard/watch-summary/watch-summary-use-case';
 import { today, withDate } from '@/features/shared/utils/with-date';
 import { aSettings } from '@/settings/__tests__/settings-for-test';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';

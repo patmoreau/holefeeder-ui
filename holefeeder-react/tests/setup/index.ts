@@ -7,5 +7,6 @@ import './result-matcher';
 jest.mock('module');
 
 jest.mock('expo-crypto', () => ({
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   randomUUID: () => require('crypto').randomUUID(),
 }));

@@ -1,9 +1,9 @@
 import { useNavigation } from 'expo-router';
 import React, { useLayoutEffect } from 'react';
-import { useFormActions } from '@/features/shared/core/use-form-actions';
-import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { BudgetSettingsFormContent } from '@/settings/presentation/BudgetSettingsFormContent';
 import { useSettingsForm } from '@/settings/presentation/core/use-settings-form';
+import { AppButton } from '@/shared/presentation/components/AppButton';
+import { useFormActions } from '@/shared/presentation/core/use-form-actions';
 import { AppIcons } from '@/types/icons';
 
 export const BudgetSettingsForm = () => {

@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, type ViewProps } from 'react-native';
-import { AppText } from '@/features/shared/ui/components/AppText';
-import { today } from '@/features/shared/utils/with-date';
 import { AccountDetail } from '@/flows/core/accounts/account-detail';
 import { AccountType } from '@/flows/core/accounts/account-type';
 import { tk } from '@/i18n/translations';
 import { Variation } from '@/shared/core/variation';
+import { today } from '@/shared/core/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { AppText } from '@/shared/presentation/components/AppText';
 import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

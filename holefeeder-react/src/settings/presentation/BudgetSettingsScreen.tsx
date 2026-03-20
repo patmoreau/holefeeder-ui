@@ -1,15 +1,15 @@
 import React from 'react';
-import { useMultipleWatches, withDefault } from '@/features/shared/core/use-multiple-watches';
-import { useSettings } from '@/features/shared/core/use-settings';
-import { AppScreen } from '@/features/shared/ui/AppScreen';
-import { AppView } from '@/features/shared/ui/AppView';
-import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
-import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { DefaultSettings } from '@/settings/core/settings';
 import { SettingsFormData } from '@/settings/core/settings-form-data';
 import { BudgetSettingsForm } from '@/settings/presentation/BudgetSettingsForm';
 import { SettingsFormProvider, validateSettingsForm } from '@/settings/presentation/core/use-settings-form';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { AppScreen } from '@/shared/presentation/AppScreen';
+import { AppView } from '@/shared/presentation/AppView';
+import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
+import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
+import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
+import { useSettings } from '@/shared/presentation/core/use-settings';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({

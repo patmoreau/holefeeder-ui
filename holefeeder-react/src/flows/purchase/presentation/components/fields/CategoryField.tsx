@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppField } from '@/features/shared/ui/AppField';
-import { AppPicker } from '@/features/shared/ui/components/AppPicker';
 import { Category } from '@/flows/core/categories/category';
 import { CategoryType } from '@/flows/core/categories/category-type';
 import { tk } from '@/i18n/translations';
+import { AppField } from '@/shared/presentation/AppField';
+import { AppPicker } from '@/shared/presentation/components/AppPicker';
 import { AppIcons } from '@/types/icons';
 
 type Props = {

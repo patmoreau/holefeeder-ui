@@ -1,6 +1,6 @@
-import { withDate } from '@/features/shared/utils/with-date';
 import { Result } from '@/shared/core/result';
 import { Validate, Validator } from '@/shared/core/validate';
+import { withDate } from '@/shared/core/with-date';
 import { DateOnly } from './date-only';
 
 export const DateIntervalTypes = {

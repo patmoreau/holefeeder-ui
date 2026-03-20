@@ -1,12 +1,12 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 import { ExternalLink } from '@/accounts/presentation/external-link';
-import { AppCollapsible } from '@/features/shared/ui/components/AppCollapsible';
-import { AppText } from '@/features/shared/ui/components/AppText';
-import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
-import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
-import { ScreenTitle } from '@/features/shared/ui/ScreenTitle';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { AppCollapsible } from '@/shared/presentation/components/AppCollapsible';
+import { AppText } from '@/shared/presentation/components/AppText';
+import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
+import { ParallaxScrollView } from '@/shared/presentation/ParallaxScrollView';
+import { ScreenTitle } from '@/shared/presentation/ScreenTitle';
 import { AppIcons } from '@/types/icons';
 import { Fonts } from '@/types/theme/theme';
 

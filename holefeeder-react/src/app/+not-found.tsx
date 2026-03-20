@@ -1,10 +1,10 @@
 import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { AppView } from '@/features/shared/ui/AppView';
-import { AppButton } from '@/features/shared/ui/components/AppButton';
-import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { AppView } from '@/shared/presentation/AppView';
+import { AppButton } from '@/shared/presentation/components/AppButton';
+import { AppText } from '@/shared/presentation/components/AppText';
 import { GlobalStyles } from '@/types/theme/global-styles';
 import { Theme } from '@/types/theme/theme';
 

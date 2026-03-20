@@ -3,12 +3,12 @@ import { startOfMonth } from 'date-fns';
 import { DashboardRepositoryInMemory } from '@/dashboard/__tests__/dashboard-repository-in-memory';
 import { aSummaryData } from '@/dashboard/__tests__/summary-data-for-test';
 import { DashboardComputedSummary, WatchSummaryUseCase } from '@/dashboard/core/watch-summary/watch-summary-use-case';
-import { today, withDate } from '@/features/shared/utils/with-date';
 import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { aSettings } from '@/settings/__tests__/settings-for-test';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult } from '@/shared/core/result';
+import { today, withDate } from '@/shared/core/with-date';
 
 describe('WatchCategoriesUseCase', () => {
   const asOfDate = withDate(startOfMonth(today())).toDateOnly();

@@ -3,7 +3,7 @@ import { useRepositories } from '@/contexts/RepositoryContext';
 import { DashboardComputedSummary, WatchSummaryUseCase } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { DefaultSettings } from '@/settings/core/settings';
 import { type AsyncResult, Result } from '@/shared/core/result';
-import { useSettings } from '../../../features/shared/core/use-settings';
+import { useSettings } from '@/shared/presentation/core/use-settings';
 
 export const useDashboard = (): AsyncResult<DashboardComputedSummary> => {
   const { dashboardRepository } = useRepositories();

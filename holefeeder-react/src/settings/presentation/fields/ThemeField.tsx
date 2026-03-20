@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppField } from '@/features/shared/ui/AppField';
-import { AppPicker, PickerOption } from '@/features/shared/ui/components/AppPicker';
 import { tk } from '@/i18n/translations';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { AppField } from '@/shared/presentation/AppField';
+import { AppPicker, PickerOption } from '@/shared/presentation/components/AppPicker';
 import { AppIcons } from '@/types/icons';
 import { ThemeMode } from '@/types/theme/theme';
 

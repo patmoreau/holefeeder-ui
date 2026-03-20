@@ -7,12 +7,12 @@ import { useDashboard } from '@/dashboard/presentation/core/use-dashboard';
 import { useUpcomingFlows } from '@/dashboard/presentation/core/use-upcoming-flows';
 import { DashboardHeaderLargeCard } from '@/dashboard/presentation/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/dashboard/presentation/DashboardHeaderSmallCard';
-import { useMultipleWatches, withDefault } from '@/features/shared/core/use-multiple-watches';
-import { AppView } from '@/features/shared/ui/AppView';
-import { CardHeaderScrollView } from '@/features/shared/ui/CardHeaderScrollView';
-import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { AppView } from '@/shared/presentation/AppView';
+import { CardHeaderScrollView } from '@/shared/presentation/CardHeaderScrollView';
+import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
+import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
 import { fontSize, fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

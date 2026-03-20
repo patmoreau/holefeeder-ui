@@ -1,6 +1,6 @@
 import { defineConfig } from 'eslint/config';
 import expoConfig from 'eslint-config-expo/flat.js';
-import importX from 'eslint-plugin-import-x';
+import { importX } from 'eslint-plugin-import-x';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default defineConfig([

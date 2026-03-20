@@ -1,12 +1,12 @@
 import { useNavigation } from 'expo-router';
 import React, { useLayoutEffect } from 'react';
-import { useFormActions } from '@/features/shared/core/use-form-actions';
-import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { Account } from '@/flows/core/accounts/account';
 import { Category } from '@/flows/core/categories/category';
 import { Tag } from '@/flows/core/flows/tag';
 import { usePurchaseForm } from '@/flows/purchase/presentation/core/use-purchase-form';
 import { PurchaseFormContent } from '@/flows/purchase/presentation/PurchaseFormContent';
+import { AppButton } from '@/shared/presentation/components/AppButton';
+import { useFormActions } from '@/shared/presentation/core/use-form-actions';
 import { AppIcons } from '@/types/icons';
 
 interface PurchaseFormProps {

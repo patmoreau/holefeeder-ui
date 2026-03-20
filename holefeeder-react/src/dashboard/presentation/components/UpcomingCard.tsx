@@ -5,17 +5,17 @@ import { SwipeableMethods } from 'react-native-gesture-handler/lib/typescript/co
 import { SharedValue } from 'react-native-reanimated';
 import { useRepositories } from '@/contexts/RepositoryContext';
 import { useUpcomingFlow } from '@/dashboard/presentation/core/use-pay-form';
-import { AppSwipeableRow } from '@/features/shared/ui/AppSwipeableRow';
-import { AppChip } from '@/features/shared/ui/components/AppChip';
-import { AppLeftAction } from '@/features/shared/ui/components/AppLeftAction';
-import { AppRightAction } from '@/features/shared/ui/components/AppRightAction';
-import { AppText } from '@/features/shared/ui/components/AppText';
-import { showAlert } from '@/features/shared/utils/show-alert';
-import { today } from '@/features/shared/utils/with-date';
 import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
 import { tk } from '@/i18n/translations';
+import { today } from '@/shared/core/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { AppSwipeableRow } from '@/shared/presentation/AppSwipeableRow';
+import { AppChip } from '@/shared/presentation/components/AppChip';
+import { AppLeftAction } from '@/shared/presentation/components/AppLeftAction';
+import { AppRightAction } from '@/shared/presentation/components/AppRightAction';
+import { AppText } from '@/shared/presentation/components/AppText';
+import { showAlert } from '@/shared/presentation/show-alert';
 import { Theme } from '@/types/theme';
 import { shadows, spacing } from '@/types/theme/design-tokens';
 

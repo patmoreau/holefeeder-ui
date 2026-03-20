@@ -1,8 +1,8 @@
-import { today } from '@/features/shared/utils/with-date';
 import { DateIntervalType, DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { DateOnly } from '@/shared/core/date-only';
 import { Result } from '@/shared/core/result';
 import { Validate, Validator } from '@/shared/core/validate';
+import { today } from '@/shared/core/with-date';
 
 export const SETTINGS_CODE = 'settings';
 

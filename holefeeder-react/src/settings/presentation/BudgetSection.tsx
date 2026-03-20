@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppField } from '@/features/shared/ui/AppField';
-import { AppSection } from '@/features/shared/ui/AppSection';
-import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { tk } from '@/i18n/translations';
+import { AppField } from '@/shared/presentation/AppField';
+import { AppSection } from '@/shared/presentation/AppSection';
+import { AppButton } from '@/shared/presentation/components/AppButton';
 import { AppIcons } from '@/types/icons';
 
 export function BudgetSection() {

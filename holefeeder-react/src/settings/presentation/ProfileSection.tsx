@@ -3,14 +3,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useAppContext } from '@/contexts/AppContext';
-import { AppSection } from '@/features/shared/ui/AppSection';
-import { AuthButton } from '@/features/shared/ui/AuthButton';
-import { AppText } from '@/features/shared/ui/components/AppText';
 import { tk } from '@/i18n/translations';
 import { AccessTokenField } from '@/settings/presentation/fields/AccessTokenField';
 import { ExpiresAtField } from '@/settings/presentation/fields/ExpiresAtField';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { AppSection } from '@/shared/presentation/AppSection';
+import { AuthButton } from '@/shared/presentation/AuthButton';
+import { AppText } from '@/shared/presentation/components/AppText';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({

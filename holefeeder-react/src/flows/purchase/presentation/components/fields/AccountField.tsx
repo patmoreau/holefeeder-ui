@@ -1,7 +1,7 @@
 import React from 'react';
-import { AppField } from '@/features/shared/ui/AppField';
-import { AppPicker } from '@/features/shared/ui/components/AppPicker';
 import { Account } from '@/flows/core/accounts/account';
+import { AppField } from '@/shared/presentation/AppField';
+import { AppPicker } from '@/shared/presentation/components/AppPicker';
 import { AppIcons } from '@/types/icons';
 
 type Props = {

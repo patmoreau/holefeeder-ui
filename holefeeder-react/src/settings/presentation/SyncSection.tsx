@@ -1,18 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMultipleWatches, withDefault } from '@/features/shared/core/use-multiple-watches';
-import { AppField } from '@/features/shared/ui/AppField';
-import { AppSection } from '@/features/shared/ui/AppSection';
-import { AppView } from '@/features/shared/ui/AppView';
-import { AppCollapsible } from '@/features/shared/ui/components/AppCollapsible';
-import { AppSwitch } from '@/features/shared/ui/components/AppSwitch';
-import { AppText } from '@/features/shared/ui/components/AppText';
-import { ErrorSheet } from '@/features/shared/ui/components/ErrorSheet';
-import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { tk } from '@/i18n/translations';
 import { DEFAULT_SYNC_INFO } from '@/settings/core/sync-info';
 import { useSyncInfo } from '@/settings/presentation/core/use-sync-info';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { AppField } from '@/shared/presentation/AppField';
+import { AppSection } from '@/shared/presentation/AppSection';
+import { AppView } from '@/shared/presentation/AppView';
+import { AppCollapsible } from '@/shared/presentation/components/AppCollapsible';
+import { AppSwitch } from '@/shared/presentation/components/AppSwitch';
+import { AppText } from '@/shared/presentation/components/AppText';
+import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
+import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
+import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
 import { AppIcons } from '@/types/icons';
 import { spacing, Theme } from '@/types/theme';
 

@@ -2,13 +2,13 @@ import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text } from 'react-native';
-import { AppSection } from '@/features/shared/ui/AppSection';
-import { DateField } from '@/features/shared/ui/fields/DateField';
 import { Account } from '@/flows/core/accounts/account';
 import { AccountField } from '@/flows/purchase/presentation/components/fields/AccountField';
 import { DescriptionField } from '@/flows/purchase/presentation/components/fields/DescriptionField';
 import { PurchaseFormError, usePurchaseForm } from '@/flows/purchase/presentation/core/use-purchase-form';
 import { tk } from '@/i18n/translations';
+import { AppSection } from '@/shared/presentation/AppSection';
+import { DateField } from '@/shared/presentation/fields/DateField';
 import { fontSize, spacing } from '@/types/theme/design-tokens';
 
 const tkErrors: Record<PurchaseFormError, string> = {

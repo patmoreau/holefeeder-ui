@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconSymbol } from '@/features/shared/ui/components/IconSymbol';
-import { ParallaxScrollView } from '@/features/shared/ui/ParallaxScrollView';
-import { ScreenTitle } from '@/features/shared/ui/ScreenTitle';
 import { tk } from '@/i18n/translations';
 import { SettingsContent } from '@/settings/presentation/SettingsContent';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
+import { ParallaxScrollView } from '@/shared/presentation/ParallaxScrollView';
+import { ScreenTitle } from '@/shared/presentation/ScreenTitle';
 import { AppIcons } from '@/types/icons';
 
 const createStyles = () => ({

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
-import { useSettings } from '@/features/shared/core/use-settings';
 import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
 import { WatchUpcomingFlowsUseCase } from '@/flows/core/flows/watch-upcoming/watch-upcoming-flows-use-case';
 import { DefaultSettings } from '@/settings/core/settings';
 import { type AsyncResult, Result } from '@/shared/core/result';
+import { useSettings } from '@/shared/presentation/core/use-settings';
 
 export const useUpcomingFlows = (): AsyncResult<UpcomingFlow[]> => {
   const { flowRepository } = useRepositories();

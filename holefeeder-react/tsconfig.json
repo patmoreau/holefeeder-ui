@@ -5,19 +5,19 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@/accounts/*": ["./src/accounts/*"],
       "@/app/*": ["./src/app/*"],
       "@/assets/*": ["./assets/*"],
-      "@/components/*": ["./src/components/*"],
       "@/config/*": ["./src/config/*"],
-      "@/core/*": ["./src/core/*"],
-      "@/constants/*": ["./src/constants/*"],
       "@/contexts/*": ["./src/contexts/*"],
-      "@/hooks/*": ["./src/hooks/*"],
+      "@/dshboard/*": ["./src/dshboard/*"],
+      "@/flows/*": ["./src/flows/*"],
       "@/i18n/*": ["./src/i18n/*"],
       "@/modules/*": ["./modules/*"],
-      "@/services/*": ["./src/services/*"],
+      "@/settings/*": ["./src/settings/*"],
+      "@/shared/*": ["./src/shared/*"],
       "@/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/utils/*"]
+      "@/user-registration/*": ["./src/user-registration/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "src/i18n/react-i18next.d.ts"],

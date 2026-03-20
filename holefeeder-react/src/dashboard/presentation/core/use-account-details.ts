@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
-import { useSettings } from '@/features/shared/core/use-settings';
-import { today } from '@/features/shared/utils/with-date';
 import { AccountDetail } from '@/flows/core/accounts/account-detail';
 import { WatchAccountDetailsUseCase } from '@/flows/core/accounts/watch-account-details/watch-account-details-use-case';
 import { DefaultSettings } from '@/settings/core/settings';
 import { DateInterval } from '@/shared/core/date-interval';
 import { type AsyncResult, Result } from '@/shared/core/result';
+import { today } from '@/shared/core/with-date';
+import { useSettings } from '@/shared/presentation/core/use-settings';
 
 export const useAccountDetails = (): AsyncResult<AccountDetail[]> => {
   const { accountRepository, flowRepository } = useRepositories();

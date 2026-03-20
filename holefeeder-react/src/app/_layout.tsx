@@ -8,10 +8,10 @@ import { config } from '@/config/config';
 import { AppProvider } from '@/contexts/AppContext';
 import { PowerSyncAuthProvider } from '@/contexts/PowerSyncAuthProvider';
 import { RepositoryProvider } from '@/contexts/RepositoryContext';
-import { LoadingIndicator } from '@/features/shared/ui/components/LoadingIndicator';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useQuickActions } from '@/shared/hooks/use-quick-actions';
+import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 //
 // (function addConsoleTimestamp() {
 //   const methods: (keyof Console)[] = ['log', 'info', 'warn', 'error', 'debug'];

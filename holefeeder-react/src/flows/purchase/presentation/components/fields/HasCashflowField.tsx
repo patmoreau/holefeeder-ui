@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppField } from '@/features/shared/ui/AppField';
-import { AppSwitch } from '@/features/shared/ui/components/AppSwitch';
 import { tk } from '@/i18n/translations';
+import { AppField } from '@/shared/presentation/AppField';
+import { AppSwitch } from '@/shared/presentation/components/AppSwitch';
 import { AppIcons } from '@/types/icons';
 
 type Props = {

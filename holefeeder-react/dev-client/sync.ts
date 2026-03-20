@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { Schema } from '@powersync/common';
 import { PowerSyncDatabase } from '@powersync/node';
-import Database from 'better-sqlite3';
+import * as Database from 'better-sqlite3';
 
 // Define the connector interface based on PowerSync requirements
 interface PowerSyncBackendConnector {
@@ -86,7 +86,7 @@ class PowerSyncToSQLiteSync extends EventEmitter {
       },
     });
 
-    this.sqliteDb = new Database(config.sqliteDbPath);
+    this.sqliteDb = new Database.Database(config.sqliteDbPath);
   }
 
   async initialize(): Promise<void> {
@@ -221,7 +221,7 @@ class PowerSyncToSQLiteSync extends EventEmitter {
 async function main() {
   // Import schema (adjust path as needed)
   // @ts-ignore
-  // eslint-disable-next-line import/no-unresolved
+  // eslint-disable-next-line import/no-unresolved,import-x/no-unresolved
   const { AppSchema } = await import('./app-schema.js');
 
   // Validate required environment variables

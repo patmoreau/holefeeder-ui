@@ -1,8 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { AppButton } from '@/features/shared/ui/components/AppButton';
 import { tk } from '@/i18n/translations';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { AppButton } from '@/shared/presentation/components/AppButton';
 import { AppIcons } from '@/types/icons';
 
 const AppLayout = () => {

@@ -1,1 +1,1 @@
-export { default } from '@/features/accounts/ui/accounts';
+export { default } from '@/accounts/presentation/accounts';

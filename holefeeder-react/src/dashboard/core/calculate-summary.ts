@@ -1,4 +1,4 @@
-import { CategoryType, CategoryTypes } from '@/domain/core/categories/category-type';
+import { CategoryType, CategoryTypes } from '@/flows/core/categories/category-type';
 import { DateIntervalType } from '@/shared/core/date-interval-type';
 import { DateOnly } from '@/shared/core/date-only';
 import { Money } from '@/shared/core/money';

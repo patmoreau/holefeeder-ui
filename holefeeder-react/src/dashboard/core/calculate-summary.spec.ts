@@ -1,6 +1,6 @@
 import { startOfMonth } from 'date-fns';
-import { CategoryType, CategoryTypes } from '@/domain/core/categories/category-type';
 import { today, withDate } from '@/features/shared/utils/with-date';
+import { CategoryType, CategoryTypes } from '@/flows/core/categories/category-type';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { DateOnly } from '@/shared/core/date-only';
 import { Money } from '@/shared/core/money';

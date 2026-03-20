@@ -1,10 +1,10 @@
 import { waitFor } from '@testing-library/react-native';
 import { startOfMonth } from 'date-fns';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
-import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
-import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
-import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
 import { today, withDate } from '@/features/shared/utils/with-date';
+import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
+import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
+import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
 import { aSettings } from '@/settings/__tests__/settings-for-test';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { Money } from '@/shared/core/money';

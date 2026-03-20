@@ -1,0 +1,55 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { AppSection } from '@/features/shared/ui/AppSection';
+import { DateField } from '@/features/shared/ui/fields/DateField';
+import { Account } from '@/flows/core/accounts/account';
+import { Category } from '@/flows/core/categories/category';
+import { CategoryTypes } from '@/flows/core/categories/category-type';
+import { Tag } from '@/flows/core/flows/tag';
+import { AccountField } from '@/flows/purchase/presentation/components/fields/AccountField';
+import { CategoryField } from '@/flows/purchase/presentation/components/fields/CategoryField';
+import { DescriptionField } from '@/flows/purchase/presentation/components/fields/DescriptionField';
+import { TagList } from '@/flows/purchase/presentation/components/TagList';
+import { PurchaseType } from '@/flows/purchase/presentation/core/purchase-form-data';
+import { usePurchaseForm } from '@/flows/purchase/presentation/core/use-purchase-form';
+import { tk } from '@/i18n/translations';
+
+type Props = {
+  accounts: Account[];
+  categories: Category[];
+  tags: Tag[];
+};
+
+export function BasicSection({ accounts, categories, tags }: Props) {
+  const { t } = useTranslation();
+  const { formData, updateFormField } = usePurchaseForm();
+
+  const updateSourceAccount = (account: Account) => updateFormField('sourceAccount', account);
+
+  const updateCategory = (category: Category) => updateFormField('category', category);
+
+  const selectedTags = formData?.tags ?? [];
+  const updateTags = (next: Tag[]) => updateFormField('tags', next);
+  const updateDescription = (value: string) => updateFormField('description', value);
+
+  const variant = formData.purchaseType === PurchaseType.expense ? CategoryTypes.expense : CategoryTypes.gain;
+
+  return (
+    <AppSection>
+      <DateField
+        label={t(tk.purchase.basicSection.date)}
+        selectedDate={formData.date}
+        onDateSelected={(date) => updateFormField('date', date)}
+      />
+      <AccountField
+        label={t(tk.purchase.basicSection.account)}
+        accounts={accounts}
+        selectedAccount={formData.sourceAccount}
+        onSelectAccount={updateSourceAccount}
+      />
+      <CategoryField categories={categories} selectedCategory={formData.category} onSelectCategory={updateCategory} variant={variant} />
+      <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
+      <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
+    </AppSection>
+  );
+}

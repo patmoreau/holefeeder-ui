@@ -1,6 +1,6 @@
 import { ScrollView, View, type ViewProps } from 'react-native';
 import { AccountCard } from '@/dashboard/presentation/components/AccountCard';
-import { AccountDetail } from '@/domain/core/accounts/account-detail';
+import { AccountDetail } from '@/flows/core/accounts/account-detail';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { spacing } from '@/types/theme/design-tokens';
 

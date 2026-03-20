@@ -1,1 +1,1 @@
-export { default } from '@/features/user-registration/ui/Login';
+export { default } from '@/user-registration/ui/Login';

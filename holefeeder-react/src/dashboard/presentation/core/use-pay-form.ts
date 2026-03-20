@@ -1,7 +1,7 @@
 import { Repositories } from '@/contexts/RepositoryContext';
-import { DeactivateUpcomingFlowUseCase } from '@/domain/core/flows/deactivate-upcoming/deactivate-upcoming-flow-use-case';
-import { PayUseCase } from '@/domain/core/flows/pay/pay-use-case';
-import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
+import { DeactivateUpcomingFlowUseCase } from '@/flows/core/flows/deactivate-upcoming/deactivate-upcoming-flow-use-case';
+import { PayUseCase } from '@/flows/core/flows/pay/pay-use-case';
+import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
 import { Money } from '@/shared/core/money';
 
 export const useUpcomingFlow = (repositories: Repositories) => {

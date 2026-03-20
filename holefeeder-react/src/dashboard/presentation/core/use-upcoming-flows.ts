@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
-import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
-import { WatchUpcomingFlowsUseCase } from '@/domain/core/flows/watch-upcoming/watch-upcoming-flows-use-case';
 import { useSettings } from '@/features/shared/core/use-settings';
+import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
+import { WatchUpcomingFlowsUseCase } from '@/flows/core/flows/watch-upcoming/watch-upcoming-flows-use-case';
 import { DefaultSettings } from '@/settings/core/settings';
 import { type AsyncResult, Result } from '@/shared/core/result';
 

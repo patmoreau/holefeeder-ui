@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, type ViewProps } from 'react-native';
-import { AccountDetail } from '@/domain/core/accounts/account-detail';
-import { AccountType } from '@/domain/core/accounts/account-type';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { today } from '@/features/shared/utils/with-date';
+import { AccountDetail } from '@/flows/core/accounts/account-detail';
+import { AccountType } from '@/flows/core/accounts/account-type';
 import { tk } from '@/i18n/translations';
 import { Variation } from '@/shared/core/variation';
 import { useStyles } from '@/shared/hooks/theme/use-styles';

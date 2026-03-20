@@ -1,10 +1,10 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
-import { anAccount } from '@/domain/core/accounts/__tests__/account-for-test';
-import { aCategory } from '@/domain/core/categories/__tests__/category-for-test';
-import { aCashflow } from '@/domain/core/flows/__tests__/cashflow-for-test';
-import { aTransaction } from '@/domain/core/flows/__tests__/transaction-for-test';
+import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
+import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
+import { aCashflow } from '@/flows/core/flows/__tests__/cashflow-for-test';
+import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
 import { useSyncInfo } from '@/settings/presentation/core/use-sync-info';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';

@@ -5,7 +5,6 @@ import { SwipeableMethods } from 'react-native-gesture-handler/lib/typescript/co
 import { SharedValue } from 'react-native-reanimated';
 import { useRepositories } from '@/contexts/RepositoryContext';
 import { useUpcomingFlow } from '@/dashboard/presentation/core/use-pay-form';
-import { UpcomingFlow } from '@/domain/core/flows/upcoming-flow';
 import { AppSwipeableRow } from '@/features/shared/ui/AppSwipeableRow';
 import { AppChip } from '@/features/shared/ui/components/AppChip';
 import { AppLeftAction } from '@/features/shared/ui/components/AppLeftAction';
@@ -13,6 +12,7 @@ import { AppRightAction } from '@/features/shared/ui/components/AppRightAction';
 import { AppText } from '@/features/shared/ui/components/AppText';
 import { showAlert } from '@/features/shared/utils/show-alert';
 import { today } from '@/features/shared/utils/with-date';
+import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';

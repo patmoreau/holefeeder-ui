@@ -53,9 +53,10 @@ export type FieldProps = {
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   variant?: 'default' | 'large';
+  error?: string;
 } & Omit<ViewProps, 'children'>;
 
-export const AppField = ({ label, icon, children, style, variant = 'default', ...otherProps }: FieldProps) => {
+export const AppField = ({ label, icon, children, style, variant = 'default', error, ...otherProps }: FieldProps) => {
   const styles = useStyles(createStyles);
   const { theme } = useTheme();
 
@@ -71,6 +72,7 @@ export const AppField = ({ label, icon, children, style, variant = 'default', ..
           </View>
           <View style={styles.largeContent}>{children}</View>
         </View>
+        {error && <AppText variant={'errorField'}>{error}</AppText>}
       </View>
     );
   }
@@ -84,6 +86,7 @@ export const AppField = ({ label, icon, children, style, variant = 'default', ..
         {label && <Text style={styles.label}>{label}</Text>}
         <View style={styles.defaultContent}>{children}</View>
       </View>
+      {error && <AppText variant={'errorField'}>{error}</AppText>}
     </View>
   );
 };

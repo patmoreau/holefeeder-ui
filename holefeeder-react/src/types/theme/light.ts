@@ -1,5 +1,5 @@
 import { createBaseStyles } from '@/types/theme/base-styles';
-import { fontSize, fontWeight, lineHeight } from '@/types/theme/design-tokens';
+import { fontSize, fontWeight, lineHeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 // Typography using design tokens
@@ -34,6 +34,12 @@ const typography = {
     fontWeight: fontWeight.normal,
     lineHeight: fontSize!.base * lineHeight.tight,
   },
+  errorField: {
+    fontSize: fontSize!.sm,
+    marginTop: spacing.xs,
+    marginLeft: 36 + spacing.sm,
+    marginBottom: spacing.sm,
+  },
 } as const;
 
 // Color palette
@@ -46,6 +52,7 @@ const colors = {
   primaryText: '#FFFFFF',
   secondaryText: '#6C6C70',
   destructive: '#E53B3B',
+  error: '#FF3B30',
   tint: '#7B42F6',
   icon: '#6C6C70',
   tabIconDefault: '#687076',

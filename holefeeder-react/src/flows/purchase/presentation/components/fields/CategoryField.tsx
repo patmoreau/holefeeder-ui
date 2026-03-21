@@ -12,9 +12,10 @@ type Props = {
   selectedCategory: Category;
   onSelectCategory: (category: Category) => void;
   variant?: CategoryType;
+  error?: string;
 };
 
-export function CategoryField({ categories, selectedCategory, onSelectCategory, variant }: Props) {
+export function CategoryField({ categories, selectedCategory, onSelectCategory, variant, error }: Props) {
   const { t } = useTranslation();
   const filteredCategories = variant ? categories.filter((category) => category.type === variant) : categories;
   const isSelectedCategoryInFiltered = filteredCategories.some((category) => category.id === selectedCategory.id);
@@ -26,7 +27,7 @@ export function CategoryField({ categories, selectedCategory, onSelectCategory, 
   }, [isSelectedCategoryInFiltered, filteredCategories, onSelectCategory]);
 
   return (
-    <AppField label={t(tk.purchase.basicSection.category)} icon={AppIcons.category}>
+    <AppField label={t(tk.purchase.basicSection.category)} icon={AppIcons.category} error={error}>
       <AppPicker
         options={filteredCategories}
         selectedOption={isSelectedCategoryInFiltered ? selectedCategory : filteredCategories[0]}

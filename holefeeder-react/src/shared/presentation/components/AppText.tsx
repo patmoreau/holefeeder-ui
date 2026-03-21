@@ -4,7 +4,7 @@ import { fontWeight } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 export type ThemedTextProps = TextProps & {
-  variant?: 'default' | 'largeTitle' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'footnote';
+  variant?: 'default' | 'defaultSemiBold' | 'errorField' | 'footnote' | 'largeTitle' | 'link' | 'subtitle' | 'title';
   adjustsFontSizeToFit?: boolean;
 };
 
@@ -37,6 +37,10 @@ const createStyles = (theme: Theme) => ({
   link: {
     color: theme.colors.link,
   },
+  errorField: {
+    ...theme.typography.errorField,
+    color: theme.colors.error,
+  },
 });
 
 export const AppText = ({ style, variant = 'default', adjustsFontSizeToFit, ...props }: ThemedTextProps) => {
@@ -46,12 +50,13 @@ export const AppText = ({ style, variant = 'default', adjustsFontSizeToFit, ...p
     <Text
       style={[
         variant === 'default' && styles.default,
-        variant === 'largeTitle' && styles.largeTitle,
-        variant === 'title' && styles.title,
         variant === 'defaultSemiBold' && styles.defaultSemiBold,
-        variant === 'subtitle' && styles.subtitle,
+        variant === 'errorField' && styles.errorField,
         variant === 'footnote' && styles.footnote,
+        variant === 'largeTitle' && styles.largeTitle,
         variant === 'link' && styles.link,
+        variant === 'subtitle' && styles.subtitle,
+        variant === 'title' && styles.title,
         style,
       ]}
       adjustsFontSizeToFit={adjustsFontSizeToFit}

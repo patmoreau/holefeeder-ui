@@ -7,11 +7,12 @@ type Props = {
   label: string;
   selectedDate: DateOnly | null;
   onDateSelected: (date: DateOnly) => void;
+  error?: string;
 };
 
-export function DateField({ label, selectedDate, onDateSelected }: Props) {
+export function DateField({ label, selectedDate, onDateSelected, error }: Props) {
   return (
-    <AppField label={label} icon={AppIcons.calendar}>
+    <AppField label={label} icon={AppIcons.calendar} error={error}>
       <AppDatePicker selectedDate={selectedDate} onDateSelected={onDateSelected} />
     </AppField>
   );

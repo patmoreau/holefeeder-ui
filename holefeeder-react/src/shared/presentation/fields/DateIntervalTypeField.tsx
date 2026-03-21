@@ -21,9 +21,10 @@ type DateIntervalTypeOption = PickerOption & {
 type Props = {
   selectedDateIntervalType: DateIntervalType | null;
   onSelectDateIntervalType: (dateIntervalType: DateIntervalType) => void;
+  error?: string;
 };
 
-export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIntervalType }: Props) {
+export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIntervalType, error }: Props) {
   const { t } = useTranslation();
 
   const options = useMemo<DateIntervalTypeOption[]>(() => {
@@ -37,7 +38,7 @@ export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIn
   const selectedOption = options.find((opt) => opt.value === selectedDateIntervalType) ?? options[0];
 
   return (
-    <AppField label={t(tk.purchase.cashflowSection.intervalType)} icon={AppIcons.calendar}>
+    <AppField label={t(tk.purchase.cashflowSection.intervalType)} icon={AppIcons.calendar} error={error}>
       <AppPicker
         options={options}
         selectedOption={selectedOption}

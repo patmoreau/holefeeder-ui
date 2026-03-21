@@ -12,9 +12,10 @@ type FrequencyOption = PickerOption & {
 type Props = {
   selectedFrequency: number;
   onSelectFrequency: (frequency: number) => void;
+  error?: string;
 };
 
-export function FrequencyField({ selectedFrequency, onSelectFrequency }: Props) {
+export function FrequencyField({ selectedFrequency, onSelectFrequency, error }: Props) {
   const { t } = useTranslation();
 
   const options = useMemo<FrequencyOption[]>(() => {
@@ -28,7 +29,7 @@ export function FrequencyField({ selectedFrequency, onSelectFrequency }: Props) 
   const selectedOption = options.find((opt) => opt.value === selectedFrequency) ?? options[0];
 
   return (
-    <AppField label={t(tk.purchase.cashflowSection.frequency)} icon={AppIcons.frequency}>
+    <AppField label={t(tk.purchase.cashflowSection.frequency)} icon={AppIcons.frequency} error={error}>
       <AppPicker
         options={options}
         selectedOption={selectedOption}

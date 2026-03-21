@@ -8,13 +8,14 @@ import { AppIcons } from '@/types/icons';
 type Props = {
   hasCashflow: boolean;
   onHasCashflowChange: (hasCashflow: boolean) => void;
+  error?: string;
 };
 
-export const HasCashflowField = ({ hasCashflow, onHasCashflowChange }: Props) => {
+export const HasCashflowField = ({ hasCashflow, onHasCashflowChange, error }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <AppField label={t(tk.purchase.cashflowSection.cashflow)} icon={AppIcons.cashflow}>
+    <AppField label={t(tk.purchase.cashflowSection.cashflow)} icon={AppIcons.cashflow} error={error}>
       <AppSwitch value={hasCashflow} onChange={onHasCashflowChange} />
     </AppField>
   );

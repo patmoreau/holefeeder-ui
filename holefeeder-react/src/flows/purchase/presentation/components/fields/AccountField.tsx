@@ -9,11 +9,12 @@ type Props = {
   accounts: Account[];
   selectedAccount: Account;
   onSelectAccount: (account: Account) => void;
+  error?: string;
 };
 
-export function AccountField({ label, accounts, selectedAccount, onSelectAccount }: Props) {
+export function AccountField({ label, accounts, selectedAccount, onSelectAccount, error }: Props) {
   return (
-    <AppField label={label} icon={AppIcons.account}>
+    <AppField label={label} icon={AppIcons.account} error={error}>
       <AppPicker
         options={accounts}
         selectedOption={selectedAccount}

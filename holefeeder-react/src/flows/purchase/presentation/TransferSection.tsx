@@ -24,6 +24,8 @@ export const TransferSection = ({ accounts }: Props) => {
   const { t } = useTranslation();
   const { formData, updateFormField, errors, clearErrors } = usePurchaseForm();
 
+  const fieldError = (error: PurchaseFormError | undefined) => (error ? t(tkErrors[error]) : undefined);
+
   const updateSourceAccount = (account: Account) => {
     updateFormField('sourceAccount', account);
     if (errors.targetAccount) {
@@ -58,6 +60,7 @@ export const TransferSection = ({ accounts }: Props) => {
         accounts={accounts}
         selectedAccount={formData.targetAccount}
         onSelectAccount={updateTargetAccount}
+        error={fieldError(errors.targetAccount)}
       />
       <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
     </AppSection>

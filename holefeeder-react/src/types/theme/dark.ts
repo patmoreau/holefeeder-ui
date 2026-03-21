@@ -11,6 +11,7 @@ const colors = {
   primaryText: '#000000',
   secondaryText: '#2b2b2d',
   destructive: '#FF453A',
+  error: '#FF453A',
   tint: '#9D6DE6',
   icon: '#AEAEB2',
   tabIconDefault: '#AEAEB2',

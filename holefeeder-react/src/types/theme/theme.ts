@@ -21,6 +21,7 @@ export interface Theme {
     primaryText: string;
     secondaryText: string;
     destructive: string;
+    error: string;
 
     tint: string;
     icon: string;
@@ -53,6 +54,7 @@ export interface Theme {
     secondary: TextStyle;
     footnote: TextStyle;
     chip: TextStyle;
+    errorField: TextStyle;
   };
   styles: ReturnType<typeof createBaseStyles> & {};
 }

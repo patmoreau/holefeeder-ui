@@ -12,6 +12,7 @@ import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
+import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
@@ -100,6 +101,42 @@ describe('FlowsRepository', () => {
 
       expect(dbResult).toHaveLength(1);
       expect(dbResult[0].inactive).toBe(1);
+    });
+  });
+
+  describe('transfer', () => {
+    it('should save a transfer transaction', async () => {
+      const transferIn = await aCategory({ type: CategoryTypes.gain, name: 'Transfer In' }).store(db);
+      const transferOut = await aCategory({ type: CategoryTypes.expense, name: 'Transfer Out' }).store(db);
+      const transfer: TransferFlowCommand = {
+        date: DateOnly.valid('2026-01-23'),
+        amount: Money.valid(50.25),
+        description: 'Groceries',
+        sourceAccountId: Id.newId(),
+        targetAccountId: Id.newId(),
+      };
+
+      const result = await repository.transfer(transfer);
+
+      expect(result.isSuccess).toBe(true);
+
+      if (result.isFailure || result.isLoading) return;
+
+      let dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE account_id = ?', [transfer.sourceAccountId]);
+
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].date).toBe('2026-01-23');
+      expect(dbResult[0].amount).toBe(5025); // 50.25 * 100
+      expect(dbResult[0].description).toBe('Groceries');
+      expect(dbResult[0].category_id).toBe(transferOut.id);
+
+      dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE account_id = ?', [transfer.targetAccountId]);
+
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].date).toBe('2026-01-23');
+      expect(dbResult[0].amount).toBe(5025); // 50.25 * 100
+      expect(dbResult[0].description).toBe('Groceries');
+      expect(dbResult[0].category_id).toBe(transferIn.id);
     });
   });
 

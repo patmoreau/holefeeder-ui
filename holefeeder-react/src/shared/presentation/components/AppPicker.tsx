@@ -38,7 +38,6 @@ export const AppPicker = <T extends PickerOption>({
   selectedOption,
   onSelectOption,
   onOptionLabel,
-  style,
 }: PickerProps<T>) => {
   const styles = useStyles(createStyles);
 

@@ -6,7 +6,7 @@ import { FlowsRepository, FlowsRepositoryErrors } from '@/flows/core/flows/flows
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
-import { PurchaseFormData } from '@/flows/purchase/presentation/core/purchase-form-data';
+import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult, Result } from '@/shared/core/result';
@@ -75,10 +75,21 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
 
     try {
       await db.execute(
-        `INSERT INTO transactions (id, date, amount, description, account_id, category_id, cashflow_id, cashflow_date, tags)
-         SELECT ?, ?, ?, description, account_id, category_id, id, ?, tags
-         FROM cashflows
-         WHERE id = ?`,
+        `
+          INSERT INTO transactions (id, date, amount, description, account_id, category_id, cashflow_id, cashflow_date,
+                                    tags)
+          SELECT ?,
+                 ?,
+                 ?,
+                 description,
+                 account_id,
+                 category_id,
+                 id,
+                 ?,
+                 tags
+          FROM cashflows
+          WHERE id = ?
+        `,
         [newId, command.date, Money.toCents(command.amount), command.cashflowDate, command.cashflowId]
       );
 
@@ -112,27 +123,40 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const saveTransfer = async (formData: PurchaseFormData): Promise<Result<void>> => {
-    const transferId = Id.newId();
-    const amountInCents = Math.round(formData.amount * 100);
+  const transfer = async (transfer: TransferFlowCommand): Promise<Result<void>> => {
+    const sourceId = Id.newId();
+    const targetId = Id.newId();
 
     try {
       await db.writeTransaction(async (tx) => {
         await tx.execute(
           `
-            INSERT INTO transactions (id, date, amount, description, account_id, category_id, tags)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO transactions (id, date, amount, description, account_id, category_id)
+            SELECT ?,
+                   ?,
+                   ?,
+                   ?,
+                   ?,
+                   c.id
+            FROM categories c
+            WHERE name = 'Transfer Out'
           `,
-          [transferId, formData.date, -amountInCents, formData.description, formData.sourceAccount.id, null, '[]']
+          [sourceId, transfer.date, Money.toCents(transfer.amount), transfer.description, transfer.sourceAccountId]
         );
 
-        const creditId = Id.newId();
         await tx.execute(
-          `INSERT INTO transactions (
-          id, date, amount, description, account_id, category_id, tags
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-          [creditId, formData.date, amountInCents, formData.description, formData.targetAccount.id, null, '[]']
+          `
+            INSERT INTO transactions (id, date, amount, description, account_id, category_id)
+            SELECT ?,
+                   ?,
+                   ?,
+                   ?,
+                   ?,
+                   c.id
+            FROM categories c
+            WHERE name = 'Transfer In'
+        `,
+          [targetId, transfer.date, Money.toCents(transfer.amount), transfer.description, transfer.targetAccountId]
         );
       });
 
@@ -233,6 +257,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     create: create,
     pay: pay,
     deactivateUpcoming: deactivateUpcoming,
+    transfer: transfer,
     watchTags: watchTags,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,

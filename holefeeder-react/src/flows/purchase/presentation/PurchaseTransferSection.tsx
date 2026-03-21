@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { PurchaseType } from '@/flows/purchase/presentation/core/purchase-form-data';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { AppView } from '@/shared/presentation/AppView';
 import { AppPicker, PickerOption } from '@/shared/presentation/components/AppPicker';
 
 const tkTypes: Record<PurchaseType, string> = {
@@ -42,13 +43,14 @@ export const PurchaseTransferSection = ({ selectedPurchaseType, onSelectPurchase
   const selectedOption = options.find((opt) => opt.value === selectedPurchaseType) || options[0];
 
   return (
-    <AppPicker
-      variant="segmented"
-      options={options}
-      selectedOption={selectedOption}
-      onSelectOption={(option) => onSelectPurchaseType(option.value)}
-      onOptionLabel={(option) => t(tkTypes[option.value])}
-      style={styles.container}
-    />
+    <AppView style={styles.container}>
+      <AppPicker
+        variant="segmented"
+        options={options}
+        selectedOption={selectedOption}
+        onSelectOption={(option) => onSelectPurchaseType(option.value)}
+        onOptionLabel={(option) => t(tkTypes[option.value])}
+      />
+    </AppView>
   );
 };

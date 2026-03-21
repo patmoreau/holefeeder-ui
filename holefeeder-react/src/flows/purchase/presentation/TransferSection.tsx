@@ -1,7 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text } from 'react-native';
 import { Account } from '@/flows/core/accounts/account';
 import { AccountField } from '@/flows/purchase/presentation/components/fields/AccountField';
 import { DescriptionField } from '@/flows/purchase/presentation/components/fields/DescriptionField';
@@ -9,7 +8,6 @@ import { PurchaseFormError, usePurchaseForm } from '@/flows/purchase/presentatio
 import { tk } from '@/i18n/translations';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { DateField } from '@/shared/presentation/fields/DateField';
-import { fontSize, spacing } from '@/types/theme/design-tokens';
 
 const tkErrors: Record<PurchaseFormError, string> = {
   [PurchaseFormError.accountRequired]: tk.purchase.errors.accountRequired,
@@ -42,8 +40,6 @@ export const TransferSection = ({ accounts }: Props) => {
 
   const updateDescription = (value: string) => updateFormField('description', value);
 
-  const accountToErrorKey = errors.targetAccount as PurchaseFormError;
-
   return (
     <AppSection>
       <DateField
@@ -57,29 +53,13 @@ export const TransferSection = ({ accounts }: Props) => {
         selectedAccount={formData.sourceAccount}
         onSelectAccount={updateSourceAccount}
       />
-      {/*<VStack>*/}
       <AccountField
         label={t(tk.purchase.transferSection.accountTo)}
         accounts={accounts}
         selectedAccount={formData.targetAccount}
         onSelectAccount={updateTargetAccount}
       />
-      {accountToErrorKey && (
-        // <Text color={styles.errorText.color} modifiers={[font({ size: styles.errorText.fontSize }), padding({ all: 4 } as const)]}>
-        <Text style={styles.errorText}>{t(tkErrors[accountToErrorKey])}</Text>
-      )}
-      {/*</VStack>*/}
       <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
     </AppSection>
   );
 };
-
-const styles = StyleSheet.create({
-  errorText: {
-    color: '#FF3B30',
-    fontSize: fontSize!.sm,
-    marginTop: spacing.xs,
-    marginLeft: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-});

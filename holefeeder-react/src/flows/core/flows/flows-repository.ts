@@ -3,6 +3,7 @@ import { CashflowVariation } from '@/flows/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command';
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
+import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
 import { Id } from '@/shared/core/id';
 import { type AsyncResult, Result } from '@/shared/core/result';
 
@@ -10,6 +11,7 @@ export type FlowsRepository = {
   create(command: CreateFlowCommand): Promise<Result<Id>>;
   pay(command: PayFlowCommand): Promise<Result<Id>>;
   deactivateUpcoming(cashflowId: Id): Promise<Result<void>>;
+  transfer(command: TransferFlowCommand): Promise<Result<void>>;
   watchAccountVariations: (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => () => void;
   watchCashflowVariations: (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => () => void;
   watchTags: (onDataChange: (result: AsyncResult<Tag[]>) => void) => () => void;

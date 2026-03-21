@@ -1,6 +1,8 @@
 import { Repositories } from '@/contexts/RepositoryContext';
 import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command';
 import { CreateFlowUseCase } from '@/flows/core/flows/create/create-flow-use-case';
+import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
+import { TransferFlowUseCase } from '@/flows/core/flows/transfer/transfer-flow-use-case';
 import { PurchaseFormData, PurchaseType } from '@/flows/purchase/presentation/core/purchase-form-data';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
@@ -60,14 +62,24 @@ const savePurchase = async (repositories: Repositories, formData: PurchaseFormDa
       tags: formData.tags.map((tag) => tag.tag),
       cashflow,
     });
-    if (result.isFailure) return Result.failure(result.errors);
+    if (result.isFailure) return result;
 
     const useCase = CreateFlowUseCase(repositories.flowRepository);
     return await useCase.execute(result.value);
   };
 
   const transfer = async (formData: PurchaseFormData): Promise<Result<unknown>> => {
-    return Promise.resolve(Result.failure(['not-implemented']));
+    const result = TransferFlowCommand.create({
+      date: formData.date,
+      amount: formData.amount,
+      description: formData.description,
+      sourceAccountId: formData.sourceAccount.id,
+      targetAccountId: formData.targetAccount.id,
+    });
+    if (result.isFailure) return result;
+
+    const useCase = TransferFlowUseCase(repositories.flowRepository);
+    return await useCase.execute(result.value);
   };
 
   if (formData.purchaseType === PurchaseType.transfer) return transfer(formData);

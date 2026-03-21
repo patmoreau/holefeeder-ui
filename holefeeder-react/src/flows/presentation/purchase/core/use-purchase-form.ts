@@ -3,7 +3,7 @@ import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command
 import { CreateFlowUseCase } from '@/flows/core/flows/create/create-flow-use-case';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
 import { TransferFlowUseCase } from '@/flows/core/flows/transfer/transfer-flow-use-case';
-import { PurchaseFormData, PurchaseType } from '@/flows/purchase/presentation/core/purchase-form-data';
+import { PurchaseFormData, PurchaseType } from '@/flows/presentation/purchase/core/purchase-form-data';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
 import { createFormDataContext, ValidationFunction } from '@/shared/presentation/core/use-form-context';

@@ -3,7 +3,7 @@ import React from 'react';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { anAccount, toAccount } from '@/flows/core/accounts/__tests__/account-for-test';
-import { useAccounts } from '@/flows/purchase/presentation/core/use-accounts';
+import { useAccounts } from '@/flows/presentation/purchase/core/use-accounts';
 
 describe('useAccounts', () => {
   let db: DatabaseForTest;

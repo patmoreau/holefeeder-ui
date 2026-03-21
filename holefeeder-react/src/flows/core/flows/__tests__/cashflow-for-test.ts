@@ -1,12 +1,13 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { aPastDate } from '@/__tests__/mocks/date-for-test';
 import { aCategoryType, aDateIntervalType } from '@/__tests__/mocks/enum-for-test';
-import { aCount, anAmount } from '@/__tests__/mocks/number-for-test';
+import { anAmount, aPositiveCount } from '@/__tests__/mocks/number-for-test';
 import { anId, aString } from '@/__tests__/mocks/string-for-test';
 import { AccountForTest } from '@/flows/core/accounts/__tests__/account-for-test';
 import { CategoryForTest } from '@/flows/core/categories/__tests__/category-for-test';
 import { aTagList } from '@/flows/core/flows/__tests__/tag-list-for-test';
 import { Cashflow } from '@/flows/core/flows/cashflow';
+import { TagList } from '@/flows/core/flows/tag-list';
 import { Money } from '@/shared/core/money';
 
 export type CashflowForTest = Cashflow & {
@@ -20,8 +21,8 @@ const defaultCashflow = (): Cashflow => ({
   effectiveDate: aPastDate(),
   amount: anAmount(),
   intervalType: aDateIntervalType(),
-  frequency: aCount() + 1,
-  recurrence: aCount(),
+  frequency: aPositiveCount(),
+  recurrence: aPositiveCount(),
   description: aString(),
   accountId: anId(),
   categoryId: anId(),
@@ -47,7 +48,7 @@ const store = async (db: AbstractPowerSyncDatabase, cashflow: CashflowForTest): 
       cashflow.accountId,
       cashflow.categoryId,
       cashflow.inactive ? 1 : 0,
-      cashflow.tags.join(','),
+      TagList.toConcatenatedString(cashflow.tags),
       anId(),
     ]
   );

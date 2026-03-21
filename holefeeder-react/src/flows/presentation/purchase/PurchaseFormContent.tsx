@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Account } from '@/flows/core/accounts/account';
 import { Category } from '@/flows/core/categories/category';
 import { Tag } from '@/flows/core/flows/tag';
-import { BasicSection } from '@/flows/purchase/presentation/BasicSection';
-import { CashflowSection } from '@/flows/purchase/presentation/CashflowSection';
-import { AmountField, AmountFieldRef } from '@/flows/purchase/presentation/components/fields/AmountField';
-import { PurchaseType } from '@/flows/purchase/presentation/core/purchase-form-data';
-import { usePurchaseForm } from '@/flows/purchase/presentation/core/use-purchase-form';
-import { PurchaseTransferSection } from '@/flows/purchase/presentation/PurchaseTransferSection';
-import { TransferSection } from '@/flows/purchase/presentation/TransferSection';
+import { BasicSection } from '@/flows/presentation/purchase/BasicSection';
+import { CashflowSection } from '@/flows/presentation/purchase/CashflowSection';
+import { AmountField, AmountFieldRef } from '@/flows/presentation/purchase/components/fields/AmountField';
+import { PurchaseType } from '@/flows/presentation/purchase/core/purchase-form-data';
+import { usePurchaseForm } from '@/flows/presentation/purchase/core/use-purchase-form';
+import { PurchaseTransferSection } from '@/flows/presentation/purchase/PurchaseTransferSection';
+import { TransferSection } from '@/flows/presentation/purchase/TransferSection';
 import { AppForm } from '@/shared/presentation/AppForm';
 
 type PurchaseFormProps = {

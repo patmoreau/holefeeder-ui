@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { HasCashflowField } from '@/flows/purchase/presentation/components/fields/HasCashflowField';
-import { usePurchaseForm } from '@/flows/purchase/presentation/core/use-purchase-form';
+import { HasCashflowField } from '@/flows/presentation/purchase/components/fields/HasCashflowField';
+import { usePurchaseForm } from '@/flows/presentation/purchase/core/use-purchase-form';
 import { tk } from '@/i18n/translations';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { DateField } from '@/shared/presentation/fields/DateField';

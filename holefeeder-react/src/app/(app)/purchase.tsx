@@ -1,1 +1,1 @@
-export { default } from '@/flows/purchase/presentation/PurchaseScreen';
+export { default } from '@/flows/presentation/purchase/PurchaseScreen';

@@ -1,10 +1,14 @@
 import { waitFor } from '@testing-library/react-native';
+import { aPastDate } from '@/__tests__/mocks/date-for-test';
+import { aDateIntervalType } from '@/__tests__/mocks/enum-for-test';
+import { aCount } from '@/__tests__/mocks/number-for-test';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { AccountVariation } from '@/flows/core/accounts/account-variation';
 import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { aCashflow } from '@/flows/core/flows/__tests__/cashflow-for-test';
+import { aCreateFlowCommand } from '@/flows/core/flows/__tests__/create-flow-command-for-test';
 import { aTag } from '@/flows/core/flows/__tests__/tag-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
 import { CashflowVariation } from '@/flows/core/flows/cashflow-variation';
@@ -34,14 +38,7 @@ describe('FlowsRepository', () => {
 
   describe('create', () => {
     it('should save a purchase transaction', async () => {
-      const purchase: CreateFlowCommand = {
-        date: DateOnly.valid('2026-01-23'),
-        amount: Money.valid(50.25),
-        description: 'Groceries',
-        accountId: Id.valid('acc-123'),
-        categoryId: Id.valid('cat-456'),
-        tags: TagList.valid(['tag-1']),
-      };
+      const purchase: CreateFlowCommand = aCreateFlowCommand();
 
       const result = await repository.create(purchase);
 
@@ -52,9 +49,57 @@ describe('FlowsRepository', () => {
       const dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE id = ?', [result.value]);
 
       expect(dbResult).toHaveLength(1);
-      expect(dbResult[0].amount).toBe(5025); // 50.25 * 100
-      expect(dbResult[0].description).toBe('Groceries');
-      expect(dbResult[0].tags).toBe('tag-1');
+      expect(dbResult[0].date).toBe(purchase.date);
+      expect(dbResult[0].amount).toBe(Money.toCents(purchase.amount));
+      expect(dbResult[0].description).toBe(purchase.description);
+      expect(dbResult[0].account_id).toBe(purchase.accountId);
+      expect(dbResult[0].category_id).toBe(purchase.categoryId);
+      expect(dbResult[0].tags).toBe(TagList.toConcatenatedString(purchase.tags));
+      expect(dbResult[0].cashflow_id).toBeNull();
+      expect(dbResult[0].cashflow_date).toBeNull();
+    });
+
+    it('creates a cashflow on a purchase recurring transaction', async () => {
+      const purchase: CreateFlowCommand = aCreateFlowCommand({
+        cashflow: {
+          effectiveDate: aPastDate(),
+          intervalType: aDateIntervalType(),
+          frequency: aCount(),
+        },
+      });
+
+      const result = await repository.create(purchase);
+
+      expect(result.isSuccess).toBe(true);
+
+      if (result.isFailure || result.isLoading) return;
+
+      let dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE id = ?', [result.value]);
+
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].date).toBe(purchase.date);
+      expect(dbResult[0].amount).toBe(Money.toCents(purchase.amount));
+      expect(dbResult[0].description).toBe(purchase.description);
+      expect(dbResult[0].account_id).toBe(purchase.accountId);
+      expect(dbResult[0].category_id).toBe(purchase.categoryId);
+      expect(dbResult[0].tags).toBe(TagList.toConcatenatedString(purchase.tags));
+      expect(dbResult[0].cashflow_id).toBeDefined();
+      expect(dbResult[0].cashflow_date).toBe(purchase.cashflow?.effectiveDate);
+
+      const cashflowId = dbResult[0].cashflow_id;
+      dbResult = await db.getAll<any>('SELECT * FROM cashflows WHERE id = ?', [cashflowId]);
+
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].effective_date).toBe(purchase.cashflow?.effectiveDate);
+      expect(dbResult[0].interval_type).toBe(purchase.cashflow?.intervalType);
+      expect(dbResult[0].frequency).toBe(purchase.cashflow?.frequency);
+      expect(dbResult[0].recurrence).toBe(1);
+      expect(dbResult[0].amount).toBe(Money.toCents(purchase.amount));
+      expect(dbResult[0].description).toBe(purchase.description);
+      expect(dbResult[0].account_id).toBe(purchase.accountId);
+      expect(dbResult[0].category_id).toBe(purchase.categoryId);
+      expect(dbResult[0].tags).toBe(TagList.toConcatenatedString(purchase.tags));
+      expect(dbResult[0].inactive).toBe(0);
     });
   });
 

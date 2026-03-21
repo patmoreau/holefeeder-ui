@@ -16,9 +16,11 @@ const create = (tags: unknown): Result<TagList> => {
 const valid = (tags: unknown): TagList => tags as TagList;
 
 const fromConcatenatedString = (tags: string): string[] => (tags.trim().length > 0 ? tags.split(',').map((tag) => tag.trim()) : []);
+const toConcatenatedString = (tags: TagList): string => (tags.length > 0 ? tags.join(',') : '');
 
 export const TagList = {
   create: create,
   valid: valid,
-  toArray: fromConcatenatedString,
+  fromConcatenatedString: fromConcatenatedString,
+  toConcatenatedString: toConcatenatedString,
 };

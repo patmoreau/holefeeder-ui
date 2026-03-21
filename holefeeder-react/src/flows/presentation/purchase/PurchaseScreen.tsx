@@ -1,10 +1,10 @@
 import React from 'react';
-import { PurchaseFormData, PurchaseType } from '@/flows/purchase/presentation/core/purchase-form-data';
-import { useAccounts } from '@/flows/purchase/presentation/core/use-accounts';
-import { useCategories } from '@/flows/purchase/presentation/core/use-categories';
-import { PurchaseFormProvider, validatePurchaseForm } from '@/flows/purchase/presentation/core/use-purchase-form';
-import { useTags } from '@/flows/purchase/presentation/core/use-tags';
-import { PurchaseForm } from '@/flows/purchase/presentation/PurchaseForm';
+import { PurchaseFormData, PurchaseType } from '@/flows/presentation/purchase/core/purchase-form-data';
+import { useAccounts } from '@/flows/presentation/purchase/core/use-accounts';
+import { useCategories } from '@/flows/presentation/purchase/core/use-categories';
+import { PurchaseFormProvider, validatePurchaseForm } from '@/flows/presentation/purchase/core/use-purchase-form';
+import { useTags } from '@/flows/presentation/purchase/core/use-tags';
+import { PurchaseForm } from '@/flows/presentation/purchase/PurchaseForm';
 import { today } from '@/shared/core/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppScreen } from '@/shared/presentation/AppScreen';

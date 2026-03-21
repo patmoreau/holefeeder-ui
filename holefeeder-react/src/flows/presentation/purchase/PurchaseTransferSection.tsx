@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PurchaseType } from '@/flows/purchase/presentation/core/purchase-form-data';
+import { PurchaseType } from '@/flows/presentation/purchase/core/purchase-form-data';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppView } from '@/shared/presentation/AppView';

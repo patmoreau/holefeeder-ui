@@ -32,6 +32,20 @@ type TagRow = { tag: string; count: number };
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
+    const cashflow = purchase.cashflow
+      ? {
+          id: Id.newId(),
+          effectiveDate: purchase.cashflow.effectiveDate,
+          intervalType: purchase.cashflow.intervalType,
+          frequency: purchase.cashflow.frequency,
+          recurrence: purchase.cashflow.recurrence,
+          amount: purchase.amount,
+          description: purchase.description,
+          accountId: purchase.accountId,
+          categoryId: purchase.categoryId,
+          tags: purchase.tags,
+        }
+      : undefined;
     const transaction = {
       id: Id.newId(),
       date: purchase.date,
@@ -42,24 +56,47 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       tags: purchase.tags,
     };
     try {
-      await db.execute(
-        `
+      await db.writeTransaction(async (tx) => {
+        await tx.execute(
+          `
           INSERT INTO transactions (id, date, amount, description, account_id, category_id,
                                     cashflow_id, cashflow_date, tags)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
-        [
-          transaction.id,
-          transaction.date,
-          Money.toCents(transaction.amount),
-          transaction.description,
-          transaction.accountId,
-          transaction.categoryId,
-          null, // cashflow_id - to be implemented
-          null, // cashflow_date
-          transaction.tags.join(','),
-        ]
-      );
+          [
+            transaction.id,
+            transaction.date,
+            Money.toCents(transaction.amount),
+            transaction.description,
+            transaction.accountId,
+            transaction.categoryId,
+            cashflow ? cashflow.id : null,
+            cashflow ? cashflow.effectiveDate : null,
+            TagList.toConcatenatedString(transaction.tags),
+          ]
+        );
+        if (cashflow) {
+          await tx.execute(
+            `
+          INSERT INTO cashflows (id, effective_date, interval_type, frequency, recurrence, amount, description, account_id, category_id,
+                                    tags, inactive)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+        `,
+            [
+              cashflow.id,
+              cashflow.effectiveDate,
+              cashflow.intervalType,
+              cashflow.frequency,
+              cashflow.recurrence,
+              Money.toCents(cashflow.amount),
+              cashflow.description,
+              cashflow.accountId,
+              cashflow.categoryId,
+              TagList.toConcatenatedString(cashflow.tags),
+            ]
+          );
+        }
+      });
 
       return Result.success(transaction.id);
     } catch (error) {
@@ -221,7 +258,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
         WHERE c.inactive = 0
       `,
       [],
-      (row) => CashflowVariation.valid({ ...row, amount: Money.fromCents(row.amount), tags: TagList.toArray(row.tags) }),
+      (row) => CashflowVariation.valid({ ...row, amount: Money.fromCents(row.amount), tags: TagList.fromConcatenatedString(row.tags) }),
       onDataChange
     );
 

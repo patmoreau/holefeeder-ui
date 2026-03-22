@@ -27,7 +27,7 @@ const variantMapping: Record<
   'automatic' | 'bordered' | 'borderedProminent' | 'borderless' | 'glass' | 'glassProminent' | 'plain'
 > = {
   primary: 'glassProminent',
-  secondary: 'automatic',
+  secondary: 'glass',
   destructive: 'glassProminent',
   link: 'plain',
 };

@@ -26,12 +26,17 @@ export const PowerSyncConnector = (getToken: () => Promise<{ token: string; expi
       throw new Error('No auth token available for upload');
     }
 
-    await syncApi(token.token).upload({
-      transactionId: transaction.transactionId ? Number(transaction.transactionId) : undefined,
-      operations: transaction.crud,
-    });
+    try {
+      await syncApi(token.token).upload({
+        transactionId: transaction.transactionId ? Number(transaction.transactionId) : undefined,
+        operations: transaction.crud,
+      });
 
-    await transaction.complete();
+      await transaction.complete();
+    } catch (e) {
+      console.error('Error uploading data:', e);
+      throw e;
+    }
   };
 
   return { fetchCredentials: fetchCredentials, uploadData: uploadData };

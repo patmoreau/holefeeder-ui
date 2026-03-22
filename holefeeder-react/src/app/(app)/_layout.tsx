@@ -9,7 +9,7 @@ const AppLayout = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
 
-  const onPressPurchase = () => router.push('/(app)/purchase');
+  const onPressPurchase = () => router.push('/(app)/Purchase');
 
   return (
     <Stack>
@@ -22,7 +22,7 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
-        name="purchase"
+        name="Purchase"
         options={{
           title: t(tk.purchase.title),
           headerTransparent: true,
@@ -30,7 +30,7 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
-        name="budgetSettings"
+        name="BudgetSettings"
         options={{
           title: t(tk.budgetSection.title),
           headerTransparent: true,
@@ -38,11 +38,12 @@ const AppLayout = () => {
         }}
       />
       <Stack.Screen
-        name="modal"
+        name="PayUpcoming"
         options={{
           presentation: 'modal',
-          title: 'Modal',
+          title: t(tk.payUpcoming.title),
           headerShown: true,
+          headerTintColor: theme.colors.tint,
         }}
       />
     </Stack>

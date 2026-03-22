@@ -1,6 +1,7 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, type ViewProps } from 'react-native';
+import { Pressable, View, type ViewProps } from 'react-native';
 import { SwipeableMethods } from 'react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable';
 import { SharedValue } from 'react-native-reanimated';
 import { useRepositories } from '@/contexts/RepositoryContext';
@@ -105,26 +106,31 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
 
   return (
     <AppSwipeableRow renderLeftActions={renderLeftAction} renderRightActions={renderRightActions} onSwipeableLeftOpen={handlePay}>
-      <View style={[styles.card, style]} {...props}>
-        <View style={styles.cardDescription}>
-          <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
-            {upcomingFlow.description}
-          </AppText>
-          {upcomingFlow.tags.length > 0 && (
-            <View style={styles.tags}>
-              {upcomingFlow.tags.map((tag) => (
-                <AppChip key={tag} selected={true} label={tag} />
-              ))}
-            </View>
-          )}
+      <Pressable
+        onLongPress={() => router.push({ pathname: '/(app)/PayUpcoming', params: { data: JSON.stringify(upcomingFlow) } })}
+        delayLongPress={400}
+      >
+        <View style={[styles.card, style]} {...props}>
+          <View style={styles.cardDescription}>
+            <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
+              {upcomingFlow.description}
+            </AppText>
+            {upcomingFlow.tags.length > 0 && (
+              <View style={styles.tags}>
+                {upcomingFlow.tags.map((tag) => (
+                  <AppChip key={tag} selected={true} label={tag} />
+                ))}
+              </View>
+            )}
+          </View>
+          <View style={styles.cardAmount}>
+            <AppText variant={'default'} adjustsFontSizeToFit>
+              {formatCurrency(upcomingFlow.amount)}
+            </AppText>
+            <AppText variant={'footnote'}>{formatDate(upcomingFlow.date, today())}</AppText>
+          </View>
         </View>
-        <View style={styles.cardAmount}>
-          <AppText variant={'default'} adjustsFontSizeToFit>
-            {formatCurrency(upcomingFlow.amount)}
-          </AppText>
-          <AppText variant={'footnote'}>{formatDate(upcomingFlow.date, today())}</AppText>
-        </View>
-      </View>
+      </Pressable>
     </AppSwipeableRow>
   );
 };

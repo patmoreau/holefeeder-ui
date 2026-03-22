@@ -142,6 +142,11 @@ export const fr: TranslationStructure = {
     expiresAt: 'Expire le',
     noExpiresAt: "Pas d'information d'expiration",
   },
+  payUpcoming: {
+    title: 'Payer un flux',
+    pay: 'Payer',
+    clear: 'Annuler',
+  },
   purchase: {
     title: 'Achat',
     basicSection: {

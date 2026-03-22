@@ -139,6 +139,11 @@ export const en = {
     expiresAt: 'Expires At',
     noExpiresAt: 'No Expiry Information',
   },
+  payUpcoming: {
+    title: 'Pay Upcoming Flow',
+    pay: 'Pay',
+    clear: 'Clear',
+  },
   purchase: {
     title: 'Purchase',
     basicSection: {

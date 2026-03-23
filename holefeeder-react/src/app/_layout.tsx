@@ -74,6 +74,7 @@ function AppContent() {
       <Stack.Screen
         name="test"
         options={{
+          presentation: 'modal',
           headerTransparent: true,
           headerTintColor: theme.colors.tint,
         }}

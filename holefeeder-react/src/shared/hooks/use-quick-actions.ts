@@ -9,10 +9,10 @@ import { useLanguage } from '@/shared/hooks/use-language';
 
 const routerInitializationDelay = 100;
 
-type AvailableQuickActions = '/(app)/purchase' | '/help';
+type AvailableQuickActions = '/(app)/Purchase' | '/help';
 
 const isValidQuickActionHref = (href: unknown): href is AvailableQuickActions => {
-  return href === '/(app)/purchase' || href === '/help';
+  return href === '/(app)/Purchase' || href === '/help';
 };
 
 export function useQuickActions() {
@@ -60,7 +60,7 @@ export function useQuickActions() {
             title: t(tk.quickActions.purchaseTitle),
             icon: Platform.OS === 'ios' ? 'symbol:cart.fill.badge.plus' : undefined,
             id: '0',
-            params: { href: '/(app)/purchase' },
+            params: { href: '/(app)/Purchase' },
           },
           {
             title: t(tk.quickActions.helpTitle),

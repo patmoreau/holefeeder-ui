@@ -283,7 +283,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
         SELECT t.id,
                t.date,
                t.amount,
-               t.description,
+               COALESCE(NULLIF(t.description, ''), c.name) AS description,
                t.account_id    AS accountId,
                t.category_id   AS categoryId,
                c.type          AS categoryType,

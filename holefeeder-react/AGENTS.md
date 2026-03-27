@@ -28,7 +28,12 @@ src/domain/persistence/   ← PowerSync implementations of repository interfaces
 src/contexts/             ← React providers (AppContext, PowerSyncAuthProvider, RepositoryContext)
 src/features/             ← Feature UI + feature-specific form hooks
 src/presentation/         ← Shared presentation hooks (wire use cases to React state)
-src/shared/               ← Cross-cutting hooks (auth, theme) and API service
+src/shared/
+  api/          ← API service layer
+  core/         ← Shared domain primitives and utilities
+  hooks/        ← Cross-cutting React hooks (auth, theme, etc.)
+  persistence/  ← Shared PowerSync utilities
+  presentation/ ← Shared presentation hooks
 src/app/                  ← expo-router route files only
 src/config/config.ts      ← All env-var config (never read process.env directly elsewhere)
 src/i18n/                 ← i18next, en-CA and fr-CA locales

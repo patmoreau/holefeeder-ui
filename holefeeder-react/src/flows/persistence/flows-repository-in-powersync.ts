@@ -305,6 +305,36 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       onDataChange
     );
 
+  const watchAccountTransactions = (onDataChange: (result: AsyncResult<Transaction[]>) => void, accountId: Id, limit: number) =>
+    watchQuery<TransactionRow, Transaction>(
+      db,
+      `
+        SELECT t.id,
+               t.date,
+               t.amount,
+               COALESCE(NULLIF(t.description, ''), c.name) AS description,
+               t.account_id    AS accountId,
+               t.category_id   AS categoryId,
+               c.type          AS categoryType,
+               t.tags,
+               t.cashflow_id   AS cashflowId,
+               t.cashflow_date AS cashflowDate
+        FROM transactions t
+               JOIN categories c ON t.category_id = c.id
+        WHERE t.account_id = ?
+        ORDER BY t.date DESC, t.id DESC
+        LIMIT ?
+      `,
+      [accountId, limit],
+      (row) =>
+        Transaction.valid({
+          ...row,
+          amount: Money.fromCents(row.amount),
+          tags: TagList.fromConcatenatedString(row.tags),
+        }),
+      onDataChange
+    );
+
   const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) =>
     watchQuery<TagRow, Tag>(
       db,
@@ -342,5 +372,6 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,
     watchLatestTransactions: watchLatestTransactions,
+    watchAccountTransactions: watchAccountTransactions,
   };
 };

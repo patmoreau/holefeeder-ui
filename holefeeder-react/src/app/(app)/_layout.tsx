@@ -46,6 +46,14 @@ const AppLayout = () => {
           headerTintColor: theme.colors.tint,
         }}
       />
+      <Stack.Screen
+        name="accounts/[id]"
+        options={{
+          presentation: 'transparentModal',
+          title: '',
+          headerTransparent: true,
+        }}
+      />
     </Stack>
   );
 };

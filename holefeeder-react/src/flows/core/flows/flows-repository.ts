@@ -16,6 +16,7 @@ export type FlowsRepository = {
   watchAccountVariations: (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => () => void;
   watchCashflowVariations: (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => () => void;
   watchLatestTransactions: (onDataChange: (result: AsyncResult<Transaction[]>) => void, limit: number) => () => void;
+  watchAccountTransactions: (onDataChange: (result: AsyncResult<Transaction[]>) => void, accountId: Id, limit: number) => () => void;
   watchTags: (onDataChange: (result: AsyncResult<Tag[]>) => void) => () => void;
 };
 

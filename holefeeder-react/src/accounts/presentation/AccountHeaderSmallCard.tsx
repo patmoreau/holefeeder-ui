@@ -1,0 +1,30 @@
+import { View } from 'react-native';
+import { AccountDetail } from '@/flows/core/accounts/account-detail';
+import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { AppText } from '@/shared/presentation/components/AppText';
+import { spacing } from '@/types/theme/design-tokens';
+import { Theme } from '@/types/theme/theme';
+
+const createStyles = (theme: Theme) => ({
+  container: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    gap: spacing.sm,
+  },
+  text: {
+    color: theme.colors.primaryText,
+  },
+});
+
+export const AccountHeaderSmallCard = ({ account }: { account: AccountDetail }) => {
+  const { formatCurrency } = useLocaleFormatter();
+  const styles = useStyles(createStyles);
+
+  return (
+    <View style={styles.container}>
+      <AppText style={styles.text}>{account.name}</AppText>
+      <AppText style={styles.text}>{formatCurrency(account.balance)}</AppText>
+    </View>
+  );
+};

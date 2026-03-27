@@ -6,6 +6,7 @@ import { FlowsRepository, FlowsRepositoryErrors } from '@/flows/core/flows/flows
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
+import { Transaction } from '@/flows/core/flows/transaction';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
@@ -29,6 +30,19 @@ type CashflowVariationRow = {
 };
 
 type TagRow = { tag: string; count: number };
+
+type TransactionRow = {
+  id: string;
+  date: string;
+  amount: number;
+  description: string;
+  accountId: string;
+  categoryId: string;
+  categoryType: string;
+  tags: string;
+  cashflowId: string | null;
+  cashflowDate: string | null;
+};
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
@@ -262,6 +276,35 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       onDataChange
     );
 
+  const watchLatestTransactions = (onDataChange: (result: AsyncResult<Transaction[]>) => void, limit: number) =>
+    watchQuery<TransactionRow, Transaction>(
+      db,
+      `
+        SELECT t.id,
+               t.date,
+               t.amount,
+               t.description,
+               t.account_id    AS accountId,
+               t.category_id   AS categoryId,
+               c.type          AS categoryType,
+               t.tags,
+               t.cashflow_id   AS cashflowId,
+               t.cashflow_date AS cashflowDate
+        FROM transactions t
+               JOIN categories c ON t.category_id = c.id
+        ORDER BY t.date DESC, t.id DESC
+        LIMIT ?
+      `,
+      [limit],
+      (row) =>
+        Transaction.valid({
+          ...row,
+          amount: Money.fromCents(row.amount),
+          tags: TagList.fromConcatenatedString(row.tags),
+        }),
+      onDataChange
+    );
+
   const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) =>
     watchQuery<TagRow, Tag>(
       db,
@@ -298,5 +341,6 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     watchTags: watchTags,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,
+    watchLatestTransactions: watchLatestTransactions,
   };
 };

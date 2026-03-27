@@ -16,6 +16,7 @@ import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
+import { Transaction } from '@/flows/core/flows/transaction';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
@@ -353,6 +354,122 @@ describe('FlowsRepository', () => {
       const unsubscribe = repository.watchCashflowVariations((data) => {
         result = data;
       });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeFailureWithErrors(['The database connection is not open']);
+
+      unsubscribe();
+    });
+  });
+
+  describe('watchLatestTransactions', () => {
+    it('retrieves latest transactions', async () => {
+      const category = await aCategory({ type: CategoryTypes.expense }).store(db);
+      const transaction = await aTransaction({
+        categoryId: category.id,
+        amount: Money.valid(50.0),
+        date: DateOnly.valid('2026-03-01'),
+      }).store(db);
+
+      let result: AsyncResult<Transaction[]> | undefined;
+      const unsubscribe = repository.watchLatestTransactions((data) => {
+        result = data;
+      }, 10);
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeSuccessWithValue([
+        {
+          id: transaction.id,
+          date: transaction.date,
+          amount: transaction.amount,
+          description: transaction.description,
+          accountId: transaction.accountId,
+          categoryId: transaction.categoryId,
+          categoryType: category.type,
+          tags: transaction.tags,
+          cashflowId: undefined,
+          cashflowDate: undefined,
+        },
+      ]);
+
+      unsubscribe();
+    });
+
+    it('orders transactions by date descending', async () => {
+      const category = await aCategory({ type: CategoryTypes.expense }).store(db);
+      const older = await aTransaction({ categoryId: category.id, date: DateOnly.valid('2026-01-01') }).store(db);
+      const newer = await aTransaction({ categoryId: category.id, date: DateOnly.valid('2026-03-01') }).store(db);
+
+      let result: AsyncResult<Transaction[]> | undefined;
+      const unsubscribe = repository.watchLatestTransactions((data) => {
+        result = data;
+      }, 10);
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result?.isSuccess).toBe(true);
+      if (result?.isSuccess) {
+        expect(result.value[0].id).toBe(newer.id);
+        expect(result.value[1].id).toBe(older.id);
+      }
+
+      unsubscribe();
+    });
+
+    it('respects the limit parameter', async () => {
+      const category = await aCategory({ type: CategoryTypes.expense }).store(db);
+      await aTransaction({ categoryId: category.id, date: DateOnly.valid('2026-01-01') }).store(db);
+      await aTransaction({ categoryId: category.id, date: DateOnly.valid('2026-02-01') }).store(db);
+      await aTransaction({ categoryId: category.id, date: DateOnly.valid('2026-03-01') }).store(db);
+
+      let result: AsyncResult<Transaction[]> | undefined;
+      const unsubscribe = repository.watchLatestTransactions((data) => {
+        result = data;
+      }, 2);
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result?.isSuccess).toBe(true);
+      if (result?.isSuccess) {
+        expect(result.value).toHaveLength(2);
+      }
+
+      unsubscribe();
+    });
+
+    it('returns empty list when no transactions exist', async () => {
+      let result: AsyncResult<Transaction[]> | undefined;
+      const unsubscribe = repository.watchLatestTransactions((data) => {
+        result = data;
+      }, 10);
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeSuccessWithValue([]);
+
+      unsubscribe();
+    });
+
+    it('handles database errors', async () => {
+      // Close the database to trigger an error
+      await db.close();
+
+      let result: AsyncResult<Transaction[]> | undefined;
+      const unsubscribe = repository.watchLatestTransactions((data) => {
+        result = data;
+      }, 10);
 
       await waitFor(() => {
         expect(result).toBeDefined();

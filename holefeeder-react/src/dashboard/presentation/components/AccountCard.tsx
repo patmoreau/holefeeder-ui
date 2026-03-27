@@ -7,8 +7,9 @@ import { Variation } from '@/shared/core/variation';
 import { today } from '@/shared/core/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { AppCard } from '@/shared/presentation/components/AppCard';
 import { AppText } from '@/shared/presentation/components/AppText';
-import { borderRadius, fontWeight, shadows, spacing } from '@/types/theme/design-tokens';
+import { fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
 export type AccountCardProps = ViewProps & {
@@ -18,14 +19,6 @@ export type AccountCardProps = ViewProps & {
 
 const createStyles = (theme: Theme) =>
   StyleSheet.create({
-    card: {
-      backgroundColor: theme.colors.secondaryBackground,
-      borderRadius: borderRadius.xl,
-      padding: spacing.lg,
-      marginRight: spacing.lg,
-      shadowColor: theme.colors.text,
-      ...shadows.base,
-    },
     header: {
       marginBottom: spacing.lg,
     },
@@ -83,7 +76,7 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
   const projectedSign = account.balance >= 0 ? '' : '-';
 
   return (
-    <View style={[styles.card, { width }, style]} {...props}>
+    <AppCard scrollable={'horizontal'} cardWidth={width} style={style} {...props}>
       <View style={styles.header}>
         <AppText variant={'title'} adjustsFontSizeToFit>
           {account.name}
@@ -131,6 +124,6 @@ export const AccountCard = ({ account, width = 300, style, ...props }: AccountCa
           )}
         </View>
       </View>
-    </View>
+    </AppCard>
   );
 };

@@ -45,6 +45,9 @@ export const en = {
     section: 'Budget Settings',
     date: 'Effective Date',
   },
+  cardList: {
+    viewAll: 'View All',
+  },
   common: {
     today: 'Today',
     yesterday: 'Yesterday',
@@ -185,6 +188,9 @@ export const en = {
     helpSubtitle: "We're here to help",
     purchaseTitle: 'Purchase',
   },
+  recentTransactions: {
+    title: 'Recent Transactions',
+  },
   settings: {
     title: 'Settings',
     parameters: 'Parameters',
@@ -230,5 +236,8 @@ export const en = {
     system: 'Automatic',
     light: 'Light',
     dark: 'Dark',
+  },
+  upcomingList: {
+    title: 'Upcoming Flows',
   },
 } as const;

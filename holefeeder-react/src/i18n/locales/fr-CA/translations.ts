@@ -47,6 +47,9 @@ export const fr: TranslationStructure = {
     section: 'Paramètres du budget',
     date: 'Date effective',
   },
+  cardList: {
+    viewAll: 'Voir tout',
+  },
   common: {
     today: "Aujourd'hui",
     yesterday: 'Hier',
@@ -188,6 +191,9 @@ export const fr: TranslationStructure = {
     helpSubtitle: 'Nous sommes là pour vous aider',
     purchaseTitle: 'Acheter',
   },
+  recentTransactions: {
+    title: 'Transactions récentes',
+  },
   settings: {
     title: 'Paramètres',
     parameters: 'Paramètres',
@@ -233,5 +239,8 @@ export const fr: TranslationStructure = {
     system: 'Automatique',
     light: 'Clair',
     dark: 'Sombre',
+  },
+  upcomingList: {
+    title: 'Flux à venir',
   },
 } as const;

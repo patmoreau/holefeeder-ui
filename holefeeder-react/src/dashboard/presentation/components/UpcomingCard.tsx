@@ -12,6 +12,7 @@ import { today } from '@/shared/core/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { AppSwipeableRow } from '@/shared/presentation/AppSwipeableRow';
+import { AppCard } from '@/shared/presentation/components/AppCard';
 import { AppChip } from '@/shared/presentation/components/AppChip';
 import { AppLeftAction } from '@/shared/presentation/components/AppLeftAction';
 import { AppRightAction } from '@/shared/presentation/components/AppRightAction';
@@ -110,7 +111,7 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
         onLongPress={() => router.push({ pathname: '/(app)/PayUpcoming', params: { data: JSON.stringify(upcomingFlow) } })}
         delayLongPress={400}
       >
-        <View style={[styles.card, style]} {...props}>
+        <AppCard {...props}>
           <View style={styles.cardDescription}>
             <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
               {upcomingFlow.description}
@@ -129,7 +130,7 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
             </AppText>
             <AppText variant={'footnote'}>{formatDate(upcomingFlow.date, today())}</AppText>
           </View>
-        </View>
+        </AppCard>
       </Pressable>
     </AppSwipeableRow>
   );

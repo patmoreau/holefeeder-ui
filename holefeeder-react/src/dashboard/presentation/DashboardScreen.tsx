@@ -1,9 +1,11 @@
 import React from 'react';
 import { NO_SUMMARY } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { AccountCardList } from '@/dashboard/presentation/components/AccountCardList';
+import { LatestTransactionList } from '@/dashboard/presentation/components/LatestTransactionList';
 import { UpcomingCardList } from '@/dashboard/presentation/components/UpcomingCardList';
 import { useAccountDetails } from '@/dashboard/presentation/core/use-account-details';
 import { useDashboard } from '@/dashboard/presentation/core/use-dashboard';
+import { useLatestTransactions } from '@/dashboard/presentation/core/use-latest-transactions';
 import { useUpcomingFlows } from '@/dashboard/presentation/core/use-upcoming-flows';
 import { DashboardHeaderLargeCard } from '@/dashboard/presentation/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/dashboard/presentation/DashboardHeaderSmallCard';
@@ -41,6 +43,7 @@ const DashboardScreen = () => {
   const accountsQuery = useAccountDetails();
   const dashboardQuery = useDashboard();
   const upcomingQuery = useUpcomingFlows();
+  const latestTransactionsQuery = useLatestTransactions(3);
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
 
@@ -48,6 +51,7 @@ const DashboardScreen = () => {
     accounts: withDefault(() => accountsQuery, []),
     dashboard: withDefault(() => dashboardQuery, NO_SUMMARY),
     upcomingFlows: withDefault(() => upcomingQuery, []),
+    latestTransactions: withDefault(() => latestTransactionsQuery, []),
   });
 
   if (errors.showError) {
@@ -58,7 +62,7 @@ const DashboardScreen = () => {
     );
   }
 
-  const { accounts, dashboard, upcomingFlows } = data;
+  const { accounts, dashboard, upcomingFlows, latestTransactions } = data;
 
   return (
     <CardHeaderScrollView
@@ -67,6 +71,8 @@ const DashboardScreen = () => {
       smallCard={<DashboardHeaderSmallCard summary={dashboard} />}
     >
       <AccountCardList accounts={accounts} cardWidth={300} />
+
+      <LatestTransactionList transactions={latestTransactions} />
 
       <UpcomingCardList upcomingFlows={upcomingFlows} />
     </CardHeaderScrollView>

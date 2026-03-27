@@ -1,52 +1,30 @@
 import React from 'react';
-import { ScrollView, View, type ViewProps } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { View, type ViewProps } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UpcomingCard } from '@/dashboard/presentation/components/UpcomingCard';
 import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { Theme } from '@/types/theme';
-import { spacing } from '@/types/theme/design-tokens';
+import { tk } from '@/i18n/translations';
+import { AppCardDivider } from '@/shared/presentation/components/AppCardDivider';
+import { AppCardList } from '@/shared/presentation/components/AppCardList';
 
 export type UpcomingCardListProps = ViewProps & {
   upcomingFlows: UpcomingFlow[];
 };
 
-const createStyles = (theme: Theme) => ({
-  scrollContent: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.sm,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: theme.colors.separator,
-  },
-});
-
 export const UpcomingCardList = ({ upcomingFlows, style, ...props }: UpcomingCardListProps) => {
-  const styles = useStyles(createStyles);
-  const { bottom } = useSafeAreaInsets();
+  const { t } = useTranslation();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={style} {...props}>
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[styles.scrollContent, { paddingBottom: bottom + spacing.lg }]}
-          decelerationRate="fast"
-          snapToInterval={spacing.lg}
-          snapToAlignment="start"
-        >
-          {upcomingFlows.map((flow, index) => {
-            return (
-              <View key={flow.id + flow.date}>
-                <UpcomingCard upcomingFlow={flow} />
-                {index < upcomingFlows.length - 1 && <View style={styles.divider} />}
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
+      <AppCardList style={style} {...props} scrollable="vertical" header={t(tk.upcomingList.title)}>
+        {upcomingFlows.map((flow, index) => (
+          <View key={flow.id + flow.date}>
+            <UpcomingCard upcomingFlow={flow} />
+            {index < upcomingFlows.length - 1 && <AppCardDivider />}
+          </View>
+        ))}
+      </AppCardList>
     </GestureHandlerRootView>
   );
 };

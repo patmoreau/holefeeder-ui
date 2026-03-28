@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, type ViewProps } from 'react-native';
+import { type ViewProps } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { UpcomingCard } from '@/dashboard/presentation/components/UpcomingCard';
 import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
@@ -12,19 +12,20 @@ export type UpcomingCardListProps = ViewProps & {
   upcomingFlows: UpcomingFlow[];
 };
 
-export const UpcomingCardList = ({ upcomingFlows, style, ...props }: UpcomingCardListProps) => {
+export const UpcomingCardList = ({ upcomingFlows, style }: UpcomingCardListProps) => {
   const { t } = useTranslation();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <AppCardList style={style} {...props} scrollable="vertical" header={t(tk.upcomingList.title)}>
-        {upcomingFlows.map((flow, index) => (
-          <View key={flow.id + flow.date}>
-            <UpcomingCard upcomingFlow={flow} />
-            {index < upcomingFlows.length - 1 && <AppCardDivider />}
-          </View>
-        ))}
-      </AppCardList>
+      <AppCardList
+        style={style}
+        scrollable="vertical"
+        header={t(tk.upcomingList.title)}
+        data={upcomingFlows}
+        keyExtractor={(item) => item.id + item.date}
+        renderItem={({ item }) => <UpcomingCard upcomingFlow={item} />}
+        ItemSeparatorComponent={() => <AppCardDivider />}
+      />
     </GestureHandlerRootView>
   );
 };

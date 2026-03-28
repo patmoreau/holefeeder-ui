@@ -131,3 +131,7 @@ All user-facing strings must use `useTranslation()` from react-i18next. Add keys
 - Mock modules live in `__mocks__/` at root; mock context helpers in `tests/setup/`
 - Coverage threshold: 70% on branches, functions, lines, statements
 
+## Git
+
+- Do not commit
+

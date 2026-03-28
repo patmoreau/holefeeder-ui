@@ -1,16 +1,25 @@
+import { FlashList, FlashListProps } from '@shopify/flash-list';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, View, type ViewProps } from 'react-native';
+import { RefreshControl, StyleProp, View, ViewStyle } from 'react-native';
+import Reanimated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { spacing } from '@/types/theme/design-tokens';
 
-export type AppCardListProps = ViewProps & { header?: string; seeAllLabel?: string } & (
-    | { scrollable?: 'none' | 'vertical' }
-    | { scrollable: 'horizontal'; cardWidth: number }
-  );
+const AnimatedFlashList = Reanimated.createAnimatedComponent(FlashList) as typeof FlashList;
+
+export type AppCardListProps<T> = {
+  header?: string;
+  seeAllLabel?: string;
+  style?: StyleProp<ViewStyle>;
+  scrollable?: 'none' | 'vertical' | 'horizontal';
+  /** Required when scrollable is 'horizontal' */
+  cardWidth?: number;
+} & Omit<FlashListProps<T>, 'horizontal' | 'scrollEnabled' | 'style'>;
 
 const createStyles = () => ({
   verticalScrollContent: {
@@ -32,59 +41,90 @@ const createStyles = () => ({
     paddingHorizontal: spacing.md,
     marginBottom: spacing.xs,
   },
+  container: {
+    flex: 1,
+  },
 });
 
-export const AppCardList = ({ header, seeAllLabel, scrollable, style, children, ...props }: AppCardListProps) => {
+export const AppCardList = <T,>({
+  header,
+  seeAllLabel,
+  scrollable,
+  cardWidth = 0,
+  style,
+  contentContainerStyle,
+  onRefresh,
+  refreshing = false,
+  refreshControl: providedRefreshControl,
+  ...flashListProps
+}: AppCardListProps<T>) => {
   const { t } = useTranslation();
   const styles = useStyles(createStyles);
+  const { theme } = useTheme();
   const { bottom } = useSafeAreaInsets();
+
+  const isHorizontal = scrollable === 'horizontal';
+
   const headerComponent = header ? (
     <View style={styles.header}>
       <AppText variant={'defaultSemiBold'}>{header}</AppText>
       {/* TODO: navigate to full transaction list */}
       <AppText variant={'footnote'}>{seeAllLabel ?? t(tk.cardList.viewAll)}</AppText>
     </View>
-  ) : (
-    <></>
-  );
+  ) : null;
 
-  if (scrollable === 'horizontal') {
-    const { cardWidth, ...rest } = props as ViewProps & { scrollable: 'horizontal'; cardWidth: number };
+  const defaultRefreshControl =
+    onRefresh && !providedRefreshControl ? (
+      <RefreshControl
+        refreshing={refreshing ?? false}
+        onRefresh={onRefresh}
+        tintColor={theme.colors.text}
+        colors={[theme.colors.text]}
+        progressBackgroundColor={theme.colors.secondaryBackground}
+      />
+    ) : undefined;
+
+  const resolvedRefreshControl = providedRefreshControl ?? defaultRefreshControl;
+
+  if (isHorizontal) {
     return (
-      <View style={style} {...rest}>
-        <ScrollView
+      <View style={style}>
+        {headerComponent}
+        <AnimatedFlashList
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.horizontalScrollContent}
           decelerationRate="fast"
           snapToInterval={cardWidth + spacing.sm}
           snapToAlignment="start"
-        >
-          {headerComponent}
-          {children}
-        </ScrollView>
+          contentContainerStyle={[{ paddingHorizontal: spacing.lg, paddingVertical: spacing.sm }, contentContainerStyle]}
+          {...flashListProps}
+        />
       </View>
     );
   }
 
   if (scrollable === 'vertical') {
     return (
-      <View style={style} {...props}>
-        <ScrollView
+      <View style={[styles.container, style]}>
+        {headerComponent}
+        <AnimatedFlashList
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={[styles.verticalScrollContent, { paddingBottom: bottom + spacing.lg }]}
-        >
-          {headerComponent}
-          {children}
-        </ScrollView>
+          contentContainerStyle={[styles.verticalScrollContent, { paddingBottom: bottom + spacing.lg }, contentContainerStyle]}
+          refreshControl={resolvedRefreshControl}
+          {...flashListProps}
+        />
       </View>
     );
   }
 
   return (
-    <View style={[styles.noScrollContent, style]} {...props}>
+    <View style={[styles.noScrollContent, style]}>
       {headerComponent}
-      {children}
+      <AnimatedFlashList
+        scrollEnabled={false}
+        contentContainerStyle={[{ paddingHorizontal: spacing.sm, paddingVertical: spacing.sm }, contentContainerStyle]}
+        {...flashListProps}
+      />
     </View>
   );
 };

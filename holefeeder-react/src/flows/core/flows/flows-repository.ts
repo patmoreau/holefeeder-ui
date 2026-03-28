@@ -15,8 +15,13 @@ export type FlowsRepository = {
   transfer(command: TransferFlowCommand): Promise<Result<void>>;
   watchAccountVariations: (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => () => void;
   watchCashflowVariations: (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => () => void;
-  watchLatestTransactions: (onDataChange: (result: AsyncResult<Transaction[]>) => void, limit: number) => () => void;
-  watchAccountTransactions: (onDataChange: (result: AsyncResult<Transaction[]>) => void, accountId: Id, limit: number) => () => void;
+  watchTransactions: (
+    onDataChange: (result: AsyncResult<Transaction[]>) => void,
+    accountId?: Id,
+    limit?: number,
+    offset?: number
+  ) => () => void;
+  watchTransactionCount: (onDataChange: (result: AsyncResult<number>) => void, accountId?: Id) => () => void;
   watchTags: (onDataChange: (result: AsyncResult<Tag[]>) => void) => () => void;
 };
 

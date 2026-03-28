@@ -365,8 +365,8 @@ describe('FlowsRepository', () => {
     });
   });
 
-  describe('watchLatestTransactions', () => {
-    it('retrieves latest transactions', async () => {
+  describe('watchTransactions', () => {
+    it('retrieves transactions', async () => {
       const category = await aCategory({ type: CategoryTypes.expense }).store(db);
       const transaction = await aTransaction({
         categoryId: category.id,
@@ -375,9 +375,13 @@ describe('FlowsRepository', () => {
       }).store(db);
 
       let result: AsyncResult<Transaction[]> | undefined;
-      const unsubscribe = repository.watchLatestTransactions((data) => {
-        result = data;
-      }, 10);
+      const unsubscribe = repository.watchTransactions(
+        (data) => {
+          result = data;
+        },
+        undefined,
+        10
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -407,9 +411,13 @@ describe('FlowsRepository', () => {
       const newer = await aTransaction({ categoryId: category.id, date: DateOnly.valid('2026-03-01') }).store(db);
 
       let result: AsyncResult<Transaction[]> | undefined;
-      const unsubscribe = repository.watchLatestTransactions((data) => {
-        result = data;
-      }, 10);
+      const unsubscribe = repository.watchTransactions(
+        (data) => {
+          result = data;
+        },
+        undefined,
+        10
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -431,9 +439,13 @@ describe('FlowsRepository', () => {
       await aTransaction({ categoryId: category.id, date: DateOnly.valid('2026-03-01') }).store(db);
 
       let result: AsyncResult<Transaction[]> | undefined;
-      const unsubscribe = repository.watchLatestTransactions((data) => {
-        result = data;
-      }, 2);
+      const unsubscribe = repository.watchTransactions(
+        (data) => {
+          result = data;
+        },
+        undefined,
+        2
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -449,9 +461,13 @@ describe('FlowsRepository', () => {
 
     it('returns empty list when no transactions exist', async () => {
       let result: AsyncResult<Transaction[]> | undefined;
-      const unsubscribe = repository.watchLatestTransactions((data) => {
-        result = data;
-      }, 10);
+      const unsubscribe = repository.watchTransactions(
+        (data) => {
+          result = data;
+        },
+        undefined,
+        10
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();
@@ -467,9 +483,13 @@ describe('FlowsRepository', () => {
       await db.close();
 
       let result: AsyncResult<Transaction[]> | undefined;
-      const unsubscribe = repository.watchLatestTransactions((data) => {
-        result = data;
-      }, 10);
+      const unsubscribe = repository.watchTransactions(
+        (data) => {
+          result = data;
+        },
+        undefined,
+        10
+      );
 
       await waitFor(() => {
         expect(result).toBeDefined();

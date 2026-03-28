@@ -9,14 +9,17 @@ export type AccountCardListProps = ViewProps & {
   onPress?: (id: Id, layout: CardLayout) => void;
 };
 
-export const AccountCardList = ({ accounts, onPress, style, ...props }: AccountCardListProps) => {
+export const AccountCardList = ({ accounts, onPress, style }: AccountCardListProps) => {
   const cardWidth = 300;
 
   return (
-    <AppCardList scrollable={'horizontal'} cardWidth={cardWidth} style={style} {...props}>
-      {accounts.map((account) => (
-        <AccountCard key={account.id} account={account} width={cardWidth} onPress={onPress} />
-      ))}
-    </AppCardList>
+    <AppCardList
+      scrollable={'horizontal'}
+      cardWidth={cardWidth}
+      style={style}
+      data={accounts}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => <AccountCard account={item} width={cardWidth} onPress={onPress} />}
+    />
   );
 };

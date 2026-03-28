@@ -2,15 +2,16 @@ import { useLocalSearchParams, useNavigation } from 'expo-router';
 import React, { useLayoutEffect } from 'react';
 import { AccountHeaderLargeCard } from '@/accounts/presentation/AccountHeaderLargeCard';
 import { AccountHeaderSmallCard } from '@/accounts/presentation/AccountHeaderSmallCard';
-import { TransactionList } from '@/accounts/presentation/components/TransactionList';
+import { TransactionCard } from '@/accounts/presentation/components/TransactionCard';
 import { useAccountDetail } from '@/accounts/presentation/core/use-account-detail';
 import { useTransactions } from '@/accounts/presentation/core/use-transactions';
 import { Id } from '@/shared/core/id';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
-import { CardHeaderScrollView } from '@/shared/presentation/CardHeaderScrollView';
+import { CardHeaderFlashList } from '@/shared/presentation/CardHeaderFlashList';
 import { AppButton } from '@/shared/presentation/components/AppButton';
+import { AppCardDivider } from '@/shared/presentation/components/AppCardDivider';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
@@ -32,7 +33,7 @@ export const AccountScreen = () => {
   const navigation = useNavigation();
 
   const accountQuery = useAccountDetail(accountId);
-  const transactionsQuery = useTransactions(accountId);
+  const { transactions: transactionsQuery, loadNext, loadPrevious, hasNextPage, hasPreviousPage, loading } = useTransactions(accountId);
 
   const { data, errors } = useMultipleWatches({
     account: withDefault(() => accountQuery, null),
@@ -58,12 +59,17 @@ export const AccountScreen = () => {
   if (!account) return <LoadingIndicator />;
 
   return (
-    <CardHeaderScrollView
+    <CardHeaderFlashList
       headerBackgroundColor={theme.colors.primary}
       largeCard={<AccountHeaderLargeCard account={account} />}
       smallCard={<AccountHeaderSmallCard account={account} />}
-    >
-      <TransactionList transactions={transactions} />
-    </CardHeaderScrollView>
+      data={transactions}
+      renderItem={(item) => <TransactionCard transaction={item.item} />}
+      keyExtractor={(item) => item.id}
+      ItemSeparatorComponent={AppCardDivider}
+      ListFooterComponent={loading ? <LoadingIndicator size={'small'} /> : null}
+      onStartReached={loadPrevious}
+      onEndReached={loadNext}
+    />
   );
 };

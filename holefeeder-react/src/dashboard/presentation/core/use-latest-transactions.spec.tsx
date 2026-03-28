@@ -36,19 +36,19 @@ describe('useLatestTransactions', () => {
 
     const { result } = await createHook();
 
-    expect(result.current).toBeLoading();
+    expect(result.current.data).toBeLoading();
 
     await waitFor(() => expect(result.current).not.toBeLoading());
 
-    expect(result.current).toBeSuccessWithValue(expect.anything());
+    expect(result.current.data).toBeSuccessWithValue(expect.anything());
   });
 
   it('should return an empty list when no transactions exist', async () => {
     const { result } = await createHook();
 
-    await waitFor(() => expect(result.current).not.toBeLoading());
+    await waitFor(() => expect(result.current.data).not.toBeLoading());
 
-    expect(result.current).toBeSuccessWithValue([]);
+    expect(result.current.data).toBeSuccessWithValue([]);
   });
 
   it('should respect the limit parameter', async () => {
@@ -60,11 +60,11 @@ describe('useLatestTransactions', () => {
 
     const { result } = await createHook(2);
 
-    await waitFor(() => expect(result.current).not.toBeLoading());
+    await waitFor(() => expect(result.current.data).not.toBeLoading());
 
-    expect(result.current.isSuccess).toBe(true);
-    if (result.current.isSuccess) {
-      expect(result.current.value).toHaveLength(2);
+    expect(result.current.data.isSuccess).toBe(true);
+    if (result.current.data.isSuccess) {
+      expect(result.current.data.value).toHaveLength(2);
     }
   });
 });

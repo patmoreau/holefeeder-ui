@@ -191,6 +191,9 @@ export const en = {
   recentTransactions: {
     title: 'Recent Transactions',
   },
+  accountDetail: {
+    loadMore: 'Load More',
+  },
   settings: {
     title: 'Settings',
     parameters: 'Parameters',

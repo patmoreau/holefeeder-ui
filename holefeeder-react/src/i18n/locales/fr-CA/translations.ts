@@ -194,6 +194,9 @@ export const fr: TranslationStructure = {
   recentTransactions: {
     title: 'Transactions récentes',
   },
+  accountDetail: {
+    loadMore: 'Charger plus',
+  },
   settings: {
     title: 'Paramètres',
     parameters: 'Paramètres',

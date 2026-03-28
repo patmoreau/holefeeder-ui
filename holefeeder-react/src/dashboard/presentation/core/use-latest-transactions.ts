@@ -1,16 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { useRepositories } from '@/contexts/RepositoryContext';
 import { Transaction } from '@/flows/core/flows/transaction';
-import { type AsyncResult, Result } from '@/shared/core/result';
+import { type AsyncResult } from '@/shared/core/result';
+import { usePagedWatch, type UsePagedWatchResult, WatchCountFn, WatchPageFn } from '@/shared/presentation/core/use-paged-watch';
 
-export const useLatestTransactions = (limit = 3): AsyncResult<Transaction[]> => {
+export type UseLatestTransactionsResult = UsePagedWatchResult<Transaction> & {
+  transactions: AsyncResult<Transaction[]>;
+};
+
+export const useLatestTransactions = (hardLimit = 3): UseLatestTransactionsResult => {
   const { flowRepository } = useRepositories();
-  const [transactions, setTransactions] = useState<AsyncResult<Transaction[]>>(Result.loading());
 
-  useEffect(() => {
-    const unsubscribe = flowRepository.watchLatestTransactions(setTransactions, limit);
-    return () => unsubscribe();
-  }, [flowRepository, limit]);
+  const watchFn = useCallback<WatchPageFn<Transaction>>(
+    (onData, limit, offset) =>
+      flowRepository.watchTransactions(
+        (result) => {
+          if (result.isSuccess) onData(result.value);
+        },
+        undefined,
+        limit,
+        offset
+      ),
+    [flowRepository]
+  );
 
-  return transactions;
+  const watchCountFn = useCallback<WatchCountFn>(
+    (onCount) =>
+      flowRepository.watchTransactionCount((result) => {
+        if (result.isSuccess) onCount(result.value);
+      }),
+    [flowRepository]
+  );
+
+  const paged = usePagedWatch(watchFn, watchCountFn, { pageSize: hardLimit, maxPages: 1 });
+
+  return { ...paged, transactions: paged.data };
 };

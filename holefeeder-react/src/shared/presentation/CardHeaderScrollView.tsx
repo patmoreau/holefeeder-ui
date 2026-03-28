@@ -1,7 +1,7 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { RefreshControl, type ViewProps } from 'react-native';
+import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl, type ViewProps } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
@@ -17,6 +17,8 @@ type Props = ViewProps & {
   children: ReactNode;
   onRefresh?: () => void;
   refreshing?: boolean;
+  onEndReached?: () => void;
+  onEndReachedThreshold?: number;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -66,6 +68,8 @@ export const CardHeaderScrollView = ({
   children,
   onRefresh,
   refreshing = false,
+  onEndReached,
+  onEndReachedThreshold = 200,
   ...otherProps
 }: Props) => {
   const styles = useStyles(createStyles);
@@ -78,6 +82,14 @@ export const CardHeaderScrollView = ({
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollOffset(scrollRef);
+
+  const handleScrollEnd = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (!onEndReached) return;
+    const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
+    if (contentOffset.y + layoutMeasurement.height >= contentSize.height - onEndReachedThreshold) {
+      onEndReached();
+    }
+  };
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -133,6 +145,8 @@ export const CardHeaderScrollView = ({
         scrollEventThrottle={8}
         removeClippedSubviews={false}
         contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT }}
+        onMomentumScrollEnd={handleScrollEnd}
+        onScrollEndDrag={handleScrollEnd}
         refreshControl={
           onRefresh ? (
             <RefreshControl

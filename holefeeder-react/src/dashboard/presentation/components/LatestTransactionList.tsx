@@ -1,31 +1,40 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, type ViewProps } from 'react-native';
+import { type ViewProps } from 'react-native';
 import { LatestTransactionCard } from '@/dashboard/presentation/components/LatestTransactionCard';
-import { Transaction } from '@/flows/core/flows/transaction';
+import { UseLatestTransactionsResult } from '@/dashboard/presentation/core/use-latest-transactions';
 import { tk } from '@/i18n/translations';
 import { AppCardDivider } from '@/shared/presentation/components/AppCardDivider';
 import { AppCardList } from '@/shared/presentation/components/AppCardList';
+import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
 
 export type LatestTransactionListProps = ViewProps & {
-  transactions: Transaction[];
+  transactionsResult: UseLatestTransactionsResult;
 };
 
-export const LatestTransactionList = ({ transactions, ...props }: LatestTransactionListProps) => {
+export const LatestTransactionList = ({ transactionsResult, style }: LatestTransactionListProps) => {
   const { t } = useTranslation();
+
+  const { transactions: transactionsQuery } = transactionsResult;
+
+  const { data } = useMultipleWatches({
+    transactions: withDefault(() => transactionsQuery, []),
+  });
+
+  const { transactions } = data;
 
   if (transactions.length === 0) {
     return null;
   }
 
   return (
-    <AppCardList {...props} header={t(tk.recentTransactions.title)}>
-      {transactions.map((transaction, index) => (
-        <View key={transaction.id}>
-          <LatestTransactionCard transaction={transaction} />
-          {index < transactions.length - 1 && <AppCardDivider />}
-        </View>
-      ))}
-    </AppCardList>
+    <AppCardList
+      style={style}
+      header={t(tk.recentTransactions.title)}
+      data={transactions}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => <LatestTransactionCard transaction={item} />}
+      ItemSeparatorComponent={() => <AppCardDivider />}
+    />
   );
 };

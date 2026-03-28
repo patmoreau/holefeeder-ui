@@ -8,41 +8,14 @@ import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
 import { Transaction } from '@/flows/core/flows/transaction';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
+import { AccountVariationRow } from '@/flows/persistence/account-variation-row';
+import { CashflowVariationRow } from '@/flows/persistence/cashflow-variation-row';
+import { TagRow } from '@/flows/persistence/tag-row';
+import { TransactionRow } from '@/flows/persistence/transaction-row';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult, Result } from '@/shared/core/result';
-import { watchQuery } from '@/shared/persistence/watch-query';
-
-type AccountVariationRow = { accountId: string; lastTransactionDate: string; expenses: number; gains: number };
-
-type CashflowVariationRow = {
-  id: string;
-  accountId: string;
-  lastPaidDate: string;
-  lastCashflowDate: string;
-  amount: number;
-  description: string;
-  effectiveDate: string;
-  frequency: number;
-  intervalType: string;
-  categoryType: string;
-  tags: string;
-};
-
-type TagRow = { tag: string; count: number };
-
-type TransactionRow = {
-  id: string;
-  date: string;
-  amount: number;
-  description: string;
-  accountId: string;
-  categoryId: string;
-  categoryType: string;
-  tags: string;
-  cashflowId: string | null;
-  cashflowDate: string | null;
-};
+import { watchQuery, watchSingle } from '@/shared/persistence/watch-query';
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
@@ -276,7 +249,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       onDataChange
     );
 
-  const watchLatestTransactions = (onDataChange: (result: AsyncResult<Transaction[]>) => void, limit: number) =>
+  const watchTransactions = (onDataChange: (result: AsyncResult<Transaction[]>) => void, accountId?: Id, limit?: number, offset?: number) =>
     watchQuery<TransactionRow, Transaction>(
       db,
       `
@@ -292,10 +265,12 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
                t.cashflow_date AS cashflowDate
         FROM transactions t
                JOIN categories c ON t.category_id = c.id
+        WHERE (? IS NULL OR t.account_id = ?)
         ORDER BY t.date DESC, t.id DESC
-        LIMIT ?
+        LIMIT IFNULL(?, -1)
+        OFFSET IFNULL(?, 0)
       `,
-      [limit],
+      [accountId ?? null, accountId ?? null, limit ?? null, offset ?? null],
       (row) =>
         Transaction.valid({
           ...row,
@@ -305,34 +280,14 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       onDataChange
     );
 
-  const watchAccountTransactions = (onDataChange: (result: AsyncResult<Transaction[]>) => void, accountId: Id, limit: number) =>
-    watchQuery<TransactionRow, Transaction>(
+  const watchTransactionCount = (onDataChange: (result: AsyncResult<number>) => void, accountId?: Id) =>
+    watchSingle<{ total: number }, number>(
       db,
-      `
-        SELECT t.id,
-               t.date,
-               t.amount,
-               COALESCE(NULLIF(t.description, ''), c.name) AS description,
-               t.account_id    AS accountId,
-               t.category_id   AS categoryId,
-               c.type          AS categoryType,
-               t.tags,
-               t.cashflow_id   AS cashflowId,
-               t.cashflow_date AS cashflowDate
-        FROM transactions t
-               JOIN categories c ON t.category_id = c.id
-        WHERE t.account_id = ?
-        ORDER BY t.date DESC, t.id DESC
-        LIMIT ?
-      `,
-      [accountId, limit],
-      (row) =>
-        Transaction.valid({
-          ...row,
-          amount: Money.fromCents(row.amount),
-          tags: TagList.fromConcatenatedString(row.tags),
-        }),
-      onDataChange
+      `SELECT COUNT(*) AS total FROM transactions WHERE  (? IS NULL OR account_id = ?)`,
+      [accountId, accountId],
+      (row) => row.total,
+      onDataChange,
+      () => Result.success(0)
     );
 
   const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) =>
@@ -371,7 +326,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     watchTags: watchTags,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,
-    watchLatestTransactions: watchLatestTransactions,
-    watchAccountTransactions: watchAccountTransactions,
+    watchTransactions: watchTransactions,
+    watchTransactionCount: watchTransactionCount,
   };
 };

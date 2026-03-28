@@ -44,7 +44,6 @@ const DashboardScreen = () => {
     accounts: withDefault(() => accountsQuery, []),
     dashboard: withDefault(() => dashboardQuery, NO_SUMMARY),
     upcomingFlows: withDefault(() => upcomingQuery, []),
-    latestTransactions: withDefault(() => latestTransactionsQuery, []),
   });
 
   if (errors.showError) {
@@ -55,7 +54,7 @@ const DashboardScreen = () => {
     );
   }
 
-  const { accounts, dashboard, upcomingFlows, latestTransactions } = data;
+  const { accounts, dashboard, upcomingFlows } = data;
 
   return (
     <CardHeaderScrollView
@@ -65,7 +64,7 @@ const DashboardScreen = () => {
     >
       <AccountCardList accounts={accounts} onPress={onAccountPress} />
 
-      <LatestTransactionList transactions={latestTransactions} />
+      <LatestTransactionList transactionsResult={latestTransactionsQuery} />
 
       <UpcomingCardList upcomingFlows={upcomingFlows} />
     </CardHeaderScrollView>

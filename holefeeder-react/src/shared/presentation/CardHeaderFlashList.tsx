@@ -8,6 +8,7 @@ import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
 import { AppCardList } from '@/shared/presentation/components/AppCardList';
+import { UsePagedWatchResult } from '@/shared/presentation/core/use-paged-watch';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
@@ -17,17 +18,13 @@ type Props<T> = {
   largeCard: ReactNode;
   smallCard: ReactNode;
   headerBackgroundColor?: string;
-  data: T[];
-  renderItem: FlashListProps<T>['renderItem'];
+  pagedResult: UsePagedWatchResult<T>;
+  renderItem: NonNullable<FlashListProps<T>['renderItem']>;
   keyExtractor?: FlashListProps<T>['keyExtractor'];
   ListFooterComponent?: FlashListProps<T>['ListFooterComponent'];
   ItemSeparatorComponent?: FlashListProps<T>['ItemSeparatorComponent'];
   onRefresh?: () => void;
   refreshing?: boolean;
-  onStartReached?: () => void;
-  onStartReachedThreshold?: number;
-  onEndReached?: () => void;
-  onEndReachedThreshold?: number;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -72,17 +69,13 @@ export const CardHeaderFlashList = <T,>({
   largeCard,
   smallCard,
   headerBackgroundColor = '#007AFF',
-  data,
+  pagedResult,
   renderItem,
   keyExtractor,
   ListFooterComponent,
   ItemSeparatorComponent,
   onRefresh,
   refreshing = false,
-  onStartReached,
-  onStartReachedThreshold = 0.5,
-  onEndReached,
-  onEndReachedThreshold = 0.5,
 }: Props<T>) => {
   const styles = useStyles(createStyles);
   const { theme } = useTheme();
@@ -143,7 +136,7 @@ export const CardHeaderFlashList = <T,>({
 
       <AppCardList
         scrollable="vertical"
-        data={data}
+        pagedResult={pagedResult}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         ListHeaderComponent={<View style={{ height: HEADER_MAX_HEIGHT }} />}
@@ -152,10 +145,6 @@ export const CardHeaderFlashList = <T,>({
         contentContainerStyle={styles.contentContainer}
         onScroll={scrollHandler}
         scrollEventThrottle={8}
-        onStartReached={onStartReached}
-        onStartReachedThreshold={onStartReachedThreshold}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={onEndReachedThreshold}
         refreshControl={
           onRefresh ? (
             <RefreshControl

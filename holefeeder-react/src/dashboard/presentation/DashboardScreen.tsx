@@ -7,7 +7,6 @@ import { LatestTransactionList } from '@/dashboard/presentation/components/Lates
 import { UpcomingCardList } from '@/dashboard/presentation/components/UpcomingCardList';
 import { useAccountDetails } from '@/dashboard/presentation/core/use-account-details';
 import { useDashboard } from '@/dashboard/presentation/core/use-dashboard';
-import { useLatestTransactions } from '@/dashboard/presentation/core/use-latest-transactions';
 import { useUpcomingFlows } from '@/dashboard/presentation/core/use-upcoming-flows';
 import { DashboardHeaderLargeCard } from '@/dashboard/presentation/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/dashboard/presentation/DashboardHeaderSmallCard';
@@ -30,11 +29,10 @@ const DashboardScreen = () => {
   const accountsQuery = useAccountDetails();
   const dashboardQuery = useDashboard();
   const upcomingQuery = useUpcomingFlows();
-  const latestTransactionsQuery = useLatestTransactions(3);
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
 
-  const onAccountPress = (id: Id, layout: CardLayout) =>
+  const onAccountPress = (id: Id, _layout: CardLayout) =>
     router.push({
       pathname: '/(app)/accounts/[id]',
       params: { id: id as string },
@@ -64,7 +62,7 @@ const DashboardScreen = () => {
     >
       <AccountCardList accounts={accounts} onPress={onAccountPress} />
 
-      <LatestTransactionList transactionsResult={latestTransactionsQuery} />
+      <LatestTransactionList />
 
       <UpcomingCardList upcomingFlows={upcomingFlows} />
     </CardHeaderScrollView>

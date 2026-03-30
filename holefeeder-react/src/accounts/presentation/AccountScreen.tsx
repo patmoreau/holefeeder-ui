@@ -33,11 +33,10 @@ export const AccountScreen = () => {
   const navigation = useNavigation();
 
   const accountQuery = useAccountDetail(accountId);
-  const { transactions: transactionsQuery, loadNext, loadPrevious, hasNextPage, hasPreviousPage, loading } = useTransactions(accountId);
+  const transactionsResult = useTransactions(accountId);
 
   const { data, errors } = useMultipleWatches({
     account: withDefault(() => accountQuery, null),
-    transactions: withDefault(() => transactionsQuery, []),
   });
 
   useLayoutEffect(() => {
@@ -54,7 +53,7 @@ export const AccountScreen = () => {
     );
   }
 
-  const { account, transactions } = data;
+  const { account } = data;
 
   if (!account) return <LoadingIndicator />;
 
@@ -63,13 +62,11 @@ export const AccountScreen = () => {
       headerBackgroundColor={theme.colors.primary}
       largeCard={<AccountHeaderLargeCard account={account} />}
       smallCard={<AccountHeaderSmallCard account={account} />}
-      data={transactions}
+      pagedResult={transactionsResult}
       renderItem={(item) => <TransactionCard transaction={item.item} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={AppCardDivider}
-      ListFooterComponent={loading ? <LoadingIndicator size={'small'} /> : null}
-      onStartReached={loadPrevious}
-      onEndReached={loadNext}
+      ListFooterComponent={transactionsResult.loading ? <LoadingIndicator size={'small'} /> : null}
     />
   );
 };

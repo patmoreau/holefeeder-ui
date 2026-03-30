@@ -32,22 +32,27 @@ export const usePagedWatch = <T>(
   const [activePages, setActivePages] = useState<number[]>([0]);
   const [pageData, setPageData] = useState<Record<number, T[]>>({});
   const [totalCount, setTotalCount] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState(false);
 
+  // Use a ref for sync access during rapid scroll events
+  const isLoadingRef = useRef(false);
   const subsRef = useRef<Map<number, () => void>>(new Map());
 
   const purgeObsoletePages = useCallback(() => {
+    let changed = false;
+    const nextData = { ...pageData };
+
     subsRef.current.forEach((unsub, idx) => {
       if (!activePages.includes(idx)) {
         unsub();
         subsRef.current.delete(idx);
-        setPageData((prev) => {
-          const { [idx]: _, ...rest } = prev;
-          return rest;
-        });
+        delete nextData[idx];
+        changed = true;
       }
     });
-  }, [activePages]);
+
+    if (changed) setPageData(nextData);
+  }, [activePages, pageData]);
 
   const subscribeToMissingPages = useCallback(() => {
     activePages.forEach((idx) => {
@@ -55,7 +60,8 @@ export const usePagedWatch = <T>(
         const unsub = watchFn(
           (items) => {
             setPageData((prev) => ({ ...prev, [idx]: items }));
-            setLoading(false);
+            isLoadingRef.current = false;
+            setLoadingState(false);
           },
           pageSize,
           idx * pageSize
@@ -65,17 +71,19 @@ export const usePagedWatch = <T>(
     });
   }, [activePages, watchFn, pageSize]);
 
+  // Handle subscriptions and purges
   useEffect(() => {
     purgeObsoletePages();
     subscribeToMissingPages();
+  }, [activePages, purgeObsoletePages, subscribeToMissingPages]);
 
+  // Strict cleanup on unmount
+  useEffect(() => {
     return () => {
-      if (subsRef.current.size > 0 && !activePages.length) {
-        subsRef.current.forEach((unsub) => unsub());
-        subsRef.current.clear();
-      }
+      subsRef.current.forEach((unsub) => unsub());
+      subsRef.current.clear();
     };
-  }, [activePages.length, purgeObsoletePages, subscribeToMissingPages]);
+  }, []);
 
   useEffect(() => {
     return watchCountFn(setTotalCount);
@@ -86,39 +94,46 @@ export const usePagedWatch = <T>(
   const maxPage = sortedIndices[sortedIndices.length - 1] ?? 0;
 
   const data = useMemo(() => {
+    // If we have at least one page of data, we consider it a success
     if (Object.keys(pageData).length === 0) return Result.loading();
     const flat = sortedIndices.flatMap((i) => pageData[i] ?? []);
     return Result.success(flat);
   }, [pageData, sortedIndices]);
 
-  const hasNextPage = (maxPage + 1) * pageSize < (totalCount ?? 0);
+  const hasNextPage = (maxPage + 1) * pageSize < totalCount;
   const hasPreviousPage = minPage > 0;
 
   const loadNext = useCallback(() => {
-    if (loading || !hasNextPage) return;
-    setLoading(true);
+    if (isLoadingRef.current || !hasNextPage) return;
+
+    isLoadingRef.current = true;
+    setLoadingState(true);
+
     setActivePages((prev) => {
       const next = [...prev, maxPage + 1];
       return next.length > maxPages ? next.slice(1) : next;
     });
-  }, [loading, hasNextPage, maxPage, maxPages]);
+  }, [hasNextPage, maxPage, maxPages]);
 
   const loadPrevious = useCallback(() => {
-    if (loading || !hasPreviousPage) return;
-    setLoading(true);
+    if (isLoadingRef.current || !hasPreviousPage) return;
+
+    isLoadingRef.current = true;
+    setLoadingState(true);
+
     setActivePages((prev) => {
       const next = [minPage - 1, ...prev];
       return next.length > maxPages ? next.slice(0, -1) : next;
     });
-  }, [loading, hasPreviousPage, minPage, maxPages]);
+  }, [hasPreviousPage, minPage, maxPages]);
 
   return {
-    data: data,
-    totalCount: totalCount,
-    loadNext: loadNext,
-    loadPrevious: loadPrevious,
-    hasNextPage: hasNextPage,
-    hasPreviousPage: hasPreviousPage,
-    loading: loading,
+    data,
+    totalCount,
+    loadNext,
+    loadPrevious,
+    hasNextPage,
+    hasPreviousPage,
+    loading: loadingState,
   };
 };

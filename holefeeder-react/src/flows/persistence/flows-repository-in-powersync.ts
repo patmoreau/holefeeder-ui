@@ -3,6 +3,7 @@ import { AccountVariation } from '@/flows/core/accounts/account-variation';
 import { CashflowVariation } from '@/flows/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command';
 import { FlowsRepository, FlowsRepositoryErrors } from '@/flows/core/flows/flows-repository';
+import { ModifyFlowCommand } from '@/flows/core/flows/modify/modify-flow-command';
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
@@ -94,6 +95,43 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
+  const modify = async (command: ModifyFlowCommand): Promise<Result<Id>> => {
+    try {
+      let rowsAffected = 0;
+      await db.writeTransaction(async (tx) => {
+        const result = await tx.execute(
+          `
+            UPDATE transactions
+            SET date = ?, amount = ?, description = ?, account_id = ?, category_id = ?, tags = ?
+            WHERE id = ?
+            RETURNING *
+          `,
+          [
+            command.date,
+            Money.toCents(command.amount),
+            command.description,
+            command.accountId,
+            command.categoryId,
+            TagList.toConcatenatedString(command.tags),
+            command.id,
+          ]
+        );
+        rowsAffected = result.rows?.length ?? 0;
+      });
+
+      if (rowsAffected === 0) {
+        return Result.failure([FlowsRepositoryErrors.modifyFlowCommandFailed]);
+      }
+
+      return Result.success(command.id);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`${FlowsRepositoryErrors.modifyFlowCommandFailed}: `, error.message);
+      }
+      return Result.failure([FlowsRepositoryErrors.modifyFlowCommandFailed]);
+    }
+  };
+
   const pay = async (command: PayFlowCommand): Promise<Result<Id>> => {
     const newId = Id.newId();
 
@@ -128,15 +166,16 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
 
   const deactivateUpcoming = async (cashflowId: Id): Promise<Result<void>> => {
     try {
-      console.debug(`Marking cashflow ${cashflowId} as inactive...`);
-      await db.execute(
-        `
-          UPDATE cashflows
-          SET inactive = 1
-          WHERE id = ?
-        `,
-        [cashflowId]
-      );
+      await db.writeTransaction(async (tx) => {
+        await tx.execute(
+          `
+            UPDATE cashflows
+            SET inactive = 1
+            WHERE id = ?
+          `,
+          [cashflowId]
+        );
+      });
 
       return Result.success();
     } catch (error) {
@@ -249,6 +288,34 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       onDataChange
     );
 
+  const watchTransaction = (transactionId: Id, onDataChange: (result: AsyncResult<Transaction>) => void) =>
+    watchSingle<TransactionRow, Transaction>(
+      db,
+      `
+        SELECT t.id,
+               t.date,
+               t.amount,
+               t.description,
+               t.account_id    AS accountId,
+               t.category_id   AS categoryId,
+               c.type          AS categoryType,
+               t.tags,
+               t.cashflow_id   AS cashflowId,
+               t.cashflow_date AS cashflowDate
+        FROM transactions t
+               JOIN categories c ON t.category_id = c.id
+        WHERE t.id = ?
+      `,
+      [transactionId],
+      (row) =>
+        Transaction.valid({
+          ...row,
+          amount: Money.fromCents(row.amount),
+          tags: TagList.fromConcatenatedString(row.tags),
+        }),
+      onDataChange
+    );
+
   const watchTransactions = (onDataChange: (result: AsyncResult<Transaction[]>) => void, accountId?: Id, limit?: number, offset?: number) =>
     watchQuery<TransactionRow, Transaction>(
       db,
@@ -320,12 +387,14 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
 
   return {
     create: create,
+    modify: modify,
     pay: pay,
     deactivateUpcoming: deactivateUpcoming,
     transfer: transfer,
     watchTags: watchTags,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,
+    watchTransaction: watchTransaction,
     watchTransactions: watchTransactions,
     watchTransactionCount: watchTransactionCount,
   };

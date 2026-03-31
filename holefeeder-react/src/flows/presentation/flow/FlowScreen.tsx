@@ -1,11 +1,13 @@
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { PurchaseFormData, PurchaseType } from '@/flows/presentation/purchase/core/purchase-form-data';
-import { PurchaseFormProvider, validatePurchaseForm } from '@/flows/presentation/purchase/core/use-purchase-form';
-import { PurchaseForm } from '@/flows/presentation/purchase/PurchaseForm';
+import { FlowFormData } from '@/flows/presentation/flow/core/flow-form-data';
+import { useFlow } from '@/flows/presentation/flow/core/use-flow';
+import { FlowFormProvider, validateFormForm } from '@/flows/presentation/flow/core/use-flow-form';
+import { FlowForm } from '@/flows/presentation/flow/FlowForm';
 import { useAccounts } from '@/flows/presentation/shared/core/use-accounts';
 import { useCategories } from '@/flows/presentation/shared/core/use-categories';
 import { useTags } from '@/flows/presentation/shared/core/use-tags';
-import { today } from '@/shared/core/with-date';
+import { Id } from '@/shared/core/id';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppScreen } from '@/shared/presentation/AppScreen';
 import { AppView } from '@/shared/presentation/AppView';
@@ -20,16 +22,21 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-const PurchaseScreen = () => {
+const FlowScreen = () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const flowId = Id.valid(id);
+
   const accountsQuery = useAccounts();
   const categoriesQuery = useCategories();
   const tagsQuery = useTags();
+  const flowQuery = useFlow(flowId);
   const styles = useStyles(createStyles);
 
   const { data, isLoading, errors } = useMultipleWatches({
     accounts: withDefault(() => accountsQuery, []),
     categories: withDefault(() => categoriesQuery, []),
     tags: withDefault(() => tagsQuery, []),
+    flow: () => flowQuery,
   });
 
   if (isLoading || !data) {
@@ -41,31 +48,35 @@ const PurchaseScreen = () => {
     );
   }
 
-  const { accounts, categories, tags } = data;
+  const { accounts, categories, tags, flow } = data;
 
-  const initialData: PurchaseFormData = {
-    purchaseType: PurchaseType.expense,
-    date: today(),
-    amount: 0,
-    description: '',
-    sourceAccount: accounts[0],
-    category: categories[0],
-    tags: [],
-    hasCashflow: false,
-    cashflowEffectiveDate: today(),
-    cashflowIntervalType: 'monthly',
-    cashflowFrequency: 1,
-    targetAccount: accounts![1] || accounts![0],
+  if (!flow) {
+    return (
+      <AppView style={styles.container}>
+        <ErrorSheet {...errors} />
+      </AppView>
+    );
+  }
+
+  const initialData: FlowFormData = {
+    id: flow.id,
+    flowType: flow.categoryType,
+    date: flow.date,
+    amount: flow.amount,
+    description: flow.description,
+    account: accounts.find((account) => account.id === flow.accountId)!,
+    category: categories.find((category) => category.id === flow.categoryId)!,
+    tags: flow.tags.map((tag) => tags.find((t) => t.tag === tag)!),
   };
 
   return (
     <AppScreen>
-      <PurchaseFormProvider initialValue={initialData} validate={validatePurchaseForm} validateOnChange>
-        <PurchaseForm accounts={accounts!} categories={categories!} tags={tags!} />
-      </PurchaseFormProvider>
+      <FlowFormProvider initialValue={initialData} validate={validateFormForm} validateOnChange>
+        <FlowForm accounts={accounts!} categories={categories!} tags={tags!} />
+      </FlowFormProvider>
       <ErrorSheet {...errors} />
     </AppScreen>
   );
 };
 
-export default PurchaseScreen;
+export default FlowScreen;

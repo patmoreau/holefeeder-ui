@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
 import { aTag } from '@/flows/core/flows/__tests__/tag-for-test';
 import { Tag } from '@/flows/core/flows/tag';
-import { TagList } from '@/flows/presentation/purchase/components/TagList';
+import { TagList } from '@/flows/presentation/shared/components/TagList';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 
 jest.mock('@/shared/hooks/theme/use-theme', () => ({

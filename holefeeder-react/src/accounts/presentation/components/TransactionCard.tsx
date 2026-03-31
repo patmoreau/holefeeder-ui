@@ -1,7 +1,9 @@
-import React from 'react';
-import { View, type ViewProps } from 'react-native';
+import React, { useRef } from 'react';
+import { Pressable, View, type ViewProps } from 'react-native';
+import type { CardLayout } from '@/dashboard/presentation/components/AccountCard';
 import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { Transaction } from '@/flows/core/flows/transaction';
+import { Id } from '@/shared/core/id';
 import { today } from '@/shared/core/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
@@ -13,6 +15,7 @@ import { spacing } from '@/types/theme/design-tokens';
 
 export type TransactionCardProps = ViewProps & {
   transaction: Transaction;
+  onPress?: (id: Id, layout: CardLayout) => void;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -38,32 +41,42 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export const TransactionCard = ({ transaction, ...props }: TransactionCardProps) => {
+export const TransactionCard = ({ transaction, onPress, ...props }: TransactionCardProps) => {
   const { formatCurrency, formatDate } = useLocaleFormatter();
   const styles = useStyles(createStyles);
+  const pressableRef = useRef<View>(null);
 
   const amountStyle = transaction.categoryType === CategoryTypes.gain ? styles.positiveAmount : styles.negativeAmount;
 
+  const handlePress = () => {
+    if (!onPress) return;
+    pressableRef.current?.measureInWindow((x, y, w, h) => {
+      onPress(transaction.id, { x, y, width: w, height: h });
+    });
+  };
+
   return (
-    <AppCard {...props}>
-      <View style={styles.cardDescription}>
-        <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
-          {transaction.description}
-        </AppText>
-        {transaction.tags.length > 0 && (
-          <View style={styles.tags}>
-            {transaction.tags.map((tag) => (
-              <AppChip key={tag} selected={true} label={tag} />
-            ))}
-          </View>
-        )}
-      </View>
-      <View style={styles.cardAmount}>
-        <AppText variant={'default'} adjustsFontSizeToFit style={amountStyle}>
-          {formatCurrency(transaction.amount)}
-        </AppText>
-        <AppText variant={'footnote'}>{formatDate(transaction.date, today())}</AppText>
-      </View>
-    </AppCard>
+    <Pressable ref={pressableRef} onPress={handlePress}>
+      <AppCard {...props}>
+        <View style={styles.cardDescription}>
+          <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
+            {transaction.description}
+          </AppText>
+          {transaction.tags.length > 0 && (
+            <View style={styles.tags}>
+              {transaction.tags.map((tag) => (
+                <AppChip key={tag} selected={true} label={tag} />
+              ))}
+            </View>
+          )}
+        </View>
+        <View style={styles.cardAmount}>
+          <AppText variant={'default'} adjustsFontSizeToFit style={amountStyle}>
+            {formatCurrency(transaction.amount)}
+          </AppText>
+          <AppText variant={'footnote'}>{formatDate(transaction.date, today())}</AppText>
+        </View>
+      </AppCard>
+    </Pressable>
   );
 };

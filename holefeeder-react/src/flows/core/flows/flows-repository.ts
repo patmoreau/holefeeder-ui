@@ -1,6 +1,7 @@
 import { AccountVariation } from '@/flows/core/accounts/account-variation';
 import { CashflowVariation } from '@/flows/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command';
+import { ModifyFlowCommand } from '@/flows/core/flows/modify/modify-flow-command';
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { Transaction } from '@/flows/core/flows/transaction';
@@ -10,11 +11,13 @@ import { type AsyncResult, Result } from '@/shared/core/result';
 
 export type FlowsRepository = {
   create(command: CreateFlowCommand): Promise<Result<Id>>;
+  modify(command: ModifyFlowCommand): Promise<Result<Id>>;
   pay(command: PayFlowCommand): Promise<Result<Id>>;
   deactivateUpcoming(cashflowId: Id): Promise<Result<void>>;
   transfer(command: TransferFlowCommand): Promise<Result<void>>;
   watchAccountVariations: (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => () => void;
   watchCashflowVariations: (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => () => void;
+  watchTransaction: (transactionId: Id, onDataChange: (result: AsyncResult<Transaction>) => void) => () => void;
   watchTransactions: (
     onDataChange: (result: AsyncResult<Transaction[]>) => void,
     accountId?: Id,
@@ -27,6 +30,7 @@ export type FlowsRepository = {
 
 export const FlowsRepositoryErrors = {
   createFlowCommandFailed: 'create-flow-command-failed',
+  modifyFlowCommandFailed: 'modify-flow-command-failed',
   payFlowCommandFailed: 'pay-flow-command-failed',
   noTags: 'no-tags',
 };

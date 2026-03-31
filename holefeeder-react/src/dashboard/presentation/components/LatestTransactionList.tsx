@@ -21,6 +21,7 @@ export const LatestTransactionList = ({ style }: LatestTransactionListProps) => 
 
   return (
     <AppCardList
+      scrollable="vertical"
       style={style}
       header={t(tk.recentTransactions.title)}
       data={transactions}

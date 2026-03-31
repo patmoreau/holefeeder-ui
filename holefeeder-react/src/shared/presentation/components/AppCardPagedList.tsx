@@ -7,19 +7,25 @@ import { tk } from '@/i18n/translations';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { UsePagedWatchResult } from '@/shared/presentation/core/use-paged-watch';
 import { spacing } from '@/types/theme/design-tokens';
 
 const AnimatedFlashList = Reanimated.createAnimatedComponent(FlashList) as typeof FlashList;
 
-type ListDataProps<T> = {
-  data: FlashListProps<T>['data'];
-};
+type ListDataProps<T> =
+  | { pagedResult: UsePagedWatchResult<T>; data?: never; onEndReached?: never; onStartReached?: never }
+  | {
+      data: FlashListProps<T>['data'];
+      pagedResult?: never;
+      onEndReached?: () => void;
+      onStartReached?: () => void;
+    };
 
 export type AppCardListProps<T> = ListDataProps<T> & {
   header?: string;
   seeAllLabel?: string;
   style?: StyleProp<ViewStyle>;
-  scrollable?: 'vertical' | 'horizontal';
+  scrollable?: 'none' | 'vertical' | 'horizontal';
   /** Required when scrollable is 'horizontal' */
   cardWidth?: number;
   renderItem: NonNullable<FlashListProps<T>['renderItem']>;
@@ -30,6 +36,8 @@ export type AppCardListProps<T> = ListDataProps<T> & {
   contentContainerStyle?: StyleProp<ViewStyle>;
   onScroll?: FlashListProps<T>['onScroll'];
   scrollEventThrottle?: number;
+  onEndReachedThreshold?: number;
+  onStartReachedThreshold?: number;
   refreshControl?: React.ReactElement;
   onRefresh?: () => void;
   refreshing?: boolean | null;
@@ -52,8 +60,13 @@ const createStyles = () => ({
   },
 });
 
-export const AppCardList = <T,>({
-  data,
+export const AppCardPagedList = <T,>({
+  pagedResult,
+  data: directData,
+  onEndReached: directOnEndReached,
+  onStartReached: directOnStartReached,
+  onEndReachedThreshold = 0.5,
+  onStartReachedThreshold = 0.5,
   header,
   seeAllLabel,
   scrollable,
@@ -77,10 +90,13 @@ export const AppCardList = <T,>({
 
   const isHorizontal = scrollable === 'horizontal';
 
+  const listData = pagedResult ? (pagedResult.data.isSuccess ? pagedResult.data.value : []) : directData;
+  const onEndReached = pagedResult ? (pagedResult.hasNextPage ? pagedResult.loadNext : undefined) : directOnEndReached;
+  const onStartReached = pagedResult ? (pagedResult.hasPreviousPage ? pagedResult.loadPrevious : undefined) : directOnStartReached;
+
   const headerComponent = header ? (
     <View style={styles.header}>
       <AppText variant={'defaultSemiBold'}>{header}</AppText>
-      {/* TODO: navigate to full transaction list */}
       <AppText variant={'footnote'}>{seeAllLabel ?? t(tk.cardList.viewAll)}</AppText>
     </View>
   ) : null;
@@ -99,7 +115,7 @@ export const AppCardList = <T,>({
   const resolvedRefreshControl = providedRefreshControl ?? defaultRefreshControl;
 
   const sharedProps = {
-    data,
+    data: listData,
     renderItem,
     keyExtractor,
     ItemSeparatorComponent,
@@ -107,6 +123,10 @@ export const AppCardList = <T,>({
     ListFooterComponent,
     onScroll,
     scrollEventThrottle,
+    onEndReached,
+    onEndReachedThreshold,
+    onStartReached,
+    onStartReachedThreshold,
   };
 
   if (isHorizontal) {
@@ -126,13 +146,26 @@ export const AppCardList = <T,>({
     );
   }
 
+  if (scrollable === 'vertical') {
+    return (
+      <View style={[styles.container, style]}>
+        {headerComponent}
+        <AnimatedFlashList
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[styles.verticalScrollContent, { paddingBottom: spacing.lg }, contentContainerStyle]}
+          refreshControl={resolvedRefreshControl}
+          {...sharedProps}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={[styles.container, style]}>
       {headerComponent}
       <AnimatedFlashList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.verticalScrollContent, contentContainerStyle]}
-        refreshControl={resolvedRefreshControl}
+        scrollEnabled={false}
+        contentContainerStyle={[{ paddingHorizontal: spacing.sm, paddingVertical: spacing.sm }, contentContainerStyle]}
         {...sharedProps}
       />
     </View>

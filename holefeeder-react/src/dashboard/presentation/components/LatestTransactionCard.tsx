@@ -1,7 +1,9 @@
-import React from 'react';
-import { View, type ViewProps } from 'react-native';
+import { router } from 'expo-router';
+import React, { useRef } from 'react';
+import { Pressable, View, type ViewProps } from 'react-native';
 import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { Transaction } from '@/flows/core/flows/transaction';
+import { Id } from '@/shared/core/id';
 import { today } from '@/shared/core/with-date';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
@@ -41,29 +43,38 @@ const createStyles = (theme: Theme) => ({
 export const LatestTransactionCard = ({ transaction, ...props }: LatestTransactionCardProps) => {
   const { formatCurrency, formatDate } = useLocaleFormatter();
   const styles = useStyles(createStyles);
+  const pressableRef = useRef<View>(null);
 
   const amountStyle = transaction.categoryType === CategoryTypes.gain ? styles.positiveAmount : styles.negativeAmount;
 
+  const onFlowPress = (id: Id) =>
+    router.push({
+      pathname: '/(app)/flows/[id]',
+      params: { id: id as string },
+    });
+
   return (
-    <AppCard {...props}>
-      <View style={styles.cardDescription}>
-        <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
-          {transaction.description}
-        </AppText>
-        {transaction.tags.length > 0 && (
-          <View style={styles.tags}>
-            {transaction.tags.map((tag) => (
-              <AppChip key={tag} selected={true} label={tag} />
-            ))}
-          </View>
-        )}
-      </View>
-      <View style={styles.cardAmount}>
-        <AppText variant={'default'} adjustsFontSizeToFit style={amountStyle}>
-          {formatCurrency(transaction.amount)}
-        </AppText>
-        <AppText variant={'footnote'}>{formatDate(transaction.date, today())}</AppText>
-      </View>
-    </AppCard>
+    <Pressable ref={pressableRef} onPress={() => onFlowPress(transaction.id)}>
+      <AppCard {...props}>
+        <View style={styles.cardDescription}>
+          <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
+            {transaction.description}
+          </AppText>
+          {transaction.tags.length > 0 && (
+            <View style={styles.tags}>
+              {transaction.tags.map((tag) => (
+                <AppChip key={tag} selected={true} label={tag} />
+              ))}
+            </View>
+          )}
+        </View>
+        <View style={styles.cardAmount}>
+          <AppText variant={'default'} adjustsFontSizeToFit style={amountStyle}>
+            {formatCurrency(transaction.amount)}
+          </AppText>
+          <AppText variant={'footnote'}>{formatDate(transaction.date, today())}</AppText>
+        </View>
+      </AppCard>
+    </Pressable>
   );
 };

@@ -4,11 +4,11 @@ import { Category } from '@/flows/core/categories/category';
 import { Tag } from '@/flows/core/flows/tag';
 import { BasicSection } from '@/flows/presentation/purchase/BasicSection';
 import { CashflowSection } from '@/flows/presentation/purchase/CashflowSection';
-import { AmountField, AmountFieldRef } from '@/flows/presentation/purchase/components/fields/AmountField';
 import { PurchaseType } from '@/flows/presentation/purchase/core/purchase-form-data';
 import { usePurchaseForm } from '@/flows/presentation/purchase/core/use-purchase-form';
 import { PurchaseTransferSection } from '@/flows/presentation/purchase/PurchaseTransferSection';
 import { TransferSection } from '@/flows/presentation/purchase/TransferSection';
+import { AmountField, AmountFieldRef } from '@/flows/presentation/shared/components/AmountField';
 import { AppForm } from '@/shared/presentation/AppForm';
 
 type PurchaseFormProps = {

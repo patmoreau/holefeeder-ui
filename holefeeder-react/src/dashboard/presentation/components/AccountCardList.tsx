@@ -14,7 +14,7 @@ export const AccountCardList = ({ accounts, onPress, style }: AccountCardListPro
 
   return (
     <AppCardList
-      scrollable={'horizontal'}
+      scrollable="horizontal"
       cardWidth={cardWidth}
       style={style}
       data={accounts}

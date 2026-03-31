@@ -2,16 +2,16 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
-import { aCategory, toCategory } from '@/flows/core/categories/__tests__/category-for-test';
-import { useCategories } from '@/flows/presentation/purchase/core/use-categories';
+import { anAccount, toAccount } from '@/flows/core/accounts/__tests__/account-for-test';
+import { useAccounts } from '@/flows/presentation/shared/core/use-accounts';
 
-describe('useCategories', () => {
+describe('useAccounts', () => {
   let db: DatabaseForTest;
-  const category = aCategory();
+  const account = anAccount();
 
   const createHook = async () =>
     await waitFor(() =>
-      renderHook(() => useCategories(), {
+      renderHook(() => useAccounts(), {
         wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest db={db}>{children}</PowerSyncProviderForTest>,
       })
     );
@@ -19,7 +19,7 @@ describe('useCategories', () => {
   beforeEach(async () => {
     db = await setupDatabaseForTest();
 
-    await category.store(db);
+    await account.store(db);
   });
 
   afterEach(async () => {
@@ -28,14 +28,13 @@ describe('useCategories', () => {
     });
   });
 
-  it('should fetch categories from PowerSync database', async () => {
+  it('should fetch accounts from PowerSync database', async () => {
     const { result } = await createHook();
-    // Initially loading
+
     expect(result.current).toBeLoading();
 
-    // Wait for data to load
     await waitFor(() => expect(result.current).not.toBeLoading());
 
-    expect(result.current).toBeSuccessWithValue([toCategory(category)]);
+    expect(result.current).toBeSuccessWithValue([toAccount(account)]);
   });
 });

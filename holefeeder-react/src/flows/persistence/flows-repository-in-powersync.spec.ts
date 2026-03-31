@@ -2,6 +2,7 @@ import { waitFor } from '@testing-library/react-native';
 import { aPastDate } from '@/__tests__/mocks/date-for-test';
 import { aDateIntervalType } from '@/__tests__/mocks/enum-for-test';
 import { aCount } from '@/__tests__/mocks/number-for-test';
+import { anId } from '@/__tests__/mocks/string-for-test';
 import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { AccountVariation } from '@/flows/core/accounts/account-variation';
@@ -13,6 +14,8 @@ import { aTag } from '@/flows/core/flows/__tests__/tag-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
 import { CashflowVariation } from '@/flows/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command';
+import { FlowsRepositoryErrors } from '@/flows/core/flows/flows-repository';
+import { aModifyFlowCommand } from '@/flows/core/flows/modify/__tests__/modify-flow-command-for-test';
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
@@ -22,6 +25,7 @@ import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult } from '@/shared/core/result';
+import { WatchQueryErrors } from '@/shared/persistence/watch-query';
 import { FlowsRepositoryInPowersync } from './flows-repository-in-powersync';
 
 describe('FlowsRepository', () => {
@@ -101,6 +105,48 @@ describe('FlowsRepository', () => {
       expect(dbResult[0].category_id).toBe(purchase.categoryId);
       expect(dbResult[0].tags).toBe(TagList.toConcatenatedString(purchase.tags));
       expect(dbResult[0].inactive).toBe(0);
+    });
+  });
+
+  describe('modify', () => {
+    it('should save a modified flow', async () => {
+      const transaction = await aTransaction().store(db);
+      const command = aModifyFlowCommand({ id: transaction.id });
+
+      const result = await repository.modify(command);
+
+      expect(result).toBeSuccessWithValue(transaction.id);
+
+      if (result.isFailure || result.isLoading) return;
+
+      const dbResult = await db.getAll<any>('SELECT * FROM transactions WHERE id = ?', [result.value]);
+
+      expect(dbResult).toHaveLength(1);
+      expect(dbResult[0].date).toBe(command.date);
+      expect(dbResult[0].amount).toBe(Money.toCents(command.amount));
+      expect(dbResult[0].description).toBe(command.description);
+      expect(dbResult[0].account_id).toBe(command.accountId);
+      expect(dbResult[0].category_id).toBe(command.categoryId);
+      expect(dbResult[0].tags).toBe(TagList.toConcatenatedString(command.tags));
+      expect(dbResult[0].cashflow_id).toBe(transaction.cashflowId ?? null);
+      expect(dbResult[0].cashflow_date).toBe(transaction.cashflowDate ?? null);
+    });
+
+    it('returns error when Id not found', async () => {
+      const command = aModifyFlowCommand();
+
+      const result = await repository.modify(command);
+
+      expect(result).toBeFailureWithErrors([FlowsRepositoryErrors.modifyFlowCommandFailed]);
+    });
+
+    it('handles database errors', async () => {
+      // Close the database to trigger an error
+      await db.close();
+
+      const result = await repository.modify(aModifyFlowCommand());
+
+      expect(result).toBeFailureWithErrors([FlowsRepositoryErrors.modifyFlowCommandFailed]);
     });
   });
 
@@ -352,6 +398,74 @@ describe('FlowsRepository', () => {
 
       let result: AsyncResult<CashflowVariation[]> | undefined;
       const unsubscribe = repository.watchCashflowVariations((data) => {
+        result = data;
+      });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeFailureWithErrors(['The database connection is not open']);
+
+      unsubscribe();
+    });
+  });
+
+  describe('watchTransaction', () => {
+    it('retrieves transaction', async () => {
+      const category = await aCategory({ type: CategoryTypes.expense }).store(db);
+      const transaction = await aTransaction({
+        categoryId: category.id,
+        amount: Money.valid(50.0),
+        date: DateOnly.valid('2026-03-01'),
+      }).store(db);
+
+      let result: AsyncResult<Transaction> | undefined;
+      const unsubscribe = repository.watchTransaction(transaction.id, (data) => {
+        result = data;
+      });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeSuccessWithValue({
+        id: transaction.id,
+        date: transaction.date,
+        amount: transaction.amount,
+        description: transaction.description,
+        accountId: transaction.accountId,
+        categoryId: transaction.categoryId,
+        categoryType: category.type,
+        tags: transaction.tags,
+        cashflowId: undefined,
+        cashflowDate: undefined,
+      });
+
+      unsubscribe();
+    });
+
+    it('returns empty list when no transactions exist', async () => {
+      let result: AsyncResult<Transaction> | undefined;
+      const unsubscribe = repository.watchTransaction(anId(), (data) => {
+        result = data;
+      });
+
+      await waitFor(() => {
+        expect(result).toBeDefined();
+      });
+
+      expect(result).toBeFailureWithErrors([WatchQueryErrors.rowNotFound]);
+
+      unsubscribe();
+    });
+
+    it('handles database errors', async () => {
+      // Close the database to trigger an error
+      await db.close();
+
+      let result: AsyncResult<Transaction> | undefined;
+      const unsubscribe = repository.watchTransaction(anId(), (data) => {
         result = data;
       });
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePayUpcomingForm } from '@/flows/presentation/pay-upcoming/core/use-pay-upcoming-form';
-import { AmountField, AmountFieldRef } from '@/flows/presentation/purchase/components/fields/AmountField';
+import { AmountField, AmountFieldRef } from '@/flows/presentation/shared/components/AmountField';
 import { tk } from '@/i18n/translations';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { DateField } from '@/shared/presentation/fields/DateField';

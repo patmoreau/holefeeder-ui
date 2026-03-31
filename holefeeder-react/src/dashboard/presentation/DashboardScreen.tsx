@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import React from 'react';
+import { View } from 'react-native';
 import { NO_SUMMARY } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { type CardLayout } from '@/dashboard/presentation/components/AccountCard';
 import { AccountCardList } from '@/dashboard/presentation/components/AccountCardList';
@@ -60,11 +61,11 @@ const DashboardScreen = () => {
       largeCard={<DashboardHeaderLargeCard summary={dashboard} />}
       smallCard={<DashboardHeaderSmallCard summary={dashboard} />}
     >
-      <AccountCardList accounts={accounts} onPress={onAccountPress} />
-
-      <LatestTransactionList />
-
-      <UpcomingCardList upcomingFlows={upcomingFlows} />
+      <View>
+        <AccountCardList accounts={accounts} onPress={onAccountPress} />
+        <LatestTransactionList />
+        <UpcomingCardList upcomingFlows={upcomingFlows} />
+      </View>
     </CardHeaderScrollView>
   );
 };

@@ -7,7 +7,7 @@ import Reanimated, { Extrapolation, interpolate, useAnimatedScrollHandler, useAn
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
-import { AppCardList } from '@/shared/presentation/components/AppCardList';
+import { AppCardPagedList } from '@/shared/presentation/components/AppCardPagedList';
 import { UsePagedWatchResult } from '@/shared/presentation/core/use-paged-watch';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
@@ -134,7 +134,7 @@ export const CardHeaderFlashList = <T,>({
         <Reanimated.View style={[styles.smallCardContainer, smallCardAnimatedStyle]}>{smallCard}</Reanimated.View>
       </Reanimated.View>
 
-      <AppCardList
+      <AppCardPagedList
         scrollable="vertical"
         pagedResult={pagedResult}
         renderItem={renderItem}

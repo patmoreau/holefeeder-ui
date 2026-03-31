@@ -54,6 +54,14 @@ const AppLayout = () => {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="flows/[id]"
+        options={{
+          presentation: 'transparentModal',
+          title: '',
+          headerTransparent: true,
+        }}
+      />
     </Stack>
   );
 };

@@ -1,10 +1,11 @@
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import React, { useLayoutEffect } from 'react';
 import { AccountHeaderLargeCard } from '@/accounts/presentation/AccountHeaderLargeCard';
 import { AccountHeaderSmallCard } from '@/accounts/presentation/AccountHeaderSmallCard';
 import { TransactionCard } from '@/accounts/presentation/components/TransactionCard';
 import { useAccountDetail } from '@/accounts/presentation/core/use-account-detail';
 import { useTransactions } from '@/accounts/presentation/core/use-transactions';
+import type { CardLayout } from '@/dashboard/presentation/components/AccountCard';
 import { Id } from '@/shared/core/id';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
@@ -38,6 +39,11 @@ export const AccountScreen = () => {
   const { data, errors } = useMultipleWatches({
     account: withDefault(() => accountQuery, null),
   });
+  const onFlowPress = (id: Id, _layout: CardLayout) =>
+    router.push({
+      pathname: '/(app)/flows/[id]',
+      params: { id: id as string },
+    });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -63,7 +69,7 @@ export const AccountScreen = () => {
       largeCard={<AccountHeaderLargeCard account={account} />}
       smallCard={<AccountHeaderSmallCard account={account} />}
       pagedResult={transactionsResult}
-      renderItem={(item) => <TransactionCard transaction={item.item} />}
+      renderItem={(item) => <TransactionCard transaction={item.item} onPress={onFlowPress} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={AppCardDivider}
       ListFooterComponent={transactionsResult.loading ? <LoadingIndicator size={'small'} /> : null}

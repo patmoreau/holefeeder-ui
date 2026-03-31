@@ -3,9 +3,11 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl, type ViewProps } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
+import { spacing } from '@/types/theme';
 import { Theme } from '@/types/theme/theme';
 
 const DEFAULT_HEADER_HEIGHT = 300;
@@ -75,6 +77,7 @@ export const CardHeaderScrollView = ({
   const styles = useStyles(createStyles);
   const { theme } = useTheme();
   const [largeCardHeight, setLargeCardHeight] = useState(0);
+  const { bottom } = useSafeAreaInsets();
 
   const HEADER_MIN_HEIGHT = useHeaderHeight();
   const HEADER_MAX_HEIGHT = largeCardHeight > 0 ? largeCardHeight + HEADER_MIN_HEIGHT : DEFAULT_HEADER_HEIGHT;
@@ -144,7 +147,7 @@ export const CardHeaderScrollView = ({
         style={styles.scrollArea}
         scrollEventThrottle={8}
         removeClippedSubviews={false}
-        contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT }}
+        contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT, paddingBottom: bottom + spacing.lg }}
         onMomentumScrollEnd={handleScrollEnd}
         onScrollEndDrag={handleScrollEnd}
         refreshControl={

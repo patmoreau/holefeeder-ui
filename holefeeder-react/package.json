@@ -84,7 +84,7 @@
     "@typescript-eslint/parser": "8.56.1",
     "babel-plugin-react-native-web": "0.21.2",
     "better-sqlite3": "12.6.2",
-    "eslint": "10.0.3",
+    "eslint": "10.2.0",
     "eslint-config-expo": "55.0.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.4",

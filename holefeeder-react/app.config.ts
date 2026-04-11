@@ -69,14 +69,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     [
-      'expo-build-properties',
-      {
-        ios: {
-          buildReactNativeFromSource: true,
-        },
-      },
-    ],
-    [
       'expo-splash-screen',
       {
         image: './assets/images/safe.png',

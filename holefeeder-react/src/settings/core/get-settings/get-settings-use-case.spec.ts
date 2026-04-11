@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react-native';
-import { aSettings } from '@/settings/__tests__/settings-for-test';
+import { aSettings } from '@/settings/core/__tests__/settings-for-test';
 import { DefaultSettings, Settings, SETTINGS_CODE } from '@/settings/core/settings';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
 import { StoreItemsRepositoryInMemory } from '@/shared/__tests__/store-items-repository-for-test';

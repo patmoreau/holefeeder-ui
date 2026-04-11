@@ -1,6 +1,6 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
 import { DataMetrics, DEFAULT_DATA_METRICS } from '@/settings/core/data-metrics';
-import { SettingsRepository } from '@/settings/core/settings-repository';
+import { SettingRepository } from '@/settings/core/setting-repository';
 import { AsyncResult, Result } from '@/shared/core/result';
 import { watchSingle } from '@/shared/persistence/watch-query';
 
@@ -13,7 +13,7 @@ type DataMetricsRow = {
   outstandingTransactions: number;
 };
 
-export const SettingsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): SettingsRepository => {
+export const SettingRepositoryInPowersync = (db: AbstractPowerSyncDatabase): SettingRepository => {
   const watchDataMetrics = (onDataChange: (result: AsyncResult<DataMetrics>) => void) =>
     watchSingle<DataMetricsRow, DataMetrics>(
       db,

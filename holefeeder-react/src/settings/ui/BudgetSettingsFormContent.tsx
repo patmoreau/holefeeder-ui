@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
-import { useSettingsForm } from '@/settings/presentation/core/use-settings-form';
+import { useSettingsForm } from '@/settings/ui/core/use-settings-form';
 import { AppForm } from '@/shared/presentation/AppForm';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { DateField } from '@/shared/presentation/fields/DateField';

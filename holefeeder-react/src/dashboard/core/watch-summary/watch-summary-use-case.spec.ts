@@ -4,7 +4,7 @@ import { DashboardRepositoryInMemory } from '@/dashboard/__tests__/dashboard-rep
 import { aSummaryData } from '@/dashboard/__tests__/summary-data-for-test';
 import { DashboardComputedSummary, WatchSummaryUseCase } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { CategoryTypes } from '@/flows/core/categories/category-type';
-import { aSettings } from '@/settings/__tests__/settings-for-test';
+import { aSettings } from '@/settings/core/__tests__/settings-for-test';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult } from '@/shared/core/result';

@@ -5,11 +5,11 @@ import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { aCashflow } from '@/flows/core/flows/__tests__/cashflow-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
 import { DataMetrics } from '@/settings/core/data-metrics';
-import { SettingsRepositoryInPowersync } from '@/settings/persistence/settings-repository-in-powersync';
+import { SettingRepositoryInPowersync } from '@/settings/persistence/setting-repository-in-powersync';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
 import { type AsyncResult } from '@/shared/core/result';
 
-describe('SettingsRepositoryInPowersync', () => {
+describe('SettingRepositoryInPowersync', () => {
   let db: DatabaseForTest;
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe('SettingsRepositoryInPowersync', () => {
       await aStoreItem().store(db);
       await aTransaction().store(db);
       await db.execute('INSERT INTO ps_crud (id) VALUES (1);');
-      const repo = SettingsRepositoryInPowersync(db);
+      const repo = SettingRepositoryInPowersync(db);
 
       let result: AsyncResult<DataMetrics> | undefined;
       const unsubscribe = repo.watchDataMetrics((data) => {
@@ -53,7 +53,7 @@ describe('SettingsRepositoryInPowersync', () => {
     });
 
     it('returns not found when no data metrics exist', async () => {
-      const repo = SettingsRepositoryInPowersync(db);
+      const repo = SettingRepositoryInPowersync(db);
 
       let result: AsyncResult<DataMetrics> | undefined;
       const unsubscribe = repo.watchDataMetrics((data) => {
@@ -77,7 +77,7 @@ describe('SettingsRepositoryInPowersync', () => {
     });
 
     it('handles database errors', async () => {
-      const repo = SettingsRepositoryInPowersync(db);
+      const repo = SettingRepositoryInPowersync(db);
 
       // Close the database to trigger an error
       await db.close();

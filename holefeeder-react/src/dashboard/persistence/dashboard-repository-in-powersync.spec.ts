@@ -4,7 +4,7 @@ import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/d
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
-import { aSettings } from '@/settings/__tests__/settings-for-test';
+import { aSettings } from '@/settings/core/__tests__/settings-for-test';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult } from '@/shared/core/result';

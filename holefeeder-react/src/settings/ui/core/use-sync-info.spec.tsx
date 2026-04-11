@@ -5,7 +5,7 @@ import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { aCashflow } from '@/flows/core/flows/__tests__/cashflow-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
-import { useSyncInfo } from '@/settings/presentation/core/use-sync-info';
+import { useSyncInfo } from '@/settings/ui/core/use-sync-info';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 

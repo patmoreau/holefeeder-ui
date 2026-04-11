@@ -1,8 +1,8 @@
 import React from 'react';
 import { DefaultSettings } from '@/settings/core/settings';
 import { SettingsFormData } from '@/settings/core/settings-form-data';
-import { BudgetSettingsForm } from '@/settings/presentation/BudgetSettingsForm';
-import { SettingsFormProvider, validateSettingsForm } from '@/settings/presentation/core/use-settings-form';
+import { BudgetSettingsForm } from '@/settings/ui/BudgetSettingsForm';
+import { SettingsFormProvider, validateSettingsForm } from '@/settings/ui/core/use-settings-form';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppScreen } from '@/shared/presentation/AppScreen';
 import { AppView } from '@/shared/presentation/AppView';

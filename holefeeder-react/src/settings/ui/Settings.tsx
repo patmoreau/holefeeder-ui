@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
-import { SettingsContent } from '@/settings/presentation/SettingsContent';
+import { SettingsContent } from '@/settings/ui/SettingsContent';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { IconSymbol } from '@/shared/presentation/components/IconSymbol';

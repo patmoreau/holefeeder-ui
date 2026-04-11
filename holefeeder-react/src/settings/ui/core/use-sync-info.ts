@@ -7,11 +7,11 @@ import { AsyncResult, Result } from '@/shared/core/result';
 import { useSyncStatus } from '@/shared/hooks/use-sync-status';
 
 export const useSyncInfo = (): AsyncResult<SyncInfo> => {
-  const { settingsRepository } = useRepositories();
+  const { settingRepository } = useRepositories();
   const { connected, lastSyncedAt, dataFlowStatus } = useSyncStatus();
   const [dataMetrics, setDataMetrics] = useState<AsyncResult<DataMetrics>>(Result.loading());
 
-  const useCase = useMemo(() => WatchDataMetricsUseCase(settingsRepository), [settingsRepository]);
+  const useCase = useMemo(() => WatchDataMetricsUseCase(settingRepository), [settingRepository]);
 
   useEffect(() => {
     const unsubscribe = useCase.watch(setDataMetrics);

@@ -9,7 +9,7 @@ import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { aCashflow } from '@/flows/core/flows/__tests__/cashflow-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
-import { aSettings } from '@/settings/__tests__/settings-for-test';
+import { aSettings } from '@/settings/core/__tests__/settings-for-test';
 import { SETTINGS_CODE } from '@/settings/core/settings';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
 import { DateIntervalTypes } from '@/shared/core/date-interval-type';

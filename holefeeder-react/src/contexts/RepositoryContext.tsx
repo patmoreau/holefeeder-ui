@@ -8,8 +8,8 @@ import { FlowsRepository } from '@/flows/core/flows/flows-repository';
 import { AccountsRepositoryInPowersync } from '@/flows/persistence/accounts-repository-in-powersync';
 import { CategoriesRepositoryInPowersync } from '@/flows/persistence/categories-repository-in-powersync';
 import { FlowsRepositoryInPowersync } from '@/flows/persistence/flows-repository-in-powersync';
-import { SettingsRepository } from '@/settings/core/settings-repository';
-import { SettingsRepositoryInPowersync } from '@/settings/persistence/settings-repository-in-powersync';
+import { SettingRepository } from '@/settings/core/setting-repository';
+import { SettingRepositoryInPowersync } from '@/settings/persistence/setting-repository-in-powersync';
 import { StoreItemsRepository } from '@/shared/core/store-items-repository';
 import { StoreItemsRepositoryInPowersync } from '@/shared/persistence/store-items-repository-in-powersync';
 
@@ -18,7 +18,7 @@ export type Repositories = {
   categoryRepository: CategoriesRepository;
   dashboardRepository: DashboardRepository;
   flowRepository: FlowsRepository;
-  settingsRepository: SettingsRepository;
+  settingRepository: SettingRepository;
   storeItemRepository: StoreItemsRepository;
 };
 
@@ -33,7 +33,7 @@ export const RepositoryProvider = ({ children }: { children: ReactNode }) => {
       categoryRepository: CategoriesRepositoryInPowersync(db),
       dashboardRepository: DashboardRepositoryInPowersync(db),
       flowRepository: FlowsRepositoryInPowersync(db),
-      settingsRepository: SettingsRepositoryInPowersync(db),
+      settingRepository: SettingRepositoryInPowersync(db),
       storeItemRepository: StoreItemsRepositoryInPowersync(db),
     }),
     [db]

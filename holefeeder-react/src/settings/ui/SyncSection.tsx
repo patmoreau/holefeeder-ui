@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
 import { DEFAULT_SYNC_INFO } from '@/settings/core/sync-info';
-import { useSyncInfo } from '@/settings/presentation/core/use-sync-info';
+import { useSyncInfo } from '@/settings/ui/core/use-sync-info';
 import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppSection } from '@/shared/presentation/AppSection';

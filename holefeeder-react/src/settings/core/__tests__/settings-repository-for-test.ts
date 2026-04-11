@@ -1,8 +1,8 @@
 import { DataMetrics } from '@/settings/core/data-metrics';
-import { SettingsRepository } from '@/settings/core/settings-repository';
+import { SettingRepository } from '@/settings/core/setting-repository';
 import { type AsyncResult, Result } from '@/shared/core/result';
 
-export type SettingsRepositoryInMemory = SettingsRepository & {
+export type SettingsRepositoryInMemory = SettingRepository & {
   add: (...items: DataMetrics[]) => void;
   isLoading: () => void;
   isFailing: (errors: string[]) => void;

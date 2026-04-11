@@ -1,1 +1,1 @@
-export { default } from '@/settings/presentation/BudgetSettingsScreen';
+export { default } from '@/settings/ui/BudgetSettingsScreen';

@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PurchaseType } from '@/flows/presentation/purchase/core/purchase-form-data';
 import { tk } from '@/i18n/translations';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppView } from '@/shared/presentation/AppView';
 import { AppPicker, PickerOption } from '@/shared/presentation/components/AppPicker';
+import { useStyles } from '@/shared/theme/core/use-styles';
 
 const tkTypes: Record<PurchaseType, string> = {
   [PurchaseType.expense]: tk.purchase.transactionTypeSection.expense,

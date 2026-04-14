@@ -1,6 +1,6 @@
-import { aRecentDate } from '@/__tests__/mocks/date-for-test';
-import { aDateIntervalType } from '@/__tests__/mocks/enum-for-test';
-import { aCount } from '@/__tests__/mocks/number-for-test';
+import { aRecentDate } from '@/shared/__tests__/date-for-test';
+import { aDateIntervalType } from '@/shared/__tests__/enum-for-test';
+import { aCount } from '@/shared/__tests__/number-for-test';
 
 const defaultSaveSettingsForm = (): Record<string, unknown> => ({
   effectiveDate: aRecentDate(),

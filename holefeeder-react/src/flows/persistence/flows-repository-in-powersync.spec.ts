@@ -1,9 +1,4 @@
 import { waitFor } from '@testing-library/react-native';
-import { aPastDate } from '@/__tests__/mocks/date-for-test';
-import { aDateIntervalType } from '@/__tests__/mocks/enum-for-test';
-import { aCount } from '@/__tests__/mocks/number-for-test';
-import { anId } from '@/__tests__/mocks/string-for-test';
-import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { AccountVariation } from '@/flows/core/accounts/account-variation';
 import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
@@ -21,10 +16,15 @@ import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
 import { Transaction } from '@/flows/core/flows/transaction';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
+import { aPastDate } from '@/shared/__tests__/date-for-test';
+import { aDateIntervalType } from '@/shared/__tests__/enum-for-test';
+import { aCount } from '@/shared/__tests__/number-for-test';
+import { anId } from '@/shared/__tests__/string-for-test';
 import { DateOnly } from '@/shared/core/date-only';
 import { Id } from '@/shared/core/id';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult } from '@/shared/core/result';
+import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
 import { WatchQueryErrors } from '@/shared/persistence/watch-query';
 import { FlowsRepositoryInPowersync } from './flows-repository-in-powersync';
 

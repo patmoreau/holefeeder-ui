@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 import { tk } from '@/i18n/translations';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppTextInput } from '@/shared/presentation/components/AppTextInput';
 import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 
 type FilterFieldProps = {
   filter: string;

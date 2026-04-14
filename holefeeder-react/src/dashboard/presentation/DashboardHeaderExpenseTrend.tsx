@@ -2,12 +2,12 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { DashboardComputedSummary } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { tk } from '@/i18n/translations';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
-import { AppIcons } from '@/types/icons';
+import { useLocaleFormatter } from '@/shared/presentation/core/use-local-formatter';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { borderRadius, spacing } from '@/types/theme/design-tokens';
 
 const createStyles = () => ({

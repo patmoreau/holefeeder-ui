@@ -5,11 +5,11 @@ import { Tag } from '@/flows/core/flows/tag';
 import { FilterField } from '@/flows/presentation/shared/components/FilterField';
 import { useTagList } from '@/flows/presentation/shared/core/use-tag-list';
 import { tk } from '@/i18n/translations';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppChip } from '@/shared/presentation/components/AppChip';
 import { AppText } from '@/shared/presentation/components/AppText';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

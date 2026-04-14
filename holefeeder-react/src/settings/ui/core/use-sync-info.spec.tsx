@@ -1,15 +1,15 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
-import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
-import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { aCashflow } from '@/flows/core/flows/__tests__/cashflow-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
 import { useSyncInfo } from '@/settings/ui/core/use-sync-info';
+import { useSyncStatus } from '@/settings/ui/core/use-sync-status';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
-import { useSyncStatus } from '@/shared/hooks/use-sync-status';
+import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
+import { PowerSyncProviderForTest } from '@/shared/persistence/__tests__/PowerSyncProviderForTest';
 
-jest.mock('@/shared/hooks/use-sync-status');
+jest.mock('@/settings/ui/core/use-sync-status');
 
 describe('useSyncInfo', () => {
   let db: DatabaseForTest;
@@ -26,7 +26,7 @@ describe('useSyncInfo', () => {
   const createHook = async () =>
     await waitFor(() =>
       renderHook(() => useSyncInfo(), {
-        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest db={db}>{children}</PowerSyncProviderForTest>,
+        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest database={db}>{children}</PowerSyncProviderForTest>,
       })
     );
 

@@ -1,13 +1,13 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 import { ExternalLink } from '@/accounts/presentation/external-link';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppCollapsible } from '@/shared/presentation/components/AppCollapsible';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
+import { AppIcons } from '@/shared/presentation/icons';
 import { ParallaxScrollView } from '@/shared/presentation/ParallaxScrollView';
 import { ScreenTitle } from '@/shared/presentation/ScreenTitle';
-import { AppIcons } from '@/types/icons';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { Fonts } from '@/types/theme/theme';
 
 export default function AccountsScreen() {

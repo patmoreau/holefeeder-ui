@@ -42,8 +42,6 @@ export const showAlert = (t: (key: string, options?: any) => string) => {
   };
 
   const showFormErrorAlert = ({ errorCount, errors }: FormErrorAlertProps) => {
-    console.debug('showFormErrorAlert called with errors:', errorCount);
-    console.debug('showFormErrorAlert called with errors:', errors);
     const errorsList = Object.entries(errors)
       .map(([key, value]) => `${key}: ${value}`)
       .join('\n');

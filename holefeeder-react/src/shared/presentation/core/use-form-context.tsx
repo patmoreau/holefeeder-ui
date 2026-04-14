@@ -1,12 +1,13 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { Repositories, useRepositories } from '@/contexts/RepositoryContext';
 import { ErrorKey } from '@/shared/core/error-key';
 import { Result } from '@/shared/core/result';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
+import { RepositoriesState } from '@/shared/repositories/core/repositories-state';
+import { useRepositories } from '@/shared/repositories/core/use-repositories';
 
 export type ValidationFunction<T, E extends string> = (formData: T) => Partial<Record<keyof T, E>>;
 
-export type SaveFunction<T> = (repositories: Repositories, formData: T) => Promise<Result<unknown>>;
+export type SaveFunction<T> = (repositories: RepositoriesState, formData: T) => Promise<Result<unknown>>;
 
 export function createFormDataContext<T, E extends string>(displayName: string, save: SaveFunction<T>) {
   type FormContextType = {

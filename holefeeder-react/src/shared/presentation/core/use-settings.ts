@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useRepositories } from '@/contexts/RepositoryContext';
 import { GetSettingsUseCase } from '@/settings/core/get-settings/get-settings-use-case';
 import type { Settings } from '@/settings/core/settings';
 import { type AsyncResult, Result } from '@/shared/core/result';
+import { useRepositories } from '@/shared/repositories/core/use-repositories';
 
 export const useSettings = (): AsyncResult<Settings> => {
   const { storeItemRepository } = useRepositories();
@@ -15,5 +15,17 @@ export const useSettings = (): AsyncResult<Settings> => {
     return () => unsubscribe();
   }, [useCase]);
 
-  return settings;
+  const stableSettings = useMemo(() => {
+    if (settings.isSuccess) {
+      return settings;
+    }
+    return settings;
+  }, [
+    settings.isSuccess,
+    settings.isSuccess ? settings.value.effectiveDate : undefined,
+    settings.isSuccess ? settings.value.intervalType : undefined,
+    settings.isSuccess ? settings.value.frequency : undefined,
+  ]);
+
+  return stableSettings;
 };

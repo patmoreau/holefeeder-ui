@@ -1,10 +1,10 @@
-import { Repositories } from '@/contexts/RepositoryContext';
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { PayUseCase } from '@/flows/core/flows/pay/pay-use-case';
 import { PayUpcomingFormData } from '@/flows/presentation/pay-upcoming/core/pay-upcoming-form-data';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
 import { createFormDataContext, ValidationFunction } from '@/shared/presentation/core/use-form-context';
+import { RepositoriesState } from '@/shared/repositories/core/repositories-state';
 
 export const PayUpcomingFormError = {
   amountRequired: 'amountRequired',
@@ -18,12 +18,10 @@ export const validatePayUpcomingForm: ValidationFunction<PayUpcomingFormData, Pa
   if (Money.create(formData.amount).isFailure) {
     errors.amount = PayUpcomingFormError.amountRequired;
   }
-  console.log(formData);
-  console.log(errors);
   return errors;
 };
 
-const payUpcoming = async (repositories: Repositories, formData: PayUpcomingFormData): Promise<Result<unknown>> => {
+const payUpcoming = async (repositories: RepositoriesState, formData: PayUpcomingFormData): Promise<Result<unknown>> => {
   const result = PayFlowCommand.create({
     cashflowId: formData.cashflowId,
     cashflowDate: formData.cashflowDate,

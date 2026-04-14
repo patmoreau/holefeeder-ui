@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
+import { useLocaleFormatter } from '@/shared/presentation/core/use-local-formatter';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

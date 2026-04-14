@@ -1,15 +1,20 @@
 import { AbstractPowerSyncDatabase, type PowerSyncBackendConnector } from '@powersync/common';
-import { config } from '@/config/config';
+import { HolefeederConfig } from '@/config/holefeeder-config';
 import { syncApi } from '@/shared/api/sync-api';
+import { AuthenticationState } from '@/shared/auth/core/autentication-state';
+import { Logger } from '@/shared/core/logger/logger';
 
-export const PowerSyncConnector = (getToken: () => Promise<{ token: string; expiresAt?: number } | null>): PowerSyncBackendConnector => {
+const logger = Logger.create('powersync-connector');
+
+export const PowerSyncConnector = (authenticationState: AuthenticationState, config: HolefeederConfig): PowerSyncBackendConnector => {
   const fetchCredentials = async () => {
-    const token = await getToken();
+    const token = await authenticationState.getToken();
     if (!token) {
       return null;
     }
+    logger.debug('fetchCredentials: ', config.powersyncConfig.url, token);
     return {
-      endpoint: config.powersync.url,
+      endpoint: config.powersyncConfig.url,
       token: token.token,
       expiresAt: token.expiresAt ? new Date(token.expiresAt) : undefined,
     };
@@ -21,21 +26,26 @@ export const PowerSyncConnector = (getToken: () => Promise<{ token: string; expi
       return;
     }
 
-    const token = await getToken();
-    if (!token) {
-      throw new Error('No auth token available for upload');
+    if (!authenticationState.user) {
+      logger.info('No user logged in, skipping upload.');
+      return;
     }
 
     try {
-      await syncApi(token.token).upload({
+      const result = await syncApi(authenticationState, config.apiConfig).upload({
         transactionId: transaction.transactionId ? Number(transaction.transactionId) : undefined,
         operations: transaction.crud,
       });
 
+      if (result.isFailure) {
+        logger.error('Failed to upload data:', result.errors);
+        return;
+      }
+
       await transaction.complete();
-    } catch (e) {
-      console.error('Error uploading data:', e);
-      throw e;
+    } catch (error) {
+      logger.error('Error uploading data:', error);
+      throw error;
     }
   };
 

@@ -2,15 +2,12 @@ import { Image as ExpoImage } from 'expo-image';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useAppContext } from '@/contexts/AppContext';
 import { tk } from '@/i18n/translations';
-import { AccessTokenField } from '@/settings/ui/fields/AccessTokenField';
-import { ExpiresAtField } from '@/settings/ui/fields/ExpiresAtField';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useAuth } from '@/shared/hooks/use-auth';
+import { useProfile } from '@/settings/ui/core/use-profile';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { AuthButton } from '@/shared/presentation/AuthButton';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({
@@ -41,8 +38,7 @@ const createStyles = (theme: Theme) => ({
 });
 
 export const ProfileSection = () => {
-  const { profile } = useAppContext();
-  const { tokenInfo } = useAuth();
+  const profile = useProfile();
   const { t } = useTranslation();
   const styles = useStyles(createStyles);
 
@@ -63,8 +59,6 @@ export const ProfileSection = () => {
           <AuthButton />
         </View>
       </View>
-      <AccessTokenField tokenInfo={tokenInfo} />
-      <ExpiresAtField tokenInfo={tokenInfo} />
     </AppSection>
   );
 };

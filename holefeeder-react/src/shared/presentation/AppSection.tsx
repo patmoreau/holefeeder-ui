@@ -1,7 +1,7 @@
 import { Children } from 'react';
 import { View, type ViewProps } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 type SectionProps = ViewProps & {

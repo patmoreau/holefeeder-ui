@@ -1,13 +1,13 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
-import { aPastDate } from '@/__tests__/mocks/date-for-test';
-import { aCategoryType, aDateIntervalType } from '@/__tests__/mocks/enum-for-test';
-import { anAmount, aPositiveCount } from '@/__tests__/mocks/number-for-test';
-import { anId, aString } from '@/__tests__/mocks/string-for-test';
 import { AccountForTest } from '@/flows/core/accounts/__tests__/account-for-test';
 import { CategoryForTest } from '@/flows/core/categories/__tests__/category-for-test';
 import { aTagList } from '@/flows/core/flows/__tests__/tag-list-for-test';
 import { Cashflow } from '@/flows/core/flows/cashflow';
 import { TagList } from '@/flows/core/flows/tag-list';
+import { aPastDate } from '@/shared/__tests__/date-for-test';
+import { aCategoryType, aDateIntervalType } from '@/shared/__tests__/enum-for-test';
+import { anAmount, aPositiveCount } from '@/shared/__tests__/number-for-test';
+import { anId, aString } from '@/shared/__tests__/string-for-test';
 import { Money } from '@/shared/core/money';
 
 export type CashflowForTest = Cashflow & {

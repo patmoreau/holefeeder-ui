@@ -1,12 +1,13 @@
-import { anId } from '@/__tests__/mocks/string-for-test';
 import { AccountVariation } from '@/flows/core/accounts/account-variation';
 import { CashflowVariation } from '@/flows/core/flows/cashflow-variation';
 import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command';
 import { FlowsRepository } from '@/flows/core/flows/flows-repository';
+import { ModifyFlowCommand } from '@/flows/core/flows/modify/modify-flow-command';
 import { PayFlowCommand } from '@/flows/core/flows/pay/pay-flow-command';
 import { Tag } from '@/flows/core/flows/tag';
 import { Transaction } from '@/flows/core/flows/transaction';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
+import { anId } from '@/shared/__tests__/string-for-test';
 import { Id } from '@/shared/core/id';
 import { type AsyncResult, Result } from '@/shared/core/result';
 
@@ -28,6 +29,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
   let errorsInMemory: string[] = [];
 
   type Listener<T> = (result: AsyncResult<T>) => void;
+  type TransactionListener = { transactionId: Id; listener: Listener<Transaction> };
   type TransactionsListener = { listener: Listener<Transaction[]>; accountId?: Id; limit?: number; offset?: number };
   type LatestTransactionsListener = { listener: Listener<Transaction[]>; limit?: number };
   type TransactionCountListener = { listener: Listener<number>; accountId?: Id };
@@ -36,6 +38,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
   const cashflowVariationsListeners: Listener<CashflowVariation[]>[] = [];
   const tagsListeners: Listener<Tag[]>[] = [];
   const latestTransactionsListeners: LatestTransactionsListener[] = [];
+  const transactionListeners: TransactionListener[] = [];
   const transactionsListeners: TransactionsListener[] = [];
   const transactionCountListeners: TransactionCountListener[] = [];
 
@@ -74,6 +77,10 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     return Promise.resolve(Result.success(anId()));
   };
 
+  const modify = (_purchase: ModifyFlowCommand): Promise<Result<Id>> => {
+    return Promise.resolve(Result.success(anId()));
+  };
+
   const pay = (_command: PayFlowCommand): Promise<Result<Id>> => {
     return Promise.resolve(Result.success(anId()));
   };
@@ -93,6 +100,14 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     subscribe(cashflowVariationsListeners, onDataChange, currentResult(cashflowVariationsInMemory));
 
   const watchTags = (onDataChange: Listener<Tag[]>) => subscribe(tagsListeners, onDataChange, currentResult(tagsInMemory));
+
+  const watchTransaction = (transactionId: Id, onDataChange: Listener<Transaction>) => {
+    const entry: TransactionListener = { transactionId, listener: onDataChange };
+    transactionListeners.push(entry);
+    const filtered = transactionsInMemory.filter((t) => t.id === transactionId).slice(0, 1)[0];
+    onDataChange(currentResult(filtered));
+    return () => transactionListeners.splice(transactionListeners.indexOf(entry), 1);
+  };
 
   const watchTransactions = (onDataChange: Listener<Transaction[]>, accountId?: Id, limit?: number, offset?: number) => {
     const entry: TransactionsListener = { listener: onDataChange, accountId, limit, offset };
@@ -154,12 +169,14 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
 
   return {
     create: create,
+    modify: modify,
     pay: pay,
     deactivateUpcoming: deactivateUpcoming,
     transfer: transfer,
     watchAccountVariations: watchAccountVariations,
     watchCashflowVariations: watchCashflowVariations,
     watchTags: watchTags,
+    watchTransaction: watchTransaction,
     watchTransactions: watchTransactions,
     watchTransactionCount: watchTransactionCount,
     addAccountVariations: addAccountVariations,

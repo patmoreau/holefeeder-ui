@@ -1,8 +1,8 @@
 import React from 'react';
 import { ViewProps } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppView } from '@/shared/presentation/AppView';
 import { AppText, ThemedTextProps } from '@/shared/presentation/components/AppText';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { spacing } from '@/types/theme/design-tokens';
 
 type ScreenTitleProps = {

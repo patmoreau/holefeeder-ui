@@ -1,8 +1,11 @@
 import * as Localization from 'expo-localization';
-import { createInstance } from 'i18next';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { Logger } from '@/shared/core/logger/logger';
 import { en } from './locales/en-CA/translations';
 import { fr } from './locales/fr-CA/translations';
+
+const log = Logger.create('i18n');
 
 const resources = {
   en: {
@@ -14,7 +17,7 @@ const resources = {
 };
 
 let isInitialized = false;
-const instance = createInstance();
+const instance = i18n;
 
 export const initI18n = async (savedLanguage?: string): Promise<void> => {
   if (isInitialized) {
@@ -50,7 +53,7 @@ export const initI18n = async (savedLanguage?: string): Promise<void> => {
 
     isInitialized = true;
   } catch (error) {
-    console.error('Error initializing i18n:', error);
+    log.error('Error initializing i18n:', error);
     // Fallback initialization without saved language
     await instance.use(initReactI18next).init({
       resources,
@@ -67,7 +70,7 @@ export const initI18n = async (savedLanguage?: string): Promise<void> => {
 
 export const getI18nInstance = () => {
   if (!isInitialized) {
-    console.warn('i18n not initialized yet. Call initI18n() first.');
+    log.warn('i18n not initialized yet. Call initI18n() first.');
   }
   return instance;
 };

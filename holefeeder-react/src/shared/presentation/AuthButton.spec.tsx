@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
-import { AppContextForTest } from '@/__tests__/AppContextForTest';
-import { AuthContextForTest } from '@/__tests__/AuthContextForTest';
-import { anId } from '@/__tests__/mocks/string-for-test';
+import { anId } from '@/shared/__tests__/string-for-test';
+import { AuthenticationContextForTest } from '@/shared/auth/__tests__/AuthenticationContextForTest';
 import { AuthButton } from '@/shared/presentation/AuthButton';
+import { ThemeProviderForTest } from '@/shared/theme/__tests__/ThemeProviderForTest';
 
 xdescribe('<AuthButton />', () => {
   beforeEach(() => {});
@@ -13,17 +13,16 @@ xdescribe('<AuthButton />', () => {
     beforeEach(async () => {
       await waitFor(() =>
         render(
-          <AppContextForTest>
-            <AuthContextForTest
+          <ThemeProviderForTest>
+            <AuthenticationContextForTest
               overrides={{
                 user: { sub: anId() },
                 isLoading: false,
-                clearSession: mockLogout,
               }}
             >
               <AuthButton />
-            </AuthContextForTest>
-          </AppContextForTest>
+            </AuthenticationContextForTest>
+          </ThemeProviderForTest>
         )
       );
     });
@@ -45,15 +44,11 @@ xdescribe('<AuthButton />', () => {
     beforeEach(async () => {
       await waitFor(() =>
         render(
-          <AppContextForTest>
-            <AuthContextForTest
-              overrides={{
-                authorize: mockLogin,
-              }}
-            >
+          <ThemeProviderForTest>
+            <AuthenticationContextForTest>
               <AuthButton />
-            </AuthContextForTest>
-          </AppContextForTest>
+            </AuthenticationContextForTest>
+          </ThemeProviderForTest>
         )
       );
     });

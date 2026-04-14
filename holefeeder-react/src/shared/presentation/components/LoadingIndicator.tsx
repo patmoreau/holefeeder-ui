@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, ActivityIndicatorProps } from 'react-native';
 import { tk } from '@/i18n/translations';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { useTheme } from '@/shared/theme/core/use-theme';
 
 type LoadingIndicatorProps = Omit<ActivityIndicatorProps, 'size' | 'color'> & {
   size?: 'small' | 'large';

@@ -1,5 +1,5 @@
 import { Text, type TextProps } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { fontWeight } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

@@ -3,7 +3,7 @@ import { Modal, Pressable, StyleProp, Text, ViewStyle } from 'react-native';
 import DateTimePicker, { DateType, useDefaultStyles } from 'react-native-ui-datepicker';
 import { DateOnly } from '@/shared/core/date-only';
 import { withDate } from '@/shared/core/with-date';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { borderRadius, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

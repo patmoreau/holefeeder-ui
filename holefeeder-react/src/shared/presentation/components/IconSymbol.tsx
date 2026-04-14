@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import type { SymbolWeight } from 'expo-symbols';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
-import { AppIcons, AppIconsMapping } from '@/types/icons';
+import { AppIcons, AppIconsMapping } from '@/shared/presentation/icons';
 
 export const IconSymbol = ({
   name,

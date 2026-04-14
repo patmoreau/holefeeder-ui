@@ -5,14 +5,17 @@ import { PurchaseForm } from '@/flows/presentation/purchase/PurchaseForm';
 import { useAccounts } from '@/flows/presentation/shared/core/use-accounts';
 import { useCategories } from '@/flows/presentation/shared/core/use-categories';
 import { useTags } from '@/flows/presentation/shared/core/use-tags';
+import { Logger } from '@/shared/core/logger/logger';
 import { today } from '@/shared/core/with-date';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppScreen } from '@/shared/presentation/AppScreen';
 import { AppView } from '@/shared/presentation/AppView';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
+
+const logger = Logger.create('PurchaseScreen');
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -21,6 +24,7 @@ const createStyles = (theme: Theme) => ({
 });
 
 const PurchaseScreen = () => {
+  logger.debug('Rendering PurchaseScreen');
   const accountsQuery = useAccounts();
   const categoriesQuery = useCategories();
   const tagsQuery = useTags();

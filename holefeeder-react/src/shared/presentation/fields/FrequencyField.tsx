@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppPicker, PickerOption } from '@/shared/presentation/components/AppPicker';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 type FrequencyOption = PickerOption & {
   value: number;

@@ -4,7 +4,7 @@ import { tk } from '@/i18n/translations';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { AppButton } from '@/shared/presentation/components/AppButton';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 export const TestSection = () => {
   const { t } = useTranslation();

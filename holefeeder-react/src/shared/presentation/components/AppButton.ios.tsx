@@ -2,10 +2,10 @@ import { Button, HStack, Image } from '@expo/ui/swift-ui';
 import { buttonStyle, fixedSize, frame, tint } from '@expo/ui/swift-ui/modifiers';
 import React from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppButtonVariant } from '@/shared/presentation/components/AppButtonVariant';
 import { AppHost } from '@/shared/presentation/components/AppHost.ios';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

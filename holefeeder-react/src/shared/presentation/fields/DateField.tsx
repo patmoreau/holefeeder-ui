@@ -1,7 +1,7 @@
 import { DateOnly } from '@/shared/core/date-only';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppDatePicker } from '@/shared/presentation/components/AppDatePicker';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 type Props = {
   label: string;

@@ -15,7 +15,7 @@ import { AppText } from '@/shared/presentation/components/AppText';
 import { AppTextInput } from '@/shared/presentation/components/AppTextInput';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 type PickerType<T> = PickerOption & { value: T };
 const pickerOptions: PickerType<string>[] = [

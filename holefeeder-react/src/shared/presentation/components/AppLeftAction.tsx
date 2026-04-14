@@ -2,7 +2,7 @@ import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 import { SwipeableMethods } from 'react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable';
 import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/theme/core/use-styles';
 
 const createStyles = () => ({
   leftAction: {

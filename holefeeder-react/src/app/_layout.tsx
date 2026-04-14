@@ -1,110 +1,87 @@
-import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 import '@azure/core-asynciterator-polyfill';
-import { useEffect } from 'react';
-import { Auth0Provider } from 'react-native-auth0';
+import { PowerSyncDatabase } from '@powersync/react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
-import { config } from '@/config/config';
-import { AppProvider } from '@/contexts/AppContext';
-import { PowerSyncAuthProvider } from '@/contexts/PowerSyncAuthProvider';
-import { RepositoryProvider } from '@/contexts/RepositoryContext';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { useAuth } from '@/shared/hooks/use-auth';
-import { useQuickActions } from '@/shared/hooks/use-quick-actions';
-import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
-//
-// (function addConsoleTimestamp() {
-//   const methods: (keyof Console)[] = ['log', 'info', 'warn', 'error', 'debug'];
-//   methods.forEach((m) => {
-//     const orig = (console as any)[m].bind(console);
-//     (console as any)[m] = (...args: any[]) => {
-//       const time = new Date().toISOString();
-//       orig(`[${time}]`, ...args);
-//     };
-//   });
-// })();
+import { HolefeederContent } from '@/app/HolefeederContent';
+import { HolefeederConfig } from '@/config/holefeeder-config';
+import { AuthenticationProvider } from '@/shared/auth/presentation/AuthenticationProvider';
+import { Logger } from '@/shared/core/logger/logger';
+import { loggerFactoryForReactNative } from '@/shared/core/logger/logger-factory-for-react-native';
+import { LanguageProvider } from '@/shared/language/presentation/LanguageProvider';
+import { AppStorageInMmkv } from '@/shared/persistence/app-storage-in-mmkv';
+import { DatabaseFactory } from '@/shared/persistence/db';
+import { PowersyncConnectorNoop } from '@/shared/persistence/powersync-connector-noop';
+import { PowerSyncAuthProvider } from '@/shared/persistence/presentation/PowerSyncAuthProvider';
+import { RepositoryProvider } from '@/shared/repositories/presentation/RepositoryContext';
+import { ThemeProvider } from '@/shared/theme/presentation/ThemeProvider';
 
-// ===== PRODUCTION LOGGING SETUP =====
-if (!__DEV__) {
-  const originalLog = console.log;
-  const originalError = console.error;
-  const originalWarn = console.warn;
+Logger.setLoggerFactory(loggerFactoryForReactNative);
+const logger = Logger.create('RootLayout');
 
-  console.log = (...args) => {
-    originalLog('[PROD-LOG]', new Date().toISOString(), ...args);
+const RootLayout = () => {
+  const [loading, setLoading] = useState(true);
+  const [database, setDatabase] = useState<PowerSyncDatabase | undefined>(undefined);
+
+  const appStorage = AppStorageInMmkv();
+
+  const errorHandler = (error: Error, stackTrace: string) => {
+    logger.error('Unhandled error', error, stackTrace);
   };
 
-  console.error = (...args) => {
-    originalError('[PROD-ERROR]', new Date().toISOString(), ...args);
-  };
+  useEffect(() => {
+    let mounted = true;
 
-  console.warn = (...args) => {
-    originalWarn('[PROD-WARN]', new Date().toISOString(), ...args);
-  };
+    const init = async () => {
+      let db: PowerSyncDatabase | undefined;
+      try {
+        logger.warn('Initializing database connection with PowersyncConnectorNoop');
+        db = await DatabaseFactory.init();
+        await db.connect(PowersyncConnectorNoop());
+        // db.connect(PowersyncConnectorNoop()).catch((e) => logger.error('Background sync failed', e));
+      } catch (error) {
+        console.error('Database initialization error:', error);
+      } finally {
+        logger.warn('Initializing database connection done');
+        if (mounted) {
+          setDatabase(db);
+          setLoading(false);
+        }
+      }
+    };
 
-  const originalHandler = global.Promise.prototype.catch;
-  global.Promise.prototype.catch = function (onRejected) {
-    return originalHandler.call(this, (error) => {
-      console.error('[UNHANDLED-PROMISE]', error);
-      return onRejected ? onRejected(error) : Promise.reject(error);
-    });
-  };
-}
+    init();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-function AppContent() {
-  const { user, isLoading } = useAuth();
-  const { theme } = useTheme();
+  const config = HolefeederConfig.parseEnv();
+  if (config.isFailure) {
+    logger.error('Error parsing config', config.errors);
+    return <></>;
+  }
 
-  useQuickActions();
-
-  if (isLoading) {
-    return <LoadingIndicator size="large" />;
+  if (loading || !database) {
+    return <ActivityIndicator accessibilityRole={'progressbar'} size={'large'} />;
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!!user}>
-        <Stack.Screen name="(app)" />
-      </Stack.Protected>
-
-      <Stack.Protected guard={!user}>
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-      <Stack.Screen name="+not-found" />
-      <Stack.Screen
-        name="test"
-        options={{
-          presentation: 'modal',
-          headerTransparent: true,
-          headerTintColor: theme.colors.tint,
-        }}
-      />
-    </Stack>
-  );
-}
-
-export default function RootLayout() {
-  useEffect(() => {
-    if (!__DEV__) {
-      console.log('[APP-LIFECYCLE] RootLayout mounted');
-    }
-  }, []);
-
-  const errorHandler = (error: Error, stackTrace: string) => {
-    console.error('[ERROR-HANDLER]', error, stackTrace);
-  };
-
-  return (
     <ErrorBoundary onError={errorHandler}>
-      <Auth0Provider domain={config.auth0.domain} clientId={config.auth0.clientId}>
-        <AppProvider>
-          <PowerSyncAuthProvider>
-            <RepositoryProvider>
-              <AppContent />
-            </RepositoryProvider>
-          </PowerSyncAuthProvider>
-        </AppProvider>
-      </Auth0Provider>
+      <LanguageProvider storage={appStorage}>
+        <ThemeProvider storage={appStorage}>
+          <AuthenticationProvider config={config.value.authConfig}>
+            <PowerSyncAuthProvider database={database} config={config.value}>
+              <RepositoryProvider database={database}>
+                <HolefeederContent />
+              </RepositoryProvider>
+            </PowerSyncAuthProvider>
+          </AuthenticationProvider>
+        </ThemeProvider>
+      </LanguageProvider>
     </ErrorBoundary>
   );
-}
+};
+
+export default RootLayout;

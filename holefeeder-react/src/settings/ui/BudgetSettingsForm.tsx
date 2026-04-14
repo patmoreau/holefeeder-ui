@@ -4,7 +4,7 @@ import { BudgetSettingsFormContent } from '@/settings/ui/BudgetSettingsFormConte
 import { useSettingsForm } from '@/settings/ui/core/use-settings-form';
 import { AppButton } from '@/shared/presentation/components/AppButton';
 import { useFormActions } from '@/shared/presentation/core/use-form-actions';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 export const BudgetSettingsForm = () => {
   const { saveForm, isDirty, errors } = useSettingsForm();

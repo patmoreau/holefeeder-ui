@@ -1,10 +1,10 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
-import { aPastDate } from '@/__tests__/mocks/date-for-test';
-import { aCategoryType } from '@/__tests__/mocks/enum-for-test';
-import { anAmount } from '@/__tests__/mocks/number-for-test';
-import { anId, aString } from '@/__tests__/mocks/string-for-test';
 import { aTagList } from '@/flows/core/flows/__tests__/tag-list-for-test';
 import { Transaction } from '@/flows/core/flows/transaction';
+import { aPastDate } from '@/shared/__tests__/date-for-test';
+import { aCategoryType } from '@/shared/__tests__/enum-for-test';
+import { anAmount } from '@/shared/__tests__/number-for-test';
+import { anId, aString } from '@/shared/__tests__/string-for-test';
 import { Money } from '@/shared/core/money';
 
 export type TransactionForTest = Transaction & {

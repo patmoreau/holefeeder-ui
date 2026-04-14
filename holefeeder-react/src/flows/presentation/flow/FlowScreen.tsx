@@ -8,12 +8,12 @@ import { useAccounts } from '@/flows/presentation/shared/core/use-accounts';
 import { useCategories } from '@/flows/presentation/shared/core/use-categories';
 import { useTags } from '@/flows/presentation/shared/core/use-tags';
 import { Id } from '@/shared/core/id';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppScreen } from '@/shared/presentation/AppScreen';
 import { AppView } from '@/shared/presentation/AppView';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({

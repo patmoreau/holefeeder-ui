@@ -7,7 +7,7 @@ import { usePurchaseForm } from '@/flows/presentation/purchase/core/use-purchase
 import { PurchaseFormContent } from '@/flows/presentation/purchase/PurchaseFormContent';
 import { AppButton } from '@/shared/presentation/components/AppButton';
 import { useFormActions } from '@/shared/presentation/core/use-form-actions';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 interface PurchaseFormProps {
   accounts: Account[];

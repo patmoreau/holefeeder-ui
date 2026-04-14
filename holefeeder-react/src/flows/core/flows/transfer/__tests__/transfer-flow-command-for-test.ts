@@ -1,7 +1,7 @@
-import { aRecentDate } from '@/__tests__/mocks/date-for-test';
-import { anAmount } from '@/__tests__/mocks/number-for-test';
-import { anId, aString } from '@/__tests__/mocks/string-for-test';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
+import { aRecentDate } from '@/shared/__tests__/date-for-test';
+import { anAmount } from '@/shared/__tests__/number-for-test';
+import { anId, aString } from '@/shared/__tests__/string-for-test';
 
 const defaultTransferFlowCommand = (): TransferFlowCommand => ({
   date: aRecentDate(),

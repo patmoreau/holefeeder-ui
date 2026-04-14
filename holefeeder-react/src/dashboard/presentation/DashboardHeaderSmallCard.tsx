@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { DashboardComputedSummary } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { DashboardHeaderExpenseTrend } from '@/dashboard/presentation/DashboardHeaderExpenseTrend';
 import { tk } from '@/i18n/translations';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useLocaleFormatter } from '@/shared/presentation/core/use-local-formatter';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

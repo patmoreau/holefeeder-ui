@@ -2,7 +2,7 @@ import React from 'react';
 import { Account } from '@/flows/core/accounts/account';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppPicker } from '@/shared/presentation/components/AppPicker';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 type Props = {
   label: string;

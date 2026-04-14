@@ -1,54 +1,74 @@
-import { apiService } from '@/shared/api/api-service';
+import { anApiConfig } from '@/shared/api/__tests__/api-config-for-test';
+import { FetchForTest } from '@/shared/api/__tests__/fetch-for-test';
+import { aFetchRequest } from '@/shared/api/__tests__/fetch-request-for-test';
+import { aFetchResponse } from '@/shared/api/__tests__/fetch-response-for-test';
 import { syncApi } from '@/shared/api/sync-api';
-
-jest.mock('@/shared/api/api-service');
-
-const mockApiService = jest.mocked(apiService);
+import { anAuthenticationState } from '@/shared/auth/__tests__/authentication-state-for-test';
+import { aTokenInfo } from '@/shared/auth/__tests__/token-info-for-test';
 
 describe('sync-api', () => {
-  const mockToken = 'test-token';
-  const mockPostWithAuth = jest.fn();
-  let service: ReturnType<typeof syncApi>;
+  const apiConfig = anApiConfig();
+  const endpoint = '/api/v2/sync/powersync';
+  const url = new URL(endpoint, apiConfig.url).toString();
+  const tokenInfo = aTokenInfo();
+  const authenticationState = anAuthenticationState({ getToken: () => Promise.resolve(tokenInfo) });
+  const request = aFetchRequest({
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${tokenInfo.token}`,
+    },
+  });
+
+  let fetchForTest: FetchForTest;
+  const sync = syncApi(authenticationState, apiConfig);
 
   beforeEach(() => {
-    mockApiService.mockReturnValue({
-      postWithAuth: mockPostWithAuth,
-    } as any);
-    service = syncApi(mockToken);
+    fetchForTest = FetchForTest();
+  });
+
+  afterEach(() => {
+    fetchForTest.restore();
   });
 
   describe('upload', () => {
     it('should upload data with transaction ID', async () => {
-      mockPostWithAuth.mockResolvedValue(undefined);
+      fetchForTest.simulate({ request: request, response: aFetchResponse({ status: 204, ok: true, body: undefined }) });
       const transactionId = 123;
       const operations: any[] = [{ op: 'PUT', table: 'test', data: {} }];
 
-      await service.upload({ transactionId, operations });
+      const result = await sync.upload({ transactionId, operations });
 
-      expect(mockPostWithAuth).toHaveBeenCalledWith('/api/v2/sync/powersync', {
-        transaction_id: transactionId,
-        operations: operations,
-      });
+      expect(result).toBeSuccessWithValue(undefined);
     });
 
     it('should upload data without transaction ID', async () => {
-      mockPostWithAuth.mockResolvedValue(undefined);
+      fetchForTest.simulate({ request: request, response: aFetchResponse({ status: 204, ok: true, body: undefined }) });
+      const transactionId = undefined;
       const operations: any[] = [{ op: 'PUT', table: 'test', data: {} }];
 
-      await service.upload({ operations });
+      const result = await sync.upload({ transactionId, operations });
 
-      expect(mockPostWithAuth).toHaveBeenCalledWith('/api/v2/sync/powersync', {
-        transaction_id: undefined,
-        operations: operations,
-      });
+      expect(result).toBeSuccessWithValue(undefined);
+    });
+
+    it('handles bad requests', async () => {
+      fetchForTest.simulate({ request: request, response: aFetchResponse({ status: 400, ok: false, statusText: 'Bad request' }) });
+      const transactionId = undefined;
+      const operations: any[] = [{ op: 'PUT', table: 'test', data: {} }];
+
+      const result = await sync.upload({ transactionId, operations });
+
+      expect(result).toBeFailureWithErrors(['Bad request']);
     });
 
     it('should handle API errors', async () => {
-      const serverError = new Error('HTTP 500: Internal Server Error');
-      mockPostWithAuth.mockRejectedValue(serverError);
+      fetchForTest.simulate({ request: request, response: new Error('HTTP 500: Internal Server Error') });
       const operations: any[] = [];
 
-      await expect(service.upload({ operations })).rejects.toThrow('HTTP 500');
+      const result = await sync.upload({ operations });
+
+      expect(result).toBeFailureWithErrors(['HTTP 500: Internal Server Error']);
     });
   });
 });

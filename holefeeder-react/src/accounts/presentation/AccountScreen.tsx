@@ -7,8 +7,6 @@ import { useAccountDetail } from '@/accounts/presentation/core/use-account-detai
 import { useTransactions } from '@/accounts/presentation/core/use-transactions';
 import type { CardLayout } from '@/dashboard/presentation/components/AccountCard';
 import { Id } from '@/shared/core/id';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
 import { CardHeaderFlashList } from '@/shared/presentation/CardHeaderFlashList';
 import { AppButton } from '@/shared/presentation/components/AppButton';
@@ -16,8 +14,10 @@ import { AppCardDivider } from '@/shared/presentation/components/AppCardDivider'
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
+import { AppIcons } from '@/shared/presentation/icons';
 import { goBack } from '@/shared/presentation/navigation';
-import { AppIcons } from '@/types/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({

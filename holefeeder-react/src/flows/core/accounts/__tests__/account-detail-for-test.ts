@@ -1,7 +1,7 @@
-import { aPastDate } from '@/__tests__/mocks/date-for-test';
-import { aVariation } from '@/__tests__/mocks/number-for-test';
-import { anId, aString } from '@/__tests__/mocks/string-for-test';
 import { Account } from '@/flows/core/accounts/account';
+import { aPastDate } from '@/shared/__tests__/date-for-test';
+import { aVariation } from '@/shared/__tests__/number-for-test';
+import { anId, aString } from '@/shared/__tests__/string-for-test';
 import { AccountDetail } from '../account-detail';
 
 const defaultAccountDetail = (): AccountDetail => ({

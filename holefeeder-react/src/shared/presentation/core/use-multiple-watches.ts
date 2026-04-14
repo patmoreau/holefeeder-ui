@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ErrorKey } from '@/shared/core/error-key';
+import { Logger } from '@/shared/core/logger/logger';
 import { type AsyncResult } from '@/shared/core/result';
+
+const log = Logger.create('use-multiple-watches');
 
 type WatchHook<T, TDefault extends T | null | undefined = undefined> = {
   (): AsyncResult<T>;
@@ -31,16 +34,37 @@ export const withDefault = <T>(hook: () => AsyncResult<T>, defaultValue: T): Wat
 
 export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchResult<T> => {
   const [showError, setShowError] = useState(false);
+  const registeredKeysRef = useRef<Set<string>>(new Set());
+  const prevResultsRef = useRef<Record<string, AsyncResult<any>>>({});
 
   const results = Object.entries(hooks).reduce((acc, [key, hook]) => {
     acc[key] = hook();
     return acc;
   }, {} as any);
 
+  useEffect(() => {
+    // Log new watch registrations
+    Object.keys(hooks).forEach((key) => {
+      if (!registeredKeysRef.current.has(key)) {
+        log.debug(`Watch registered: "${key}"`);
+        registeredKeysRef.current.add(key);
+      }
+    });
+
+    // Log when watch data is received or updated (result reference changes on each PowerSync update)
+    Object.entries(results).forEach(([key, result]: [string, any]) => {
+      if (result.isSuccess && result !== prevResultsRef.current[key]) {
+        log.debug(`Watch data received: "${key}"`);
+      }
+    });
+
+    prevResultsRef.current = { ...results };
+  });
+
   const isLoading = Object.values(results).some((r: any) => r.isLoading);
 
   const errors = Object.values(results).flatMap((r: any) => (r.isFailure ? r.errors : []));
-  if (errors.length > 0) console.error(errors);
+  if (errors.length > 0) log.error(errors);
 
   const hasErrors = errors.length > 0;
 

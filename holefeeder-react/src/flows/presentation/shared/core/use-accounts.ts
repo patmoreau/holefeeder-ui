@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useRepositories } from '@/contexts/RepositoryContext';
 import type { Account } from '@/flows/core/accounts/account';
 import { WatchAccountsUseCase } from '@/flows/core/accounts/watch-accounts/watch-accounts-use-case';
 import { type AsyncResult, Result } from '@/shared/core/result';
+import { useRepositories } from '@/shared/repositories/core/use-repositories';
 
 export const useAccounts = (): AsyncResult<Account[]> => {
   const { accountRepository } = useRepositories();

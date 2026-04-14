@@ -8,3 +8,4 @@ export const buttonStyle = jest.fn((props) => props);
 export const tint = jest.fn((props) => props);
 export const foregroundStyle = jest.fn((props) => props);
 export const controlSize = jest.fn((props) => props);
+export const autocorrectionDisabled = jest.fn((props) => props);

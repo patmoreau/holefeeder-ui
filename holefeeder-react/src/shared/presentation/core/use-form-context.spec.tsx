@@ -1,13 +1,14 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Button, Text } from 'react-native';
-import { Repositories, RepositoryContext } from '@/contexts/RepositoryContext';
 import { ErrorKey } from '@/shared/core/error-key';
 import { Result } from '@/shared/core/result';
 import { createFormDataContext } from '@/shared/presentation/core/use-form-context';
+import { RepositoriesState } from '@/shared/repositories/core/repositories-state';
+import { RepositoryContext } from '@/shared/repositories/presentation/RepositoryContext';
 
 // Mock repositories
-const mockRepositories: Repositories = {
+const mockRepositories: RepositoriesState = {
   accountRepository: {} as any,
   categoryRepository: {} as any,
   dashboardRepository: {} as any,

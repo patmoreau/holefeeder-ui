@@ -1,6 +1,6 @@
 import { SymbolView, type SymbolWeight } from 'expo-symbols';
 import { StyleProp, ViewStyle } from 'react-native';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 export const IconSymbol = ({
   name,

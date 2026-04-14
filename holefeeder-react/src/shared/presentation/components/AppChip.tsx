@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { borderRadius, spacing } from '@/types/theme/design-tokens';
 
 export type AppChipProps = {

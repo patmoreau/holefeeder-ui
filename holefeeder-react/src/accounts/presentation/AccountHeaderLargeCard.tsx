@@ -5,9 +5,9 @@ import { AccountType } from '@/flows/core/accounts/account-type';
 import { tk } from '@/i18n/translations';
 import { Variation } from '@/shared/core/variation';
 import { today } from '@/shared/core/with-date';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useLocaleFormatter } from '@/shared/presentation/core/use-local-formatter';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { fontSize, fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 
@@ -73,10 +73,7 @@ export const AccountHeaderLargeCard = ({ account }: { account: AccountDetail }) 
             {formatCurrency(account.projectedBalance)}
           </AppText>
           {account.upcomingVariation !== 0 && (
-            <AppText
-              variant={'footnote'}
-              style={[isPositive ? styles.positiveAmount : styles.negativeAmount, { opacity: 0.7 }]}
-            >
+            <AppText variant={'footnote'} style={[isPositive ? styles.positiveAmount : styles.negativeAmount, { opacity: 0.7 }]}>
               {account.upcomingVariation >= 0 ? '+' : ''}
               {formatCurrency(account.upcomingVariation)}
             </AppText>

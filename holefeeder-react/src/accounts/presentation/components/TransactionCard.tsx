@@ -5,11 +5,11 @@ import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { Transaction } from '@/flows/core/flows/transaction';
 import { Id } from '@/shared/core/id';
 import { today } from '@/shared/core/with-date';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useLocaleFormatter } from '@/shared/hooks/use-local-formatter';
 import { AppCard } from '@/shared/presentation/components/AppCard';
 import { AppChip } from '@/shared/presentation/components/AppChip';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useLocaleFormatter } from '@/shared/presentation/core/use-local-formatter';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme';
 import { spacing } from '@/types/theme/design-tokens';
 

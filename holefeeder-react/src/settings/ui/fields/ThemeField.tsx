@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { Logger } from '@/shared/core/logger/logger';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppPicker, PickerOption } from '@/shared/presentation/components/AppPicker';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { ThemeMode } from '@/types/theme/theme';
+
+const logger = Logger.create('ThemeField');
 
 const tkTypes: Record<ThemeMode, string> = {
   [ThemeMode.dark]: tk.displaySection.dark,
@@ -19,9 +22,9 @@ type ThemeOption = PickerOption & {
 
 export const ThemeField = () => {
   const { t } = useTranslation();
-  const { changeThemeMode, themeMode } = useTheme();
+  const { setThemeMode, themeMode } = useTheme();
   const handleThemeChange = async (theme: ThemeOption) => {
-    await changeThemeMode(theme.value);
+    await setThemeMode(theme.value);
   };
 
   const options = useMemo<ThemeOption[]>(() => {
@@ -43,7 +46,7 @@ export const ThemeField = () => {
       <AppPicker
         options={options}
         selectedOption={selectedOption}
-        onSelectOption={(option) => handleThemeChange(option).catch(console.error)}
+        onSelectOption={(option) => handleThemeChange(option).catch(logger.error)}
         onOptionLabel={(option) => t(tkTypes[option.value])}
       />
     </AppField>

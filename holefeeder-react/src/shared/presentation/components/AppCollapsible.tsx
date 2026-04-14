@@ -1,11 +1,11 @@
 import { PropsWithChildren, useState } from 'react';
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { spacing, Theme } from '@/types/theme';
 
 const createStyles = (theme: Theme) => ({

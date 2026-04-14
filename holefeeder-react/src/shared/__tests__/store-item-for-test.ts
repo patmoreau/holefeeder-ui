@@ -1,5 +1,5 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
-import { anId, aWord } from '@/__tests__/mocks/string-for-test';
+import { anId, aWord } from '@/shared/__tests__/string-for-test';
 import { StoreItem } from '@/shared/core/store-item';
 
 export type StoreItemForTest = StoreItem & {

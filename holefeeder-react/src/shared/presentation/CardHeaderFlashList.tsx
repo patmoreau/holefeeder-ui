@@ -4,11 +4,11 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { RefreshControl, View } from 'react-native';
 import Reanimated, { Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
 import { AppCardPagedList } from '@/shared/presentation/components/AppCardPagedList';
 import { UsePagedWatchResult } from '@/shared/presentation/core/use-paged-watch';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
 

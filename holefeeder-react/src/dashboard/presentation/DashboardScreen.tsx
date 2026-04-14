@@ -12,13 +12,16 @@ import { useUpcomingFlows } from '@/dashboard/presentation/core/use-upcoming-flo
 import { DashboardHeaderLargeCard } from '@/dashboard/presentation/DashboardHeaderLargeCard';
 import { DashboardHeaderSmallCard } from '@/dashboard/presentation/DashboardHeaderSmallCard';
 import { Id } from '@/shared/core/id';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { Logger } from '@/shared/core/logger/logger';
 import { AppView } from '@/shared/presentation/AppView';
 import { CardHeaderScrollView } from '@/shared/presentation/CardHeaderScrollView';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { Theme } from '@/types/theme/theme';
+
+const logger = Logger.create('DashboardScreen');
 
 const createStyles = (theme: Theme) => ({
   container: {
@@ -27,6 +30,7 @@ const createStyles = (theme: Theme) => ({
 });
 
 const DashboardScreen = () => {
+  logger.debug('Rendering DashboardScreen');
   const accountsQuery = useAccountDetails();
   const dashboardQuery = useDashboard();
   const upcomingQuery = useUpcomingFlows();
@@ -39,6 +43,7 @@ const DashboardScreen = () => {
       params: { id: id as string },
     });
 
+  logger.debug('Fetching data');
   const { data, errors } = useMultipleWatches({
     accounts: withDefault(() => accountsQuery, []),
     dashboard: withDefault(() => dashboardQuery, NO_SUMMARY),
@@ -46,6 +51,7 @@ const DashboardScreen = () => {
   });
 
   if (errors.showError) {
+    logger.error('Error fetching data', errors.error);
     return (
       <AppView style={styles.container}>
         <ErrorSheet {...errors} />
@@ -54,7 +60,13 @@ const DashboardScreen = () => {
   }
 
   const { accounts, dashboard, upcomingFlows } = data;
+  // const accounts: AccountDetail[] = data.accounts;
+  // const dashboard = NO_SUMMARY;
+  // const upcomingFlows: UpcomingFlow[] = [];
 
+  logger.warn(
+    `Rendering with accounts: ${accounts.length}, dashboard: ${dashboard !== NO_SUMMARY ? 'available' : 'not available'}, upcomingFlows: ${upcomingFlows.length}`
+  );
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}

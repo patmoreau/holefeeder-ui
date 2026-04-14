@@ -12,12 +12,17 @@ export const AppSchema = new Schema({
       inactive: column.integer,
       user_id: column.text,
     },
-    { indexes: { accounts_name: ['name'] } }
+    {
+      indexes: {
+        accounts_name: ['name'],
+        accounts_inactive: ['inactive'],
+      },
+    }
   ),
   cashflows: new Table(
     {
       effective_date: column.text,
-      amount: column.real,
+      amount: column.integer,
       interval_type: column.text,
       frequency: column.integer,
       recurrence: column.integer,
@@ -32,6 +37,7 @@ export const AppSchema = new Schema({
       indexes: {
         cashflows_account: ['account_id'],
         cashflows_category: ['category_id'],
+        cashflows_inactive: ['inactive'],
       },
     }
   ),
@@ -45,7 +51,14 @@ export const AppSchema = new Schema({
       system: column.integer,
       user_id: column.text,
     },
-    { indexes: { categories_name: ['name'] } }
+    {
+      indexes: {
+        categories_name: ['name'],
+        categories_type: ['type'],
+        categories_system: ['system'],
+        categories_system_type: ['system', 'type'],
+      },
+    }
   ),
   store_items: new Table(
     {
@@ -71,10 +84,13 @@ export const AppSchema = new Schema({
       indexes: {
         transactions_category_date: ['category_id', 'date'],
         transactions_date: ['date'],
-        transactions_account: ['account_id'],
-        transactions_category: ['category_id'],
-        transactions_cashflow: ['cashflow_id'],
-        transactions_tags: ['tags'],
+        // transactions_account: ['account_id'],
+        // transactions_category: ['category_id'],
+        // transactions_category_date_amount: ['category_id', 'date', 'amount'],
+        // transactions_cashflow: ['cashflow_id'],
+        // transactions_cashflow_date: ['cashflow_id', 'date', 'cashflow_date'],
+        // transactions_tags: ['tags'],
+        transactions_account_category_amount_date: ['account_id', 'category_id', 'amount', 'date'],
       },
     }
   ),

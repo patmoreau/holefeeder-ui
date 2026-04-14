@@ -1,9 +1,9 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
-import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { aSettings } from '@/settings/core/__tests__/settings-for-test';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
+import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
+import { PowerSyncProviderForTest } from '@/shared/persistence/__tests__/PowerSyncProviderForTest';
 import { useSettings } from '@/shared/presentation/core/use-settings';
 
 describe('useStoreItems', () => {
@@ -14,7 +14,7 @@ describe('useStoreItems', () => {
   const createHook = async () =>
     await waitFor(() =>
       renderHook(() => useSettings(), {
-        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest db={db}>{children}</PowerSyncProviderForTest>,
+        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest database={db}>{children}</PowerSyncProviderForTest>,
       })
     );
 

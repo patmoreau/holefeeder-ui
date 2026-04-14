@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppView } from '@/shared/presentation/AppView';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({

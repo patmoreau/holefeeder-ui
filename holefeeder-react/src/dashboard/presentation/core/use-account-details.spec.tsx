@@ -1,7 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
-import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { useAccountDetails } from '@/dashboard/presentation/core/use-account-details';
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { AccountTypes } from '@/flows/core/accounts/account-type';
@@ -16,6 +14,8 @@ import { DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { DateOnly } from '@/shared/core/date-only';
 import { Money } from '@/shared/core/money';
 import { Variation } from '@/shared/core/variation';
+import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
+import { PowerSyncProviderForTest } from '@/shared/persistence/__tests__/PowerSyncProviderForTest';
 
 describe('useAccountDetails', () => {
   let db: DatabaseForTest;
@@ -46,7 +46,7 @@ describe('useAccountDetails', () => {
   const createHook = async () =>
     await waitFor(() =>
       renderHook(() => useAccountDetails(), {
-        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest db={db}>{children}</PowerSyncProviderForTest>,
+        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest database={db}>{children}</PowerSyncProviderForTest>,
       })
     );
 

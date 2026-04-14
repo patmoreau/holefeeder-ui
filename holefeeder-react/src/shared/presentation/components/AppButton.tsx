@@ -1,10 +1,10 @@
 import React from 'react';
 import { Pressable, PressableProps, StyleProp, View, ViewStyle } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppButtonVariant } from '@/shared/presentation/components/AppButtonVariant';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 export type ButtonProps = Omit<PressableProps, 'onPress'> & {

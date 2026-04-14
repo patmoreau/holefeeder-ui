@@ -3,14 +3,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { tk } from '@/i18n/translations';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useAuth } from '@/shared/hooks/use-auth';
+import { useAuth } from '@/shared/auth/core/use-auth';
 import { AppView } from '@/shared/presentation/AppView';
 import { AuthButton } from '@/shared/presentation/AuthButton';
 import { AppButton } from '@/shared/presentation/components/AppButton';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { GlobalStyles } from '@/types/theme/global-styles';
 import { Theme } from '@/types/theme/theme';
 

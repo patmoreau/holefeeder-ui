@@ -1,5 +1,5 @@
 import { View, ViewProps } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { borderRadius, shadows, spacing, Theme } from '@/types/theme';
 
 export type AppCardProps = ViewProps & ({ scrollable?: 'vertical' } | { scrollable: 'horizontal'; cardWidth: number });

@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { RefreshControl, StyleProp, View, ViewStyle } from 'react-native';
 import Reanimated from 'react-native-reanimated';
 import { tk } from '@/i18n/translations';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { UsePagedWatchResult } from '@/shared/presentation/core/use-paged-watch';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { spacing } from '@/types/theme/design-tokens';
 
 const AnimatedFlashList = Reanimated.createAnimatedComponent(FlashList) as typeof FlashList;

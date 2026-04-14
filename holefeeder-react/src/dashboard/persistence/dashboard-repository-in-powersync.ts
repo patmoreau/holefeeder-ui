@@ -40,11 +40,14 @@ export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): D
           c.type,
           MIN(t.date) as bucket_date,
           SUM(t.amount) as total
-        FROM categories c
-               INNER JOIN transactions t ON c.id = t.category_id
-        WHERE c.system = 0
+        FROM transactions t
+               INNER JOIN (
+          SELECT id, type
+          FROM categories
+          WHERE system = 0
+        ) c ON c.id = t.category_id
         GROUP BY c.type, ${getBucketLogic(settings)}
-      `,
+        `,
       [],
       (row) =>
         SummaryData.valid({
@@ -52,7 +55,8 @@ export const DashboardRepositoryInPowersync = (db: AbstractPowerSyncDatabase): D
           date: row.bucket_date,
           total: Money.fromCents(row.total),
         }),
-      onDataChange
+      onDataChange,
+      'watchDashboard'
     );
 
   return {

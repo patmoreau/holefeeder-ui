@@ -1,5 +1,5 @@
-import { aString } from '@/__tests__/mocks/string-for-test';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
+import { aString } from '@/shared/__tests__/string-for-test';
 import { DateOnly, DateOnlyErrors } from '@/shared/core/date-only';
 import { Id, IdErrors } from '@/shared/core/id';
 import { Money, MoneyErrors } from '@/shared/core/money';

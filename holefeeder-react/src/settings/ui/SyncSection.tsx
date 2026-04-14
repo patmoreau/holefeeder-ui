@@ -1,19 +1,22 @@
+import { File, Paths } from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
 import { DEFAULT_SYNC_INFO } from '@/settings/core/sync-info';
 import { useSyncInfo } from '@/settings/ui/core/use-sync-info';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { AppView } from '@/shared/presentation/AppView';
+import { AppButton } from '@/shared/presentation/components/AppButton';
 import { AppCollapsible } from '@/shared/presentation/components/AppCollapsible';
 import { AppSwitch } from '@/shared/presentation/components/AppSwitch';
 import { AppText } from '@/shared/presentation/components/AppText';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { spacing, Theme } from '@/types/theme';
 
 const createStyles = (theme: Theme) => ({
@@ -85,6 +88,23 @@ export function SyncSection() {
         </AppField>
         <AppField label={t(tk.settings.syncSection.transactions)} icon={AppIcons.purchase}>
           <AppText>{syncInfo.dataMetrics.transactions}</AppText>
+        </AppField>
+        <AppField label={t(tk.settings.syncSection.share)} icon={AppIcons.share}>
+          <AppButton
+            label={t(tk.settings.syncSection.share)}
+            icon={AppIcons.share}
+            onPress={async () => {
+              if (!(await Sharing.isAvailableAsync())) return;
+              // op-sqlite stores DBs in NSLibraryDirectory on iOS
+              const file = new File(Paths.document, 'holefeeder.db');
+              const tempFile = new File(Paths.cache, 'holefeeder_temp.db');
+              file.copy(tempFile);
+              await Sharing.shareAsync(tempFile.uri, {
+                mimeType: 'application/x-sqlite3',
+                UTI: 'public.database',
+              });
+            }}
+          />
         </AppField>
       </AppSection>
     </AppCollapsible>

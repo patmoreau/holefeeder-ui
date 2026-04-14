@@ -4,7 +4,7 @@ import { tk } from '@/i18n/translations';
 import { DateIntervalType, DateIntervalTypes } from '@/shared/core/date-interval-type';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppPicker, PickerOption } from '@/shared/presentation/components/AppPicker';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 const tkTypes: Record<DateIntervalType, string> = {
   [DateIntervalTypes.daily]: tk.dateIntervalTypePicker.daily,
@@ -34,7 +34,6 @@ export function DateIntervalTypeField({ selectedDateIntervalType, onSelectDateIn
       value: type,
     }));
   }, []);
-  console.log(options);
   const selectedOption = options.find((opt) => opt.value === selectedDateIntervalType) ?? options[0];
 
   return (

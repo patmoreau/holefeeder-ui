@@ -3,9 +3,12 @@ import { useQuickActionCallback } from 'expo-quick-actions/hooks';
 import type { RouterAction } from 'expo-quick-actions/router';
 import { router } from 'expo-router';
 import { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { tk } from '@/i18n/translations';
-import { useLanguage } from '@/shared/hooks/use-language';
+import { Logger } from '@/shared/core/logger/logger';
+
+const log = Logger.create('use-quick-actions');
 
 const routerInitializationDelay = 100;
 
@@ -16,38 +19,39 @@ const isValidQuickActionHref = (href: unknown): href is AvailableQuickActions =>
 };
 
 export function useQuickActions() {
-  const { t } = useLanguage();
+  log.debug('Initializing Quick Actions');
+  const { t } = useTranslation();
 
   const handleQuickAction = useCallback((action: QuickActions.Action) => {
-    console.debug('[Quick actions] Callback invoked:', JSON.stringify(action, null, 2));
+    log.debug('Callback invoked:', JSON.stringify(action, null, 2));
 
     if (action?.params?.href) {
       const href = action.params.href;
 
       if (isValidQuickActionHref(href)) {
-        console.debug('[Quick actions] Navigating to:', href);
+        log.debug('Navigating to:', href);
 
         setTimeout(() => {
           router.push(href);
         }, routerInitializationDelay);
       } else {
-        console.warn('[Quick actions] Invalid href:', href);
+        log.warn('Invalid href:', href);
       }
     } else {
-      console.warn('[Quick actions] No href found in action params');
+      log.warn('No href found in action params');
     }
   }, []);
 
   useQuickActionCallback(handleQuickAction);
 
   useEffect(() => {
-    console.debug('[Quick actions] Setting up event listener');
+    log.debug('Setting up event listener');
     const subscription = QuickActions.addListener((event) => {
-      console.debug('[Quick actions] Event fired:', JSON.stringify(event, null, 2));
+      log.debug('Event fired:', JSON.stringify(event, null, 2));
     });
 
     return () => {
-      console.debug('[Quick actions] Cleaning up event listener');
+      log.debug('Cleaning up event listener');
       subscription.remove();
     };
   }, []);
@@ -70,14 +74,16 @@ export function useQuickActions() {
             params: { href: '/help' },
           },
         ]);
-        console.debug('[Quick actions] Items set successfully');
+        log.debug('Items set successfully');
       } catch (error) {
-        console.error('[Quick actions] Setup error:', error);
+        log.error('Setup error:', error);
       }
     };
 
     setupQuickActions()
-      .then(() => console.debug('[Quick actions] Setup complete'))
-      .catch((error) => console.error('[Quick actions] Setup failed:', error));
+      .then(() => log.debug('Setup complete'))
+      .catch((error) => log.error('Setup failed:', error));
   }, [t]);
+
+  log.debug('Quick Actions initialized');
 }

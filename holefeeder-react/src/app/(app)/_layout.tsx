@@ -1,15 +1,21 @@
 import { router, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
+import { Logger } from '@/shared/core/logger/logger';
 import { AppButton } from '@/shared/presentation/components/AppButton';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
+import { useTheme } from '@/shared/theme/core/use-theme';
+
+const logger = Logger.create('AppLayout');
 
 const AppLayout = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
 
-  const onPressPurchase = () => router.push('/(app)/Purchase');
+  const onPressPurchase = () => {
+    logger.info('onPressPurchase');
+    router.push('/(app)/Purchase');
+  };
 
   return (
     <Stack>
@@ -29,39 +35,39 @@ const AppLayout = () => {
           headerTintColor: theme.colors.tint,
         }}
       />
-      <Stack.Screen
-        name="BudgetSettings"
-        options={{
-          title: t(tk.budgetSection.title),
-          headerTransparent: true,
-          headerTintColor: theme.colors.tint,
-        }}
-      />
-      <Stack.Screen
-        name="PayUpcoming"
-        options={{
-          presentation: 'modal',
-          title: t(tk.payUpcoming.title),
-          headerShown: true,
-          headerTintColor: theme.colors.tint,
-        }}
-      />
-      <Stack.Screen
-        name="accounts/[id]"
-        options={{
-          presentation: 'transparentModal',
-          title: '',
-          headerTransparent: true,
-        }}
-      />
-      <Stack.Screen
-        name="flows/[id]"
-        options={{
-          presentation: 'transparentModal',
-          title: '',
-          headerTransparent: true,
-        }}
-      />
+      {/*<Stack.Screen*/}
+      {/*  name="budget-settings"*/}
+      {/*  options={{*/}
+      {/*    title: t(tk.budgetSection.title),*/}
+      {/*    headerTransparent: true,*/}
+      {/*    headerTintColor: theme.colors.tint,*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<Stack.Screen*/}
+      {/*  name="PayUpcoming"*/}
+      {/*  options={{*/}
+      {/*    presentation: 'modal',*/}
+      {/*    title: t(tk.payUpcoming.title),*/}
+      {/*    headerShown: true,*/}
+      {/*    headerTintColor: theme.colors.tint,*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<Stack.Screen*/}
+      {/*  name="accounts/[id]"*/}
+      {/*  options={{*/}
+      {/*    presentation: 'transparentModal',*/}
+      {/*    title: '',*/}
+      {/*    headerTransparent: true,*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<Stack.Screen*/}
+      {/*  name="flows/[id]"*/}
+      {/*  options={{*/}
+      {/*    presentation: 'transparentModal',*/}
+      {/*    title: '',*/}
+      {/*    headerTransparent: true,*/}
+      {/*  }}*/}
+      {/*/>*/}
     </Stack>
   );
 };

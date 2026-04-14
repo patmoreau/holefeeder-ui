@@ -2,8 +2,8 @@ import { Stack } from 'expo-router';
 import type { ReactElement } from 'react';
 import { Text, View, type ViewProps } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppView } from '@/shared/presentation/AppView';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 const HEADER_HEIGHT = 250;

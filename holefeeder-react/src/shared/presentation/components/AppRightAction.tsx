@@ -2,8 +2,8 @@ import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 import { SwipeableMethods } from 'react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable';
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useStyles } from '@/shared/theme/core/use-styles';
 
 const createStyles = () => ({
   actionText: {

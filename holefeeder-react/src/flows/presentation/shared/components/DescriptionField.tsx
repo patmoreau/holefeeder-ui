@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppTextInput } from '@/shared/presentation/components/AppTextInput';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 type Props = {
   description: string;

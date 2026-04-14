@@ -41,7 +41,8 @@ export const AccountsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Ac
           favorite: row.favorite === 1,
           inactive: row.inactive === 1,
         }),
-      onDataChange
+      onDataChange,
+      'watchAccounts'
     );
 
   return {

@@ -3,13 +3,13 @@ import { DefaultSettings } from '@/settings/core/settings';
 import { SettingsFormData } from '@/settings/core/settings-form-data';
 import { BudgetSettingsForm } from '@/settings/ui/BudgetSettingsForm';
 import { SettingsFormProvider, validateSettingsForm } from '@/settings/ui/core/use-settings-form';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
 import { AppScreen } from '@/shared/presentation/AppScreen';
 import { AppView } from '@/shared/presentation/AppView';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 import { useMultipleWatches, withDefault } from '@/shared/presentation/core/use-multiple-watches';
 import { useSettings } from '@/shared/presentation/core/use-settings';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 const createStyles = (theme: Theme) => ({

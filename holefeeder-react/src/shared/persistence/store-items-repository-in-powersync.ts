@@ -1,8 +1,11 @@
 import { AbstractPowerSyncDatabase } from '@powersync/common';
+import { Logger } from '@/shared/core/logger/logger';
 import { type AsyncResult, Result } from '@/shared/core/result';
 import { StoreItem } from '@/shared/core/store-item';
 import { StoreItemsRepository, StoreItemsRepositoryErrors } from '@/shared/core/store-items-repository';
 import { watchSingle } from '@/shared/persistence/watch-query';
+
+const log = Logger.create('store-items-repository-in-powersync');
 
 type StoreItemRow = { id: number; code: string; data: string };
 
@@ -13,7 +16,9 @@ export const StoreItemsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): 
       `SELECT id, code, data FROM store_items WHERE code = ?`,
       [code],
       (row: StoreItemRow) => StoreItem.valid(row),
-      onDataChange
+      onDataChange,
+      undefined,
+      'watchForCode'
     );
 
   const getByCode = async (code: string): Promise<Result<StoreItem>> => {
@@ -26,7 +31,7 @@ export const StoreItemsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): 
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`${StoreItemsRepositoryErrors.saveStoreItemFailed}: `, error.message);
+        log.error(`${StoreItemsRepositoryErrors.saveStoreItemFailed}: `, error.message);
       }
       return Result.failure([StoreItemsRepositoryErrors.saveStoreItemFailed]);
     }
@@ -43,7 +48,7 @@ export const StoreItemsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): 
       return Result.success();
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`${StoreItemsRepositoryErrors.saveStoreItemFailed}: `, error.message);
+        log.error(`${StoreItemsRepositoryErrors.saveStoreItemFailed}: `, error.message);
       }
       return Result.failure([StoreItemsRepositoryErrors.saveStoreItemFailed]);
     }

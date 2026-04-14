@@ -1,62 +1,78 @@
-/* eslint-disable import/first */
-jest.mock('@/shared/hooks/theme/use-theme', () => ({
-  useTheme: jest.fn(),
-}));
-jest.mock('@/shared/hooks/use-language', () => ({
-  useLanguage: jest.fn(),
-}));
-
 import { render, screen } from '@testing-library/react-native';
-import { aLanguageState } from '@/__tests__/mocks/language-state-builder';
-import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
-import { useLanguage } from '@/shared/hooks/use-language';
+import { aLanguageState } from '@/shared/language/__tests__/language-state-for-test';
+import { LanguageProviderForTest } from '@/shared/language/__tests__/LanguageProviderForTest';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
-
-const mockUseTheme = jest.mocked(useTheme);
-const mockUseLanguage = jest.mocked(useLanguage);
+import { aLightThemeState } from '@/shared/theme/__tests__/theme-state-for-test';
+import { ThemeProviderForTest } from '@/shared/theme/__tests__/ThemeProviderForTest';
 
 describe('<LoadingIndicator />', () => {
-  const mockTheme = aLightThemeState();
-  beforeEach(() => {
-    mockUseTheme.mockReturnValue(mockTheme);
-    mockUseLanguage.mockReturnValue(aLanguageState());
-  });
+  const themeState = aLightThemeState();
+  const languageState = aLanguageState();
 
   it('should render with default props', () => {
-    render(<LoadingIndicator />);
+    render(
+      <LanguageProviderForTest overrides={languageState}>
+        <ThemeProviderForTest overrides={themeState}>
+          <LoadingIndicator />
+        </ThemeProviderForTest>
+      </LanguageProviderForTest>
+    );
     const activityIndicator = screen.queryByLabelText('common.loading');
 
     expect(activityIndicator.props.size).toBe('large');
-    expect(activityIndicator.props.color).toBe(mockTheme.theme.colors.primary);
+    expect(activityIndicator.props.color).toBe(themeState.theme.colors.primary);
   });
 
   describe('with variant', () => {
     it('should render with primary color', () => {
-      render(<LoadingIndicator variant="primary" />);
+      render(
+        <LanguageProviderForTest overrides={languageState}>
+          <ThemeProviderForTest overrides={themeState}>
+            <LoadingIndicator variant="primary" />
+          </ThemeProviderForTest>
+        </LanguageProviderForTest>
+      );
       const activityIndicator = screen.queryByLabelText('common.loading');
 
-      expect(activityIndicator.props.color).toBe(mockTheme.theme.colors.primary);
+      expect(activityIndicator.props.color).toBe(themeState.theme.colors.primary);
     });
 
     it('should render with secondary color', () => {
-      render(<LoadingIndicator variant="secondary" />);
+      render(
+        <LanguageProviderForTest overrides={languageState}>
+          <ThemeProviderForTest overrides={themeState}>
+            <LoadingIndicator variant="secondary" />
+          </ThemeProviderForTest>
+        </LanguageProviderForTest>
+      );
       const activityIndicator = screen.queryByLabelText('common.loading');
 
-      expect(activityIndicator.props.color).toBe(mockTheme.theme.colors.secondary);
+      expect(activityIndicator.props.color).toBe(themeState.theme.colors.secondary);
     });
   });
 
   describe('with size', () => {
     it('should render small', () => {
-      render(<LoadingIndicator size="small" />);
+      render(
+        <LanguageProviderForTest overrides={languageState}>
+          <ThemeProviderForTest overrides={themeState}>
+            <LoadingIndicator size="small" />
+          </ThemeProviderForTest>
+        </LanguageProviderForTest>
+      );
       const activityIndicator = screen.queryByLabelText('common.loading');
 
       expect(activityIndicator.props.size).toBe('small');
     });
 
     it('should render large', () => {
-      render(<LoadingIndicator size="large" />);
+      render(
+        <LanguageProviderForTest overrides={languageState}>
+          <ThemeProviderForTest overrides={themeState}>
+            <LoadingIndicator size="large" />
+          </ThemeProviderForTest>
+        </LanguageProviderForTest>
+      );
       const activityIndicator = screen.queryByLabelText('common.loading');
 
       expect(activityIndicator.props.size).toBe('large');

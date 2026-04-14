@@ -1,9 +1,9 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
-import { PowerSyncProviderForTest } from '@/__tests__/PowerSyncProviderForTest';
 import { aCategory, toCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { useCategories } from '@/flows/presentation/shared/core/use-categories';
+import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
+import { PowerSyncProviderForTest } from '@/shared/persistence/__tests__/PowerSyncProviderForTest';
 
 describe('useCategories', () => {
   let db: DatabaseForTest;
@@ -12,7 +12,7 @@ describe('useCategories', () => {
   const createHook = async () =>
     await waitFor(() =>
       renderHook(() => useCategories(), {
-        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest db={db}>{children}</PowerSyncProviderForTest>,
+        wrapper: ({ children }: { children: React.ReactNode }) => <PowerSyncProviderForTest database={db}>{children}</PowerSyncProviderForTest>,
       })
     );
 

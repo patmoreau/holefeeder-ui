@@ -7,7 +7,7 @@ import { useFlowForm } from '@/flows/presentation/flow/core/use-flow-form';
 import { FlowFormContent } from '@/flows/presentation/flow/FlowFormContent';
 import { AppButton } from '@/shared/presentation/components/AppButton';
 import { useFormActions } from '@/shared/presentation/core/use-form-actions';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 interface FlowFormProps {
   accounts: Account[];

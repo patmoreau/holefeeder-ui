@@ -14,9 +14,12 @@ import { CashflowVariationRow } from '@/flows/persistence/cashflow-variation-row
 import { TagRow } from '@/flows/persistence/tag-row';
 import { TransactionRow } from '@/flows/persistence/transaction-row';
 import { Id } from '@/shared/core/id';
+import { Logger } from '@/shared/core/logger/logger';
 import { Money } from '@/shared/core/money';
 import { type AsyncResult, Result } from '@/shared/core/result';
 import { watchQuery, watchSingle } from '@/shared/persistence/watch-query';
+
+const logger = Logger.create('FlowsRepositoryInPowersync');
 
 export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): FlowsRepository => {
   const create = async (purchase: CreateFlowCommand): Promise<Result<Id>> => {
@@ -89,7 +92,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       return Result.success(transaction.id);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`${FlowsRepositoryErrors.createFlowCommandFailed}: `, error.message);
+        logger.error(`${FlowsRepositoryErrors.createFlowCommandFailed}: `, error.message);
       }
       return Result.failure([FlowsRepositoryErrors.createFlowCommandFailed]);
     }
@@ -126,7 +129,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       return Result.success(command.id);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`${FlowsRepositoryErrors.modifyFlowCommandFailed}: `, error.message);
+        logger.error(`${FlowsRepositoryErrors.modifyFlowCommandFailed}: `, error.message);
       }
       return Result.failure([FlowsRepositoryErrors.modifyFlowCommandFailed]);
     }
@@ -158,7 +161,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       return Result.success(newId);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`${FlowsRepositoryErrors.payFlowCommandFailed}: `, error.message);
+        logger.error(`${FlowsRepositoryErrors.payFlowCommandFailed}: `, error.message);
       }
       return Result.failure([FlowsRepositoryErrors.payFlowCommandFailed]);
     }
@@ -180,7 +183,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       return Result.success();
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`${FlowsRepositoryErrors.payFlowCommandFailed}: `, error.message);
+        logger.error(`${FlowsRepositoryErrors.payFlowCommandFailed}: `, error.message);
       }
       return Result.failure([FlowsRepositoryErrors.payFlowCommandFailed]);
     }
@@ -226,7 +229,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       return Result.success();
     } catch (error) {
       if (error instanceof Error) {
-        console.error('Failed to save transfer:', error.message);
+        logger.error('Failed to save transfer:', error.message);
         return Result.failure([error.message]);
       }
       return Result.failure(['Failed to save transfer']);
@@ -244,8 +247,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           SUM(CASE WHEN lower(c.type) = 'gain' THEN t.amount ELSE 0 END) as gains
         FROM transactions t
                JOIN categories c ON t.category_id = c.id
-               JOIN accounts a ON a.id = t.account_id
-        WHERE a.inactive = 0
+        WHERE t.account_id IN (SELECT id FROM accounts WHERE inactive = 0)
         GROUP BY t.account_id
       `,
       [],
@@ -255,7 +257,8 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           expenses: Money.fromCents(row.expenses),
           gains: Money.fromCents(row.gains),
         }),
-      onDataChange
+      onDataChange,
+      'watchAccountVariations'
     );
 
   const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) =>
@@ -285,7 +288,8 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       `,
       [],
       (row) => CashflowVariation.valid({ ...row, amount: Money.fromCents(row.amount), tags: TagList.fromConcatenatedString(row.tags) }),
-      onDataChange
+      onDataChange,
+      'watchCashflowVariations'
     );
 
   const watchTransaction = (transactionId: Id, onDataChange: (result: AsyncResult<Transaction>) => void) =>
@@ -313,7 +317,9 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           amount: Money.fromCents(row.amount),
           tags: TagList.fromConcatenatedString(row.tags),
         }),
-      onDataChange
+      onDataChange,
+      undefined,
+      'watchTransaction'
     );
 
   const watchTransactions = (onDataChange: (result: AsyncResult<Transaction[]>) => void, accountId?: Id, limit?: number, offset?: number) =>
@@ -344,7 +350,8 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           amount: Money.fromCents(row.amount),
           tags: TagList.fromConcatenatedString(row.tags),
         }),
-      onDataChange
+      onDataChange,
+      'watchTransactions'
     );
 
   const watchTransactionCount = (onDataChange: (result: AsyncResult<number>) => void, accountId?: Id) =>
@@ -354,7 +361,8 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       [accountId, accountId],
       (row) => row.total,
       onDataChange,
-      () => Result.success(0)
+      () => Result.success(0),
+      'watchTransactionCount'
     );
 
   const watchTags = (onDataChange: (result: AsyncResult<Tag[]>) => void) =>
@@ -382,7 +390,8 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
       `,
       [],
       (row) => Tag.valid(row),
-      onDataChange
+      onDataChange,
+      'watchTags'
     );
 
   return {

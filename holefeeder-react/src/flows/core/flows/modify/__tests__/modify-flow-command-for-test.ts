@@ -1,8 +1,8 @@
-import { aRecentDate } from '@/__tests__/mocks/date-for-test';
-import { anAmount } from '@/__tests__/mocks/number-for-test';
-import { anId, aString, aWord } from '@/__tests__/mocks/string-for-test';
 import { ModifyFlowCommand } from '@/flows/core/flows/modify/modify-flow-command';
 import { TagList } from '@/flows/core/flows/tag-list';
+import { aRecentDate } from '@/shared/__tests__/date-for-test';
+import { anAmount } from '@/shared/__tests__/number-for-test';
+import { anId, aString, aWord } from '@/shared/__tests__/string-for-test';
 
 const defaultModifyFlowCommand = (): ModifyFlowCommand => ({
   id: anId(),

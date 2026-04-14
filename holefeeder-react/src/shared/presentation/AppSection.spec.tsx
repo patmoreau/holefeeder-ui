@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import { AppSection } from './AppSection';
 
 // Mock the useStyles hook
-jest.mock('@/shared/hooks/theme/use-styles', () => ({
+jest.mock('@/shared/theme/core/use-styles', () => ({
   useStyles: jest.fn(() => ({
     section: {
       padding: 16,

@@ -30,7 +30,8 @@ export const CategoriesRepositoryInPowersync = (db: AbstractPowerSyncDatabase): 
           favorite: row.favorite === 1,
           system: row.system === 1,
         }),
-      onDataChange
+      onDataChange,
+      'watchCategories'
     );
   };
 

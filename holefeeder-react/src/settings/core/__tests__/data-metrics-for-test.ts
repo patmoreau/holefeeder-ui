@@ -1,5 +1,5 @@
-import { aCount } from '@/__tests__/mocks/number-for-test';
 import { DataMetrics } from '@/settings/core/data-metrics';
+import { aCount } from '@/shared/__tests__/number-for-test';
 
 const defaultDataMetricsForTest = (): DataMetrics => ({
   accounts: aCount(),

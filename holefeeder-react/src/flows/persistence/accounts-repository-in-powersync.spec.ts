@@ -1,8 +1,8 @@
 import { waitFor } from '@testing-library/react-native';
-import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { Account } from '@/flows/core/accounts/account';
 import { type AsyncResult } from '@/shared/core/result';
+import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
 import { AccountsRepositoryInPowersync } from './accounts-repository-in-powersync';
 
 describe('AccountsRepositoryInPowersync', () => {

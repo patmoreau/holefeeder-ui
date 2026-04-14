@@ -5,7 +5,7 @@ import { CategoryType } from '@/flows/core/categories/category-type';
 import { tk } from '@/i18n/translations';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppPicker } from '@/shared/presentation/components/AppPicker';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 type Props = {
   categories: Category[];

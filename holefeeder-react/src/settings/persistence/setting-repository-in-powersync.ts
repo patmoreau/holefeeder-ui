@@ -36,7 +36,8 @@ export const SettingRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Set
         outstandingTransactions: row.outstandingTransactions,
       }),
       onDataChange,
-      () => Result.success(DEFAULT_DATA_METRICS)
+      () => Result.success(DEFAULT_DATA_METRICS),
+      'watchDataMetrics'
     );
 
   return {

@@ -1,6 +1,6 @@
-import { aCount } from '@/__tests__/mocks/number-for-test';
-import { aString } from '@/__tests__/mocks/string-for-test';
 import { Tag } from '@/flows/core/flows/tag';
+import { aCount } from '@/shared/__tests__/number-for-test';
+import { aString } from '@/shared/__tests__/string-for-test';
 
 const defaultTag = (): Tag => ({
   tag: aString(),

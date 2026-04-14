@@ -21,6 +21,8 @@ export type Loading = {
   readonly isLoading: true;
 };
 
+const LOADING: Loading = { isSuccess: false, isFailure: false, isLoading: true };
+
 function success(): Success<void>;
 function success<T>(value: T): Success<T>;
 function success<T>(value?: T): Success<T> | Success<void> {
@@ -29,7 +31,7 @@ function success<T>(value?: T): Success<T> | Success<void> {
 
 const failure = (errors: string[]): Failure => ({ isSuccess: false, isFailure: true, isLoading: false, errors });
 
-const loading = (): Loading => ({ isSuccess: false, isFailure: false, isLoading: true });
+const loading = (): Loading => LOADING;
 
 function combine<T extends Record<string, unknown>>(results: { [K in keyof T]: Result<T[K]> }): Result<T>;
 function combine<T extends Record<string, unknown>>(results: { [K in keyof T]: AsyncResult<T[K]> }): AsyncResult<T>;

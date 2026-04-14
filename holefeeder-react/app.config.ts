@@ -61,6 +61,24 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-font',
     'expo-localization',
     'expo-web-browser',
+    [
+      'expo-file-system',
+      {
+        supportsOpeningDocumentsInPlace: true,
+        enableFileSharing: true,
+      },
+    ],
+    [
+      'expo-sharing',
+      {
+        ios: {
+          enabled: true,
+          activationRule: {
+            supportsImageWithMaxCount: 5,
+          },
+        },
+      },
+    ],
     'expo-quick-actions',
     [
       'expo-router',

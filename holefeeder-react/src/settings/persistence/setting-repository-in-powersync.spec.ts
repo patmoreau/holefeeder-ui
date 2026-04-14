@@ -1,5 +1,4 @@
 import { waitFor } from '@testing-library/react-native';
-import { DatabaseForTest, setupDatabaseForTest } from '@/__tests__/persistence/database-for-test';
 import { anAccount } from '@/flows/core/accounts/__tests__/account-for-test';
 import { aCategory } from '@/flows/core/categories/__tests__/category-for-test';
 import { aCashflow } from '@/flows/core/flows/__tests__/cashflow-for-test';
@@ -8,6 +7,7 @@ import { DataMetrics } from '@/settings/core/data-metrics';
 import { SettingRepositoryInPowersync } from '@/settings/persistence/setting-repository-in-powersync';
 import { aStoreItem } from '@/shared/__tests__/store-item-for-test';
 import { type AsyncResult } from '@/shared/core/result';
+import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
 
 describe('SettingRepositoryInPowersync', () => {
   let db: DatabaseForTest;

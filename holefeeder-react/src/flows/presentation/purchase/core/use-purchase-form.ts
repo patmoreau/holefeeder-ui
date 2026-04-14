@@ -1,4 +1,3 @@
-import { Repositories } from '@/contexts/RepositoryContext';
 import { CreateFlowCommand } from '@/flows/core/flows/create/create-flow-command';
 import { CreateFlowUseCase } from '@/flows/core/flows/create/create-flow-use-case';
 import { TransferFlowCommand } from '@/flows/core/flows/transfer/transfer-flow-command';
@@ -7,6 +6,7 @@ import { PurchaseFormData, PurchaseType } from '@/flows/presentation/purchase/co
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
 import { createFormDataContext, ValidationFunction } from '@/shared/presentation/core/use-form-context';
+import { RepositoriesState } from '@/shared/repositories/core/repositories-state';
 
 export const PurchaseFormError = {
   sameAccount: 'sameAccount',
@@ -43,7 +43,7 @@ export const validatePurchaseForm: ValidationFunction<PurchaseFormData, Purchase
   return errors;
 };
 
-const savePurchase = async (repositories: Repositories, formData: PurchaseFormData): Promise<Result<unknown>> => {
+const savePurchase = async (repositories: RepositoriesState, formData: PurchaseFormData): Promise<Result<unknown>> => {
   const purchase = async (formData: PurchaseFormData): Promise<Result<unknown>> => {
     const cashflow = formData.hasCashflow
       ? {

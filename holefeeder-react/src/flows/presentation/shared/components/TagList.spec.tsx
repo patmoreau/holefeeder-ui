@@ -1,15 +1,10 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import React, { useState } from 'react';
-import { aLightThemeState } from '@/__tests__/mocks/theme-state-builder';
 import { aTag } from '@/flows/core/flows/__tests__/tag-for-test';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/presentation/shared/components/TagList';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
-
-jest.mock('@/shared/hooks/theme/use-theme', () => ({
-  useTheme: jest.fn(),
-}));
-const mockUseTheme = jest.mocked(useTheme);
+import { aLightThemeState } from '@/shared/theme/__tests__/theme-state-for-test';
+import { ThemeProviderForTest } from '@/shared/theme/__tests__/ThemeProviderForTest';
 
 const placeHolderText = 'tagList.placeHolder';
 const firstTag = aTag({ tag: 'first-tag' });
@@ -27,11 +22,14 @@ function TestHost() {
 const displayTag = (tag: Tag) => `#${tag.tag}`;
 
 describe('TagList', () => {
-  const mockTheme = aLightThemeState();
+  const themeState = aLightThemeState();
 
   beforeEach(() => {
-    mockUseTheme.mockReturnValue(mockTheme);
-    render(<TestHost />);
+    render(
+      <ThemeProviderForTest overrides={themeState}>
+        <TestHost />
+      </ThemeProviderForTest>
+    );
   });
 
   it('shows placeholder', () => {

@@ -1,5 +1,5 @@
 import { TextInput, TextInputProps } from 'react-native';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/theme/core/use-styles';
 import { Theme } from '@/types/theme/theme';
 
 export type AppTextInputProps = {

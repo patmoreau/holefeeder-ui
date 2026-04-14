@@ -1,10 +1,10 @@
-import { Repositories } from '@/contexts/RepositoryContext';
 import { ModifyFlowCommand } from '@/flows/core/flows/modify/modify-flow-command';
 import { ModifyFlowUseCase } from '@/flows/core/flows/modify/modify-flow-use-case';
 import { FlowFormData } from '@/flows/presentation/flow/core/flow-form-data';
 import { Money } from '@/shared/core/money';
 import { Result } from '@/shared/core/result';
 import { createFormDataContext, ValidationFunction } from '@/shared/presentation/core/use-form-context';
+import { RepositoriesState } from '@/shared/repositories/core/repositories-state';
 
 export const FlowFormError = {
   amountRequired: 'amountRequired',
@@ -32,7 +32,7 @@ export const validateFormForm: ValidationFunction<FlowFormData, FlowFormError> =
   return errors;
 };
 
-const saveFlow = async (repositories: Repositories, formData: FlowFormData): Promise<Result<unknown>> => {
+const saveFlow = async (repositories: RepositoriesState, formData: FlowFormData): Promise<Result<unknown>> => {
   const result = ModifyFlowCommand.create({
     id: formData.id,
     date: formData.date,

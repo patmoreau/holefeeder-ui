@@ -2,7 +2,7 @@ import React, { ReactNode, useRef } from 'react';
 import { View } from 'react-native';
 import Swipeable, { SwipeableMethods, SwipeDirection } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { SharedValue } from 'react-native-reanimated';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
+import { useStyles } from '@/shared/theme/core/use-styles';
 
 type AppSwipeableRowProps = {
   renderLeftActions?: (progress: SharedValue<number>, swipeableRef: React.RefObject<SwipeableMethods | null>) => ReactNode;

@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl, type ViewProps } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedRef, useAnimatedStyle, useScrollOffset } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useStyles } from '@/shared/hooks/theme/use-styles';
-import { useTheme } from '@/shared/hooks/theme/use-theme';
 import { AppView } from '@/shared/presentation/AppView';
+import { useStyles } from '@/shared/theme/core/use-styles';
+import { useTheme } from '@/shared/theme/core/use-theme';
 import { spacing } from '@/types/theme';
 import { Theme } from '@/types/theme/theme';
 

@@ -5,7 +5,7 @@ import { tk } from '@/i18n/translations';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { AppButton } from '@/shared/presentation/components/AppButton';
-import { AppIcons } from '@/types/icons';
+import { AppIcons } from '@/shared/presentation/icons';
 
 export function BudgetSection() {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ export function BudgetSection() {
           iconPosition={'right'}
           variant={'link'}
           onPress={() => {
-            router.push('/(app)/budgetSettings');
+            router.push('/(app)/budget-settings');
           }}
         />
       </AppField>

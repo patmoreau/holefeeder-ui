@@ -5,11 +5,12 @@ import { aFetchResponse } from '@/shared/api/__tests__/fetch-response-for-test';
 import { syncApi } from '@/shared/api/sync-api';
 import { anAuthenticationState } from '@/shared/auth/__tests__/authentication-state-for-test';
 import { aTokenInfo } from '@/shared/auth/__tests__/token-info-for-test';
+import { buildUrl } from '@/shared/core/url-builder';
 
 describe('sync-api', () => {
   const apiConfig = anApiConfig();
   const endpoint = '/api/v2/sync/powersync';
-  const url = new URL(endpoint, apiConfig.url).toString();
+  const url = buildUrl(apiConfig.url, endpoint);
   const tokenInfo = aTokenInfo();
   const authenticationState = anAuthenticationState({ getToken: () => Promise.resolve(tokenInfo) });
   const request = aFetchRequest({

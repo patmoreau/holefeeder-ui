@@ -1,9 +1,10 @@
-import { type defLvlType, logger as RNLogger, type LoggerInstance } from 'react-native-logs';
+import { Platform } from 'react-native';
+import { consoleTransport, type defLvlType, logger as RNLogger, type LoggerInstance } from 'react-native-logs';
 import ExpoOSLogger from '@/modules/expo-os-logger';
 import { LoggerFactory } from '@/shared/core/logger/logger';
 
 const nativeTransport = (props: any) => {
-  ExpoOSLogger.log(props.msg, props.level.text);
+  ExpoOSLogger.log(props.msg, props.level.text, props.extension ?? '');
 };
 
 const loggingEnabled = __DEV__ || process.env.EXPO_PUBLIC_FORCE_LOGS === 'true';
@@ -16,7 +17,7 @@ const getInstance = (): BaseLogger => {
   if (_instance === null) {
     _instance = RNLogger.createLogger({
       severity: 'debug',
-      transport: nativeTransport,
+      transport: Platform.OS === 'ios' ? nativeTransport : consoleTransport,
       transportOptions: {
         colors: {
           debug: 'white',

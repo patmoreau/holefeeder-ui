@@ -2,6 +2,7 @@ import { ApiConfig } from '@/shared/api/api-config';
 import { AuthenticationState } from '@/shared/auth/core/autentication-state';
 import { Logger } from '@/shared/core/logger/logger';
 import { Result } from '@/shared/core/result';
+import { buildUrl } from '@/shared/core/url-builder';
 
 const logger = Logger.create('api-client');
 
@@ -15,7 +16,7 @@ export const ApiClient = (authenticationState: AuthenticationState, apiConfig: A
     const timeoutId = setTimeout(() => controller.abort(), apiConfig.timeout);
 
     try {
-      return await fetch(new URL(endpoint, apiConfig.url).toString(), {
+      return await fetch(buildUrl(apiConfig.url, endpoint), {
         ...init,
         signal: controller.signal,
       });
@@ -33,8 +34,17 @@ export const ApiClient = (authenticationState: AuthenticationState, apiConfig: A
         ...(token ? { Authorization: `Bearer ${token.token}` } : {}),
       };
 
+      const obfuscateHeaders = (h: Record<string, string>) =>
+        Object.fromEntries(Object.entries(h).map(([k, v]) => [k, k.toLowerCase() === 'authorization' ? `${v.slice(0, 10)}…[redacted]` : v]));
+
       if (apiConfig.logRequests) {
-        logger.debug('Request:', { endpoint, method: 'POST', headers, body: options.body });
+        logger.info('Request:', {
+          url: apiConfig.url,
+          endpoint,
+          method: options.method,
+          headers: obfuscateHeaders(headers as Record<string, string>),
+          body: options.body,
+        });
       }
 
       const doFetch = () =>
@@ -50,9 +60,13 @@ export const ApiClient = (authenticationState: AuthenticationState, apiConfig: A
 
       if (apiConfig.logRequests) {
         if (response.ok) {
-          logger.debug('Response:', { status: response.status, headers: Object.fromEntries(response.headers) });
+          logger.info('Response:', { status: response.status, headers: obfuscateHeaders(Object.fromEntries(response.headers)) });
         } else {
-          logger.error('Error Response:', { status: response.status, headers: Object.fromEntries(response.headers) });
+          logger.error('Error Response:', {
+            status: response.status,
+            headers: obfuscateHeaders(Object.fromEntries(response.headers)),
+            statusText: response.statusText,
+          });
         }
       }
 
@@ -60,7 +74,11 @@ export const ApiClient = (authenticationState: AuthenticationState, apiConfig: A
         return Result.failure([response.statusText]);
       }
 
-      const data = await response.json();
+      const contentLength = response.headers.get('content-length');
+      const contentType = response.headers.get('content-type') ?? '';
+      const hasBody = contentLength === null ? true : parseInt(contentLength, 10) > 0;
+      const hasJsonBody = hasBody && contentType.includes('application/json');
+      const data = hasJsonBody ? JSON.parse(await response.json()) : undefined;
       return Result.success(data as T);
     } catch (error) {
       const apiError = error as Error;

@@ -35,39 +35,49 @@ const AppLayout = () => {
           headerTintColor: theme.colors.tint,
         }}
       />
-      {/*<Stack.Screen*/}
-      {/*  name="budget-settings"*/}
-      {/*  options={{*/}
-      {/*    title: t(tk.budgetSection.title),*/}
-      {/*    headerTransparent: true,*/}
-      {/*    headerTintColor: theme.colors.tint,*/}
-      {/*  }}*/}
-      {/*/>*/}
-      {/*<Stack.Screen*/}
-      {/*  name="PayUpcoming"*/}
-      {/*  options={{*/}
-      {/*    presentation: 'modal',*/}
-      {/*    title: t(tk.payUpcoming.title),*/}
-      {/*    headerShown: true,*/}
-      {/*    headerTintColor: theme.colors.tint,*/}
-      {/*  }}*/}
-      {/*/>*/}
-      {/*<Stack.Screen*/}
-      {/*  name="accounts/[id]"*/}
-      {/*  options={{*/}
-      {/*    presentation: 'transparentModal',*/}
-      {/*    title: '',*/}
-      {/*    headerTransparent: true,*/}
-      {/*  }}*/}
-      {/*/>*/}
-      {/*<Stack.Screen*/}
-      {/*  name="flows/[id]"*/}
-      {/*  options={{*/}
-      {/*    presentation: 'transparentModal',*/}
-      {/*    title: '',*/}
-      {/*    headerTransparent: true,*/}
-      {/*  }}*/}
-      {/*/>*/}
+      <Stack.Screen
+        name="BudgetSettings"
+        options={{
+          presentation: 'modal',
+          title: t(tk.budgetSection.title),
+          headerTransparent: true,
+          headerTintColor: theme.colors.tint,
+        }}
+      />
+      <Stack.Screen
+        name="SyncSettings"
+        options={{
+          presentation: 'modal',
+          title: t(tk.settings.syncSection.title),
+          headerTransparent: true,
+          headerTintColor: theme.colors.tint,
+        }}
+      />
+      <Stack.Screen
+        name="PayUpcoming"
+        options={{
+          presentation: 'modal',
+          title: t(tk.payUpcoming.title),
+          headerShown: true,
+          headerTintColor: theme.colors.tint,
+        }}
+      />
+      <Stack.Screen
+        name="accounts/[id]"
+        options={{
+          presentation: 'transparentModal',
+          title: '',
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="flows/[id]"
+        options={{
+          presentation: 'transparentModal',
+          title: '',
+          headerTransparent: true,
+        }}
+      />
     </Stack>
   );
 };

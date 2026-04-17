@@ -19,7 +19,7 @@ export function BudgetSection() {
           iconPosition={'right'}
           variant={'link'}
           onPress={() => {
-            router.push('/(app)/budget-settings');
+            router.push('/(app)/BudgetSettings');
           }}
         />
       </AppField>

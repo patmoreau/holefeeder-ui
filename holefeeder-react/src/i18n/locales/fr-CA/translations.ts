@@ -202,6 +202,7 @@ export const fr: TranslationStructure = {
     parameters: 'Paramètres',
     syncSection: {
       title: 'Synchronisation',
+      navigation: 'Statistiques',
       connected: 'Connecté',
       lastSync: 'Dernière synchronisation',
       never: 'Jamais',

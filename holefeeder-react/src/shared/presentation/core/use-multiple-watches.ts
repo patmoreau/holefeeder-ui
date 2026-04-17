@@ -3,7 +3,7 @@ import { ErrorKey } from '@/shared/core/error-key';
 import { Logger } from '@/shared/core/logger/logger';
 import { type AsyncResult } from '@/shared/core/result';
 
-const log = Logger.create('use-multiple-watches');
+const logger = Logger.create('use-multiple-watches');
 
 type WatchHook<T, TDefault extends T | null | undefined = undefined> = {
   (): AsyncResult<T>;
@@ -46,7 +46,7 @@ export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchRe
     // Log new watch registrations
     Object.keys(hooks).forEach((key) => {
       if (!registeredKeysRef.current.has(key)) {
-        log.debug(`Watch registered: "${key}"`);
+        logger.debug(`Watch registered: "${key}"`);
         registeredKeysRef.current.add(key);
       }
     });
@@ -54,7 +54,7 @@ export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchRe
     // Log when watch data is received or updated (result reference changes on each PowerSync update)
     Object.entries(results).forEach(([key, result]: [string, any]) => {
       if (result.isSuccess && result !== prevResultsRef.current[key]) {
-        log.debug(`Watch data received: "${key}"`);
+        logger.debug(`Watch data received: "${key}"`);
       }
     });
 
@@ -64,7 +64,7 @@ export const useMultipleWatches = <T extends WatchHooks>(hooks: T): MultiWatchRe
   const isLoading = Object.values(results).some((r: any) => r.isLoading);
 
   const errors = Object.values(results).flatMap((r: any) => (r.isFailure ? r.errors : []));
-  if (errors.length > 0) log.error(errors);
+  if (errors.length > 0) logger.error(errors);
 
   const hasErrors = errors.length > 0;
 

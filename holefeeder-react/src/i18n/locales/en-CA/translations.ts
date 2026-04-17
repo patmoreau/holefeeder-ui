@@ -199,6 +199,7 @@ export const en = {
     parameters: 'Parameters',
     syncSection: {
       title: 'Synchronization',
+      navigation: 'Statistics',
       connected: 'Connected',
       lastSync: 'Last Synced',
       never: 'Never',

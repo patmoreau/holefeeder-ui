@@ -4,6 +4,7 @@ import { FetchRequest } from '@/shared/api/__tests__/fetch-for-test';
 const defaultFetchRequest = (): FetchRequest => ({
   url: aUrl(),
   headers: { Authorization: `Bearer ${aString()}` },
+  matchHeaders: true,
   matchUrl: (url: string, testUrl: string) => url === testUrl,
 });
 

@@ -20,7 +20,7 @@ import { useStyles } from '@/shared/theme/core/use-styles';
 import { spacing, Theme } from '@/types/theme';
 
 const createStyles = (theme: Theme) => ({
-  collapsibleSection: {
+  scrollView: {
     flexGrow: 1,
     marginHorizontal: spacing.lg,
     marginBottom: spacing.lg,
@@ -55,7 +55,7 @@ export function SyncSettingsContent() {
   const { syncInfo } = data;
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollView}>
       <AppSection title={t(tk.settings.syncSection.title)} style={styles.section}>
         <AppField label={t(tk.settings.syncSection.connected)} icon={AppIcons.connected}>
           <AppSwitch value={syncInfo.connected} readonly={true} />

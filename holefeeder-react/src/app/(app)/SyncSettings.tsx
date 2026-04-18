@@ -1,1 +1,1 @@
-export { default } from '@/settings/ui/SyncSettingsScreen';
+export { default } from '@/settings/presentation/SyncSettingsScreen';

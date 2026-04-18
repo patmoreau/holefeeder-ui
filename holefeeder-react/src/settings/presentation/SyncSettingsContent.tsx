@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native';
 import { tk } from '@/i18n/translations';
 import { DEFAULT_SYNC_INFO } from '@/settings/core/sync-info';
-import { useSyncInfo } from '@/settings/ui/core/use-sync-info';
+import { useSyncInfo } from '@/settings/presentation/core/use-sync-info';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { AppView } from '@/shared/presentation/AppView';

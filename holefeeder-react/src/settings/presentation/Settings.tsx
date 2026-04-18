@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
-import { SettingsContent } from '@/settings/ui/SettingsContent';
+import { SettingsContent } from '@/settings/presentation/SettingsContent';
 import { IconSymbol } from '@/shared/presentation/components/IconSymbol';
 import { AppIcons } from '@/shared/presentation/icons';
 import { ParallaxScrollView } from '@/shared/presentation/ParallaxScrollView';

@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { tk } from '@/i18n/translations';
-import { useProfile } from '@/settings/ui/core/use-profile';
+import { useProfile } from '@/settings/presentation/core/use-profile';
 import { AppSection } from '@/shared/presentation/AppSection';
 import { AuthButton } from '@/shared/presentation/AuthButton';
 import { AppText } from '@/shared/presentation/components/AppText';

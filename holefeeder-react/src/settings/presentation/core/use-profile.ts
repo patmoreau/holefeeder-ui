@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { UserProfile } from '@/settings/ui/core/user-profile';
+import { UserProfile } from '@/settings/presentation/core/user-profile';
 import { useAuth } from '@/shared/auth/core/use-auth';
 
 export const initialProfile: UserProfile = {

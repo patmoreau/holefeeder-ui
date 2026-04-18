@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { DataMetrics } from '@/settings/core/data-metrics';
 import { SyncInfo } from '@/settings/core/sync-info';
 import { WatchDataMetricsUseCase } from '@/settings/core/watch-data-metrics/watch-data-metrics-use-case';
-import { useSyncStatus } from '@/settings/ui/core/use-sync-status';
+import { useSyncStatus } from '@/settings/presentation/core/use-sync-status';
 import { AsyncResult, Result } from '@/shared/core/result';
 import { useRepositories } from '@/shared/repositories/core/use-repositories';
 

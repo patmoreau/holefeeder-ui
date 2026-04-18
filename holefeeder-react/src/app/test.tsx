@@ -1,1 +1,1 @@
-export { default } from '@/settings/ui/test/TestComponentsScreen';
+export { default } from '@/settings/presentation/test/TestComponentsScreen';

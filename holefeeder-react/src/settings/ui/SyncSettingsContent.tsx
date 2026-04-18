@@ -2,6 +2,7 @@ import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { ScrollView } from 'react-native';
 import { tk } from '@/i18n/translations';
 import { DEFAULT_SYNC_INFO } from '@/settings/core/sync-info';
 import { useSyncInfo } from '@/settings/ui/core/use-sync-info';
@@ -54,7 +55,7 @@ export function SyncSettingsContent() {
   const { syncInfo } = data;
 
   return (
-    <>
+    <ScrollView>
       <AppSection title={t(tk.settings.syncSection.title)} style={styles.section}>
         <AppField label={t(tk.settings.syncSection.connected)} icon={AppIcons.connected}>
           <AppSwitch value={syncInfo.connected} readonly={true} />
@@ -106,6 +107,6 @@ export function SyncSettingsContent() {
           />
         </AppField>
       </AppSection>
-    </>
+    </ScrollView>
   );
 }

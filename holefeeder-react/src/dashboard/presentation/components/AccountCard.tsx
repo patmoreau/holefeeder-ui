@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View, type ViewProps } from 'react-native';
 import Animated, { SharedTransition } from 'react-native-reanimated';
-import { AccountDetail } from '@/flows/core/accounts/account-detail';
+import { AccountSummary } from '@/flows/core/accounts/account-summary';
 import { AccountType } from '@/flows/core/accounts/account-type';
 import { tk } from '@/i18n/translations';
 import { Id } from '@/shared/core/id';
@@ -10,15 +10,17 @@ import { Variation } from '@/shared/core/variation';
 import { today } from '@/shared/core/with-date';
 import { AppCard } from '@/shared/presentation/components/AppCard';
 import { AppText } from '@/shared/presentation/components/AppText';
+import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
 import { useLocaleFormatter } from '@/shared/presentation/core/use-local-formatter';
 import { useStyles } from '@/shared/theme/core/use-styles';
 import { fontWeight, spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
+import { useAccountVariation } from '../core/use-account-variation';
 
 export type CardLayout = { x: number; y: number; width: number; height: number };
 
 export type AccountCardProps = ViewProps & {
-  account: AccountDetail;
+  account: AccountSummary;
   width?: number;
   onPress?: (id: Id, layout: CardLayout) => void;
 };
@@ -81,8 +83,7 @@ export const AccountCard = ({ account, width = 300, style, onPress, ...props }: 
   const { formatCurrency, formatDate } = useLocaleFormatter();
   const styles = useStyles(createStyles);
   const pressableRef = useRef<View>(null);
-  const balanceSign = account.balance >= 0 ? '' : '-';
-  const projectedSign = account.balance >= 0 ? '' : '-';
+  const variationResult = useAccountVariation(account.id);
 
   const handlePress = () => {
     if (!onPress) return;
@@ -101,49 +102,65 @@ export const AccountCard = ({ account, width = 300, style, onPress, ...props }: 
             </AppText>
           </View>
 
-          <View style={styles.balanceSection}>
-            <AppText variant={'subtitle'}>{t(tk.accountCard.currentBalance)}</AppText>
-            <AppText variant={'largeTitle'} adjustsFontSizeToFit>
-              {balanceSign}
-              {formatCurrency(account.balance)}
-            </AppText>
-          </View>
+          {variationResult.isLoading && (
+            <View style={styles.balanceSection}>
+              <LoadingIndicator size="small" withBackground={false} />
+            </View>
+          )}
 
-          <View style={styles.projectedSection}>
-            <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start' }}>
-              <AppText variant={'footnote'}>{t(tk.accountCard.updated)}</AppText>
-              <AppText variant={'default'}>{formatDate(account.lastTransactionDate!, today())}</AppText>
-            </View>
-            <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end' }}>
-              <AppText variant={'footnote'}>{t(tk.accountCard.projected)}</AppText>
-              <AppText
-                variant={'defaultSemiBold'}
-                style={[
-                  styles.projectedAmount,
-                  Variation.multiply(account.balance, AccountType.multiplier[account.type]) >= 0
-                    ? styles.positiveAmount
-                    : styles.negativeAmount,
-                ]}
-                adjustsFontSizeToFit
-              >
-                {projectedSign}
-                {formatCurrency(account.projectedBalance)}
-              </AppText>
-              {account.upcomingVariation !== 0 && (
-                <AppText
-                  variant={'default'}
-                  style={[
-                    styles.lastUpdated,
-                    { marginTop: spacing.xs },
-                    account.upcomingVariation >= 0 ? styles.positiveAmount : styles.negativeAmount,
-                  ]}
-                >
-                  {account.upcomingVariation >= 0 ? '+' : ''}
-                  {formatCurrency(account.upcomingVariation)}
-                </AppText>
-              )}
-            </View>
-          </View>
+          {variationResult.isSuccess &&
+            (() => {
+              const detail = variationResult.value;
+              const balanceSign = detail.balance >= 0 ? '' : '-';
+              const projectedSign = detail.balance >= 0 ? '' : '-';
+              return (
+                <>
+                  <View style={styles.balanceSection}>
+                    <AppText variant={'subtitle'}>{t(tk.accountCard.currentBalance)}</AppText>
+                    <AppText variant={'largeTitle'} adjustsFontSizeToFit>
+                      {balanceSign}
+                      {formatCurrency(detail.balance)}
+                    </AppText>
+                  </View>
+
+                  <View style={styles.projectedSection}>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start' }}>
+                      <AppText variant={'footnote'}>{t(tk.accountCard.updated)}</AppText>
+                      <AppText variant={'default'}>{formatDate(detail.lastTransactionDate!, today())}</AppText>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end' }}>
+                      <AppText variant={'footnote'}>{t(tk.accountCard.projected)}</AppText>
+                      <AppText
+                        variant={'defaultSemiBold'}
+                        style={[
+                          styles.projectedAmount,
+                          Variation.multiply(detail.balance, AccountType.multiplier[detail.type]) >= 0
+                            ? styles.positiveAmount
+                            : styles.negativeAmount,
+                        ]}
+                        adjustsFontSizeToFit
+                      >
+                        {projectedSign}
+                        {formatCurrency(detail.projectedBalance)}
+                      </AppText>
+                      {detail.upcomingVariation !== 0 && (
+                        <AppText
+                          variant={'default'}
+                          style={[
+                            styles.lastUpdated,
+                            { marginTop: spacing.xs },
+                            detail.upcomingVariation >= 0 ? styles.positiveAmount : styles.negativeAmount,
+                          ]}
+                        >
+                          {detail.upcomingVariation >= 0 ? '+' : ''}
+                          {formatCurrency(detail.upcomingVariation)}
+                        </AppText>
+                      )}
+                    </View>
+                  </View>
+                </>
+              );
+            })()}
         </AppCard>
       </Animated.View>
     </Pressable>

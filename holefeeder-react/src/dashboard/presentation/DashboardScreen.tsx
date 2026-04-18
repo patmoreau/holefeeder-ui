@@ -60,9 +60,6 @@ const DashboardScreen = () => {
   }
 
   const { accounts, dashboard, upcomingFlows } = data;
-  // const accounts: AccountDetail[] = data.accounts;
-  // const dashboard = NO_SUMMARY;
-  // const upcomingFlows: UpcomingFlow[] = [];
 
   logger.warn(
     `Rendering with accounts: ${accounts.length}, dashboard: ${dashboard !== NO_SUMMARY ? 'available' : 'not available'}, upcomingFlows: ${upcomingFlows.length}`

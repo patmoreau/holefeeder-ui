@@ -29,12 +29,13 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
   let errorsInMemory: string[] = [];
 
   type Listener<T> = (result: AsyncResult<T>) => void;
+  type AccountVariationListener = { accountId: Id; listener: Listener<AccountVariation | undefined> };
   type TransactionListener = { transactionId: Id; listener: Listener<Transaction> };
   type TransactionsListener = { listener: Listener<Transaction[]>; accountId?: Id; limit?: number; offset?: number };
   type LatestTransactionsListener = { listener: Listener<Transaction[]>; limit?: number };
   type TransactionCountListener = { listener: Listener<number>; accountId?: Id };
 
-  const accountVariationsListeners: Listener<AccountVariation[]>[] = [];
+  const accountVariationListeners: AccountVariationListener[] = [];
   const cashflowVariationsListeners: Listener<CashflowVariation[]>[] = [];
   const tagsListeners: Listener<Tag[]>[] = [];
   const latestTransactionsListeners: LatestTransactionsListener[] = [];
@@ -51,7 +52,10 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
   };
 
   const notifyAll = () => {
-    emit(accountVariationsListeners, currentResult(accountVariationsInMemory));
+    accountVariationListeners.forEach(({ accountId, listener }) => {
+      const found = accountVariationsInMemory.find((v) => v.accountId === accountId);
+      listener(currentResult(found));
+    });
     emit(cashflowVariationsListeners, currentResult(cashflowVariationsInMemory));
     emit(tagsListeners, currentResult(tagsInMemory));
     latestTransactionsListeners.forEach(({ listener, limit }) => listener(currentResult(transactionsInMemory.slice(0, limit))));
@@ -93,8 +97,13 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     return Promise.resolve(Result.success());
   };
 
-  const watchAccountVariations = (onDataChange: Listener<AccountVariation[]>) =>
-    subscribe(accountVariationsListeners, onDataChange, currentResult(accountVariationsInMemory));
+  const watchAccountVariation = (accountId: Id, onDataChange: Listener<AccountVariation | undefined>) => {
+    const entry: AccountVariationListener = { accountId, listener: onDataChange };
+    accountVariationListeners.push(entry);
+    const found = accountVariationsInMemory.find((v) => v.accountId === accountId);
+    onDataChange(currentResult(found));
+    return () => accountVariationListeners.splice(accountVariationListeners.indexOf(entry), 1);
+  };
 
   const watchCashflowVariations = (onDataChange: Listener<CashflowVariation[]>) =>
     subscribe(cashflowVariationsListeners, onDataChange, currentResult(cashflowVariationsInMemory));
@@ -129,7 +138,10 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
 
   const addAccountVariations = (...items: AccountVariation[]) => {
     accountVariationsInMemory.push(...items);
-    emit(accountVariationsListeners, currentResult(accountVariationsInMemory));
+    accountVariationListeners.forEach(({ accountId, listener }) => {
+      const found = accountVariationsInMemory.find((v) => v.accountId === accountId);
+      listener(currentResult(found));
+    });
   };
 
   const addCashflowVariations = (...items: CashflowVariation[]) => {
@@ -173,7 +185,7 @@ export const FlowsRepositoryInMemory = (): FlowsRepositoryInMemory => {
     pay: pay,
     deactivateUpcoming: deactivateUpcoming,
     transfer: transfer,
-    watchAccountVariations: watchAccountVariations,
+    watchAccountVariation: watchAccountVariation,
     watchCashflowVariations: watchCashflowVariations,
     watchTags: watchTags,
     watchTransaction: watchTransaction,

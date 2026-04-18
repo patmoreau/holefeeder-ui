@@ -15,7 +15,7 @@ export type FlowsRepository = {
   pay(command: PayFlowCommand): Promise<Result<Id>>;
   deactivateUpcoming(cashflowId: Id): Promise<Result<void>>;
   transfer(command: TransferFlowCommand): Promise<Result<void>>;
-  watchAccountVariations: (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) => () => void;
+  watchAccountVariation: (accountId: Id, onDataChange: (result: AsyncResult<AccountVariation | undefined>) => void) => () => void;
   watchCashflowVariations: (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) => () => void;
   watchTransaction: (transactionId: Id, onDataChange: (result: AsyncResult<Transaction>) => void) => () => void;
   watchTransactions: (

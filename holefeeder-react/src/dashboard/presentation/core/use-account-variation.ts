@@ -9,7 +9,7 @@ import { today } from '@/shared/core/with-date';
 import { useSettings } from '@/shared/presentation/core/use-settings';
 import { useRepositories } from '@/shared/repositories/core/use-repositories';
 
-export const useAccountDetail = (id: Id): AsyncResult<AccountDetail> => {
+export const useAccountVariation = (id: Id): AsyncResult<AccountDetail> => {
   const { accountRepository, flowRepository } = useRepositories();
   const settingsResult = useSettings();
   const [account, setAccount] = useState<AsyncResult<AccountDetail>>(Result.loading());

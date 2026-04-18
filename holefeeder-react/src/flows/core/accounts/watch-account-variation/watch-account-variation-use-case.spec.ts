@@ -4,7 +4,10 @@ import { anAccountVariation } from '@/flows/core/accounts/__tests__/account-vari
 import { AccountsRepositoryInMemory } from '@/flows/core/accounts/__tests__/accounts-repository-for-test';
 import { AccountDetail } from '@/flows/core/accounts/account-detail';
 import { AccountTypes } from '@/flows/core/accounts/account-type';
-import { WatchAccountDetailErrors, WatchAccountDetailUseCase } from '@/flows/core/accounts/watch-account-detail/watch-account-detail-use-case';
+import {
+  WatchAccountVariationErrors,
+  WatchAccountVariationUseCase,
+} from '@/flows/core/accounts/watch-account-variation/watch-account-variation-use-case';
 import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { aCashflowVariation } from '@/flows/core/flows/__tests__/cashflow-variation-for-test';
 import { FlowsRepositoryInMemory } from '@/flows/core/flows/__tests__/flows-repository-in-memory';
@@ -15,7 +18,7 @@ import { Money } from '@/shared/core/money';
 import { type AsyncResult } from '@/shared/core/result';
 import { Variation } from '@/shared/core/variation';
 
-describe('WatchAccountDetailUseCase', () => {
+describe('WatchAccountVariationUseCase', () => {
   const account = anAccount({ openBalance: Variation.valid(10), type: AccountTypes.checking });
   const otherAccount = anAccount({ openBalance: Variation.valid(5), type: AccountTypes.savings });
   const accountVariation = anAccountVariation({ accountId: account.id, expenses: Money.valid(111), gains: Money.valid(222) });
@@ -38,16 +41,16 @@ describe('WatchAccountDetailUseCase', () => {
     flowsRepo = FlowsRepositoryInMemory();
   });
 
-  describe('watchDetail', () => {
+  describe('watchVariation', () => {
     it('returns the matching account detail by id', async () => {
       accountsRepo.add(account, otherAccount);
       flowsRepo.addAccountVariations(accountVariation);
       flowsRepo.addCashflowVariations(cashflow);
 
-      const useCase = WatchAccountDetailUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
+      const useCase = WatchAccountVariationUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
 
       let result: AsyncResult<AccountDetail> | undefined;
-      const unsubscribe = useCase.watchDetail((data) => {
+      const unsubscribe = useCase.watchVariation((data) => {
         result = data;
       });
 
@@ -68,16 +71,16 @@ describe('WatchAccountDetailUseCase', () => {
     it('returns failure with notFound error when account id does not exist', async () => {
       accountsRepo.add(otherAccount);
 
-      const useCase = WatchAccountDetailUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
+      const useCase = WatchAccountVariationUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
 
       let result: AsyncResult<AccountDetail> | undefined;
-      const unsubscribe = useCase.watchDetail((data) => {
+      const unsubscribe = useCase.watchVariation((data) => {
         result = data;
       });
 
       await waitFor(() => expect(result).toBeDefined());
 
-      expect(result).toBeFailureWithErrors([WatchAccountDetailErrors.notFound]);
+      expect(result).toBeFailureWithErrors([WatchAccountVariationErrors.notFound]);
 
       unsubscribe();
     });
@@ -85,10 +88,10 @@ describe('WatchAccountDetailUseCase', () => {
     it('returns failure when accounts repository fails', async () => {
       accountsRepo.isFailing(['error']);
 
-      const useCase = WatchAccountDetailUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
+      const useCase = WatchAccountVariationUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
 
       let result: AsyncResult<AccountDetail> | undefined;
-      const unsubscribe = useCase.watchDetail((data) => {
+      const unsubscribe = useCase.watchVariation((data) => {
         result = data;
       });
 
@@ -102,10 +105,10 @@ describe('WatchAccountDetailUseCase', () => {
     it('returns loading when accounts repository is loading', async () => {
       accountsRepo.isLoading();
 
-      const useCase = WatchAccountDetailUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
+      const useCase = WatchAccountVariationUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
 
       let result: AsyncResult<AccountDetail> | undefined;
-      const unsubscribe = useCase.watchDetail((data) => {
+      const unsubscribe = useCase.watchVariation((data) => {
         result = data;
       });
 
@@ -119,10 +122,10 @@ describe('WatchAccountDetailUseCase', () => {
     it('returns loading when flows repository is loading', async () => {
       flowsRepo.isLoading();
 
-      const useCase = WatchAccountDetailUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
+      const useCase = WatchAccountVariationUseCase(account.id, dateInterval, accountsRepo, flowsRepo);
 
       let result: AsyncResult<AccountDetail> | undefined;
-      const unsubscribe = useCase.watchDetail((data) => {
+      const unsubscribe = useCase.watchVariation((data) => {
         result = data;
       });
 

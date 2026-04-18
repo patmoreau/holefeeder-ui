@@ -236,8 +236,8 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     }
   };
 
-  const watchAccountVariations = (onDataChange: (result: AsyncResult<AccountVariation[]>) => void) =>
-    watchQuery<AccountVariationRow, AccountVariation>(
+  const watchAccountVariation = (accountId: Id, onDataChange: (result: AsyncResult<AccountVariation | undefined>) => void) =>
+    watchSingle<AccountVariationRow, AccountVariation | undefined>(
       db,
       `
         SELECT
@@ -247,10 +247,10 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           SUM(CASE WHEN lower(c.type) = 'gain' THEN t.amount ELSE 0 END) as gains
         FROM transactions t
                JOIN categories c ON t.category_id = c.id
-        WHERE t.account_id IN (SELECT id FROM accounts WHERE inactive = 0)
+        WHERE t.account_id = ?
         GROUP BY t.account_id
       `,
-      [],
+      [accountId],
       (row) =>
         AccountVariation.valid({
           ...row,
@@ -258,7 +258,8 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
           gains: Money.fromCents(row.gains),
         }),
       onDataChange,
-      'watchAccountVariations'
+      () => Result.success(undefined),
+      'watchAccountVariation'
     );
 
   const watchCashflowVariations = (onDataChange: (result: AsyncResult<CashflowVariation[]>) => void) =>
@@ -401,7 +402,7 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     deactivateUpcoming: deactivateUpcoming,
     transfer: transfer,
     watchTags: watchTags,
-    watchAccountVariations: watchAccountVariations,
+    watchAccountVariation: watchAccountVariation,
     watchCashflowVariations: watchCashflowVariations,
     watchTransaction: watchTransaction,
     watchTransactions: watchTransactions,

@@ -7,7 +7,7 @@ import { useTheme } from '@/shared/theme/core/use-theme';
 
 const logger = Logger.create('HolefeederContent');
 
-export const HolefeederContent = () => {
+const HolefeederContent = () => {
   logger.info('AppContent rendering');
   const { user, isLoading } = useAuth();
 
@@ -39,3 +39,5 @@ export const HolefeederContent = () => {
     </Stack>
   );
 };
+
+export default HolefeederContent;

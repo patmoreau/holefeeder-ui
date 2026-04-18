@@ -37,7 +37,7 @@ these services.
 simulator itself — not your Mac. Override the entries in `/etc/hosts` to point to your Mac's LAN IP:
 
 ```bash
-sudo bash -c 'echo "$(ipconfig getifaddr en0) powersync.localtest.me holefeeder.localtest.me" >> /etc/hosts'
+sudo bash -c 'echo "127.0.0.1 powersync.localtest.me holefeeder.localtest.me" >> /etc/hosts'
 sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder
 ```
 

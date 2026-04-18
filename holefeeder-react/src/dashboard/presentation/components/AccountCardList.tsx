@@ -1,11 +1,11 @@
 import { type ViewProps } from 'react-native';
 import { AccountCard, type CardLayout } from '@/dashboard/presentation/components/AccountCard';
-import { AccountDetail } from '@/flows/core/accounts/account-detail';
+import { AccountSummary } from '@/flows/core/accounts/account-summary';
 import { Id } from '@/shared/core/id';
 import { AppCardList } from '@/shared/presentation/components/AppCardList';
 
 export type AccountCardListProps = ViewProps & {
-  accounts: AccountDetail[];
+  accounts: AccountSummary[];
   onPress?: (id: Id, layout: CardLayout) => void;
 };
 

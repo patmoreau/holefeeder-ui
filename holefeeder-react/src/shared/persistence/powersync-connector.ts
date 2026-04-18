@@ -12,7 +12,6 @@ export const PowerSyncConnector = (authenticationState: AuthenticationState, con
     if (!token) {
       return null;
     }
-    logger.debug('fetchCredentials: ', config.powersyncConfig.url, token);
     return {
       endpoint: config.powersyncConfig.url,
       token: token.token,

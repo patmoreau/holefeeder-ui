@@ -232,8 +232,8 @@ describe('FlowsRepository', () => {
     });
   });
 
-  describe('watchAccountVariations', () => {
-    it('retrieves account variations', async () => {
+  describe('watchAccountVariation', () => {
+    it('retrieves variation for the specified account', async () => {
       const account = await anAccount().store(db);
       const expense = await aCategory({ type: CategoryTypes.expense }).store(db);
       const gains = await aCategory({ type: CategoryTypes.gain }).store(db);
@@ -250,8 +250,8 @@ describe('FlowsRepository', () => {
         date: DateOnly.valid('2026-02-01'),
       }).store(db);
 
-      let result: AsyncResult<AccountVariation[]> | undefined;
-      const unsubscribe = repository.watchAccountVariations((data) => {
+      let result: AsyncResult<AccountVariation | undefined> | undefined;
+      const unsubscribe = repository.watchAccountVariation(account.id, (data) => {
         result = data;
       });
 
@@ -259,21 +259,21 @@ describe('FlowsRepository', () => {
         expect(result).toBeDefined();
       });
 
-      expect(result).toBeSuccessWithValue([
-        {
-          accountId: account.id,
-          gains: Money.valid(1000.0),
-          expenses: Money.valid(123.45),
-          lastTransactionDate: DateOnly.valid('2026-02-12'),
-        },
-      ]);
+      expect(result).toBeSuccessWithValue({
+        accountId: account.id,
+        gains: Money.valid(1000.0),
+        expenses: Money.valid(123.45),
+        lastTransactionDate: DateOnly.valid('2026-02-12'),
+      });
 
       unsubscribe();
     });
 
-    it('returns empty list when no transaction exist', async () => {
-      let result: AsyncResult<AccountVariation[]> | undefined;
-      const unsubscribe = repository.watchAccountVariations((data) => {
+    it('returns undefined when account has no transactions', async () => {
+      const account = await anAccount().store(db);
+
+      let result: AsyncResult<AccountVariation | undefined> | undefined;
+      const unsubscribe = repository.watchAccountVariation(account.id, (data) => {
         result = data;
       });
 
@@ -281,17 +281,18 @@ describe('FlowsRepository', () => {
         expect(result).toBeDefined();
       });
 
-      expect(result).toBeSuccessWithValue([]);
+      expect(result).toBeSuccessWithValue(undefined);
 
       unsubscribe();
     });
 
     it('handles database errors', async () => {
+      const account = await anAccount().store(db);
       // Close the database to trigger an error
       await db.close();
 
-      let result: AsyncResult<AccountVariation[]> | undefined;
-      const unsubscribe = repository.watchAccountVariations((data) => {
+      let result: AsyncResult<AccountVariation | undefined> | undefined;
+      const unsubscribe = repository.watchAccountVariation(account.id, (data) => {
         result = data;
       });
 

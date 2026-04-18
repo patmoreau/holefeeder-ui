@@ -4,7 +4,7 @@ import { PowerSyncDatabase } from '@powersync/react-native';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
-import { HolefeederContent } from '@/app/HolefeederContent';
+import HolefeederContent from '@/app/HolefeederContent';
 import { HolefeederConfig } from '@/config/holefeeder-config';
 import { AuthenticationProvider } from '@/shared/auth/presentation/AuthenticationProvider';
 import { Logger } from '@/shared/core/logger/logger';

@@ -17,7 +17,7 @@ const getInstance = (): BaseLogger => {
   if (_instance === null) {
     _instance = RNLogger.createLogger({
       severity: 'debug',
-      transport: Platform.OS === 'ios' ? nativeTransport : consoleTransport,
+      transport: Platform.OS === 'ios' && !__DEV__ ? nativeTransport : consoleTransport,
       transportOptions: {
         colors: {
           debug: 'white',

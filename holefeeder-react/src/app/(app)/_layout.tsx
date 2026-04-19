@@ -1,21 +1,11 @@
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { tk } from '@/i18n/translations';
-import { Logger } from '@/shared/core/logger/logger';
-import { AppButton } from '@/shared/presentation/components/AppButton';
-import { AppIcons } from '@/shared/presentation/icons';
 import { useTheme } from '@/shared/theme/core/use-theme';
-
-const logger = Logger.create('AppLayout');
 
 const AppLayout = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
-
-  const onPressPurchase = () => {
-    logger.info('onPressPurchase');
-    router.push('/(app)/Purchase');
-  };
 
   return (
     <Stack>
@@ -24,7 +14,6 @@ const AppLayout = () => {
         options={{
           headerTitle: '',
           headerTransparent: true,
-          headerRight: () => <AppButton icon={AppIcons.purchase} style={{ width: 35, height: 35 }} onPress={onPressPurchase} />,
         }}
       />
       <Stack.Screen

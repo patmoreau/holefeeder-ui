@@ -1,5 +1,5 @@
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
-import React, { useLayoutEffect } from 'react';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import React from 'react';
 import { AccountHeaderLargeCard } from '@/accounts/presentation/AccountHeaderLargeCard';
 import { AccountHeaderSmallCard } from '@/accounts/presentation/AccountHeaderSmallCard';
 import { TransactionCard } from '@/accounts/presentation/components/TransactionCard';
@@ -9,7 +9,6 @@ import type { CardLayout } from '@/dashboard/presentation/components/AccountCard
 import { Id } from '@/shared/core/id';
 import { AppView } from '@/shared/presentation/AppView';
 import { CardHeaderFlashList } from '@/shared/presentation/CardHeaderFlashList';
-import { AppButton } from '@/shared/presentation/components/AppButton';
 import { AppCardDivider } from '@/shared/presentation/components/AppCardDivider';
 import { ErrorSheet } from '@/shared/presentation/components/ErrorSheet';
 import { LoadingIndicator } from '@/shared/presentation/components/LoadingIndicator';
@@ -31,7 +30,6 @@ export const AccountScreen = () => {
   const accountId = Id.valid(id);
   const { theme } = useTheme();
   const styles = useStyles(createStyles);
-  const navigation = useNavigation();
 
   const accountQuery = useAccountDetail(accountId);
   const transactionsResult = useTransactions(accountId);
@@ -44,12 +42,6 @@ export const AccountScreen = () => {
       pathname: '/(app)/flows/[id]',
       params: { id: id as string },
     });
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => <AppButton icon={AppIcons.back} style={{ width: 35, height: 35 }} onPress={() => goBack()} />,
-    });
-  }, [navigation]);
 
   if (errors.showError) {
     return (
@@ -64,15 +56,20 @@ export const AccountScreen = () => {
   if (!account) return <LoadingIndicator />;
 
   return (
-    <CardHeaderFlashList
-      headerBackgroundColor={theme.colors.primary}
-      largeCard={<AccountHeaderLargeCard account={account} />}
-      smallCard={<AccountHeaderSmallCard account={account} />}
-      pagedResult={transactionsResult}
-      renderItem={(item) => <TransactionCard transaction={item.item} onPress={onFlowPress} />}
-      keyExtractor={(item) => item.id}
-      ItemSeparatorComponent={AppCardDivider}
-      ListFooterComponent={transactionsResult.loading ? <LoadingIndicator size={'small'} /> : null}
-    />
+    <>
+      <Stack.Toolbar placement="left">
+        <Stack.Toolbar.Button icon={AppIcons.back} onPress={() => goBack()} />
+      </Stack.Toolbar>
+      <CardHeaderFlashList
+        headerBackgroundColor={theme.colors.primary}
+        largeCard={<AccountHeaderLargeCard account={account} />}
+        smallCard={<AccountHeaderSmallCard account={account} />}
+        pagedResult={transactionsResult}
+        renderItem={(item) => <TransactionCard transaction={item.item} onPress={onFlowPress} />}
+        keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={AppCardDivider}
+        ListFooterComponent={transactionsResult.loading ? <LoadingIndicator size={'small'} /> : null}
+      />
+    </>
   );
 };

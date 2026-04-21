@@ -113,7 +113,7 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
       >
         <AppCard {...props}>
           <View style={styles.cardDescription}>
-            <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
+            <AppText variant={'defaultSemiBold'} numberOfLines={1} ellipsizeMode="tail">
               {upcomingFlow.description}
             </AppText>
             {upcomingFlow.tags.length > 0 && (
@@ -125,9 +125,7 @@ export const UpcomingCard = ({ upcomingFlow, style, ...props }: UpcomingCardProp
             )}
           </View>
           <View style={styles.cardAmount}>
-            <AppText variant={'default'} adjustsFontSizeToFit>
-              {formatCurrency(upcomingFlow.amount)}
-            </AppText>
+            <AppText variant={'default'}>{formatCurrency(upcomingFlow.amount)}</AppText>
             <AppText variant={'footnote'}>{formatDate(upcomingFlow.date, today())}</AppText>
           </View>
         </AppCard>

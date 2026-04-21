@@ -57,7 +57,7 @@ export const LatestTransactionCard = ({ transaction, ...props }: LatestTransacti
     <Pressable ref={pressableRef} onPress={() => onFlowPress(transaction.id)}>
       <AppCard {...props}>
         <View style={styles.cardDescription}>
-          <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
+          <AppText variant={'defaultSemiBold'} numberOfLines={1} ellipsizeMode="tail">
             {transaction.description}
           </AppText>
           {transaction.tags.length > 0 && (
@@ -69,7 +69,7 @@ export const LatestTransactionCard = ({ transaction, ...props }: LatestTransacti
           )}
         </View>
         <View style={styles.cardAmount}>
-          <AppText variant={'default'} adjustsFontSizeToFit style={amountStyle}>
+          <AppText variant={'default'} style={amountStyle}>
             {formatCurrency(transaction.amount)}
           </AppText>
           <AppText variant={'footnote'}>{formatDate(transaction.date, today())}</AppText>

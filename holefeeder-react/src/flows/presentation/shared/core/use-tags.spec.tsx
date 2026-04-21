@@ -3,16 +3,22 @@ import { aTag } from '@/flows/core/flows/__tests__/tag-for-test';
 import { aTransaction } from '@/flows/core/flows/__tests__/transaction-for-test';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/core/flows/tag-list';
+import { Id } from '@/shared/core/id';
 import { DatabaseForTest, setupDatabaseForTest } from '@/shared/persistence/__tests__/database-for-test';
 import { PowerSyncProviderForTest } from '@/shared/persistence/__tests__/PowerSyncProviderForTest';
 import { useTags } from './use-tags';
 
 describe('useTags', () => {
   let db: DatabaseForTest;
-  const firstTransaction = aTransaction({ tags: TagList.valid(['groceries', 'food']) });
-  const secondTransaction = aTransaction({ tags: TagList.valid(['groceries', 'shopping']) });
-  const thirdTransaction = aTransaction({ tags: TagList.valid(['food']) });
-  const validTags: Tag[] = [aTag({ tag: 'food', count: 2 }), aTag({ tag: 'groceries', count: 2 }), aTag({ tag: 'shopping', count: 1 })];
+  const categoryId = Id.newId();
+  const firstTransaction = aTransaction({ categoryId, tags: TagList.valid(['groceries', 'food']) });
+  const secondTransaction = aTransaction({ categoryId, tags: TagList.valid(['groceries', 'shopping']) });
+  const thirdTransaction = aTransaction({ categoryId, tags: TagList.valid(['food']) });
+  const validTags: Tag[] = [
+    aTag({ tag: 'food', count: 2, categoryId }),
+    aTag({ tag: 'groceries', count: 2, categoryId }),
+    aTag({ tag: 'shopping', count: 1, categoryId }),
+  ];
 
   const createHook = async () =>
     await waitFor(() =>

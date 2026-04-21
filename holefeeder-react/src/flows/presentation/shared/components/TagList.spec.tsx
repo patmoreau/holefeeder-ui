@@ -3,20 +3,22 @@ import React, { useState } from 'react';
 import { aTag } from '@/flows/core/flows/__tests__/tag-for-test';
 import { Tag } from '@/flows/core/flows/tag';
 import { TagList } from '@/flows/presentation/shared/components/TagList';
+import { anId } from '@/shared/__tests__/string-for-test';
 import { aLightThemeState } from '@/shared/theme/__tests__/theme-state-for-test';
 import { ThemeProviderForTest } from '@/shared/theme/__tests__/ThemeProviderForTest';
 
 const placeHolderText = 'tagList.placeHolder';
-const firstTag = aTag({ tag: 'first-tag' });
-const middleTag = aTag({ tag: 'middle-tag' });
-const lastTag = aTag({ tag: 'last-tag' });
-const selectedTag = aTag({ tag: 'selected-tag' });
-const newTag = aTag({ tag: 'new-tag' });
+const categoryId = anId();
+const firstTag = aTag({ tag: 'first-tag', count: 1, categoryId });
+const middleTag = aTag({ tag: 'middle-tag', count: 2, categoryId });
+const lastTag = aTag({ tag: 'last-tag', count: 10, categoryId: anId() });
+const selectedTag = aTag({ tag: 'selected-tag', count: 4, categoryId: anId() });
+const newTag = aTag({ tag: 'new-tag', count: 0, categoryId: undefined });
 const tagsPattern = new RegExp(`^#(?:${firstTag.tag}|${middleTag.tag}|${lastTag.tag}|${selectedTag.tag}|${newTag.tag})$`);
 
 function TestHost() {
   const [selected, setSelected] = useState<Tag[]>([selectedTag]);
-  return <TagList tags={[firstTag, middleTag, lastTag, selectedTag]} selected={selected} onChange={setSelected} />;
+  return <TagList tags={[firstTag, middleTag, lastTag, selectedTag]} selected={selected} onChange={setSelected} categoryId={categoryId} />;
 }
 
 const displayTag = (tag: Tag) => `#${tag.tag}`;
@@ -42,8 +44,8 @@ describe('TagList', () => {
     expect(tags).toHaveLength(4);
     expect(tags.map((tag) => tag.props.children)).toEqual([
       displayTag(selectedTag),
-      displayTag(firstTag),
       displayTag(middleTag),
+      displayTag(firstTag),
       displayTag(lastTag),
     ]);
   });
@@ -70,8 +72,8 @@ describe('TagList', () => {
 
       expect(tags).toHaveLength(4);
       expect(tags.map((tag) => tag.props.children)).toEqual([
-        displayTag(firstTag),
         displayTag(middleTag),
+        displayTag(firstTag),
         displayTag(lastTag),
         displayTag(selectedTag),
       ]);
@@ -153,8 +155,8 @@ describe('TagList', () => {
       expect(tags.map((tag) => tag.props.children)).toEqual([
         displayTag(newTag),
         displayTag(selectedTag),
-        displayTag(firstTag),
         displayTag(middleTag),
+        displayTag(firstTag),
         displayTag(lastTag),
       ]);
     });
@@ -172,8 +174,8 @@ describe('TagList', () => {
       expect(tags.map((tag) => tag.props.children)).toEqual([
         displayTag(newTag),
         displayTag(selectedTag),
-        displayTag(firstTag),
         displayTag(middleTag),
+        displayTag(firstTag),
         displayTag(lastTag),
       ]);
     });

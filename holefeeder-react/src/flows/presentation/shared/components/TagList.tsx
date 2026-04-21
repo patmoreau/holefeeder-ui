@@ -5,6 +5,7 @@ import { Tag } from '@/flows/core/flows/tag';
 import { FilterField } from '@/flows/presentation/shared/components/FilterField';
 import { useTagList } from '@/flows/presentation/shared/core/use-tag-list';
 import { tk } from '@/i18n/translations';
+import { Id } from '@/shared/core/id';
 import { AppField } from '@/shared/presentation/AppField';
 import { AppChip } from '@/shared/presentation/components/AppChip';
 import { AppText } from '@/shared/presentation/components/AppText';
@@ -17,6 +18,7 @@ export type TagListProps = {
   tags: Tag[];
   selected: Tag[];
   onChange: (next: Tag[]) => void;
+  categoryId: Id;
 };
 
 const createStyles = (theme: Theme) => ({
@@ -39,10 +41,10 @@ const createStyles = (theme: Theme) => ({
   },
 });
 
-export function TagList({ tags, selected, onChange }: TagListProps) {
+export function TagList({ tags, selected, onChange, categoryId }: TagListProps) {
   const { t } = useTranslation();
   const styles = useStyles(createStyles);
-  const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange });
+  const { filter, setFilter, onSubmit, toggleTag, filtered } = useTagList({ tags, selected, onChange, categoryId });
   const [scrollViewHeight, setScrollViewHeight] = useState(36);
 
   const buildList = () =>

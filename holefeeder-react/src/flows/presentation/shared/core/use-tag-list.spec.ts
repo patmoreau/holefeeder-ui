@@ -1,14 +1,16 @@
 import { act, renderHook, RenderHookResult } from '@testing-library/react-native';
 import { aTag } from '@/flows/core/flows/__tests__/tag-for-test';
 import { Tag } from '@/flows/core/flows/tag';
+import { anId } from '@/shared/__tests__/string-for-test';
 import { useTagList } from './use-tag-list';
 
-const firstTag = aTag({ tag: 'first-tag', count: 1 });
-const middleTag = aTag({ tag: 'middle-tag', count: 2 });
-const lastTag = aTag({ tag: 'last-tag', count: 3 });
-const selectedTag = aTag({ tag: 'selected-tag', count: 4 });
-const newTag = aTag({ tag: 'new-tag', count: 0 });
-const dTag = aTag({ tag: 'd', count: 0 });
+const categoryId = anId();
+const firstTag = aTag({ tag: 'first-tag', count: 1, categoryId: categoryId });
+const middleTag = aTag({ tag: 'middle-tag', count: 2, categoryId: categoryId });
+const lastTag = aTag({ tag: 'last-tag', count: 10, categoryId: anId() });
+const selectedTag = aTag({ tag: 'selected-tag', count: 4, categoryId: anId() });
+const newTag = aTag({ tag: 'new-tag', count: 0, categoryId: undefined });
+const dTag = aTag({ tag: 'd', count: 0, categoryId: undefined });
 
 describe('useTagList', () => {
   const mockOnChange = jest.fn();
@@ -22,6 +24,7 @@ describe('useTagList', () => {
           tags,
           selected,
           onChange,
+          categoryId,
         }),
       {
         initialProps: {
@@ -38,7 +41,7 @@ describe('useTagList', () => {
   });
 
   it('initializes to ordered list', () => {
-    expect(hookResult.result.current.filtered).toStrictEqual([selectedTag, firstTag, middleTag, lastTag]);
+    expect(hookResult.result.current.filtered).toStrictEqual([selectedTag, middleTag, firstTag, lastTag]);
   });
 
   describe('when toggling a tag', () => {
@@ -71,7 +74,7 @@ describe('useTagList', () => {
         onChange: mockOnChange,
       });
 
-      expect(hookResult.result.current.filtered).toStrictEqual([firstTag, middleTag, lastTag, selectedTag]);
+      expect(hookResult.result.current.filtered).toStrictEqual([middleTag, firstTag, lastTag, selectedTag]);
     });
   });
 
@@ -159,7 +162,7 @@ describe('useTagList', () => {
         onChange: mockOnChange,
       });
 
-      expect(hookResult.result.current.filtered).toStrictEqual([dTag, selectedTag, firstTag, middleTag, lastTag]);
+      expect(hookResult.result.current.filtered).toStrictEqual([dTag, selectedTag, middleTag, firstTag, lastTag]);
       expect(hookResult.result.current.filter).toBe('');
     });
 
@@ -180,7 +183,7 @@ describe('useTagList', () => {
         onChange: mockOnChange,
       });
 
-      expect(hookResult.result.current.filtered).toStrictEqual([newTag, selectedTag, firstTag, middleTag, lastTag]);
+      expect(hookResult.result.current.filtered).toStrictEqual([newTag, selectedTag, middleTag, firstTag, lastTag]);
       expect(hookResult.result.current.filter).toBe('');
     });
 

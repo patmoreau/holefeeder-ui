@@ -618,10 +618,15 @@ describe('FlowsRepository', () => {
 
   describe('watchTags', () => {
     it('retrieves transaction tags', async () => {
-      await aTransaction({ tags: TagList.valid(['groceries', 'food']) }).store(db);
-      await aTransaction({ tags: TagList.valid(['groceries', 'shopping']) }).store(db);
-      await aTransaction({ tags: TagList.valid(['food']) }).store(db);
-      const validTags: Tag[] = [aTag({ tag: 'food', count: 2 }), aTag({ tag: 'groceries', count: 2 }), aTag({ tag: 'shopping', count: 1 })];
+      const categoryId = Id.newId();
+      await aTransaction({ categoryId, tags: TagList.valid(['groceries', 'food']) }).store(db);
+      await aTransaction({ categoryId, tags: TagList.valid(['groceries', 'shopping']) }).store(db);
+      await aTransaction({ categoryId, tags: TagList.valid(['food']) }).store(db);
+      const validTags: Tag[] = [
+        aTag({ tag: 'food', count: 2, categoryId }),
+        aTag({ tag: 'groceries', count: 2, categoryId }),
+        aTag({ tag: 'shopping', count: 1, categoryId }),
+      ];
 
       let result: AsyncResult<Tag[]> | undefined;
       const unsubscribe = repository.watchTags((data) => {

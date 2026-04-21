@@ -48,7 +48,7 @@ export function BasicSection({ accounts, categories, tags }: Props) {
         onSelectAccount={updateSourceAccount}
       />
       <CategoryField categories={categories} selectedCategory={formData.category} onSelectCategory={updateCategory} variant={variant} />
-      <TagList tags={tags} selected={selectedTags} onChange={updateTags} />
+      <TagList tags={tags} selected={selectedTags} onChange={updateTags} categoryId={formData.category.id} />
       <DescriptionField description={formData.description} onDescriptionChange={updateDescription} />
     </AppSection>
   );

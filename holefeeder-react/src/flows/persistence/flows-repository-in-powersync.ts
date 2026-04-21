@@ -370,24 +370,26 @@ export const FlowsRepositoryInPowersync = (db: AbstractPowerSyncDatabase): Flows
     watchQuery<TagRow, Tag>(
       db,
       `
-        WITH RECURSIVE split(tag, remainder) AS
+        WITH RECURSIVE split(tag, remainder, category_id) AS
                          (SELECT
                             Ltrim(Substr(tags || ',', 1, Instr(tags || ',', ',') - 1)) AS tag,
-                            Substr(tags || ',', Instr(tags || ',', ',') + 1)           AS remainder
+                            Substr(tags || ',', Instr(tags || ',', ',') + 1)           AS remainder,
+                            category_id
                           FROM transactions
                           WHERE tags IS NOT NULL AND tags <> ''
                           UNION ALL
                           SELECT
                             Ltrim(Substr(remainder, 1, Instr(remainder, ',') - 1)) AS tag,
-                            Substr(remainder, Instr(remainder, ',') + 1)           AS remainder
+                            Substr(remainder, Instr(remainder, ',') + 1)           AS remainder,
+                            category_id
                           FROM split
                           WHERE remainder <> '')
         SELECT tag,
+               category_id,
                COUNT(*) AS count
         FROM split
         WHERE tag <> ''
-        GROUP BY tag
-        ORDER BY count DESC, tag;
+        GROUP BY tag, category_id;
       `,
       [],
       (row) => Tag.valid(row),

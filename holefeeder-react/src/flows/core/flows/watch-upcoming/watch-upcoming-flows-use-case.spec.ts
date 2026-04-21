@@ -56,6 +56,7 @@ describe('WatchUpcomingFlowsUseCase', () => {
         amount: firstCashflow.amount,
         date: firstCashflow.effectiveDate,
         tags: firstCashflow.tags,
+        categoryType: firstCashflow.categoryType,
       },
       {
         id: secondCashflow.id,
@@ -63,6 +64,7 @@ describe('WatchUpcomingFlowsUseCase', () => {
         amount: secondCashflow.amount,
         date: secondCashflow.effectiveDate,
         tags: secondCashflow.tags,
+        categoryType: secondCashflow.categoryType,
       },
     ]);
 

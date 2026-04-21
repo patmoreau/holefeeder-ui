@@ -1,3 +1,4 @@
+import { CategoryTypes } from '@/flows/core/categories/category-type';
 import { aTagList } from '@/flows/core/flows/__tests__/tag-list-for-test';
 import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
 import { aFutureDate } from '@/shared/__tests__/date-for-test';
@@ -10,6 +11,7 @@ const defaultUpcomingFlow = (): UpcomingFlow => ({
   amount: anAmount(),
   description: aString(),
   tags: aTagList(),
+  categoryType: CategoryTypes.expense,
 });
 
 export const aUpcomingFlow = (overrides?: Partial<UpcomingFlow>): UpcomingFlow => ({

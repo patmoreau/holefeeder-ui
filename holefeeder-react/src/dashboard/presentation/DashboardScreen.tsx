@@ -67,8 +67,8 @@ const DashboardScreen = () => {
   return (
     <CardHeaderScrollView
       headerBackgroundColor={theme.colors.primary}
-      largeCard={<DashboardHeaderLargeCard summary={dashboard} />}
-      smallCard={<DashboardHeaderSmallCard summary={dashboard} />}
+      largeCard={<DashboardHeaderLargeCard summary={dashboard} upcomingFlows={upcomingFlows} />}
+      smallCard={<DashboardHeaderSmallCard summary={dashboard} upcomingFlows={upcomingFlows} />}
     >
       <View>
         <AccountCardList accounts={accounts} onPress={onAccountPress} />

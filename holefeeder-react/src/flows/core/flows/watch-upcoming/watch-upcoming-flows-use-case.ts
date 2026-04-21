@@ -29,6 +29,7 @@ export const WatchUpcomingFlowsUseCase = (settings: Settings, repository: FlowsR
               ...flow,
               date: date,
               amount: flow.amount,
+              categoryType: flow.categoryType,
               tags: flow.tags,
             })
           );

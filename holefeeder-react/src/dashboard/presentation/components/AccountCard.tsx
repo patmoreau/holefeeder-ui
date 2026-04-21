@@ -97,7 +97,7 @@ export const AccountCard = ({ account, width = 300, style, onPress, ...props }: 
       <Animated.View sharedTransitionTag={`tag-${account.id}`} sharedTransitionStyle={transition}>
         <AppCard scrollable={'horizontal'} cardWidth={width} style={style} {...props}>
           <View style={styles.header}>
-            <AppText variant={'title'} adjustsFontSizeToFit>
+            <AppText variant={'defaultSemiBold'} adjustsFontSizeToFit>
               {account.name}
             </AppText>
           </View>
@@ -116,8 +116,7 @@ export const AccountCard = ({ account, width = 300, style, onPress, ...props }: 
               return (
                 <>
                   <View style={styles.balanceSection}>
-                    <AppText variant={'subtitle'}>{t(tk.accountCard.currentBalance)}</AppText>
-                    <AppText variant={'largeTitle'} adjustsFontSizeToFit>
+                    <AppText variant={'title'} adjustsFontSizeToFit>
                       {balanceSign}
                       {formatCurrency(detail.balance)}
                     </AppText>
@@ -143,19 +142,6 @@ export const AccountCard = ({ account, width = 300, style, onPress, ...props }: 
                         {projectedSign}
                         {formatCurrency(detail.projectedBalance)}
                       </AppText>
-                      {detail.upcomingVariation !== 0 && (
-                        <AppText
-                          variant={'default'}
-                          style={[
-                            styles.lastUpdated,
-                            { marginTop: spacing.xs },
-                            detail.upcomingVariation >= 0 ? styles.positiveAmount : styles.negativeAmount,
-                          ]}
-                        >
-                          {detail.upcomingVariation >= 0 ? '+' : ''}
-                          {formatCurrency(detail.upcomingVariation)}
-                        </AppText>
-                      )}
                     </View>
                   </View>
                 </>

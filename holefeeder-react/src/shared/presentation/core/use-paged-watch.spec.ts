@@ -70,8 +70,9 @@ describe('usePagedWatch', () => {
 
       expect(result.current.data).toBeSuccessWithValue([transaction0, transaction1, transaction2]);
 
-      flowRepository.addTransactions(transaction3, transaction4);
-      await act(() => result.current.loading);
+      await act(async () => {
+        flowRepository.addTransactions(transaction3, transaction4);
+      });
 
       expect(result.current.data).toBeSuccessWithValue([transaction0, transaction1, transaction2]);
     });
@@ -82,8 +83,9 @@ describe('usePagedWatch', () => {
 
       expect(result.current.data).toBeSuccessWithValue([transaction0, transaction1]);
 
-      flowRepository.addTransactions(transaction2);
-      await act(() => result.current.loading);
+      await act(async () => {
+        flowRepository.addTransactions(transaction2);
+      });
 
       expect(result.current.data).toBeSuccessWithValue([transaction0, transaction1, transaction2]);
     });
@@ -137,9 +139,9 @@ describe('usePagedWatch', () => {
 
       expect(result.current.totalCount).toBe(3);
 
-      flowRepository.addTransactions(transaction3, transaction4);
-
-      await act(() => result.current.loading);
+      await act(async () => {
+        flowRepository.addTransactions(transaction3, transaction4);
+      });
 
       expect(result.current.totalCount).toBe(5);
     });
@@ -166,8 +168,10 @@ describe('usePagedWatch', () => {
 
       expect(result.current.hasNextPage).toBe(false);
 
-      flowRepository.addTransactions(transaction3);
-      await act(async () => result.current.loadNext());
+      await act(async () => {
+        flowRepository.addTransactions(transaction3);
+      });
+
       expect(result.current.hasNextPage).toBe(true);
     });
   });

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { DashboardComputedSummary } from '@/dashboard/core/watch-summary/watch-summary-use-case';
 import { DashboardHeaderExpenseTrend } from '@/dashboard/presentation/DashboardHeaderExpenseTrend';
 import { UpcomingFlow } from '@/flows/core/flows/upcoming-flow';
@@ -7,8 +9,6 @@ import { useLocaleFormatter } from '@/shared/presentation/core/use-local-formatt
 import { useStyles } from '@/shared/theme/core/use-styles';
 import { spacing } from '@/types/theme/design-tokens';
 import { Theme } from '@/types/theme/theme';
-import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 
 const createStyles = (theme: Theme) => ({
   container: {

@@ -20,12 +20,7 @@ export const useSettings = (): AsyncResult<Settings> => {
       return settings;
     }
     return settings;
-  }, [
-    settings.isSuccess,
-    settings.isSuccess ? settings.value.effectiveDate : undefined,
-    settings.isSuccess ? settings.value.intervalType : undefined,
-    settings.isSuccess ? settings.value.frequency : undefined,
-  ]);
+  }, [settings]);
 
   return stableSettings;
 };

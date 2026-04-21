@@ -1,5 +1,5 @@
 import * as Localization from 'expo-localization';
-import i18n from 'i18next';
+import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { Logger } from '@/shared/core/logger/logger';
 import { en } from './locales/en-CA/translations';
@@ -17,7 +17,7 @@ const resources = {
 };
 
 let isInitialized = false;
-const instance = i18n;
+const instance = i18next;
 
 export const initI18n = async (savedLanguage?: string): Promise<void> => {
   if (isInitialized) {

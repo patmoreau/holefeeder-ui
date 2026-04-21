@@ -79,9 +79,10 @@ export const usePagedWatch = <T>(
 
   // Strict cleanup on unmount
   useEffect(() => {
+    const currentSubs = subsRef.current;
     return () => {
-      subsRef.current.forEach((unsub) => unsub());
-      subsRef.current.clear();
+      currentSubs.forEach((unsub) => unsub());
+      currentSubs.clear();
     };
   }, []);
 

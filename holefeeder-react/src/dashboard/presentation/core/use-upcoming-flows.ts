@@ -17,7 +17,7 @@ export const useUpcomingFlows = (): AsyncResult<UpcomingFlow[]> => {
     if (settingsResult.isLoading) return null;
 
     return WatchUpcomingFlowsUseCase(settings, flowRepository);
-  }, [flowRepository, settings]);
+  }, [flowRepository, settings, settingsResult.isLoading]);
 
   useEffect(() => {
     if (!useCase) {

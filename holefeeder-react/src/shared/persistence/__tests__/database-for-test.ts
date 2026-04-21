@@ -1,4 +1,3 @@
-import fs from 'fs';
 import {
   AbstractPowerSyncDatabase,
   type CreateSyncImplementationOptions,
@@ -10,7 +9,6 @@ import {
   SqliteBucketStorage,
   type StreamingSyncImplementation,
 } from '@powersync/common';
-import sqliteDatabase from 'better-sqlite3';
 import { DatabaseAdapterForTest } from '@/shared/persistence/__tests__/database-adapter-for-test';
 import { AppSchema } from '@/shared/persistence/app-schema';
 
@@ -49,14 +47,9 @@ export class DatabaseForTest extends AbstractPowerSyncDatabase {
 
   async cleanupTestDb() {
     try {
-      const sqliteDb = (this.database as DatabaseAdapterForTest).dbConnection as sqliteDatabase.Database;
-      if (sqliteDb && sqliteDb.open) {
-        sqliteDb.close();
-      }
-
-      if (typeof this.disconnect === 'function') {
-        await this.disconnect();
-      }
+      // db.close() disposes TriggerManagerImpl (clearing its 120s setTimeout)
+      // and closes the underlying SQLite connection — prevents Jest worker leaks.
+      await this.close({ disconnect: false });
     } catch {}
   }
 }
